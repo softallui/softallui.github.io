@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Application — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Application</h1>
+    <p><span class="highlight">100</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="google-chrome.html" class="app-card" data-id="1777288005462" style="text-decoration:none;color:inherit">
+          <img src="logo/chrome.png" alt="Google Chrome" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Chrome</h3>
+          <p class="app-description">Fast, secure web browser from Google with built-in search and sync capabilities.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">browser</span><span class="app-tag">google</span><span class="app-tag">web</span>
+            </div>
+          
+        </a>
+        <a href="mozilla-firefox.html" class="app-card" data-id="1777288005463" style="text-decoration:none;color:inherit">
+          <img src="logo/firefox.png" alt="Mozilla Firefox" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mozilla Firefox</h3>
+          <p class="app-description">Open-source browser focused on privacy, speed, and customization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">browser</span><span class="app-tag">privacy</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="microsoft-edge.html" class="app-card" data-id="1777288005464" style="text-decoration:none;color:inherit">
+          <img src="logo/edge.png" alt="Microsoft Edge" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Microsoft Edge</h3>
+          <p class="app-description">Chromium-based browser from Microsoft with AI features and productivity tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">browser</span><span class="app-tag">microsoft</span><span class="app-tag">ai</span>
+            </div>
+          
+        </a>
+        <a href="opera-browser.html" class="app-card" data-id="1777288005465" style="text-decoration:none;color:inherit">
+          <img src="logo/opera.png" alt="Opera Browser" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Opera Browser</h3>
+          <p class="app-description">Feature-rich browser with built-in VPN, ad blocker, and workspace tabs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">browser</span><span class="app-tag">vpn</span><span class="app-tag">adblock</span>
+            </div>
+          
+        </a>
+        <a href="brave-browser.html" class="app-card" data-id="1777288005466" style="text-decoration:none;color:inherit">
+          <img src="logo/brave.png" alt="Brave Browser" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Brave Browser</h3>
+          <p class="app-description">Privacy-focused browser that blocks ads and trackers by default.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">browser</span><span class="app-tag">privacy</span><span class="app-tag">crypto</span>
+            </div>
+          
+        </a>
+        <a href="vivaldi.html" class="app-card" data-id="1777288005467" style="text-decoration:none;color:inherit">
+          <img src="logo/vivaldi.png" alt="Vivaldi" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Vivaldi</h3>
+          <p class="app-description">Highly customizable browser for power users with tab stacking and notes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">browser</span><span class="app-tag">customizable</span><span class="app-tag">productivity</span>
+            </div>
+          
+        </a>
+        <a href="telegram-desktop.html" class="app-card" data-id="1777288005468" style="text-decoration:none;color:inherit">
+          <img src="logo/telegram.png" alt="Telegram Desktop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Telegram Desktop</h3>
+          <p class="app-description">Fast and secure messaging app with cloud sync and group chats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">messaging</span><span class="app-tag">chat</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="whatsapp-desktop.html" class="app-card" data-id="1777288005469" style="text-decoration:none;color:inherit">
+          <img src="logo/whatsapp.png" alt="WhatsApp Desktop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WhatsApp Desktop</h3>
+          <p class="app-description">Desktop client for WhatsApp messaging with end-to-end encryption.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">messaging</span><span class="app-tag">chat</span><span class="app-tag">mobile-sync</span>
+            </div>
+          
+        </a>
+        <a href="slack.html" class="app-card" data-id="1777288005470" style="text-decoration:none;color:inherit">
+          <img src="logo/slack.png" alt="Slack" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Slack</h3>
+          <p class="app-description">Team collaboration platform with channels, messaging, and integrations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">collaboration</span><span class="app-tag">team</span><span class="app-tag">chat</span>
+            </div>
+          
+        </a>
+        <a href="zoom.html" class="app-card" data-id="1777288005471" style="text-decoration:none;color:inherit">
+          <img src="logo/zoom.png" alt="Zoom" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zoom</h3>
+          <p class="app-description">Video conferencing app for meetings, webinars, and online collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">video</span><span class="app-tag">meetings</span><span class="app-tag">conference</span>
+            </div>
+          
+        </a>
+        <a href="microsoft-teams.html" class="app-card" data-id="1777288005472" style="text-decoration:none;color:inherit">
+          <img src="logo/teams.png" alt="Microsoft Teams" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Microsoft Teams</h3>
+          <p class="app-description">Unified communication platform for chat, meetings, and file collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">collaboration</span><span class="app-tag">microsoft</span><span class="app-tag">chat</span>
+            </div>
+          
+        </a>
+        <a href="skype.html" class="app-card" data-id="1777288005473" style="text-decoration:none;color:inherit">
+          <img src="logo/skype.png" alt="Skype" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Skype</h3>
+          <p class="app-description">Classic video calling and messaging app with screen sharing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">video</span><span class="app-tag">calls</span><span class="app-tag">messaging</span>
+            </div>
+          
+        </a>
+        <a href="notion.html" class="app-card" data-id="1777288005474" style="text-decoration:none;color:inherit">
+          <img src="logo/notion.png" alt="Notion" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Notion</h3>
+          <p class="app-description">All-in-one workspace for notes, tasks, wikis, and databases.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">notes</span><span class="app-tag">productivity</span><span class="app-tag">wiki</span>
+            </div>
+          
+        </a>
+        <a href="evernote.html" class="app-card" data-id="1777288005475" style="text-decoration:none;color:inherit">
+          <img src="logo/evernote.png" alt="Evernote" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Evernote</h3>
+          <p class="app-description">Note-taking app with web clipping, organization, and sync features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">notes</span><span class="app-tag">organization</span><span class="app-tag">sync</span>
+            </div>
+          
+        </a>
+        <a href="todoist.html" class="app-card" data-id="1777288005476" style="text-decoration:none;color:inherit">
+          <img src="logo/todoist.png" alt="Todoist" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Todoist</h3>
+          <p class="app-description">Smart task manager with projects, labels, and natural language input.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tasks</span><span class="app-tag">productivity</span><span class="app-tag">todo</span>
+            </div>
+          
+        </a>
+        <a href="trello.html" class="app-card" data-id="1777288005477" style="text-decoration:none;color:inherit">
+          <img src="logo/trello.png" alt="Trello" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Trello</h3>
+          <p class="app-description">Visual project management with boards, lists, and cards.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">project</span><span class="app-tag">kanban</span><span class="app-tag">team</span>
+            </div>
+          
+        </a>
+        <a href="asana.html" class="app-card" data-id="1777288005478" style="text-decoration:none;color:inherit">
+          <img src="logo/asana.png" alt="Asana" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Asana</h3>
+          <p class="app-description">Work management platform for teams to track projects and tasks.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">project</span><span class="app-tag">team</span><span class="app-tag">tasks</span>
+            </div>
+          
+        </a>
+        <a href="clickup.html" class="app-card" data-id="1777288005479" style="text-decoration:none;color:inherit">
+          <img src="logo/clickup.png" alt="ClickUp" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ClickUp</h3>
+          <p class="app-description">All-in-one productivity app for tasks, docs, goals, and chat.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">productivity</span><span class="app-tag">tasks</span><span class="app-tag">docs</span>
+            </div>
+          
+        </a>
+        <a href="monday-com.html" class="app-card" data-id="1777288005480" style="text-decoration:none;color:inherit">
+          <img src="logo/monday.png" alt="Monday.com" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Monday.com</h3>
+          <p class="app-description">Visual work OS for managing projects, workflows, and team collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">project</span><span class="app-tag">workflow</span><span class="app-tag">team</span>
+            </div>
+          
+        </a>
+        <a href="dropbox.html" class="app-card" data-id="1777288005481" style="text-decoration:none;color:inherit">
+          <img src="logo/dropbox.png" alt="Dropbox" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Dropbox</h3>
+          <p class="app-description">Cloud storage service with file sync, sharing, and backup features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud</span><span class="app-tag">storage</span><span class="app-tag">sync</span>
+            </div>
+          
+        </a>
+        <a href="google-drive.html" class="app-card" data-id="1777288005482" style="text-decoration:none;color:inherit">
+          <img src="logo/drive.png" alt="Google Drive" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Drive</h3>
+          <p class="app-description">Cloud storage integrated with Google Docs, Sheets, and collaborative tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud</span><span class="app-tag">google</span><span class="app-tag">docs</span>
+            </div>
+          
+        </a>
+        <a href="onedrive.html" class="app-card" data-id="1777288005483" style="text-decoration:none;color:inherit">
+          <img src="logo/onedrive.png" alt="OneDrive" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OneDrive</h3>
+          <p class="app-description">Microsoft cloud storage with Office integration and file versioning.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud</span><span class="app-tag">microsoft</span><span class="app-tag">office</span>
+            </div>
+          
+        </a>
+        <a href="icloud-drive.html" class="app-card" data-id="1777288005484" style="text-decoration:none;color:inherit">
+          <img src="logo/icloud.png" alt="iCloud Drive" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iCloud Drive</h3>
+          <p class="app-description">Apple cloud storage seamlessly integrated across all Apple devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud</span><span class="app-tag">apple</span><span class="app-tag">sync</span>
+            </div>
+          
+        </a>
+        <a href="mega.html" class="app-card" data-id="1777288005485" style="text-decoration:none;color:inherit">
+          <img src="logo/mega.png" alt="MEGA" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MEGA</h3>
+          <p class="app-description">Secure cloud storage with end-to-end encryption and generous free tier.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud</span><span class="app-tag">encryption</span><span class="app-tag">secure</span>
+            </div>
+          
+        </a>
+        <a href="pcloud.html" class="app-card" data-id="1777288005486" style="text-decoration:none;color:inherit">
+          <img src="logo/pcloud.png" alt="pCloud" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">pCloud</h3>
+          <p class="app-description">Cloud storage with virtual drive, file versioning, and lifetime plans.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud</span><span class="app-tag">storage</span><span class="app-tag">virtual-drive</span>
+            </div>
+          
+        </a>
+        <a href="box.html" class="app-card" data-id="1777288005487" style="text-decoration:none;color:inherit">
+          <img src="logo/box.png" alt="Box" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Box</h3>
+          <p class="app-description">Enterprise cloud content management with advanced security and workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud</span><span class="app-tag">enterprise</span><span class="app-tag">security</span>
+            </div>
+          
+        </a>
+        <a href="wetransfer.html" class="app-card" data-id="1777288005488" style="text-decoration:none;color:inherit">
+          <img src="logo/wetransfer.png" alt="WeTransfer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WeTransfer</h3>
+          <p class="app-description">Simple file sharing service for sending large files quickly.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">file-share</span><span class="app-tag">transfer</span><span class="app-tag">large-files</span>
+            </div>
+          
+        </a>
+        <a href="1password.html" class="app-card" data-id="1777288005489" style="text-decoration:none;color:inherit">
+          <img src="logo/1password.png" alt="1Password" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+MTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">1Password</h3>
+          <p class="app-description">Password manager with secure vault, autofill, and cross-device sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">password</span><span class="app-tag">security</span><span class="app-tag">vault</span>
+            </div>
+          
+        </a>
+        <a href="bitwarden.html" class="app-card" data-id="1777288005490" style="text-decoration:none;color:inherit">
+          <img src="logo/bitwarden.png" alt="Bitwarden" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bitwarden</h3>
+          <p class="app-description">Open-source password manager with end-to-end encryption and self-hosting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">password</span><span class="app-tag">open-source</span><span class="app-tag">security</span>
+            </div>
+          
+        </a>
+        <a href="lastpass.html" class="app-card" data-id="1777288005491" style="text-decoration:none;color:inherit">
+          <img src="logo/lastpass.png" alt="LastPass" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LastPass</h3>
+          <p class="app-description">Password manager with secure notes, form filling, and dark web monitoring.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">password</span><span class="app-tag">security</span><span class="app-tag">autofill</span>
+            </div>
+          
+        </a>
+        <a href="nordvpn.html" class="app-card" data-id="1777288005492" style="text-decoration:none;color:inherit">
+          <img src="logo/nordvpn.png" alt="NordVPN" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NordVPN</h3>
+          <p class="app-description">Fast VPN service with strong encryption and global server network.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vpn</span><span class="app-tag">privacy</span><span class="app-tag">security</span>
+            </div>
+          
+        </a>
+        <a href="expressvpn.html" class="app-card" data-id="1777288005493" style="text-decoration:none;color:inherit">
+          <img src="logo/expressvpn.png" alt="ExpressVPN" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ExpressVPN</h3>
+          <p class="app-description">Premium VPN with high-speed servers and trusted server technology.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vpn</span><span class="app-tag">speed</span><span class="app-tag">privacy</span>
+            </div>
+          
+        </a>
+        <a href="protonvpn.html" class="app-card" data-id="1777288005494" style="text-decoration:none;color:inherit">
+          <img src="logo/protonvpn.png" alt="ProtonVPN" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ProtonVPN</h3>
+          <p class="app-description">Secure VPN from Proton with no-logs policy and free tier available.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vpn</span><span class="app-tag">privacy</span><span class="app-tag">no-logs</span>
+            </div>
+          
+        </a>
+        <a href="surfshark.html" class="app-card" data-id="1777288005495" style="text-decoration:none;color:inherit">
+          <img src="logo/surfshark.png" alt="Surfshark" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Surfshark</h3>
+          <p class="app-description">Affordable VPN with unlimited devices and CleanWeb ad blocking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vpn</span><span class="app-tag">unlimited</span><span class="app-tag">adblock</span>
+            </div>
+          
+        </a>
+        <a href="malwarebytes.html" class="app-card" data-id="1777288005496" style="text-decoration:none;color:inherit">
+          <img src="logo/malwarebytes.png" alt="Malwarebytes" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Malwarebytes</h3>
+          <p class="app-description">Anti-malware software that detects and removes threats in real-time.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">antivirus</span><span class="app-tag">security</span><span class="app-tag">malware</span>
+            </div>
+          
+        </a>
+        <a href="avast-antivirus.html" class="app-card" data-id="1777288005497" style="text-decoration:none;color:inherit">
+          <img src="logo/avast.png" alt="Avast Antivirus" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Avast Antivirus</h3>
+          <p class="app-description">Free antivirus with real-time protection and Wi-Fi security scanner.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">antivirus</span><span class="app-tag">free</span><span class="app-tag">security</span>
+            </div>
+          
+        </a>
+        <a href="ccleaner.html" class="app-card" data-id="1777288005498" style="text-decoration:none;color:inherit">
+          <img src="logo/ccleaner.png" alt="CCleaner" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CCleaner</h3>
+          <p class="app-description">System optimizer for cleaning junk files and improving PC performance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cleaner</span><span class="app-tag">optimizer</span><span class="app-tag">performance</span>
+            </div>
+          
+        </a>
+        <a href="bleachbit.html" class="app-card" data-id="1777288005499" style="text-decoration:none;color:inherit">
+          <img src="logo/bleachbit.png" alt="BleachBit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">BleachBit</h3>
+          <p class="app-description">Open-source disk cleaner and privacy tool for freeing space securely.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cleaner</span><span class="app-tag">open-source</span><span class="app-tag">privacy</span>
+            </div>
+          
+        </a>
+        <a href="7-zip.html" class="app-card" data-id="1777288005500" style="text-decoration:none;color:inherit">
+          <img src="logo/7zip.png" alt="7-Zip" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+NzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">7-Zip</h3>
+          <p class="app-description">Free file archiver with high compression ratio and multiple format support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">archiver</span><span class="app-tag">compression</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="winrar.html" class="app-card" data-id="1777288005501" style="text-decoration:none;color:inherit">
+          <img src="logo/winrar.png" alt="WinRAR" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WinRAR</h3>
+          <p class="app-description">Powerful archive manager with RAR and ZIP file creation and extraction.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">archiver</span><span class="app-tag">rar</span><span class="app-tag">zip</span>
+            </div>
+          
+        </a>
+        <a href="the-unarchiver.html" class="app-card" data-id="1777288005502" style="text-decoration:none;color:inherit">
+          <img src="logo/unarchiver.png" alt="The Unarchiver" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Unarchiver</h3>
+          <p class="app-description">Mac utility for extracting various archive formats effortlessly.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">extractor</span><span class="app-tag">mac</span><span class="app-tag">archive</span>
+            </div>
+          
+        </a>
+        <a href="vlc-media-player.html" class="app-card" data-id="1777288005503" style="text-decoration:none;color:inherit">
+          <img src="logo/vlc.png" alt="VLC Media Player" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">VLC Media Player</h3>
+          <p class="app-description">Free, open-source media player supporting virtually all video formats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">media</span><span class="app-tag">player</span><span class="app-tag">video</span>
+            </div>
+          
+        </a>
+        <a href="iina.html" class="app-card" data-id="1777288005504" style="text-decoration:none;color:inherit">
+          <img src="logo/iina.png" alt="IINA" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">IINA</h3>
+          <p class="app-description">Modern media player for macOS built on mpv with native interface.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">media</span><span class="app-tag">mac</span><span class="app-tag">player</span>
+            </div>
+          
+        </a>
+        <a href="potplayer.html" class="app-card" data-id="1777288005505" style="text-decoration:none;color:inherit">
+          <img src="logo/potplayer.png" alt="PotPlayer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PotPlayer</h3>
+          <p class="app-description">Feature-rich media player with hardware acceleration and customization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">media</span><span class="app-tag">player</span><span class="app-tag">customizable</span>
+            </div>
+          
+        </a>
+        <a href="spotify-desktop.html" class="app-card" data-id="1777288005506" style="text-decoration:none;color:inherit">
+          <img src="logo/spotify.png" alt="Spotify Desktop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Spotify Desktop</h3>
+          <p class="app-description">Music streaming app with millions of songs, playlists, and podcasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">streaming</span><span class="app-tag">audio</span>
+            </div>
+          
+        </a>
+        <a href="apple-music.html" class="app-card" data-id="1777288005507" style="text-decoration:none;color:inherit">
+          <img src="logo/applemusic.png" alt="Apple Music" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Music</h3>
+          <p class="app-description">Apple&#039;s music streaming service with lossless audio and spatial sound.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">apple</span><span class="app-tag">streaming</span>
+            </div>
+          
+        </a>
+        <a href="youtube-music.html" class="app-card" data-id="1777288005508" style="text-decoration:none;color:inherit">
+          <img src="logo/ytmusic.png" alt="YouTube Music" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">YouTube Music</h3>
+          <p class="app-description">Music streaming with official songs, covers, remixes, and live performances.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">youtube</span><span class="app-tag">streaming</span>
+            </div>
+          
+        </a>
+        <a href="soundcloud.html" class="app-card" data-id="1777288005509" style="text-decoration:none;color:inherit">
+          <img src="logo/soundcloud.png" alt="SoundCloud" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SoundCloud</h3>
+          <p class="app-description">Platform for discovering and sharing music from independent artists.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">indie</span><span class="app-tag">streaming</span>
+            </div>
+          
+        </a>
+        <a href="audacity.html" class="app-card" data-id="1777288005510" style="text-decoration:none;color:inherit">
+          <img src="logo/audacity.png" alt="Audacity" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Audacity</h3>
+          <p class="app-description">Free, open-source audio editor for recording and editing sound.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">audio</span><span class="app-tag">editor</span><span class="app-tag">recording</span>
+            </div>
+          
+        </a>
+        <a href="garageband.html" class="app-card" data-id="1777288005511" style="text-decoration:none;color:inherit">
+          <img src="logo/garageband.png" alt="GarageBand" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GarageBand</h3>
+          <p class="app-description">Apple&#039;s music creation studio for recording, editing, and producing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">apple</span><span class="app-tag">production</span>
+            </div>
+          
+        </a>
+        <a href="logic-pro.html" class="app-card" data-id="1777288005512" style="text-decoration:none;color:inherit">
+          <img src="logo/logicpro.png" alt="Logic Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Logic Pro</h3>
+          <p class="app-description">Professional music production suite with advanced tools and sounds.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">professional</span><span class="app-tag">production</span>
+            </div>
+          
+        </a>
+        <a href="ableton-live.html" class="app-card" data-id="1777288005513" style="text-decoration:none;color:inherit">
+          <img src="logo/ableton.png" alt="Ableton Live" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ableton Live</h3>
+          <p class="app-description">DAW for music production, live performance, and creative experimentation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">daw</span><span class="app-tag">production</span><span class="app-tag">live</span>
+            </div>
+          
+        </a>
+        <a href="fl-studio.html" class="app-card" data-id="1777288005514" style="text-decoration:none;color:inherit">
+          <img src="logo/flstudio.png" alt="FL Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FL Studio</h3>
+          <p class="app-description">Popular DAW for beat making, sequencing, and music production.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">daw</span><span class="app-tag">beats</span><span class="app-tag">production</span>
+            </div>
+          
+        </a>
+        <a href="reaper.html" class="app-card" data-id="1777288005515" style="text-decoration:none;color:inherit">
+          <img src="logo/reaper.png" alt="Reaper" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Reaper</h3>
+          <p class="app-description">Flexible, affordable DAW with powerful routing and scripting support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">daw</span><span class="app-tag">affordable</span><span class="app-tag">flexible</span>
+            </div>
+          
+        </a>
+        <a href="pro-tools.html" class="app-card" data-id="1777288005516" style="text-decoration:none;color:inherit">
+          <img src="logo/protools.png" alt="Pro Tools" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pro Tools</h3>
+          <p class="app-description">Industry-standard DAW for professional audio recording and mixing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">daw</span><span class="app-tag">professional</span><span class="app-tag">studio</span>
+            </div>
+          
+        </a>
+        <a href="cubase.html" class="app-card" data-id="1777288005517" style="text-decoration:none;color:inherit">
+          <img src="logo/cubase.png" alt="Cubase" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Cubase</h3>
+          <p class="app-description">Professional DAW with advanced MIDI, audio, and scoring capabilities.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">daw</span><span class="app-tag">midi</span><span class="app-tag">scoring</span>
+            </div>
+          
+        </a>
+        <a href="adobe-premiere-pro.html" class="app-card" data-id="1777288005518" style="text-decoration:none;color:inherit">
+          <img src="logo/premiere.png" alt="Adobe Premiere Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Premiere Pro</h3>
+          <p class="app-description">Professional video editing software with advanced effects and collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">video</span><span class="app-tag">editing</span><span class="app-tag">adobe</span>
+            </div>
+          
+        </a>
+        <a href="davinci-resolve.html" class="app-card" data-id="1777288005519" style="text-decoration:none;color:inherit">
+          <img src="logo/davinci.png" alt="DaVinci Resolve" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DaVinci Resolve</h3>
+          <p class="app-description">All-in-one video editing, color grading, VFX, and audio post-production.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">video</span><span class="app-tag">color</span><span class="app-tag">editing</span>
+            </div>
+          
+        </a>
+        <a href="imovie.html" class="app-card" data-id="1777288005520" style="text-decoration:none;color:inherit">
+          <img src="logo/imovie.png" alt="iMovie" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iMovie</h3>
+          <p class="app-description">Apple&#039;s user-friendly video editor for creating movies and trailers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">video</span><span class="app-tag">apple</span><span class="app-tag">editing</span>
+            </div>
+          
+        </a>
+        <a href="handbrake.html" class="app-card" data-id="1777288005521" style="text-decoration:none;color:inherit">
+          <img src="logo/handbrake.png" alt="HandBrake" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HandBrake</h3>
+          <p class="app-description">Open-source video transcoder for converting formats and compressing files.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">converter</span><span class="app-tag">video</span><span class="app-tag">transcode</span>
+            </div>
+          
+        </a>
+        <a href="obs-studio.html" class="app-card" data-id="1777288005522" style="text-decoration:none;color:inherit">
+          <img src="logo/obs.png" alt="OBS Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OBS Studio</h3>
+          <p class="app-description">Free, open-source software for video recording and live streaming.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">recording</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="streamlabs.html" class="app-card" data-id="1777288005523" style="text-decoration:none;color:inherit">
+          <img src="logo/streamlabs.png" alt="Streamlabs" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Streamlabs</h3>
+          <p class="app-description">All-in-one streaming software with alerts, overlays, and monetization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">alerts</span><span class="app-tag">overlays</span>
+            </div>
+          
+        </a>
+        <a href="xsplit.html" class="app-card" data-id="1777288005524" style="text-decoration:none;color:inherit">
+          <img src="logo/xsplit.png" alt="XSplit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">XSplit</h3>
+          <p class="app-description">Professional streaming and recording software with scene management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">recording</span><span class="app-tag">scenes</span>
+            </div>
+          
+        </a>
+        <a href="twitch-studio.html" class="app-card" data-id="1777288005525" style="text-decoration:none;color:inherit">
+          <img src="logo/twitchstudio.png" alt="Twitch Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Twitch Studio</h3>
+          <p class="app-description">Beginner-friendly streaming software optimized for Twitch creators.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">twitch</span><span class="app-tag">beginner</span>
+            </div>
+          
+        </a>
+        <a href="teamviewer.html" class="app-card" data-id="1777288005526" style="text-decoration:none;color:inherit">
+          <img src="logo/teamviewer.png" alt="TeamViewer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TeamViewer</h3>
+          <p class="app-description">Remote access and support software for connecting to devices worldwide.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">remote</span><span class="app-tag">support</span><span class="app-tag">access</span>
+            </div>
+          
+        </a>
+        <a href="anydesk.html" class="app-card" data-id="1777288005527" style="text-decoration:none;color:inherit">
+          <img src="logo/anydesk.png" alt="AnyDesk" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AnyDesk</h3>
+          <p class="app-description">Fast remote desktop software with low latency and high security.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">remote</span><span class="app-tag">desktop</span><span class="app-tag">fast</span>
+            </div>
+          
+        </a>
+        <a href="chrome-remote-desktop.html" class="app-card" data-id="1777288005528" style="text-decoration:none;color:inherit">
+          <img src="logo/chromeremote.png" alt="Chrome Remote Desktop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Chrome Remote Desktop</h3>
+          <p class="app-description">Free remote access tool integrated with Google Chrome browser.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">remote</span><span class="app-tag">chrome</span><span class="app-tag">google</span>
+            </div>
+          
+        </a>
+        <a href="parsec.html" class="app-card" data-id="1777288005529" style="text-decoration:none;color:inherit">
+          <img src="logo/parsec.png" alt="Parsec" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Parsec</h3>
+          <p class="app-description">Low-latency remote desktop for gaming, work, and creative collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">remote</span><span class="app-tag">gaming</span><span class="app-tag">low-latency</span>
+            </div>
+          
+        </a>
+        <a href="steam.html" class="app-card" data-id="1777288005530" style="text-decoration:none;color:inherit">
+          <img src="logo/steam.png" alt="Steam" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Steam</h3>
+          <p class="app-description">Digital game distribution platform with library, community, and marketplace.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">store</span><span class="app-tag">library</span>
+            </div>
+          
+        </a>
+        <a href="epic-games-launcher.html" class="app-card" data-id="1777288005531" style="text-decoration:none;color:inherit">
+          <img src="logo/epic.png" alt="Epic Games Launcher" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Epic Games Launcher</h3>
+          <p class="app-description">Game launcher with free weekly games and access to Epic&#039;s store.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">launcher</span><span class="app-tag">free-games</span>
+            </div>
+          
+        </a>
+        <a href="gog-galaxy.html" class="app-card" data-id="1777288005532" style="text-decoration:none;color:inherit">
+          <img src="logo/gog.png" alt="GOG Galaxy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GOG Galaxy</h3>
+          <p class="app-description">Unified gaming client for managing libraries across multiple platforms.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">launcher</span><span class="app-tag">drm-free</span>
+            </div>
+          
+        </a>
+        <a href="battle-net.html" class="app-card" data-id="1777288005533" style="text-decoration:none;color:inherit">
+          <img src="logo/battlenet.png" alt="Battle.net" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Battle.net</h3>
+          <p class="app-description">Blizzard&#039;s gaming platform for playing and managing Blizzard titles.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">blizzard</span><span class="app-tag">launcher</span>
+            </div>
+          
+        </a>
+        <a href="origin.html" class="app-card" data-id="1777288005534" style="text-decoration:none;color:inherit">
+          <img src="logo/origin.png" alt="Origin" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Origin</h3>
+          <p class="app-description">EA&#039;s game client for downloading and playing Electronic Arts titles.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">ea</span><span class="app-tag">launcher</span>
+            </div>
+          
+        </a>
+        <a href="ubisoft-connect.html" class="app-card" data-id="1777288005535" style="text-decoration:none;color:inherit">
+          <img src="logo/ubisoft.png" alt="Ubisoft Connect" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ubisoft Connect</h3>
+          <p class="app-description">Gaming platform for Ubisoft games with rewards and social features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">ubisoft</span><span class="app-tag">rewards</span>
+            </div>
+          
+        </a>
+        <a href="ea-app.html" class="app-card" data-id="1777288005536" style="text-decoration:none;color:inherit">
+          <img src="logo/eaapp.png" alt="EA App" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">EA App</h3>
+          <p class="app-description">EA&#039;s new gaming client replacing Origin with faster performance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">ea</span><span class="app-tag">launcher</span>
+            </div>
+          
+        </a>
+        <a href="xbox-app.html" class="app-card" data-id="1777288005537" style="text-decoration:none;color:inherit">
+          <img src="logo/xbox.png" alt="Xbox App" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Xbox App</h3>
+          <p class="app-description">Microsoft&#039;s gaming app for PC with Game Pass and cloud gaming.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">xbox</span><span class="app-tag">gamepass</span>
+            </div>
+          
+        </a>
+        <a href="geforce-experience.html" class="app-card" data-id="1777288005538" style="text-decoration:none;color:inherit">
+          <img src="logo/geforce.png" alt="GeForce Experience" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GeForce Experience</h3>
+          <p class="app-description">NVIDIA utility for driver updates, game optimization, and recording.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">nvidia</span><span class="app-tag">drivers</span><span class="app-tag">optimization</span>
+            </div>
+          
+        </a>
+        <a href="amd-radeon-software.html" class="app-card" data-id="1777288005539" style="text-decoration:none;color:inherit">
+          <img src="logo/amd.png" alt="AMD Radeon Software" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AMD Radeon Software</h3>
+          <p class="app-description">AMD&#039;s control panel for GPU settings, performance tuning, and updates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">amd</span><span class="app-tag">gpu</span><span class="app-tag">drivers</span>
+            </div>
+          
+        </a>
+        <a href="msi-afterburner.html" class="app-card" data-id="1777288005540" style="text-decoration:none;color:inherit">
+          <img src="logo/afterburner.png" alt="MSI Afterburner" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MSI Afterburner</h3>
+          <p class="app-description">GPU overclocking utility with monitoring, fan control, and benchmarking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">overclocking</span><span class="app-tag">gpu</span><span class="app-tag">monitoring</span>
+            </div>
+          
+        </a>
+        <a href="hwmonitor.html" class="app-card" data-id="1777288005541" style="text-decoration:none;color:inherit">
+          <img src="logo/hwmonitor.png" alt="HWMonitor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HWMonitor</h3>
+          <p class="app-description">Hardware monitoring tool for temperatures, voltages, and fan speeds.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">monitoring</span><span class="app-tag">hardware</span><span class="app-tag">temperature</span>
+            </div>
+          
+        </a>
+        <a href="cpu-z.html" class="app-card" data-id="1777288005542" style="text-decoration:none;color:inherit">
+          <img src="logo/cpuz.png" alt="CPU-Z" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CPU-Z</h3>
+          <p class="app-description">System information utility for CPU, motherboard, memory, and GPU details.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diagnostic</span><span class="app-tag">cpu</span><span class="app-tag">hardware</span>
+            </div>
+          
+        </a>
+        <a href="gpu-z.html" class="app-card" data-id="1777288005543" style="text-decoration:none;color:inherit">
+          <img src="logo/gpuz.png" alt="GPU-Z" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GPU-Z</h3>
+          <p class="app-description">Lightweight utility for detailed graphics card information and monitoring.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gpu</span><span class="app-tag">diagnostic</span><span class="app-tag">monitoring</span>
+            </div>
+          
+        </a>
+        <a href="speccy.html" class="app-card" data-id="1777288005544" style="text-decoration:none;color:inherit">
+          <img src="logo/speccy.png" alt="Speccy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Speccy</h3>
+          <p class="app-description">System profiler showing detailed hardware information in one view.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diagnostic</span><span class="app-tag">hardware</span><span class="app-tag">system</span>
+            </div>
+          
+        </a>
+        <a href="crystaldiskinfo.html" class="app-card" data-id="1777288005545" style="text-decoration:none;color:inherit">
+          <img src="logo/crystaldisk.png" alt="CrystalDiskInfo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CrystalDiskInfo</h3>
+          <p class="app-description">Disk health monitoring tool with S.M.A.R.T. data and temperature alerts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">disk</span><span class="app-tag">health</span><span class="app-tag">smart</span>
+            </div>
+          
+        </a>
+        <a href="hwinfo.html" class="app-card" data-id="1777288005546" style="text-decoration:none;color:inherit">
+          <img src="logo/hwinfo.png" alt="HWiNFO" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HWiNFO</h3>
+          <p class="app-description">Comprehensive system information and diagnostic tool for professionals.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diagnostic</span><span class="app-tag">hardware</span><span class="app-tag">professional</span>
+            </div>
+          
+        </a>
+        <a href="aida64.html" class="app-card" data-id="1777288005547" style="text-decoration:none;color:inherit">
+          <img src="logo/aida64.png" alt="AIDA64" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AIDA64</h3>
+          <p class="app-description">Advanced system diagnostics, benchmarking, and hardware monitoring suite.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diagnostic</span><span class="app-tag">benchmark</span><span class="app-tag">hardware</span>
+            </div>
+          
+        </a>
+        <a href="geekbench.html" class="app-card" data-id="1777288005548" style="text-decoration:none;color:inherit">
+          <img src="logo/geekbench.png" alt="Geekbench" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Geekbench</h3>
+          <p class="app-description">Cross-platform CPU and GPU benchmark for measuring system performance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">benchmark</span><span class="app-tag">cpu</span><span class="app-tag">gpu</span>
+            </div>
+          
+        </a>
+        <a href="cinebench.html" class="app-card" data-id="1777288005549" style="text-decoration:none;color:inherit">
+          <img src="logo/cinebench.png" alt="Cinebench" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Cinebench</h3>
+          <p class="app-description">Real-world CPU and GPU rendering benchmark based on Cinema 4D.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">benchmark</span><span class="app-tag">rendering</span><span class="app-tag">cpu</span>
+            </div>
+          
+        </a>
+        <a href="3dmark.html" class="app-card" data-id="1777288005550" style="text-decoration:none;color:inherit">
+          <img src="logo/3dmark.png" alt="3DMark" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+MzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">3DMark</h3>
+          <p class="app-description">Gaming benchmark suite for testing graphics performance and stability.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">benchmark</span><span class="app-tag">gaming</span><span class="app-tag">gpu</span>
+            </div>
+          
+        </a>
+        <a href="userbenchmark.html" class="app-card" data-id="1777288005551" style="text-decoration:none;color:inherit">
+          <img src="logo/userbenchmark.png" alt="UserBenchmark" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">UserBenchmark</h3>
+          <p class="app-description">Quick PC speed test comparing your hardware to users with similar specs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">benchmark</span><span class="app-tag">comparison</span><span class="app-tag">quick</span>
+            </div>
+          
+        </a>
+        <a href="passmark.html" class="app-card" data-id="1777288005552" style="text-decoration:none;color:inherit">
+          <img src="logo/passmark.png" alt="PassMark" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PassMark</h3>
+          <p class="app-description">Comprehensive benchmark suite testing CPU, GPU, disk, and memory performance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">benchmark</span><span class="app-tag">comprehensive</span><span class="app-tag">hardware</span>
+            </div>
+          
+        </a>
+        <a href="furmark.html" class="app-card" data-id="1777288005553" style="text-decoration:none;color:inherit">
+          <img src="logo/furmark.png" alt="FurMark" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FurMark</h3>
+          <p class="app-description">GPU stress testing tool for checking stability and thermal performance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">stress-test</span><span class="app-tag">gpu</span><span class="app-tag">thermal</span>
+            </div>
+          
+        </a>
+        <a href="prime95.html" class="app-card" data-id="1777288005554" style="text-decoration:none;color:inherit">
+          <img src="logo/prime95.png" alt="Prime95" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Prime95</h3>
+          <p class="app-description">CPU stress testing utility for finding hardware errors and stability issues.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">stress-test</span><span class="app-tag">cpu</span><span class="app-tag">stability</span>
+            </div>
+          
+        </a>
+        <a href="memtest86.html" class="app-card" data-id="1777288005555" style="text-decoration:none;color:inherit">
+          <img src="logo/memtest.png" alt="MemTest86" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MemTest86</h3>
+          <p class="app-description">Bootable memory testing tool for detecting RAM errors and faults.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">memory</span><span class="app-tag">testing</span><span class="app-tag">ram</span>
+            </div>
+          
+        </a>
+        <a href="bluescreenview.html" class="app-card" data-id="1777288005556" style="text-decoration:none;color:inherit">
+          <img src="logo/bluescreen.png" alt="BlueScreenView" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">BlueScreenView</h3>
+          <p class="app-description">Utility for analyzing Windows crash dumps and identifying BSOD causes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crash</span><span class="app-tag">diagnostic</span><span class="app-tag">windows</span>
+            </div>
+          
+        </a>
+        <a href="windirstat.html" class="app-card" data-id="1777288005557" style="text-decoration:none;color:inherit">
+          <img src="logo/windirstat.png" alt="WinDirStat" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WinDirStat</h3>
+          <p class="app-description">Disk usage statistics viewer and cleanup tool with visual treemap.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">disk</span><span class="app-tag">cleanup</span><span class="app-tag">visual</span>
+            </div>
+          
+        </a>
+        <a href="treesize-free.html" class="app-card" data-id="1777288005558" style="text-decoration:none;color:inherit">
+          <img src="logo/treesize.png" alt="TreeSize Free" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TreeSize Free</h3>
+          <p class="app-description">Disk space analyzer showing folder sizes and file distribution visually.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">disk</span><span class="app-tag">analyzer</span><span class="app-tag">storage</span>
+            </div>
+          
+        </a>
+        <a href="everything.html" class="app-card" data-id="1777288005559" style="text-decoration:none;color:inherit">
+          <img src="logo/everything.png" alt="Everything" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Everything</h3>
+          <p class="app-description">Lightning-fast file search engine indexing your entire drive instantly.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">search</span><span class="app-tag">files</span><span class="app-tag">fast</span>
+            </div>
+          
+        </a>
+        <a href="listary.html" class="app-card" data-id="1777288005560" style="text-decoration:none;color:inherit">
+          <img src="logo/listary.png" alt="Listary" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Listary</h3>
+          <p class="app-description">File search and navigation enhancement tool for Windows Explorer.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">search</span><span class="app-tag">navigation</span><span class="app-tag">explorer</span>
+            </div>
+          
+        </a>
+        <a href="autohotkey.html" class="app-card" data-id="1777288005561" style="text-decoration:none;color:inherit">
+          <img src="logo/autohotkey.png" alt="AutoHotkey" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AutoHotkey</h3>
+          <p class="app-description">Scripting language for automating tasks and creating custom hotkeys.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">automation</span><span class="app-tag">scripting</span><span class="app-tag">hotkeys</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777288005462,"name":"Google Chrome","slug":"google-chrome","version":"122.0.6261.94","description":"Fast, secure web browser from Google with built-in search and sync capabilities.","category":"apps","logoUrl":"logo/chrome.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Chrome1&tracker=1","tags":["browser","google","web","sync"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005463,"name":"Mozilla Firefox","slug":"mozilla-firefox","version":"123.0","description":"Open-source browser focused on privacy, speed, and customization.","category":"apps","logoUrl":"logo/firefox.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mozilla Firefox2&tracker=2","tags":["browser","privacy","open-source","addons"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005464,"name":"Microsoft Edge","slug":"microsoft-edge","version":"122.0.2365.63","description":"Chromium-based browser from Microsoft with AI features and productivity tools.","category":"apps","logoUrl":"logo/edge.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Microsoft Edge3&tracker=3","tags":["browser","microsoft","ai","productivity"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005465,"name":"Opera Browser","slug":"opera-browser","version":"107.0.5045.36","description":"Feature-rich browser with built-in VPN, ad blocker, and workspace tabs.","category":"apps","logoUrl":"logo/opera.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Opera Browser4&tracker=4","tags":["browser","vpn","adblock","tabs"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005466,"name":"Brave Browser","slug":"brave-browser","version":"1.63.165","description":"Privacy-focused browser that blocks ads and trackers by default.","category":"apps","logoUrl":"logo/brave.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Brave Browser5&tracker=5","tags":["browser","privacy","crypto","adblock"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005467,"name":"Vivaldi","slug":"vivaldi","version":"6.6.3271.61","description":"Highly customizable browser for power users with tab stacking and notes.","category":"apps","logoUrl":"logo/vivaldi.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Vivaldi6&tracker=6","tags":["browser","customizable","productivity","tabs"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005468,"name":"Telegram Desktop","slug":"telegram-desktop","version":"4.15.2","description":"Fast and secure messaging app with cloud sync and group chats.","category":"apps","logoUrl":"logo/telegram.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Telegram Desktop7&tracker=7","tags":["messaging","chat","cloud","secure"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005469,"name":"WhatsApp Desktop","slug":"whatsapp-desktop","version":"2.2403.4","description":"Desktop client for WhatsApp messaging with end-to-end encryption.","category":"apps","logoUrl":"logo/whatsapp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WhatsApp Desktop8&tracker=8","tags":["messaging","chat","mobile-sync","encryption"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005470,"name":"Slack","slug":"slack","version":"4.36.140","description":"Team collaboration platform with channels, messaging, and integrations.","category":"apps","logoUrl":"logo/slack.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Slack9&tracker=9","tags":["collaboration","team","chat","work"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005471,"name":"Zoom","slug":"zoom","version":"5.17.5","description":"Video conferencing app for meetings, webinars, and online collaboration.","category":"apps","logoUrl":"logo/zoom.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zoom10&tracker=10","tags":["video","meetings","conference","remote"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005472,"name":"Microsoft Teams","slug":"microsoft-teams","version":"1.7.00.4472","description":"Unified communication platform for chat, meetings, and file collaboration.","category":"apps","logoUrl":"logo/teams.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Microsoft Teams11&tracker=11","tags":["collaboration","microsoft","chat","meetings"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005473,"name":"Skype","slug":"skype","version":"8.112.0.221","description":"Classic video calling and messaging app with screen sharing.","category":"apps","logoUrl":"logo/skype.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Skype12&tracker=12","tags":["video","calls","messaging","microsoft"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005474,"name":"Notion","slug":"notion","version":"3.1.0","description":"All-in-one workspace for notes, tasks, wikis, and databases.","category":"apps","logoUrl":"logo/notion.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Notion13&tracker=13","tags":["notes","productivity","wiki","tasks"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005475,"name":"Evernote","slug":"evernote","version":"10.72.3","description":"Note-taking app with web clipping, organization, and sync features.","category":"apps","logoUrl":"logo/evernote.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Evernote14&tracker=14","tags":["notes","organization","sync","web-clip"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005476,"name":"Todoist","slug":"todoist","version":"9.4.1","description":"Smart task manager with projects, labels, and natural language input.","category":"apps","logoUrl":"logo/todoist.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Todoist15&tracker=15","tags":["tasks","productivity","todo","planning"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005477,"name":"Trello","slug":"trello","version":"3.0.8","description":"Visual project management with boards, lists, and cards.","category":"apps","logoUrl":"logo/trello.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Trello16&tracker=16","tags":["project","kanban","team","boards"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005478,"name":"Asana","slug":"asana","version":"1.12.0","description":"Work management platform for teams to track projects and tasks.","category":"apps","logoUrl":"logo/asana.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Asana17&tracker=17","tags":["project","team","tasks","workflow"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005479,"name":"ClickUp","slug":"clickup","version":"3.3.45","description":"All-in-one productivity app for tasks, docs, goals, and chat.","category":"apps","logoUrl":"logo/clickup.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ClickUp18&tracker=18","tags":["productivity","tasks","docs","team"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005480,"name":"Monday.com","slug":"monday-com","version":"2.8.1","description":"Visual work OS for managing projects, workflows, and team collaboration.","category":"apps","logoUrl":"logo/monday.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Monday.com19&tracker=19","tags":["project","workflow","team","visual"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005481,"name":"Dropbox","slug":"dropbox","version":"191.4.5767","description":"Cloud storage service with file sync, sharing, and backup features.","category":"apps","logoUrl":"logo/dropbox.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Dropbox20&tracker=20","tags":["cloud","storage","sync","backup"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005482,"name":"Google Drive","slug":"google-drive","version":"85.0.3","description":"Cloud storage integrated with Google Docs, Sheets, and collaborative tools.","category":"apps","logoUrl":"logo/drive.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Drive21&tracker=21","tags":["cloud","google","docs","collaboration"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005483,"name":"OneDrive","slug":"onedrive","version":"24.021.0204","description":"Microsoft cloud storage with Office integration and file versioning.","category":"apps","logoUrl":"logo/onedrive.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OneDrive22&tracker=22","tags":["cloud","microsoft","office","sync"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005484,"name":"iCloud Drive","slug":"icloud-drive","version":"14.0","description":"Apple cloud storage seamlessly integrated across all Apple devices.","category":"apps","logoUrl":"logo/icloud.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iCloud Drive23&tracker=23","tags":["cloud","apple","sync","backup"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005485,"name":"MEGA","slug":"mega","version":"4.7.0","description":"Secure cloud storage with end-to-end encryption and generous free tier.","category":"apps","logoUrl":"logo/mega.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MEGA24&tracker=24","tags":["cloud","encryption","secure","storage"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005486,"name":"pCloud","slug":"pcloud","version":"2.9.5","description":"Cloud storage with virtual drive, file versioning, and lifetime plans.","category":"apps","logoUrl":"logo/pcloud.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=pCloud25&tracker=25","tags":["cloud","storage","virtual-drive","versioning"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005487,"name":"Box","slug":"box","version":"2.28.154","description":"Enterprise cloud content management with advanced security and workflows.","category":"apps","logoUrl":"logo/box.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Box26&tracker=26","tags":["cloud","enterprise","security","workflow"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005488,"name":"WeTransfer","slug":"wetransfer","version":"2.5.1","description":"Simple file sharing service for sending large files quickly.","category":"apps","logoUrl":"logo/wetransfer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WeTransfer27&tracker=27","tags":["file-share","transfer","large-files","simple"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005489,"name":"1Password","slug":"1password","version":"8.10.21","description":"Password manager with secure vault, autofill, and cross-device sync.","category":"apps","logoUrl":"logo/1password.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=1Password28&tracker=28","tags":["password","security","vault","autofill"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005490,"name":"Bitwarden","slug":"bitwarden","version":"2024.2.1","description":"Open-source password manager with end-to-end encryption and self-hosting.","category":"apps","logoUrl":"logo/bitwarden.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bitwarden29&tracker=29","tags":["password","open-source","security","encryption"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005491,"name":"LastPass","slug":"lastpass","version":"4.118.0","description":"Password manager with secure notes, form filling, and dark web monitoring.","category":"apps","logoUrl":"logo/lastpass.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LastPass30&tracker=30","tags":["password","security","autofill","monitoring"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005492,"name":"NordVPN","slug":"nordvpn","version":"6.72.0","description":"Fast VPN service with strong encryption and global server network.","category":"apps","logoUrl":"logo/nordvpn.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NordVPN31&tracker=31","tags":["vpn","privacy","security","encryption"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005493,"name":"ExpressVPN","slug":"expressvpn","version":"12.14.0","description":"Premium VPN with high-speed servers and trusted server technology.","category":"apps","logoUrl":"logo/expressvpn.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ExpressVPN32&tracker=32","tags":["vpn","speed","privacy","streaming"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005494,"name":"ProtonVPN","slug":"protonvpn","version":"3.5.2","description":"Secure VPN from Proton with no-logs policy and free tier available.","category":"apps","logoUrl":"logo/protonvpn.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ProtonVPN33&tracker=33","tags":["vpn","privacy","no-logs","secure"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005495,"name":"Surfshark","slug":"surfshark","version":"4.6.1","description":"Affordable VPN with unlimited devices and CleanWeb ad blocking.","category":"apps","logoUrl":"logo/surfshark.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Surfshark34&tracker=34","tags":["vpn","unlimited","adblock","privacy"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005496,"name":"Malwarebytes","slug":"malwarebytes","version":"5.1.2.127","description":"Anti-malware software that detects and removes threats in real-time.","category":"apps","logoUrl":"logo/malwarebytes.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Malwarebytes35&tracker=35","tags":["antivirus","security","malware","protection"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005497,"name":"Avast Antivirus","slug":"avast-antivirus","version":"24.2.2809","description":"Free antivirus with real-time protection and Wi-Fi security scanner.","category":"apps","logoUrl":"logo/avast.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Avast Antivirus36&tracker=36","tags":["antivirus","free","security","scanner"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005498,"name":"CCleaner","slug":"ccleaner","version":"6.21.11401","description":"System optimizer for cleaning junk files and improving PC performance.","category":"apps","logoUrl":"logo/ccleaner.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CCleaner37&tracker=37","tags":["cleaner","optimizer","performance","maintenance"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005499,"name":"BleachBit","slug":"bleachbit","version":"4.6.0","description":"Open-source disk cleaner and privacy tool for freeing space securely.","category":"apps","logoUrl":"logo/bleachbit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=BleachBit38&tracker=38","tags":["cleaner","open-source","privacy","disk"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005500,"name":"7-Zip","slug":"7-zip","version":"23.01","description":"Free file archiver with high compression ratio and multiple format support.","category":"apps","logoUrl":"logo/7zip.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=7-Zip39&tracker=39","tags":["archiver","compression","free","zip"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005501,"name":"WinRAR","slug":"winrar","version":"7.00","description":"Powerful archive manager with RAR and ZIP file creation and extraction.","category":"apps","logoUrl":"logo/winrar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WinRAR40&tracker=40","tags":["archiver","rar","zip","compression"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005502,"name":"The Unarchiver","slug":"the-unarchiver","version":"4.3.2","description":"Mac utility for extracting various archive formats effortlessly.","category":"apps","logoUrl":"logo/unarchiver.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Unarchiver41&tracker=41","tags":["extractor","mac","archive","utility"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005503,"name":"VLC Media Player","slug":"vlc-media-player","version":"3.0.20","description":"Free, open-source media player supporting virtually all video formats.","category":"apps","logoUrl":"logo/vlc.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=VLC Media Player42&tracker=42","tags":["media","player","video","open-source"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005504,"name":"IINA","slug":"iina","version":"1.3.1","description":"Modern media player for macOS built on mpv with native interface.","category":"apps","logoUrl":"logo/iina.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=IINA43&tracker=43","tags":["media","mac","player","modern"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005505,"name":"PotPlayer","slug":"potplayer","version":"1.7.21995","description":"Feature-rich media player with hardware acceleration and customization.","category":"apps","logoUrl":"logo/potplayer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PotPlayer44&tracker=44","tags":["media","player","customizable","hardware"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005506,"name":"Spotify Desktop","slug":"spotify-desktop","version":"1.2.28.1222","description":"Music streaming app with millions of songs, playlists, and podcasts.","category":"apps","logoUrl":"logo/spotify.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Spotify Desktop45&tracker=45","tags":["music","streaming","audio","podcasts"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005507,"name":"Apple Music","slug":"apple-music","version":"1.4.8","description":"Apple's music streaming service with lossless audio and spatial sound.","category":"apps","logoUrl":"logo/applemusic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Music46&tracker=46","tags":["music","apple","streaming","lossless"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005508,"name":"YouTube Music","slug":"youtube-music","version":"1.10.0","description":"Music streaming with official songs, covers, remixes, and live performances.","category":"apps","logoUrl":"logo/ytmusic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=YouTube Music47&tracker=47","tags":["music","youtube","streaming","video"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005509,"name":"SoundCloud","slug":"soundcloud","version":"7.2.0","description":"Platform for discovering and sharing music from independent artists.","category":"apps","logoUrl":"logo/soundcloud.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SoundCloud48&tracker=48","tags":["music","indie","streaming","discovery"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005510,"name":"Audacity","slug":"audacity","version":"3.4.2","description":"Free, open-source audio editor for recording and editing sound.","category":"apps","logoUrl":"logo/audacity.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Audacity49&tracker=49","tags":["audio","editor","recording","open-source"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005511,"name":"GarageBand","slug":"garageband","version":"10.4.11","description":"Apple's music creation studio for recording, editing, and producing.","category":"apps","logoUrl":"logo/garageband.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GarageBand50&tracker=50","tags":["music","apple","production","recording"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005512,"name":"Logic Pro","slug":"logic-pro","version":"10.8.1","description":"Professional music production suite with advanced tools and sounds.","category":"apps","logoUrl":"logo/logicpro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Logic Pro51&tracker=51","tags":["music","professional","production","apple"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005513,"name":"Ableton Live","slug":"ableton-live","version":"11.3.27","description":"DAW for music production, live performance, and creative experimentation.","category":"apps","logoUrl":"logo/ableton.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ableton Live52&tracker=52","tags":["daw","production","live","electronic"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005514,"name":"FL Studio","slug":"fl-studio","version":"21.2.2.3953","description":"Popular DAW for beat making, sequencing, and music production.","category":"apps","logoUrl":"logo/flstudio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FL Studio53&tracker=53","tags":["daw","beats","production","sequencer"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005515,"name":"Reaper","slug":"reaper","version":"7.03","description":"Flexible, affordable DAW with powerful routing and scripting support.","category":"apps","logoUrl":"logo/reaper.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Reaper54&tracker=54","tags":["daw","affordable","flexible","scripting"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005516,"name":"Pro Tools","slug":"pro-tools","version":"2023.12","description":"Industry-standard DAW for professional audio recording and mixing.","category":"apps","logoUrl":"logo/protools.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pro Tools55&tracker=55","tags":["daw","professional","studio","mixing"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005517,"name":"Cubase","slug":"cubase","version":"13.0.20","description":"Professional DAW with advanced MIDI, audio, and scoring capabilities.","category":"apps","logoUrl":"logo/cubase.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Cubase56&tracker=56","tags":["daw","midi","scoring","professional"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005518,"name":"Adobe Premiere Pro","slug":"adobe-premiere-pro","version":"24.1.0","description":"Professional video editing software with advanced effects and collaboration.","category":"apps","logoUrl":"logo/premiere.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Premiere Pro57&tracker=57","tags":["video","editing","adobe","professional"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005519,"name":"DaVinci Resolve","slug":"davinci-resolve","version":"18.6.4","description":"All-in-one video editing, color grading, VFX, and audio post-production.","category":"apps","logoUrl":"logo/davinci.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DaVinci Resolve58&tracker=58","tags":["video","color","editing","vfx"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005520,"name":"iMovie","slug":"imovie","version":"10.3.8","description":"Apple's user-friendly video editor for creating movies and trailers.","category":"apps","logoUrl":"logo/imovie.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iMovie59&tracker=59","tags":["video","apple","editing","beginner"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005521,"name":"HandBrake","slug":"handbrake","version":"1.7.3","description":"Open-source video transcoder for converting formats and compressing files.","category":"apps","logoUrl":"logo/handbrake.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HandBrake60&tracker=60","tags":["converter","video","transcode","open-source"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005522,"name":"OBS Studio","slug":"obs-studio","version":"30.0.2","description":"Free, open-source software for video recording and live streaming.","category":"apps","logoUrl":"logo/obs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OBS Studio61&tracker=61","tags":["streaming","recording","open-source","live"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005523,"name":"Streamlabs","slug":"streamlabs","version":"1.22.0","description":"All-in-one streaming software with alerts, overlays, and monetization.","category":"apps","logoUrl":"logo/streamlabs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Streamlabs62&tracker=62","tags":["streaming","alerts","overlays","twitch"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005524,"name":"XSplit","slug":"xsplit","version":"4.5.2310.2601","description":"Professional streaming and recording software with scene management.","category":"apps","logoUrl":"logo/xsplit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=XSplit63&tracker=63","tags":["streaming","recording","scenes","professional"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005525,"name":"Twitch Studio","slug":"twitch-studio","version":"0.12.1","description":"Beginner-friendly streaming software optimized for Twitch creators.","category":"apps","logoUrl":"logo/twitchstudio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Twitch Studio64&tracker=64","tags":["streaming","twitch","beginner","easy"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005526,"name":"TeamViewer","slug":"teamviewer","version":"15.50.5","description":"Remote access and support software for connecting to devices worldwide.","category":"apps","logoUrl":"logo/teamviewer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TeamViewer65&tracker=65","tags":["remote","support","access","control"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005527,"name":"AnyDesk","slug":"anydesk","version":"8.0.3","description":"Fast remote desktop software with low latency and high security.","category":"apps","logoUrl":"logo/anydesk.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AnyDesk66&tracker=66","tags":["remote","desktop","fast","secure"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005528,"name":"Chrome Remote Desktop","slug":"chrome-remote-desktop","version":"122.0.6261.94","description":"Free remote access tool integrated with Google Chrome browser.","category":"apps","logoUrl":"logo/chromeremote.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Chrome Remote Desktop67&tracker=67","tags":["remote","chrome","google","free"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005529,"name":"Parsec","slug":"parsec","version":"150.321.0","description":"Low-latency remote desktop for gaming, work, and creative collaboration.","category":"apps","logoUrl":"logo/parsec.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Parsec68&tracker=68","tags":["remote","gaming","low-latency","collaboration"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005530,"name":"Steam","slug":"steam","version":"3.84.12.67","description":"Digital game distribution platform with library, community, and marketplace.","category":"apps","logoUrl":"logo/steam.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Steam69&tracker=69","tags":["gaming","store","library","community"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005531,"name":"Epic Games Launcher","slug":"epic-games-launcher","version":"15.17.1","description":"Game launcher with free weekly games and access to Epic's store.","category":"apps","logoUrl":"logo/epic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Epic Games Launcher70&tracker=70","tags":["gaming","launcher","free-games","store"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005532,"name":"GOG Galaxy","slug":"gog-galaxy","version":"2.0.73.21","description":"Unified gaming client for managing libraries across multiple platforms.","category":"apps","logoUrl":"logo/gog.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GOG Galaxy71&tracker=71","tags":["gaming","launcher","drm-free","library"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005533,"name":"Battle.net","slug":"battle-net","version":"2.23.2.13788","description":"Blizzard's gaming platform for playing and managing Blizzard titles.","category":"apps","logoUrl":"logo/battlenet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Battle.net72&tracker=72","tags":["gaming","blizzard","launcher","multiplayer"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005534,"name":"Origin","slug":"origin","version":"10.5.118.53725","description":"EA's game client for downloading and playing Electronic Arts titles.","category":"apps","logoUrl":"logo/origin.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Origin73&tracker=73","tags":["gaming","ea","launcher","store"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005535,"name":"Ubisoft Connect","slug":"ubisoft-connect","version":"144.1.10964","description":"Gaming platform for Ubisoft games with rewards and social features.","category":"apps","logoUrl":"logo/ubisoft.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ubisoft Connect74&tracker=74","tags":["gaming","ubisoft","rewards","social"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005536,"name":"EA App","slug":"ea-app","version":"12.115.0.5482","description":"EA's new gaming client replacing Origin with faster performance.","category":"apps","logoUrl":"logo/eaapp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=EA App75&tracker=75","tags":["gaming","ea","launcher","fast"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005537,"name":"Xbox App","slug":"xbox-app","version":"2402.1001.4.0","description":"Microsoft's gaming app for PC with Game Pass and cloud gaming.","category":"apps","logoUrl":"logo/xbox.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Xbox App76&tracker=76","tags":["gaming","xbox","gamepass","cloud"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005538,"name":"GeForce Experience","slug":"geforce-experience","version":"3.27.0.123","description":"NVIDIA utility for driver updates, game optimization, and recording.","category":"apps","logoUrl":"logo/geforce.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GeForce Experience77&tracker=77","tags":["nvidia","drivers","optimization","recording"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005539,"name":"AMD Radeon Software","slug":"amd-radeon-software","version":"24.2.1","description":"AMD's control panel for GPU settings, performance tuning, and updates.","category":"apps","logoUrl":"logo/amd.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AMD Radeon Software78&tracker=78","tags":["amd","gpu","drivers","tuning"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005540,"name":"MSI Afterburner","slug":"msi-afterburner","version":"4.6.5","description":"GPU overclocking utility with monitoring, fan control, and benchmarking.","category":"apps","logoUrl":"logo/afterburner.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MSI Afterburner79&tracker=79","tags":["overclocking","gpu","monitoring","benchmark"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005541,"name":"HWMonitor","slug":"hwmonitor","version":"1.55","description":"Hardware monitoring tool for temperatures, voltages, and fan speeds.","category":"apps","logoUrl":"logo/hwmonitor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HWMonitor80&tracker=80","tags":["monitoring","hardware","temperature","diagnostic"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005542,"name":"CPU-Z","slug":"cpu-z","version":"2.08","description":"System information utility for CPU, motherboard, memory, and GPU details.","category":"apps","logoUrl":"logo/cpuz.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CPU-Z81&tracker=81","tags":["diagnostic","cpu","hardware","info"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005543,"name":"GPU-Z","slug":"gpu-z","version":"2.57.0","description":"Lightweight utility for detailed graphics card information and monitoring.","category":"apps","logoUrl":"logo/gpuz.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GPU-Z82&tracker=82","tags":["gpu","diagnostic","monitoring","info"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005544,"name":"Speccy","slug":"speccy","version":"1.32.795","description":"System profiler showing detailed hardware information in one view.","category":"apps","logoUrl":"logo/speccy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Speccy83&tracker=83","tags":["diagnostic","hardware","system","info"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005545,"name":"CrystalDiskInfo","slug":"crystaldiskinfo","version":"9.3.2","description":"Disk health monitoring tool with S.M.A.R.T. data and temperature alerts.","category":"apps","logoUrl":"logo/crystaldisk.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CrystalDiskInfo84&tracker=84","tags":["disk","health","smart","monitoring"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005546,"name":"HWiNFO","slug":"hwinfo","version":"7.62","description":"Comprehensive system information and diagnostic tool for professionals.","category":"apps","logoUrl":"logo/hwinfo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HWiNFO85&tracker=85","tags":["diagnostic","hardware","professional","detailed"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005547,"name":"AIDA64","slug":"aida64","version":"7.00.6700","description":"Advanced system diagnostics, benchmarking, and hardware monitoring suite.","category":"apps","logoUrl":"logo/aida64.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AIDA6486&tracker=86","tags":["diagnostic","benchmark","hardware","professional"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005548,"name":"Geekbench","slug":"geekbench","version":"6.2.2","description":"Cross-platform CPU and GPU benchmark for measuring system performance.","category":"apps","logoUrl":"logo/geekbench.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Geekbench87&tracker=87","tags":["benchmark","cpu","gpu","performance"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005549,"name":"Cinebench","slug":"cinebench","version":"2024.1","description":"Real-world CPU and GPU rendering benchmark based on Cinema 4D.","category":"apps","logoUrl":"logo/cinebench.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Cinebench88&tracker=88","tags":["benchmark","rendering","cpu","gpu"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005550,"name":"3DMark","slug":"3dmark","version":"2.29.8455","description":"Gaming benchmark suite for testing graphics performance and stability.","category":"apps","logoUrl":"logo/3dmark.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=3DMark89&tracker=89","tags":["benchmark","gaming","gpu","graphics"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005551,"name":"UserBenchmark","slug":"userbenchmark","version":"4.2.5","description":"Quick PC speed test comparing your hardware to users with similar specs.","category":"apps","logoUrl":"logo/userbenchmark.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=UserBenchmark90&tracker=90","tags":["benchmark","comparison","quick","hardware"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005552,"name":"PassMark","slug":"passmark","version":"11.0.1004","description":"Comprehensive benchmark suite testing CPU, GPU, disk, and memory performance.","category":"apps","logoUrl":"logo/passmark.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PassMark91&tracker=91","tags":["benchmark","comprehensive","hardware","testing"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005553,"name":"FurMark","slug":"furmark","version":"1.37.1.0","description":"GPU stress testing tool for checking stability and thermal performance.","category":"apps","logoUrl":"logo/furmark.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FurMark92&tracker=92","tags":["stress-test","gpu","thermal","stability"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005554,"name":"Prime95","slug":"prime95","version":"30.19","description":"CPU stress testing utility for finding hardware errors and stability issues.","category":"apps","logoUrl":"logo/prime95.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Prime9593&tracker=93","tags":["stress-test","cpu","stability","diagnostic"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005555,"name":"MemTest86","slug":"memtest86","version":"11.0","description":"Bootable memory testing tool for detecting RAM errors and faults.","category":"apps","logoUrl":"logo/memtest.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MemTest8694&tracker=94","tags":["memory","testing","ram","diagnostic"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005556,"name":"BlueScreenView","slug":"bluescreenview","version":"1.57","description":"Utility for analyzing Windows crash dumps and identifying BSOD causes.","category":"apps","logoUrl":"logo/bluescreen.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=BlueScreenView95&tracker=95","tags":["crash","diagnostic","windows","debugging"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005557,"name":"WinDirStat","slug":"windirstat","version":"1.1.2.80","description":"Disk usage statistics viewer and cleanup tool with visual treemap.","category":"apps","logoUrl":"logo/windirstat.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WinDirStat96&tracker=96","tags":["disk","cleanup","visual","storage"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005558,"name":"TreeSize Free","slug":"treesize-free","version":"8.2.2","description":"Disk space analyzer showing folder sizes and file distribution visually.","category":"apps","logoUrl":"logo/treesize.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TreeSize Free97&tracker=97","tags":["disk","analyzer","storage","visual"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005559,"name":"Everything","slug":"everything","version":"1.4.1.1024","description":"Lightning-fast file search engine indexing your entire drive instantly.","category":"apps","logoUrl":"logo/everything.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Everything98&tracker=98","tags":["search","files","fast","indexing"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005560,"name":"Listary","slug":"listary","version":"6.2.0.28","description":"File search and navigation enhancement tool for Windows Explorer.","category":"apps","logoUrl":"logo/listary.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Listary99&tracker=99","tags":["search","navigation","explorer","productivity"],"scrapedAt":"2026-04-27T11:06:45.462Z"},{"id":1777288005561,"name":"AutoHotkey","slug":"autohotkey","version":"2.0.11","description":"Scripting language for automating tasks and creating custom hotkeys.","category":"apps","logoUrl":"logo/autohotkey.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AutoHotkey100&tracker=100","tags":["automation","scripting","hotkeys","productivity"],"scrapedAt":"2026-04-27T11:06:45.462Z"}];
+    const CURRENT_CATEGORY = 'apps';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

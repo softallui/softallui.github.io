@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Productivity — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Productivity</h1>
+    <p><span class="highlight">85</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="microsoft-to-do.html" class="app-card" data-id="1777294702059" style="text-decoration:none;color:inherit">
+          <img src="logo/microsoft-todo.png" alt="Microsoft To Do" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Microsoft To Do</h3>
+          <p class="app-description">Simple and intelligent task manager with smart suggestions and daily planning.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tasks</span><span class="app-tag">microsoft</span><span class="app-tag">planning</span>
+            </div>
+          
+        </a>
+        <a href="ticktick.html" class="app-card" data-id="1777294702061" style="text-decoration:none;color:inherit">
+          <img src="logo/ticktick.png" alt="TickTick" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TickTick</h3>
+          <p class="app-description">All-in-one task manager with calendar, Pomodoro timer, and habit tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tasks</span><span class="app-tag">calendar</span><span class="app-tag">pomodoro</span>
+            </div>
+          
+        </a>
+        <a href="any-do.html" class="app-card" data-id="1777294702062" style="text-decoration:none;color:inherit">
+          <img src="logo/anydo.png" alt="Any.do" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Any.do</h3>
+          <p class="app-description">Elegant task manager with calendar integration and voice entry support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tasks</span><span class="app-tag">calendar</span><span class="app-tag">voice</span>
+            </div>
+          
+        </a>
+        <a href="things-3.html" class="app-card" data-id="1777294702063" style="text-decoration:none;color:inherit">
+          <img src="logo/things3.png" alt="Things 3" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Things 3</h3>
+          <p class="app-description">Award-winning task manager for Mac and iOS with beautiful design and GTD support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gtd</span><span class="app-tag">mac</span><span class="app-tag">ios</span>
+            </div>
+          
+        </a>
+        <a href="omnifocus.html" class="app-card" data-id="1777294702064" style="text-decoration:none;color:inherit">
+          <img src="logo/omnifocus.png" alt="OmniFocus" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OmniFocus</h3>
+          <p class="app-description">Professional-grade task manager built on Getting Things Done methodology.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gtd</span><span class="app-tag">professional</span><span class="app-tag">mac</span>
+            </div>
+          
+        </a>
+        <a href="onenote.html" class="app-card" data-id="1777294702067" style="text-decoration:none;color:inherit">
+          <img src="logo/onenote.png" alt="OneNote" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OneNote</h3>
+          <p class="app-description">Microsoft&#039;s digital notebook with freeform organization and Office integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">notes</span><span class="app-tag">microsoft</span><span class="app-tag">office</span>
+            </div>
+          
+        </a>
+        <a href="bear.html" class="app-card" data-id="1777294702068" style="text-decoration:none;color:inherit">
+          <img src="logo/bear.png" alt="Bear" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bear</h3>
+          <p class="app-description">Beautiful, flexible writing app for crafting notes and prose with Markdown.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">notes</span><span class="app-tag">markdown</span><span class="app-tag">mac</span>
+            </div>
+          
+        </a>
+        <a href="obsidian.html" class="app-card" data-id="1777294702069" style="text-decoration:none;color:inherit">
+          <img src="logo/obsidian.png" alt="Obsidian" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Obsidian</h3>
+          <p class="app-description">Knowledge base app with linked notes, graph view, and local Markdown files.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">knowledge-base</span><span class="app-tag">markdown</span><span class="app-tag">graph</span>
+            </div>
+          
+        </a>
+        <a href="roam-research.html" class="app-card" data-id="1777294702070" style="text-decoration:none;color:inherit">
+          <img src="logo/roam.png" alt="Roam Research" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Roam Research</h3>
+          <p class="app-description">Note-taking tool for networked thought with bidirectional linking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">notes</span><span class="app-tag">bidirectional</span><span class="app-tag">networked</span>
+            </div>
+          
+        </a>
+        <a href="logseq.html" class="app-card" data-id="1777294702071" style="text-decoration:none;color:inherit">
+          <img src="logo/logseq.png" alt="Logseq" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Logseq</h3>
+          <p class="app-description">Open-source, privacy-first knowledge base with outliner and graph features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">privacy</span><span class="app-tag">outliner</span>
+            </div>
+          
+        </a>
+        <a href="joplin.html" class="app-card" data-id="1777294702072" style="text-decoration:none;color:inherit">
+          <img src="logo/joplin.png" alt="Joplin" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Joplin</h3>
+          <p class="app-description">Open-source note-taking app with end-to-end encryption and sync support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">encryption</span><span class="app-tag">sync</span>
+            </div>
+          
+        </a>
+        <a href="standard-notes.html" class="app-card" data-id="1777294702073" style="text-decoration:none;color:inherit">
+          <img src="logo/standard-notes.png" alt="Standard Notes" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Standard Notes</h3>
+          <p class="app-description">Encrypted, open-source note-taking app with extensions and self-hosting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">encrypted</span><span class="app-tag">open-source</span><span class="app-tag">extensions</span>
+            </div>
+          
+        </a>
+        <a href="simplenote.html" class="app-card" data-id="1777294702074" style="text-decoration:none;color:inherit">
+          <img src="logo/simplenote.png" alt="Simplenote" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Simplenote</h3>
+          <p class="app-description">Minimalist, fast note-taking app with Markdown and cross-platform sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">minimalist</span><span class="app-tag">fast</span><span class="app-tag">markdown</span>
+            </div>
+          
+        </a>
+        <a href="google-calendar.html" class="app-card" data-id="1777294702075" style="text-decoration:none;color:inherit">
+          <img src="logo/google-calendar.png" alt="Google Calendar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Calendar</h3>
+          <p class="app-description">Smart calendar with event suggestions, time zone support, and Google integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">calendar</span><span class="app-tag">google</span><span class="app-tag">events</span>
+            </div>
+          
+        </a>
+        <a href="fantastical.html" class="app-card" data-id="1777294702076" style="text-decoration:none;color:inherit">
+          <img src="logo/fantastical.png" alt="Fantastical" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fantastical</h3>
+          <p class="app-description">Premium calendar app with natural language parsing and beautiful design.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">calendar</span><span class="app-tag">natural-language</span><span class="app-tag">mac</span>
+            </div>
+          
+        </a>
+        <a href="calendly.html" class="app-card" data-id="1777294702077" style="text-decoration:none;color:inherit">
+          <img src="logo/calendly.png" alt="Calendly" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Calendly</h3>
+          <p class="app-description">Automated scheduling tool that eliminates back-and-forth email coordination.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">scheduling</span><span class="app-tag">automation</span><span class="app-tag">meetings</span>
+            </div>
+          
+        </a>
+        <a href="motion.html" class="app-card" data-id="1777294702078" style="text-decoration:none;color:inherit">
+          <img src="logo/motion.png" alt="Motion" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Motion</h3>
+          <p class="app-description">AI-powered calendar and task manager that automatically schedules your day.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">scheduling</span><span class="app-tag">tasks</span>
+            </div>
+          
+        </a>
+        <a href="reclaim-ai.html" class="app-card" data-id="1777294702079" style="text-decoration:none;color:inherit">
+          <img src="logo/reclaim.png" alt="Reclaim.ai" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Reclaim.ai</h3>
+          <p class="app-description">Smart calendar assistant that defends time for habits, tasks, and meetings.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">calendar</span><span class="app-tag">habits</span>
+            </div>
+          
+        </a>
+        <a href="clockify.html" class="app-card" data-id="1777294702080" style="text-decoration:none;color:inherit">
+          <img src="logo/clockify.png" alt="Clockify" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Clockify</h3>
+          <p class="app-description">Free time tracking software with reporting, invoicing, and team management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">time-tracking</span><span class="app-tag">free</span><span class="app-tag">reporting</span>
+            </div>
+          
+        </a>
+        <a href="toggl-track.html" class="app-card" data-id="1777294702081" style="text-decoration:none;color:inherit">
+          <img src="logo/toggl.png" alt="Toggl Track" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Toggl Track</h3>
+          <p class="app-description">Simple time tracker with powerful reporting and integrations for teams.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">time-tracking</span><span class="app-tag">reporting</span><span class="app-tag">integrations</span>
+            </div>
+          
+        </a>
+        <a href="rescuetime.html" class="app-card" data-id="1777294702082" style="text-decoration:none;color:inherit">
+          <img src="logo/rescuetime.png" alt="RescueTime" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">RescueTime</h3>
+          <p class="app-description">Automatic time tracking that shows how you spend your digital time.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">automatic</span><span class="app-tag">tracking</span><span class="app-tag">analytics</span>
+            </div>
+          
+        </a>
+        <a href="focus-at-will.html" class="app-card" data-id="1777294702083" style="text-decoration:none;color:inherit">
+          <img src="logo/focus-at-will.png" alt="Focus@Will" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Focus@Will</h3>
+          <p class="app-description">Music service scientifically designed to improve focus and productivity.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">focus</span><span class="app-tag">science</span>
+            </div>
+          
+        </a>
+        <a href="forest.html" class="app-card" data-id="1777294702084" style="text-decoration:none;color:inherit">
+          <img src="logo/forest.png" alt="Forest" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Forest</h3>
+          <p class="app-description">Gamified focus app that grows virtual trees while you stay off your phone.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gamification</span><span class="app-tag">focus</span><span class="app-tag">pomodoro</span>
+            </div>
+          
+        </a>
+        <a href="freedom.html" class="app-card" data-id="1777294702085" style="text-decoration:none;color:inherit">
+          <img src="logo/freedom.png" alt="Freedom" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Freedom</h3>
+          <p class="app-description">Block distracting websites and apps across all your devices simultaneously.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">blocking</span><span class="app-tag">distractions</span><span class="app-tag">cross-platform</span>
+            </div>
+          
+        </a>
+        <a href="cold-turkey.html" class="app-card" data-id="1777294702086" style="text-decoration:none;color:inherit">
+          <img src="logo/cold-turkey.png" alt="Cold Turkey" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Cold Turkey</h3>
+          <p class="app-description">Powerful website and app blocker with scheduling and lock mode features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">blocking</span><span class="app-tag">scheduling</span><span class="app-tag">lock-mode</span>
+            </div>
+          
+        </a>
+        <a href="stayfocusd.html" class="app-card" data-id="1777294702087" style="text-decoration:none;color:inherit">
+          <img src="logo/stayfocusd.png" alt="StayFocusd" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">StayFocusd</h3>
+          <p class="app-description">Chrome extension that limits time spent on time-wasting websites.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">chrome</span><span class="app-tag">extension</span><span class="app-tag">blocking</span>
+            </div>
+          
+        </a>
+        <a href="leechblock.html" class="app-card" data-id="1777294702088" style="text-decoration:none;color:inherit">
+          <img src="logo/leechblock.png" alt="LeechBlock" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LeechBlock</h3>
+          <p class="app-description">Firefox add-on for blocking distracting sites with flexible rules.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">firefox</span><span class="app-tag">addon</span><span class="app-tag">blocking</span>
+            </div>
+          
+        </a>
+        <a href="keepassxc.html" class="app-card" data-id="1777294702092" style="text-decoration:none;color:inherit">
+          <img src="logo/keepassxc.png" alt="KeePassXC" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">KeePassXC</h3>
+          <p class="app-description">Open-source, offline password manager with strong encryption and plugins.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">offline</span><span class="app-tag">open-source</span><span class="app-tag">encryption</span>
+            </div>
+          
+        </a>
+        <a href="dashlane.html" class="app-card" data-id="1777294702093" style="text-decoration:none;color:inherit">
+          <img src="logo/dashlane.png" alt="Dashlane" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Dashlane</h3>
+          <p class="app-description">User-friendly password manager with VPN, dark web monitoring, and password changer.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">password</span><span class="app-tag">vpn</span><span class="app-tag">monitoring</span>
+            </div>
+          
+        </a>
+        <a href="nordpass.html" class="app-card" data-id="1777294702094" style="text-decoration:none;color:inherit">
+          <img src="logo/nordpass.png" alt="NordPass" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NordPass</h3>
+          <p class="app-description">Modern password manager with XChaCha20 encryption and data breach scanner.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">password</span><span class="app-tag">xchacha20</span><span class="app-tag">scanner</span>
+            </div>
+          
+        </a>
+        <a href="sync-com.html" class="app-card" data-id="1777294702101" style="text-decoration:none;color:inherit">
+          <img src="logo/sync-com.png" alt="Sync.com" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sync.com</h3>
+          <p class="app-description">Zero-knowledge encrypted cloud storage with file recovery and sharing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">zero-knowledge</span><span class="app-tag">encrypted</span><span class="app-tag">recovery</span>
+            </div>
+          
+        </a>
+        <a href="resilio-sync.html" class="app-card" data-id="1777294702102" style="text-decoration:none;color:inherit">
+          <img src="logo/resilio.png" alt="Resilio Sync" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Resilio Sync</h3>
+          <p class="app-description">Peer-to-peer file sync with no cloud storage, unlimited size, and fast transfer.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">p2p</span><span class="app-tag">sync</span><span class="app-tag">unlimited</span>
+            </div>
+          
+        </a>
+        <a href="syncthing.html" class="app-card" data-id="1777294702103" style="text-decoration:none;color:inherit">
+          <img src="logo/syncthing.png" alt="Syncthing" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Syncthing</h3>
+          <p class="app-description">Open-source, decentralized file synchronization with end-to-end encryption.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">decentralized</span><span class="app-tag">encrypted</span>
+            </div>
+          
+        </a>
+        <a href="thunderbird.html" class="app-card" data-id="1777294702104" style="text-decoration:none;color:inherit">
+          <img src="logo/thunderbird.png" alt="Thunderbird" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Thunderbird</h3>
+          <p class="app-description">Free, open-source email client with powerful filtering and add-ons.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">open-source</span><span class="app-tag">filtering</span>
+            </div>
+          
+        </a>
+        <a href="spark.html" class="app-card" data-id="1777294702105" style="text-decoration:none;color:inherit">
+          <img src="logo/spark.png" alt="Spark" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Spark</h3>
+          <p class="app-description">Smart email client with AI prioritization, team collaboration, and scheduling.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">ai</span><span class="app-tag">team</span>
+            </div>
+          
+        </a>
+        <a href="superhuman.html" class="app-card" data-id="1777294702106" style="text-decoration:none;color:inherit">
+          <img src="logo/superhuman.png" alt="Superhuman" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Superhuman</h3>
+          <p class="app-description">Premium email client built for speed with keyboard shortcuts and AI features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">premium</span><span class="app-tag">speed</span>
+            </div>
+          
+        </a>
+        <a href="mailspring.html" class="app-card" data-id="1777294702107" style="text-decoration:none;color:inherit">
+          <img src="logo/mailspring.png" alt="Mailspring" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mailspring</h3>
+          <p class="app-description">Modern, open-source email client with unified inbox and read receipts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">open-source</span><span class="app-tag">unified</span>
+            </div>
+          
+        </a>
+        <a href="em-client.html" class="app-card" data-id="1777294702108" style="text-decoration:none;color:inherit">
+          <img src="logo/em-client.png" alt="eM Client" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">eM Client</h3>
+          <p class="app-description">Feature-rich email client with calendar, tasks, and PGP encryption support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">calendar</span><span class="app-tag">pgp</span>
+            </div>
+          
+        </a>
+        <a href="libreoffice.html" class="app-card" data-id="1777294702109" style="text-decoration:none;color:inherit">
+          <img src="logo/libreoffice.png" alt="LibreOffice" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LibreOffice</h3>
+          <p class="app-description">Free, open-source office suite with writer, calc, impress, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">office</span><span class="app-tag">open-source</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="onlyoffice.html" class="app-card" data-id="1777294702110" style="text-decoration:none;color:inherit">
+          <img src="logo/onlyoffice.png" alt="OnlyOffice" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OnlyOffice</h3>
+          <p class="app-description">Open-source office suite with real-time collaboration and cloud integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">office</span><span class="app-tag">collaboration</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="wps-office.html" class="app-card" data-id="1777294702111" style="text-decoration:none;color:inherit">
+          <img src="logo/wps-office.png" alt="WPS Office" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WPS Office</h3>
+          <p class="app-description">Lightweight office suite with high MS Office compatibility and PDF tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">office</span><span class="app-tag">compatibility</span><span class="app-tag">pdf</span>
+            </div>
+          
+        </a>
+        <a href="google-docs.html" class="app-card" data-id="1777294702112" style="text-decoration:none;color:inherit">
+          <img src="logo/google-docs.png" alt="Google Docs" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Docs</h3>
+          <p class="app-description">Cloud-based word processor with real-time collaboration and version history.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">docs</span><span class="app-tag">collaboration</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="google-sheets.html" class="app-card" data-id="1777294702113" style="text-decoration:none;color:inherit">
+          <img src="logo/google-sheets.png" alt="Google Sheets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Sheets</h3>
+          <p class="app-description">Online spreadsheet with formulas, charts, and real-time team editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sheets</span><span class="app-tag">formulas</span><span class="app-tag">charts</span>
+            </div>
+          
+        </a>
+        <a href="google-slides.html" class="app-card" data-id="1777294702114" style="text-decoration:none;color:inherit">
+          <img src="logo/google-slides.png" alt="Google Slides" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Slides</h3>
+          <p class="app-description">Web-based presentation software with templates and collaborative editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">slides</span><span class="app-tag">presentations</span><span class="app-tag">templates</span>
+            </div>
+          
+        </a>
+        <a href="zoho-writer.html" class="app-card" data-id="1777294702115" style="text-decoration:none;color:inherit">
+          <img src="logo/zoho-writer.png" alt="Zoho Writer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zoho Writer</h3>
+          <p class="app-description">Cloud word processor with distraction-free mode and collaboration features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">writer</span><span class="app-tag">cloud</span><span class="app-tag">distraction-free</span>
+            </div>
+          
+        </a>
+        <a href="zoho-sheet.html" class="app-card" data-id="1777294702116" style="text-decoration:none;color:inherit">
+          <img src="logo/zoho-sheet.png" alt="Zoho Sheet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zoho Sheet</h3>
+          <p class="app-description">Online spreadsheet with pivot tables, charts, and team collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sheet</span><span class="app-tag">pivot</span><span class="app-tag">charts</span>
+            </div>
+          
+        </a>
+        <a href="zoho-show.html" class="app-card" data-id="1777294702117" style="text-decoration:none;color:inherit">
+          <img src="logo/zoho-show.png" alt="Zoho Show" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zoho Show</h3>
+          <p class="app-description">Presentation software with animations, transitions, and remote control.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presentations</span><span class="app-tag">animations</span><span class="app-tag">remote</span>
+            </div>
+          
+        </a>
+        <a href="adobe-acrobat-pro.html" class="app-card" data-id="1777294702118" style="text-decoration:none;color:inherit">
+          <img src="logo/acrobat-pro.png" alt="Adobe Acrobat Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Acrobat Pro</h3>
+          <p class="app-description">Professional PDF editor with OCR, form creation, and document signing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pdf</span><span class="app-tag">ocr</span><span class="app-tag">forms</span>
+            </div>
+          
+        </a>
+        <a href="pdfelement.html" class="app-card" data-id="1777294702119" style="text-decoration:none;color:inherit">
+          <img src="logo/pdfelement.png" alt="PDFelement" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PDFelement</h3>
+          <p class="app-description">Affordable PDF editor with editing, conversion, and OCR capabilities.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pdf</span><span class="app-tag">editing</span><span class="app-tag">conversion</span>
+            </div>
+          
+        </a>
+        <a href="foxit-pdf-editor.html" class="app-card" data-id="1777294702120" style="text-decoration:none;color:inherit">
+          <img src="logo/foxit.png" alt="Foxit PDF Editor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Foxit PDF Editor</h3>
+          <p class="app-description">Fast, secure PDF editor with collaboration tools and cloud integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pdf</span><span class="app-tag">secure</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="nitro-pdf-pro.html" class="app-card" data-id="1777294702121" style="text-decoration:none;color:inherit">
+          <img src="logo/nitro.png" alt="Nitro PDF Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nitro PDF Pro</h3>
+          <p class="app-description">Professional PDF solution with editing, e-signatures, and batch processing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pdf</span><span class="app-tag">esignature</span><span class="app-tag">batch</span>
+            </div>
+          
+        </a>
+        <a href="smallpdf.html" class="app-card" data-id="1777294702122" style="text-decoration:none;color:inherit">
+          <img src="logo/smallpdf.png" alt="Smallpdf" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Smallpdf</h3>
+          <p class="app-description">Simple online PDF toolkit for compressing, converting, and editing files.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pdf</span><span class="app-tag">online</span><span class="app-tag">simple</span>
+            </div>
+          
+        </a>
+        <a href="ilovepdf.html" class="app-card" data-id="1777294702123" style="text-decoration:none;color:inherit">
+          <img src="logo/ilovepdf.png" alt="iLovePDF" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iLovePDF</h3>
+          <p class="app-description">Free online PDF tools for merging, splitting, compressing, and converting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pdf</span><span class="app-tag">free</span><span class="app-tag">online</span>
+            </div>
+          
+        </a>
+        <a href="pdfsam.html" class="app-card" data-id="1777294702124" style="text-decoration:none;color:inherit">
+          <img src="logo/pdfsam.png" alt="PDFsam" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PDFsam</h3>
+          <p class="app-description">Open-source PDF splitter, merger, and rotator with visual interface.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pdf</span><span class="app-tag">open-source</span><span class="app-tag">split</span>
+            </div>
+          
+        </a>
+        <a href="abbyy-finereader.html" class="app-card" data-id="1777294702125" style="text-decoration:none;color:inherit">
+          <img src="logo/abbyy.png" alt="ABBYY FineReader" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ABBYY FineReader</h3>
+          <p class="app-description">Advanced OCR software for converting scanned documents to editable formats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ocr</span><span class="app-tag">scanning</span><span class="app-tag">conversion</span>
+            </div>
+          
+        </a>
+        <a href="adobe-scan.html" class="app-card" data-id="1777294702126" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-scan.png" alt="Adobe Scan" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Scan</h3>
+          <p class="app-description">Mobile scanning app with OCR, auto-capture, and PDF creation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">scanning</span><span class="app-tag">ocr</span><span class="app-tag">mobile</span>
+            </div>
+          
+        </a>
+        <a href="camscanner.html" class="app-card" data-id="1777294702127" style="text-decoration:none;color:inherit">
+          <img src="logo/camscanner.png" alt="CamScanner" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CamScanner</h3>
+          <p class="app-description">Document scanner app with OCR, cloud sync, and annotation tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">scanning</span><span class="app-tag">ocr</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="microsoft-lens.html" class="app-card" data-id="1777294702128" style="text-decoration:none;color:inherit">
+          <img src="logo/microsoft-lens.png" alt="Microsoft Lens" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Microsoft Lens</h3>
+          <p class="app-description">Mobile scanner with OCR, whiteboard enhancement, and Office integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">scanning</span><span class="app-tag">ocr</span><span class="app-tag">office</span>
+            </div>
+          
+        </a>
+        <a href="ditto.html" class="app-card" data-id="1777294702129" style="text-decoration:none;color:inherit">
+          <img src="logo/ditto.png" alt="Ditto" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ditto</h3>
+          <p class="app-description">Advanced clipboard manager with search, history, and network sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">clipboard</span><span class="app-tag">search</span><span class="app-tag">history</span>
+            </div>
+          
+        </a>
+        <a href="clipclip.html" class="app-card" data-id="1777294702130" style="text-decoration:none;color:inherit">
+          <img src="logo/clipclip.png" alt="ClipClip" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ClipClip</h3>
+          <p class="app-description">Free clipboard manager with folders, snippets, and quick paste.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">clipboard</span><span class="app-tag">free</span><span class="app-tag">snippets</span>
+            </div>
+          
+        </a>
+        <a href="copyq.html" class="app-card" data-id="1777294702131" style="text-decoration:none;color:inherit">
+          <img src="logo/copyq.png" alt="CopyQ" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CopyQ</h3>
+          <p class="app-description">Advanced clipboard manager with scripting, tabs, and encryption support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">clipboard</span><span class="app-tag">scripting</span><span class="app-tag">encryption</span>
+            </div>
+          
+        </a>
+        <a href="alfred.html" class="app-card" data-id="1777294702132" style="text-decoration:none;color:inherit">
+          <img src="logo/alfred.png" alt="Alfred" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Alfred</h3>
+          <p class="app-description">Productivity app for Mac with hotkeys, workflows, and clipboard history.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">hotkeys</span><span class="app-tag">workflows</span>
+            </div>
+          
+        </a>
+        <a href="raycast.html" class="app-card" data-id="1777294702133" style="text-decoration:none;color:inherit">
+          <img src="logo/raycast.png" alt="Raycast" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Raycast</h3>
+          <p class="app-description">Blazing fast launcher for Mac with extensions, snippets, and team features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">launcher</span><span class="app-tag">extensions</span>
+            </div>
+          
+        </a>
+        <a href="powertoys.html" class="app-card" data-id="1777294702134" style="text-decoration:none;color:inherit">
+          <img src="logo/powertoys.png" alt="PowerToys" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PowerToys</h3>
+          <p class="app-description">Microsoft utility suite with FancyZones, PowerRename, and keyboard manager.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">microsoft</span><span class="app-tag">utilities</span><span class="app-tag">fancyzones</span>
+            </div>
+          
+        </a>
+        <a href="keyboard-maestro.html" class="app-card" data-id="1777294702136" style="text-decoration:none;color:inherit">
+          <img src="logo/keyboard-maestro.png" alt="Keyboard Maestro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Keyboard Maestro</h3>
+          <p class="app-description">Powerful Mac automation tool for macros, triggers, and workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">automation</span><span class="app-tag">macros</span><span class="app-tag">mac</span>
+            </div>
+          
+        </a>
+        <a href="zapier-desktop.html" class="app-card" data-id="1777294702137" style="text-decoration:none;color:inherit">
+          <img src="logo/zapier.png" alt="Zapier Desktop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zapier Desktop</h3>
+          <p class="app-description">Automation platform connecting 5000+ apps with triggers and actions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">automation</span><span class="app-tag">integrations</span><span class="app-tag">triggers</span>
+            </div>
+          
+        </a>
+        <a href="make-integromat.html" class="app-card" data-id="1777294702138" style="text-decoration:none;color:inherit">
+          <img src="logo/make.png" alt="Make (Integromat)" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Make (Integromat)</h3>
+          <p class="app-description">Visual automation platform for building complex workflows without code.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">automation</span><span class="app-tag">visual</span><span class="app-tag">workflows</span>
+            </div>
+          
+        </a>
+        <a href="ifttt.html" class="app-card" data-id="1777294702139" style="text-decoration:none;color:inherit">
+          <img src="logo/ifttt.png" alt="IFTTT" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">IFTTT</h3>
+          <p class="app-description">Simple automation service connecting apps with if-this-then-that logic.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">automation</span><span class="app-tag">simple</span><span class="app-tag">applets</span>
+            </div>
+          
+        </a>
+        <a href="n8n.html" class="app-card" data-id="1777294702140" style="text-decoration:none;color:inherit">
+          <img src="logo/n8n.png" alt="n8n" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">n8n</h3>
+          <p class="app-description">Open-source, self-hostable workflow automation with node-based editor.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">self-host</span><span class="app-tag">workflows</span>
+            </div>
+          
+        </a>
+        <a href="habitica.html" class="app-card" data-id="1777294702141" style="text-decoration:none;color:inherit">
+          <img src="logo/habitica.png" alt="Habitica" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Habitica</h3>
+          <p class="app-description">Gamified habit tracker that turns tasks into a role-playing game.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">habits</span><span class="app-tag">gamification</span><span class="app-tag">rpg</span>
+            </div>
+          
+        </a>
+        <a href="streaks.html" class="app-card" data-id="1777294702142" style="text-decoration:none;color:inherit">
+          <img src="logo/streaks.png" alt="Streaks" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Streaks</h3>
+          <p class="app-description">Beautiful habit tracker for Apple devices with Apple Watch support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">habits</span><span class="app-tag">apple</span><span class="app-tag">watch</span>
+            </div>
+          
+        </a>
+        <a href="loop-habit-tracker.html" class="app-card" data-id="1777294702143" style="text-decoration:none;color:inherit">
+          <img src="logo/loop.png" alt="Loop Habit Tracker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Loop Habit Tracker</h3>
+          <p class="app-description">Open-source habit tracker with statistics, widgets, and no ads.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">habits</span><span class="app-tag">open-source</span><span class="app-tag">statistics</span>
+            </div>
+          
+        </a>
+        <a href="way-of-life.html" class="app-card" data-id="1777294702144" style="text-decoration:none;color:inherit">
+          <img src="logo/way-of-life.png" alt="Way of Life" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Way of Life</h3>
+          <p class="app-description">Simple habit tracker with color-coded yes/no logging and trends.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">habits</span><span class="app-tag">simple</span><span class="app-tag">trends</span>
+            </div>
+          
+        </a>
+        <a href="xmind.html" class="app-card" data-id="1777294702145" style="text-decoration:none;color:inherit">
+          <img src="logo/xmind.png" alt="XMind" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">XMind</h3>
+          <p class="app-description">Professional mind mapping software with brainstorming and presentation modes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mind-map</span><span class="app-tag">brainstorming</span><span class="app-tag">presentation</span>
+            </div>
+          
+        </a>
+        <a href="mindmeister.html" class="app-card" data-id="1777294702146" style="text-decoration:none;color:inherit">
+          <img src="logo/mindmeister.png" alt="MindMeister" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MindMeister</h3>
+          <p class="app-description">Cloud-based mind mapping with real-time collaboration and integrations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mind-map</span><span class="app-tag">cloud</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="freemind.html" class="app-card" data-id="1777294702147" style="text-decoration:none;color:inherit">
+          <img src="logo/freemind.png" alt="FreeMind" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FreeMind</h3>
+          <p class="app-description">Classic open-source mind mapping software with keyboard shortcuts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mind-map</span><span class="app-tag">open-source</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="simplemind.html" class="app-card" data-id="1777294702148" style="text-decoration:none;color:inherit">
+          <img src="logo/simplemind.png" alt="SimpleMind" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SimpleMind</h3>
+          <p class="app-description">Intuitive mind mapping app with freeform layout and cloud sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mind-map</span><span class="app-tag">intuitive</span><span class="app-tag">freeform</span>
+            </div>
+          
+        </a>
+        <a href="meistertask.html" class="app-card" data-id="1777294702149" style="text-decoration:none;color:inherit">
+          <img src="logo/meistertask.png" alt="MeisterTask" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MeisterTask</h3>
+          <p class="app-description">Intuitive Kanban-style project management with automation and integrations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">kanban</span><span class="app-tag">project</span><span class="app-tag">automation</span>
+            </div>
+          
+        </a>
+        <a href="basecamp.html" class="app-card" data-id="1777294702152" style="text-decoration:none;color:inherit">
+          <img src="logo/basecamp.png" alt="Basecamp" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Basecamp</h3>
+          <p class="app-description">Simple project management with to-dos, message boards, and schedules.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">project</span><span class="app-tag">simple</span><span class="app-tag">team</span>
+            </div>
+          
+        </a>
+        <a href="wrike.html" class="app-card" data-id="1777294702153" style="text-decoration:none;color:inherit">
+          <img src="logo/wrike.png" alt="Wrike" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wrike</h3>
+          <p class="app-description">Enterprise project management with Gantt charts, dashboards, and reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">enterprise</span><span class="app-tag">gantt</span><span class="app-tag">dashboards</span>
+            </div>
+          
+        </a>
+        <a href="smartsheet.html" class="app-card" data-id="1777294702154" style="text-decoration:none;color:inherit">
+          <img src="logo/smartsheet.png" alt="Smartsheet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Smartsheet</h3>
+          <p class="app-description">Spreadsheet-like project management with automation and resource tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">spreadsheet</span><span class="app-tag">automation</span><span class="app-tag">resources</span>
+            </div>
+          
+        </a>
+        <a href="airtable.html" class="app-card" data-id="1777294702155" style="text-decoration:none;color:inherit">
+          <img src="logo/airtable.png" alt="Airtable" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Airtable</h3>
+          <p class="app-description">Flexible database-spreadsheet hybrid with views, automations, and integrations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">database</span><span class="app-tag">spreadsheet</span><span class="app-tag">views</span>
+            </div>
+          
+        </a>
+        <a href="coda.html" class="app-card" data-id="1777294702156" style="text-decoration:none;color:inherit">
+          <img src="logo/coda.png" alt="Coda" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Coda</h3>
+          <p class="app-description">All-in-one doc platform blending documents, tables, and app-like features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">docs</span><span class="app-tag">tables</span><span class="app-tag">apps</span>
+            </div>
+          
+        </a>
+        <a href="craft.html" class="app-card" data-id="1777294702157" style="text-decoration:none;color:inherit">
+          <img src="logo/craft.png" alt="Craft" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Craft</h3>
+          <p class="app-description">Beautiful native docs app for Mac and iOS with blocks and linking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">docs</span><span class="app-tag">native</span><span class="app-tag">blocks</span>
+            </div>
+          
+        </a>
+        <a href="notion-calendar.html" class="app-card" data-id="1777294702158" style="text-decoration:none;color:inherit">
+          <img src="logo/notion-calendar.png" alt="Notion Calendar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Notion Calendar</h3>
+          <p class="app-description">Smart calendar that integrates with Notion for unified task and event management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">calendar</span><span class="app-tag">notion</span><span class="app-tag">integration</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777294702059,"name":"Microsoft To Do","slug":"microsoft-to-do","version":"2.102.0","description":"Simple and intelligent task manager with smart suggestions and daily planning.","category":"productivity","logoUrl":"logo/microsoft-todo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Microsoft To Do1&tracker=1","tags":["tasks","microsoft","planning","sync"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702061,"name":"TickTick","slug":"ticktick","version":"4.6.20","description":"All-in-one task manager with calendar, Pomodoro timer, and habit tracking.","category":"productivity","logoUrl":"logo/ticktick.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TickTick3&tracker=3","tags":["tasks","calendar","pomodoro","habits"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702062,"name":"Any.do","slug":"any-do","version":"5.20.0","description":"Elegant task manager with calendar integration and voice entry support.","category":"productivity","logoUrl":"logo/anydo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Any.do4&tracker=4","tags":["tasks","calendar","voice","elegant"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702063,"name":"Things 3","slug":"things-3","version":"3.19.4","description":"Award-winning task manager for Mac and iOS with beautiful design and GTD support.","category":"productivity","logoUrl":"logo/things3.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Things 35&tracker=5","tags":["gtd","mac","ios","beautiful"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702064,"name":"OmniFocus","slug":"omnifocus","version":"4.0.6","description":"Professional-grade task manager built on Getting Things Done methodology.","category":"productivity","logoUrl":"logo/omnifocus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OmniFocus6&tracker=6","tags":["gtd","professional","mac","powerful"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702067,"name":"OneNote","slug":"onenote","version":"16.0.17328","description":"Microsoft's digital notebook with freeform organization and Office integration.","category":"productivity","logoUrl":"logo/onenote.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OneNote9&tracker=9","tags":["notes","microsoft","office","freeform"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702068,"name":"Bear","slug":"bear","version":"2.1.3","description":"Beautiful, flexible writing app for crafting notes and prose with Markdown.","category":"productivity","logoUrl":"logo/bear.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bear10&tracker=10","tags":["notes","markdown","mac","writing"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702069,"name":"Obsidian","slug":"obsidian","version":"1.5.3","description":"Knowledge base app with linked notes, graph view, and local Markdown files.","category":"productivity","logoUrl":"logo/obsidian.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Obsidian11&tracker=11","tags":["knowledge-base","markdown","graph","local"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702070,"name":"Roam Research","slug":"roam-research","version":"0.12.0","description":"Note-taking tool for networked thought with bidirectional linking.","category":"productivity","logoUrl":"logo/roam.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Roam Research12&tracker=12","tags":["notes","bidirectional","networked","research"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702071,"name":"Logseq","slug":"logseq","version":"0.10.5","description":"Open-source, privacy-first knowledge base with outliner and graph features.","category":"productivity","logoUrl":"logo/logseq.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Logseq13&tracker=13","tags":["open-source","privacy","outliner","graph"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702072,"name":"Joplin","slug":"joplin","version":"3.0.0","description":"Open-source note-taking app with end-to-end encryption and sync support.","category":"productivity","logoUrl":"logo/joplin.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Joplin14&tracker=14","tags":["open-source","encryption","sync","notes"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702073,"name":"Standard Notes","slug":"standard-notes","version":"3.185.0","description":"Encrypted, open-source note-taking app with extensions and self-hosting.","category":"productivity","logoUrl":"logo/standard-notes.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Standard Notes15&tracker=15","tags":["encrypted","open-source","extensions","self-host"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702074,"name":"Simplenote","slug":"simplenote","version":"4.47.0","description":"Minimalist, fast note-taking app with Markdown and cross-platform sync.","category":"productivity","logoUrl":"logo/simplenote.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Simplenote16&tracker=16","tags":["minimalist","fast","markdown","sync"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702075,"name":"Google Calendar","slug":"google-calendar","version":"2024.08.0","description":"Smart calendar with event suggestions, time zone support, and Google integration.","category":"productivity","logoUrl":"logo/google-calendar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Calendar17&tracker=17","tags":["calendar","google","events","smart"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702076,"name":"Fantastical","slug":"fantastical","version":"3.8.10","description":"Premium calendar app with natural language parsing and beautiful design.","category":"productivity","logoUrl":"logo/fantastical.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fantastical18&tracker=18","tags":["calendar","natural-language","mac","premium"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702077,"name":"Calendly","slug":"calendly","version":"2.5.0","description":"Automated scheduling tool that eliminates back-and-forth email coordination.","category":"productivity","logoUrl":"logo/calendly.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Calendly19&tracker=19","tags":["scheduling","automation","meetings","calendar"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702078,"name":"Motion","slug":"motion","version":"1.12.0","description":"AI-powered calendar and task manager that automatically schedules your day.","category":"productivity","logoUrl":"logo/motion.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Motion20&tracker=20","tags":["ai","scheduling","tasks","automation"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702079,"name":"Reclaim.ai","slug":"reclaim-ai","version":"2.8.0","description":"Smart calendar assistant that defends time for habits, tasks, and meetings.","category":"productivity","logoUrl":"logo/reclaim.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Reclaim.ai21&tracker=21","tags":["ai","calendar","habits","time-defense"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702080,"name":"Clockify","slug":"clockify","version":"1.8.4","description":"Free time tracking software with reporting, invoicing, and team management.","category":"productivity","logoUrl":"logo/clockify.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Clockify22&tracker=22","tags":["time-tracking","free","reporting","team"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702081,"name":"Toggl Track","slug":"toggl-track","version":"8.0.2","description":"Simple time tracker with powerful reporting and integrations for teams.","category":"productivity","logoUrl":"logo/toggl.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Toggl Track23&tracker=23","tags":["time-tracking","reporting","integrations","simple"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702082,"name":"RescueTime","slug":"rescuetime","version":"3.2.8","description":"Automatic time tracking that shows how you spend your digital time.","category":"productivity","logoUrl":"logo/rescuetime.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=RescueTime24&tracker=24","tags":["automatic","tracking","analytics","focus"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702083,"name":"Focus@Will","slug":"focus-at-will","version":"5.2.0","description":"Music service scientifically designed to improve focus and productivity.","category":"productivity","logoUrl":"logo/focus-at-will.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Focus@Will25&tracker=25","tags":["music","focus","science","productivity"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702084,"name":"Forest","slug":"forest","version":"4.43.0","description":"Gamified focus app that grows virtual trees while you stay off your phone.","category":"productivity","logoUrl":"logo/forest.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Forest26&tracker=26","tags":["gamification","focus","pomodoro","mobile"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702085,"name":"Freedom","slug":"freedom","version":"4.8.0","description":"Block distracting websites and apps across all your devices simultaneously.","category":"productivity","logoUrl":"logo/freedom.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Freedom27&tracker=27","tags":["blocking","distractions","cross-platform","focus"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702086,"name":"Cold Turkey","slug":"cold-turkey","version":"5.20.0","description":"Powerful website and app blocker with scheduling and lock mode features.","category":"productivity","logoUrl":"logo/cold-turkey.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Cold Turkey28&tracker=28","tags":["blocking","scheduling","lock-mode","windows"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702087,"name":"StayFocusd","slug":"stayfocusd","version":"1.5.0","description":"Chrome extension that limits time spent on time-wasting websites.","category":"productivity","logoUrl":"logo/stayfocusd.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=StayFocusd29&tracker=29","tags":["chrome","extension","blocking","time-limit"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702088,"name":"LeechBlock","slug":"leechblock","version":"6.0.0","description":"Firefox add-on for blocking distracting sites with flexible rules.","category":"productivity","logoUrl":"logo/leechblock.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LeechBlock30&tracker=30","tags":["firefox","addon","blocking","rules"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702092,"name":"KeePassXC","slug":"keepassxc","version":"2.7.7","description":"Open-source, offline password manager with strong encryption and plugins.","category":"productivity","logoUrl":"logo/keepassxc.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=KeePassXC34&tracker=34","tags":["offline","open-source","encryption","plugins"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702093,"name":"Dashlane","slug":"dashlane","version":"6.2408.0","description":"User-friendly password manager with VPN, dark web monitoring, and password changer.","category":"productivity","logoUrl":"logo/dashlane.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Dashlane35&tracker=35","tags":["password","vpn","monitoring","user-friendly"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702094,"name":"NordPass","slug":"nordpass","version":"5.14.0","description":"Modern password manager with XChaCha20 encryption and data breach scanner.","category":"productivity","logoUrl":"logo/nordpass.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NordPass36&tracker=36","tags":["password","xchacha20","scanner","modern"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702101,"name":"Sync.com","slug":"sync-com","version":"6.0.0","description":"Zero-knowledge encrypted cloud storage with file recovery and sharing.","category":"productivity","logoUrl":"logo/sync-com.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sync.com43&tracker=43","tags":["zero-knowledge","encrypted","recovery","sharing"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702102,"name":"Resilio Sync","slug":"resilio-sync","version":"2.7.14","description":"Peer-to-peer file sync with no cloud storage, unlimited size, and fast transfer.","category":"productivity","logoUrl":"logo/resilio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Resilio Sync44&tracker=44","tags":["p2p","sync","unlimited","fast"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702103,"name":"Syncthing","slug":"syncthing","version":"1.27.0","description":"Open-source, decentralized file synchronization with end-to-end encryption.","category":"productivity","logoUrl":"logo/syncthing.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Syncthing45&tracker=45","tags":["open-source","decentralized","encrypted","sync"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702104,"name":"Thunderbird","slug":"thunderbird","version":"115.8.0","description":"Free, open-source email client with powerful filtering and add-ons.","category":"productivity","logoUrl":"logo/thunderbird.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Thunderbird46&tracker=46","tags":["email","open-source","filtering","addons"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702105,"name":"Spark","slug":"spark","version":"3.4.0","description":"Smart email client with AI prioritization, team collaboration, and scheduling.","category":"productivity","logoUrl":"logo/spark.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Spark47&tracker=47","tags":["email","ai","team","smart"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702106,"name":"Superhuman","slug":"superhuman","version":"1.0.0","description":"Premium email client built for speed with keyboard shortcuts and AI features.","category":"productivity","logoUrl":"logo/superhuman.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Superhuman48&tracker=48","tags":["email","premium","speed","shortcuts"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702107,"name":"Mailspring","slug":"mailspring","version":"1.12.0","description":"Modern, open-source email client with unified inbox and read receipts.","category":"productivity","logoUrl":"logo/mailspring.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mailspring49&tracker=49","tags":["email","open-source","unified","modern"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702108,"name":"eM Client","slug":"em-client","version":"10.0.3","description":"Feature-rich email client with calendar, tasks, and PGP encryption support.","category":"productivity","logoUrl":"logo/em-client.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=eM Client50&tracker=50","tags":["email","calendar","pgp","features"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702109,"name":"LibreOffice","slug":"libreoffice","version":"7.6.5","description":"Free, open-source office suite with writer, calc, impress, and more.","category":"productivity","logoUrl":"logo/libreoffice.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LibreOffice51&tracker=51","tags":["office","open-source","free","suite"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702110,"name":"OnlyOffice","slug":"onlyoffice","version":"8.0.0","description":"Open-source office suite with real-time collaboration and cloud integration.","category":"productivity","logoUrl":"logo/onlyoffice.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OnlyOffice52&tracker=52","tags":["office","collaboration","cloud","open-source"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702111,"name":"WPS Office","slug":"wps-office","version":"11.2.0","description":"Lightweight office suite with high MS Office compatibility and PDF tools.","category":"productivity","logoUrl":"logo/wps-office.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WPS Office53&tracker=53","tags":["office","compatibility","pdf","lightweight"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702112,"name":"Google Docs","slug":"google-docs","version":"2024.02","description":"Cloud-based word processor with real-time collaboration and version history.","category":"productivity","logoUrl":"logo/google-docs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Docs54&tracker=54","tags":["docs","collaboration","cloud","google"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702113,"name":"Google Sheets","slug":"google-sheets","version":"2024.02","description":"Online spreadsheet with formulas, charts, and real-time team editing.","category":"productivity","logoUrl":"logo/google-sheets.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Sheets55&tracker=55","tags":["sheets","formulas","charts","collaboration"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702114,"name":"Google Slides","slug":"google-slides","version":"2024.02","description":"Web-based presentation software with templates and collaborative editing.","category":"productivity","logoUrl":"logo/google-slides.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Slides56&tracker=56","tags":["slides","presentations","templates","collaboration"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702115,"name":"Zoho Writer","slug":"zoho-writer","version":"24.01","description":"Cloud word processor with distraction-free mode and collaboration features.","category":"productivity","logoUrl":"logo/zoho-writer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zoho Writer57&tracker=57","tags":["writer","cloud","distraction-free","zoho"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702116,"name":"Zoho Sheet","slug":"zoho-sheet","version":"24.01","description":"Online spreadsheet with pivot tables, charts, and team collaboration.","category":"productivity","logoUrl":"logo/zoho-sheet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zoho Sheet58&tracker=58","tags":["sheet","pivot","charts","zoho"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702117,"name":"Zoho Show","slug":"zoho-show","version":"24.01","description":"Presentation software with animations, transitions, and remote control.","category":"productivity","logoUrl":"logo/zoho-show.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zoho Show59&tracker=59","tags":["presentations","animations","remote","zoho"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702118,"name":"Adobe Acrobat Pro","slug":"adobe-acrobat-pro","version":"2024.001.20604","description":"Professional PDF editor with OCR, form creation, and document signing.","category":"productivity","logoUrl":"logo/acrobat-pro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Acrobat Pro60&tracker=60","tags":["pdf","ocr","forms","signing"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702119,"name":"PDFelement","slug":"pdfelement","version":"10.0.0","description":"Affordable PDF editor with editing, conversion, and OCR capabilities.","category":"productivity","logoUrl":"logo/pdfelement.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PDFelement61&tracker=61","tags":["pdf","editing","conversion","affordable"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702120,"name":"Foxit PDF Editor","slug":"foxit-pdf-editor","version":"13.1.0","description":"Fast, secure PDF editor with collaboration tools and cloud integration.","category":"productivity","logoUrl":"logo/foxit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Foxit PDF Editor62&tracker=62","tags":["pdf","secure","collaboration","fast"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702121,"name":"Nitro PDF Pro","slug":"nitro-pdf-pro","version":"14.0.0","description":"Professional PDF solution with editing, e-signatures, and batch processing.","category":"productivity","logoUrl":"logo/nitro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nitro PDF Pro63&tracker=63","tags":["pdf","esignature","batch","professional"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702122,"name":"Smallpdf","slug":"smallpdf","version":"3.0.0","description":"Simple online PDF toolkit for compressing, converting, and editing files.","category":"productivity","logoUrl":"logo/smallpdf.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Smallpdf64&tracker=64","tags":["pdf","online","simple","convert"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702123,"name":"iLovePDF","slug":"ilovepdf","version":"2.5.0","description":"Free online PDF tools for merging, splitting, compressing, and converting.","category":"productivity","logoUrl":"logo/ilovepdf.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iLovePDF65&tracker=65","tags":["pdf","free","online","tools"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702124,"name":"PDFsam","slug":"pdfsam","version":"5.1.0","description":"Open-source PDF splitter, merger, and rotator with visual interface.","category":"productivity","logoUrl":"logo/pdfsam.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PDFsam66&tracker=66","tags":["pdf","open-source","split","merge"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702125,"name":"ABBYY FineReader","slug":"abbyy-finereader","version":"16.0.3","description":"Advanced OCR software for converting scanned documents to editable formats.","category":"productivity","logoUrl":"logo/abbyy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ABBYY FineReader67&tracker=67","tags":["ocr","scanning","conversion","advanced"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702126,"name":"Adobe Scan","slug":"adobe-scan","version":"24.02.0","description":"Mobile scanning app with OCR, auto-capture, and PDF creation.","category":"productivity","logoUrl":"logo/adobe-scan.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Scan68&tracker=68","tags":["scanning","ocr","mobile","pdf"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702127,"name":"CamScanner","slug":"camscanner","version":"6.42.0","description":"Document scanner app with OCR, cloud sync, and annotation tools.","category":"productivity","logoUrl":"logo/camscanner.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CamScanner69&tracker=69","tags":["scanning","ocr","cloud","annotation"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702128,"name":"Microsoft Lens","slug":"microsoft-lens","version":"16.0.17328","description":"Mobile scanner with OCR, whiteboard enhancement, and Office integration.","category":"productivity","logoUrl":"logo/microsoft-lens.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Microsoft Lens70&tracker=70","tags":["scanning","ocr","office","whiteboard"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702129,"name":"Ditto","slug":"ditto","version":"0.5.1","description":"Advanced clipboard manager with search, history, and network sync.","category":"productivity","logoUrl":"logo/ditto.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ditto71&tracker=71","tags":["clipboard","search","history","sync"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702130,"name":"ClipClip","slug":"clipclip","version":"7.2.0","description":"Free clipboard manager with folders, snippets, and quick paste.","category":"productivity","logoUrl":"logo/clipclip.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ClipClip72&tracker=72","tags":["clipboard","free","snippets","folders"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702131,"name":"CopyQ","slug":"copyq","version":"4.1.0","description":"Advanced clipboard manager with scripting, tabs, and encryption support.","category":"productivity","logoUrl":"logo/copyq.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CopyQ73&tracker=73","tags":["clipboard","scripting","encryption","advanced"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702132,"name":"Alfred","slug":"alfred","version":"5.3.0","description":"Productivity app for Mac with hotkeys, workflows, and clipboard history.","category":"productivity","logoUrl":"logo/alfred.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Alfred74&tracker=74","tags":["mac","hotkeys","workflows","launcher"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702133,"name":"Raycast","slug":"raycast","version":"1.66.0","description":"Blazing fast launcher for Mac with extensions, snippets, and team features.","category":"productivity","logoUrl":"logo/raycast.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Raycast75&tracker=75","tags":["mac","launcher","extensions","fast"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702134,"name":"PowerToys","slug":"powertoys","version":"0.78.0","description":"Microsoft utility suite with FancyZones, PowerRename, and keyboard manager.","category":"productivity","logoUrl":"logo/powertoys.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PowerToys76&tracker=76","tags":["microsoft","utilities","fancyzones","windows"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702136,"name":"Keyboard Maestro","slug":"keyboard-maestro","version":"11.0.3","description":"Powerful Mac automation tool for macros, triggers, and workflows.","category":"productivity","logoUrl":"logo/keyboard-maestro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Keyboard Maestro78&tracker=78","tags":["automation","macros","mac","workflows"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702137,"name":"Zapier Desktop","slug":"zapier-desktop","version":"2.0.0","description":"Automation platform connecting 5000+ apps with triggers and actions.","category":"productivity","logoUrl":"logo/zapier.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zapier Desktop79&tracker=79","tags":["automation","integrations","triggers","cloud"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702138,"name":"Make (Integromat)","slug":"make-integromat","version":"3.0.0","description":"Visual automation platform for building complex workflows without code.","category":"productivity","logoUrl":"logo/make.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Make (Integromat)80&tracker=80","tags":["automation","visual","workflows","no-code"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702139,"name":"IFTTT","slug":"ifttt","version":"3.20.0","description":"Simple automation service connecting apps with if-this-then-that logic.","category":"productivity","logoUrl":"logo/ifttt.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=IFTTT81&tracker=81","tags":["automation","simple","applets","cloud"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702140,"name":"n8n","slug":"n8n","version":"1.25.0","description":"Open-source, self-hostable workflow automation with node-based editor.","category":"productivity","logoUrl":"logo/n8n.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=n8n82&tracker=82","tags":["open-source","self-host","workflows","nodes"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702141,"name":"Habitica","slug":"habitica","version":"3.12.0","description":"Gamified habit tracker that turns tasks into a role-playing game.","category":"productivity","logoUrl":"logo/habitica.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Habitica83&tracker=83","tags":["habits","gamification","rpg","motivation"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702142,"name":"Streaks","slug":"streaks","version":"6.3.0","description":"Beautiful habit tracker for Apple devices with Apple Watch support.","category":"productivity","logoUrl":"logo/streaks.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Streaks84&tracker=84","tags":["habits","apple","watch","beautiful"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702143,"name":"Loop Habit Tracker","slug":"loop-habit-tracker","version":"2.1.0","description":"Open-source habit tracker with statistics, widgets, and no ads.","category":"productivity","logoUrl":"logo/loop.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Loop Habit Tracker85&tracker=85","tags":["habits","open-source","statistics","android"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702144,"name":"Way of Life","slug":"way-of-life","version":"4.5.0","description":"Simple habit tracker with color-coded yes/no logging and trends.","category":"productivity","logoUrl":"logo/way-of-life.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Way of Life86&tracker=86","tags":["habits","simple","trends","logging"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702145,"name":"XMind","slug":"xmind","version":"2024.01","description":"Professional mind mapping software with brainstorming and presentation modes.","category":"productivity","logoUrl":"logo/xmind.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=XMind87&tracker=87","tags":["mind-map","brainstorming","presentation","professional"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702146,"name":"MindMeister","slug":"mindmeister","version":"5.0.0","description":"Cloud-based mind mapping with real-time collaboration and integrations.","category":"productivity","logoUrl":"logo/mindmeister.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MindMeister88&tracker=88","tags":["mind-map","cloud","collaboration","integrations"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702147,"name":"FreeMind","slug":"freemind","version":"1.0.1","description":"Classic open-source mind mapping software with keyboard shortcuts.","category":"productivity","logoUrl":"logo/freemind.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FreeMind89&tracker=89","tags":["mind-map","open-source","free","shortcuts"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702148,"name":"SimpleMind","slug":"simplemind","version":"1.28.0","description":"Intuitive mind mapping app with freeform layout and cloud sync.","category":"productivity","logoUrl":"logo/simplemind.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SimpleMind90&tracker=90","tags":["mind-map","intuitive","freeform","sync"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702149,"name":"MeisterTask","slug":"meistertask","version":"3.5.0","description":"Intuitive Kanban-style project management with automation and integrations.","category":"productivity","logoUrl":"logo/meistertask.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MeisterTask91&tracker=91","tags":["kanban","project","automation","integrations"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702152,"name":"Basecamp","slug":"basecamp","version":"4.0.0","description":"Simple project management with to-dos, message boards, and schedules.","category":"productivity","logoUrl":"logo/basecamp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Basecamp94&tracker=94","tags":["project","simple","team","communication"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702153,"name":"Wrike","slug":"wrike","version":"6.5.0","description":"Enterprise project management with Gantt charts, dashboards, and reporting.","category":"productivity","logoUrl":"logo/wrike.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wrike95&tracker=95","tags":["enterprise","gantt","dashboards","reporting"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702154,"name":"Smartsheet","slug":"smartsheet","version":"2024.01","description":"Spreadsheet-like project management with automation and resource tracking.","category":"productivity","logoUrl":"logo/smartsheet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Smartsheet96&tracker=96","tags":["spreadsheet","automation","resources","enterprise"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702155,"name":"Airtable","slug":"airtable","version":"2.0.0","description":"Flexible database-spreadsheet hybrid with views, automations, and integrations.","category":"productivity","logoUrl":"logo/airtable.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Airtable97&tracker=97","tags":["database","spreadsheet","views","flexible"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702156,"name":"Coda","slug":"coda","version":"3.10.0","description":"All-in-one doc platform blending documents, tables, and app-like features.","category":"productivity","logoUrl":"logo/coda.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Coda98&tracker=98","tags":["docs","tables","apps","collaboration"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702157,"name":"Craft","slug":"craft","version":"2.8.0","description":"Beautiful native docs app for Mac and iOS with blocks and linking.","category":"productivity","logoUrl":"logo/craft.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Craft99&tracker=99","tags":["docs","native","blocks","apple"],"scrapedAt":"2026-04-27T12:58:22.059Z"},{"id":1777294702158,"name":"Notion Calendar","slug":"notion-calendar","version":"1.0.15","description":"Smart calendar that integrates with Notion for unified task and event management.","category":"productivity","logoUrl":"logo/notion-calendar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Notion Calendar100&tracker=100","tags":["calendar","notion","integration","smart"],"scrapedAt":"2026-04-27T12:58:22.059Z"}];
+    const CURRENT_CATEGORY = 'productivity';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

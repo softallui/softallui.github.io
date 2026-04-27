@@ -1,0 +1,960 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Games — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Games</h1>
+    <p><span class="highlight">69</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="cemu.html" class="app-card" data-id="1777298468940" style="text-decoration:none;color:inherit">
+          <img src="logo/cemu.png" alt="Cemu" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Cemu</h3>
+          <p class="app-description">Wii U emulator with 4K upscaling, mod support, and online multiplayer.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">wii-u</span><span class="app-tag">4k</span>
+            </div>
+          
+        </a>
+        <a href="yuzu.html" class="app-card" data-id="1777298468941" style="text-decoration:none;color:inherit">
+          <img src="logo/yuzu.png" alt="yuzu" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">yuzu</h3>
+          <p class="app-description">Open-source Nintendo Switch emulator with multiplayer and mod support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">switch</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="ryujinx.html" class="app-card" data-id="1777298468942" style="text-decoration:none;color:inherit">
+          <img src="logo/ryujinx.png" alt="Ryujinx" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ryujinx</h3>
+          <p class="app-description">Open-source Nintendo Switch emulator focused on accuracy and compatibility.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">switch</span><span class="app-tag">accuracy</span>
+            </div>
+          
+        </a>
+        <a href="ppsspp.html" class="app-card" data-id="1777298468943" style="text-decoration:none;color:inherit">
+          <img src="logo/ppsspp.png" alt="PPSSPP" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PPSSPP</h3>
+          <p class="app-description">PSP emulator with HD rendering, save states, and cross-platform support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">psp</span><span class="app-tag">hd</span>
+            </div>
+          
+        </a>
+        <a href="duckstation.html" class="app-card" data-id="1777298468944" style="text-decoration:none;color:inherit">
+          <img src="logo/duckstation.png" alt="DuckStation" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DuckStation</h3>
+          <p class="app-description">PlayStation 1 emulator with enhanced graphics, rewind, and save states.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">ps1</span><span class="app-tag">enhanced</span>
+            </div>
+          
+        </a>
+        <a href="mgba.html" class="app-card" data-id="1777298468945" style="text-decoration:none;color:inherit">
+          <img src="logo/mgba.png" alt="mGBA" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">mGBA</h3>
+          <p class="app-description">Fast, accurate Game Boy Advance emulator with save states and cheats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">gba</span><span class="app-tag">fast</span>
+            </div>
+          
+        </a>
+        <a href="desmume.html" class="app-card" data-id="1777298468946" style="text-decoration:none;color:inherit">
+          <img src="logo/desmume.png" alt="DeSmuME" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DeSmuME</h3>
+          <p class="app-description">Nintendo DS emulator with touchscreen support and save states.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">nds</span><span class="app-tag">touchscreen</span>
+            </div>
+          
+        </a>
+        <a href="citra.html" class="app-card" data-id="1777298468947" style="text-decoration:none;color:inherit">
+          <img src="logo/citra.png" alt="Citra" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Citra</h3>
+          <p class="app-description">Nintendo 3DS emulator with HD texture packs and online multiplayer support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">3ds</span><span class="app-tag">hd</span>
+            </div>
+          
+        </a>
+        <a href="melonds.html" class="app-card" data-id="1777298468948" style="text-decoration:none;color:inherit">
+          <img src="logo/melonds.png" alt="MelonDS" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MelonDS</h3>
+          <p class="app-description">Accurate Nintendo DS emulator with Wi-Fi support and OpenGL rendering.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">nds</span><span class="app-tag">wifi</span>
+            </div>
+          
+        </a>
+        <a href="mednafen.html" class="app-card" data-id="1777298468949" style="text-decoration:none;color:inherit">
+          <img src="logo/mednafen.png" alt="Mednafen" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mednafen</h3>
+          <p class="app-description">Multi-system emulator with accurate emulation and netplay support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">multi-system</span><span class="app-tag">accurate</span>
+            </div>
+          
+        </a>
+        <a href="mame.html" class="app-card" data-id="1777298468950" style="text-decoration:none;color:inherit">
+          <img src="logo/mame.png" alt="MAME" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MAME</h3>
+          <p class="app-description">Multi-Arcade Machine Emulator for preserving and playing classic arcade games.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">arcade</span><span class="app-tag">emulation</span><span class="app-tag">preservation</span>
+            </div>
+          
+        </a>
+        <a href="flycast.html" class="app-card" data-id="1777298468951" style="text-decoration:none;color:inherit">
+          <img src="logo/flycast.png" alt="Flycast" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Flycast</h3>
+          <p class="app-description">Dreamcast, Naomi, and Atomiswave emulator with online multiplayer support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">dreamcast</span><span class="app-tag">naomi</span>
+            </div>
+          
+        </a>
+        <a href="redream.html" class="app-card" data-id="1777298468952" style="text-decoration:none;color:inherit">
+          <img src="logo/redream.png" alt="Redream" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Redream</h3>
+          <p class="app-description">Highly compatible Dreamcast emulator with HD rendering and save states.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">dreamcast</span><span class="app-tag">hd</span>
+            </div>
+          
+        </a>
+        <a href="xemu.html" class="app-card" data-id="1777298468953" style="text-decoration:none;color:inherit">
+          <img src="logo/xemu.png" alt="xemu" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">xemu</h3>
+          <p class="app-description">Original Xbox emulator with controller support and save state functionality.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">xbox</span><span class="app-tag">original</span>
+            </div>
+          
+        </a>
+        <a href="xenia.html" class="app-card" data-id="1777298468954" style="text-decoration:none;color:inherit">
+          <img src="logo/xenia.png" alt="Xenia" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Xenia</h3>
+          <p class="app-description">Xbox 360 emulator with improving compatibility and performance enhancements.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">xbox360</span><span class="app-tag">compatibility</span>
+            </div>
+          
+        </a>
+        <a href="play.html" class="app-card" data-id="1777298468955" style="text-decoration:none;color:inherit">
+          <img src="logo/play.png" alt="Play!" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Play!</h3>
+          <p class="app-description">PlayStation 2 emulator focused on compatibility and cross-platform support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">ps2</span><span class="app-tag">compatibility</span>
+            </div>
+          
+        </a>
+        <a href="aethersx2.html" class="app-card" data-id="1777298468956" style="text-decoration:none;color:inherit">
+          <img src="logo/aethersx2.png" alt="AetherSX2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AetherSX2</h3>
+          <p class="app-description">PlayStation 2 emulator optimized for Android with controller support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">ps2</span><span class="app-tag">android</span>
+            </div>
+          
+        </a>
+        <a href="lemuroid.html" class="app-card" data-id="1777298468957" style="text-decoration:none;color:inherit">
+          <img src="logo/lemuroid.png" alt="Lemuroid" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Lemuroid</h3>
+          <p class="app-description">All-in-one retro game emulator for Android with multiple system support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">android</span><span class="app-tag">retro</span>
+            </div>
+          
+        </a>
+        <a href="delta.html" class="app-card" data-id="1777298468958" style="text-decoration:none;color:inherit">
+          <img src="logo/delta.png" alt="Delta" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Delta</h3>
+          <p class="app-description">All-in-one game emulator for iOS with support for multiple Nintendo systems.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">ios</span><span class="app-tag">nintendo</span>
+            </div>
+          
+        </a>
+        <a href="provenance.html" class="app-card" data-id="1777298468959" style="text-decoration:none;color:inherit">
+          <img src="logo/provenance.png" alt="Provenance" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Provenance</h3>
+          <p class="app-description">Multi-emulator frontend for iOS and tvOS with controller support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">ios</span><span class="app-tag">tvos</span>
+            </div>
+          
+        </a>
+        <a href="openemu.html" class="app-card" data-id="1777298468960" style="text-decoration:none;color:inherit">
+          <img src="logo/openemu.png" alt="OpenEmu" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OpenEmu</h3>
+          <p class="app-description">Multi-system game emulator for macOS with beautiful UI and controller support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">mac</span><span class="app-tag">multi-system</span>
+            </div>
+          
+        </a>
+        <a href="launchbox.html" class="app-card" data-id="1777298468961" style="text-decoration:none;color:inherit">
+          <img src="logo/launchbox.png" alt="LaunchBox" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LaunchBox</h3>
+          <p class="app-description">Game library manager and frontend for organizing retro and modern games.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">library</span><span class="app-tag">manager</span><span class="app-tag">frontend</span>
+            </div>
+          
+        </a>
+        <a href="playnite.html" class="app-card" data-id="1777298468962" style="text-decoration:none;color:inherit">
+          <img src="logo/playnite.png" alt="Playnite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Playnite</h3>
+          <p class="app-description">Open-source game library manager with plugin support and theme customization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">library</span><span class="app-tag">open-source</span><span class="app-tag">plugins</span>
+            </div>
+          
+        </a>
+        <a href="gog-galaxy-2.html" class="app-card" data-id="1777298468963" style="text-decoration:none;color:inherit">
+          <img src="logo/gog-galaxy-2.png" alt="GOG Galaxy 2.0" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GOG Galaxy 2.0</h3>
+          <p class="app-description">Unified gaming client integrating libraries from Steam, Epic, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">unified</span><span class="app-tag">integration</span><span class="app-tag">libraries</span>
+            </div>
+          
+        </a>
+        <a href="lutris.html" class="app-card" data-id="1777298468964" style="text-decoration:none;color:inherit">
+          <img src="logo/lutris.png" alt="Lutris" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Lutris</h3>
+          <p class="app-description">Open-source gaming platform for Linux with Wine and emulator integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">linux</span><span class="app-tag">open-source</span><span class="app-tag">wine</span>
+            </div>
+          
+        </a>
+        <a href="heroic-games-launcher.html" class="app-card" data-id="1777298468965" style="text-decoration:none;color:inherit">
+          <img src="logo/heroic.png" alt="Heroic Games Launcher" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Heroic Games Launcher</h3>
+          <p class="app-description">Open-source Epic Games and GOG launcher for Linux and macOS.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">epic</span><span class="app-tag">gog</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="bottles.html" class="app-card" data-id="1777298468966" style="text-decoration:none;color:inherit">
+          <img src="logo/bottles.png" alt="Bottles" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bottles</h3>
+          <p class="app-description">Run Windows games on Linux with managed Wine environments and dependencies.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">linux</span><span class="app-tag">wine</span><span class="app-tag">windows-games</span>
+            </div>
+          
+        </a>
+        <a href="protonup-qt.html" class="app-card" data-id="1777298468967" style="text-decoration:none;color:inherit">
+          <img src="logo/protonup.png" alt="ProtonUp-Qt" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ProtonUp-Qt</h3>
+          <p class="app-description">Tool for installing and managing Proton-GE and Wine-GE for Steam and Lutris.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">proton</span><span class="app-tag">wine</span><span class="app-tag">linux</span>
+            </div>
+          
+        </a>
+        <a href="steamtinkerlaunch.html" class="app-card" data-id="1777298468968" style="text-decoration:none;color:inherit">
+          <img src="logo/steamtinkerlaunch.png" alt="SteamTinkerLaunch" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SteamTinkerLaunch</h3>
+          <p class="app-description">Tool for launching games with custom Proton/Wine configurations on Linux.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">steam</span><span class="app-tag">proton</span><span class="app-tag">linux</span>
+            </div>
+          
+        </a>
+        <a href="protondb.html" class="app-card" data-id="1777298468969" style="text-decoration:none;color:inherit">
+          <img src="logo/protondb.png" alt="ProtonDB" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ProtonDB</h3>
+          <p class="app-description">Community-driven database for Proton compatibility reports and fixes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">proton</span><span class="app-tag">compatibility</span><span class="app-tag">community</span>
+            </div>
+          
+        </a>
+        <a href="areweanticheat-yet.html" class="app-card" data-id="1777298468970" style="text-decoration:none;color:inherit">
+          <img src="logo/awacy.png" alt="AreWeAntiCheatYet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AreWeAntiCheatYet</h3>
+          <p class="app-description">Community resource tracking anti-cheat compatibility with Linux and Proton.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">anticheat</span><span class="app-tag">linux</span><span class="app-tag">proton</span>
+            </div>
+          
+        </a>
+        <a href="proton-experimental.html" class="app-card" data-id="1777298468971" style="text-decoration:none;color:inherit">
+          <img src="logo/proton-exp.png" alt="Proton Experimental" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Proton Experimental</h3>
+          <p class="app-description">Bleeding-edge Proton build with latest fixes and game compatibility improvements.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">proton</span><span class="app-tag">experimental</span><span class="app-tag">steam</span>
+            </div>
+          
+        </a>
+        <a href="proton-ge.html" class="app-card" data-id="1777298468972" style="text-decoration:none;color:inherit">
+          <img src="logo/proton-ge.png" alt="Proton GE" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Proton GE</h3>
+          <p class="app-description">Community Proton build with additional patches and media codec support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">proton</span><span class="app-tag">community</span><span class="app-tag">codecs</span>
+            </div>
+          
+        </a>
+        <a href="wine.html" class="app-card" data-id="1777298468973" style="text-decoration:none;color:inherit">
+          <img src="logo/wine.png" alt="Wine" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wine</h3>
+          <p class="app-description">Compatibility layer for running Windows applications and games on Unix systems.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">compatibility</span><span class="app-tag">windows</span><span class="app-tag">linux</span>
+            </div>
+          
+        </a>
+        <a href="wine-staging.html" class="app-card" data-id="1777298468974" style="text-decoration:none;color:inherit">
+          <img src="logo/wine-staging.png" alt="Wine Staging" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wine Staging</h3>
+          <p class="app-description">Wine build with additional patches and experimental features for gaming.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">wine</span><span class="app-tag">staging</span><span class="app-tag">patches</span>
+            </div>
+          
+        </a>
+        <a href="lutris-wine.html" class="app-card" data-id="1777298468975" style="text-decoration:none;color:inherit">
+          <img src="logo/lutris-wine.png" alt="Lutris Wine" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Lutris Wine</h3>
+          <p class="app-description">Custom Wine builds optimized for gaming through the Lutris platform.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">wine</span><span class="app-tag">lutris</span><span class="app-tag">gaming</span>
+            </div>
+          
+        </a>
+        <a href="dxvk.html" class="app-card" data-id="1777298468976" style="text-decoration:none;color:inherit">
+          <img src="logo/dxvk.png" alt="DXVK" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DXVK</h3>
+          <p class="app-description">Vulkan-based translation layer for Direct3D 9/10/11 games on Linux.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vulkan</span><span class="app-tag">direct3d</span><span class="app-tag">translation</span>
+            </div>
+          
+        </a>
+        <a href="vkd3d-proton.html" class="app-card" data-id="1777298468977" style="text-decoration:none;color:inherit">
+          <img src="logo/vkd3d.png" alt="VKD3D-Proton" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">VKD3D-Proton</h3>
+          <p class="app-description">Vulkan-based translation layer for Direct3D 12 games on Linux.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vulkan</span><span class="app-tag">direct3d12</span><span class="app-tag">translation</span>
+            </div>
+          
+        </a>
+        <a href="mangohud.html" class="app-card" data-id="1777298468978" style="text-decoration:none;color:inherit">
+          <img src="logo/mangohud.png" alt="MangoHud" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MangoHud</h3>
+          <p class="app-description">Performance overlay and monitoring tool for Vulkan and OpenGL games.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">overlay</span><span class="app-tag">monitoring</span><span class="app-tag">performance</span>
+            </div>
+          
+        </a>
+        <a href="gamemode.html" class="app-card" data-id="1777298468979" style="text-decoration:none;color:inherit">
+          <img src="logo/gamemode.png" alt="GameMode" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GameMode</h3>
+          <p class="app-description">Optimize system performance for gaming with CPU governor and I/O priority.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">optimization</span><span class="app-tag">performance</span><span class="app-tag">cpu</span>
+            </div>
+          
+        </a>
+        <a href="gamemode-feral.html" class="app-card" data-id="1777298468980" style="text-decoration:none;color:inherit">
+          <img src="logo/gamemode-feral.png" alt="Gamemode" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Gamemode</h3>
+          <p class="app-description">Daemon to optimize system performance for games on Linux.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">daemon</span><span class="app-tag">optimization</span><span class="app-tag">linux</span>
+            </div>
+          
+        </a>
+        <a href="reshade.html" class="app-card" data-id="1777298468981" style="text-decoration:none;color:inherit">
+          <img src="logo/reshade.png" alt="ReShade" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ReShade</h3>
+          <p class="app-description">Post-processing injector for games with shaders and visual enhancements.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">post-processing</span><span class="app-tag">shaders</span><span class="app-tag">visual</span>
+            </div>
+          
+        </a>
+        <a href="special-k.html" class="app-card" data-id="1777298468982" style="text-decoration:none;color:inherit">
+          <img src="logo/special-k.png" alt="Special K" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Special K</h3>
+          <p class="app-description">Advanced DLL injection framework for game enhancement and debugging.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">injection</span><span class="app-tag">enhancement</span><span class="app-tag">debugging</span>
+            </div>
+          
+        </a>
+        <a href="flawless-widescreen.html" class="app-card" data-id="1777298468983" style="text-decoration:none;color:inherit">
+          <img src="logo/flawless-widescreen.png" alt="Flawless Widescreen" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Flawless Widescreen</h3>
+          <p class="app-description">Tool for fixing and enhancing widescreen support in PC games.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">widescreen</span><span class="app-tag">fixes</span><span class="app-tag">enhancement</span>
+            </div>
+          
+        </a>
+        <a href="uueu.html" class="app-card" data-id="1777298468984" style="text-decoration:none;color:inherit">
+          <img src="logo/uueu.png" alt="Universal Unreal Engine Unlocker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Universal Unreal Engine Unlocker</h3>
+          <p class="app-description">Tool for unlocking framerate and FOV in Unreal Engine games.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">unreal-engine</span><span class="app-tag">framerate</span><span class="app-tag">fov</span>
+            </div>
+          
+        </a>
+        <a href="nvidia-profile-inspector.html" class="app-card" data-id="1777298468985" style="text-decoration:none;color:inherit">
+          <img src="logo/nvidia-inspector.png" alt="NVIDIA Profile Inspector" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NVIDIA Profile Inspector</h3>
+          <p class="app-description">Advanced tool for tweaking NVIDIA driver settings per game.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">nvidia</span><span class="app-tag">driver</span><span class="app-tag">tweaking</span>
+            </div>
+          
+        </a>
+        <a href="rtss.html" class="app-card" data-id="1777298468986" style="text-decoration:none;color:inherit">
+          <img src="logo/rtss.png" alt="RTSS" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">RTSS</h3>
+          <p class="app-description">RivaTuner Statistics Server for framerate limiting and OSD overlay.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">framerate</span><span class="app-tag">limiting</span><span class="app-tag">overlay</span>
+            </div>
+          
+        </a>
+        <a href="evga-precision-x1.html" class="app-card" data-id="1777298468988" style="text-decoration:none;color:inherit">
+          <img src="logo/precision-x1.png" alt="EVGA Precision X1" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">EVGA Precision X1</h3>
+          <p class="app-description">GPU tuning software with RGB control and performance monitoring.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gpu</span><span class="app-tag">tuning</span><span class="app-tag">rgb</span>
+            </div>
+          
+        </a>
+        <a href="amd-adrenalin.html" class="app-card" data-id="1777298468989" style="text-decoration:none;color:inherit">
+          <img src="logo/adrenalin.png" alt="AMD Adrenalin" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AMD Adrenalin</h3>
+          <p class="app-description">AMD GPU driver suite with performance tuning and game optimization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">amd</span><span class="app-tag">gpu</span><span class="app-tag">optimization</span>
+            </div>
+          
+        </a>
+        <a href="intel-arc-control.html" class="app-card" data-id="1777298468992" style="text-decoration:none;color:inherit">
+          <img src="logo/arc-control.png" alt="Intel Arc Control" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Intel Arc Control</h3>
+          <p class="app-description">Intel GPU control panel with performance tuning and game optimization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">intel</span><span class="app-tag">gpu</span><span class="app-tag">arc</span>
+            </div>
+          
+        </a>
+        <a href="capframex.html" class="app-card" data-id="1777298468993" style="text-decoration:none;color:inherit">
+          <img src="logo/capframex.png" alt="CapFrameX" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CapFrameX</h3>
+          <p class="app-description">Frametime capture and analysis tool for benchmarking and optimization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">benchmarking</span><span class="app-tag">frametime</span><span class="app-tag">analysis</span>
+            </div>
+          
+        </a>
+        <a href="presentmon.html" class="app-card" data-id="1777298468994" style="text-decoration:none;color:inherit">
+          <img src="logo/presentmon.png" alt="PresentMon" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PresentMon</h3>
+          <p class="app-description">Tool for capturing and analyzing DirectX and Vulkan presentation metrics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">metrics</span><span class="app-tag">directx</span><span class="app-tag">vulkan</span>
+            </div>
+          
+        </a>
+        <a href="streamelements-obs-live.html" class="app-card" data-id="1777298469002" style="text-decoration:none;color:inherit">
+          <img src="logo/streamelements.png" alt="StreamElements OBS.Live" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">StreamElements OBS.Live</h3>
+          <p class="app-description">Overlay and alert management for OBS with Twitch and YouTube integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">obs</span><span class="app-tag">overlays</span><span class="app-tag">alerts</span>
+            </div>
+          
+        </a>
+        <a href="streamlabs-cloudbot.html" class="app-card" data-id="1777298469003" style="text-decoration:none;color:inherit">
+          <img src="logo/cloudbot.png" alt="Streamlabs Cloudbot" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Streamlabs Cloudbot</h3>
+          <p class="app-description">Cloud-based chatbot for Twitch and YouTube with moderation and engagement tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">chatbot</span><span class="app-tag">moderation</span><span class="app-tag">twitch</span>
+            </div>
+          
+        </a>
+        <a href="nightbot.html" class="app-card" data-id="1777298469004" style="text-decoration:none;color:inherit">
+          <img src="logo/nightbot.png" alt="Nightbot" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nightbot</h3>
+          <p class="app-description">Free chatbot for Twitch and YouTube with moderation, commands, and timers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">chatbot</span><span class="app-tag">free</span><span class="app-tag">moderation</span>
+            </div>
+          
+        </a>
+        <a href="moobot.html" class="app-card" data-id="1777298469005" style="text-decoration:none;color:inherit">
+          <img src="logo/moobot.png" alt="Moobot" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Moobot</h3>
+          <p class="app-description">Twitch chatbot with moderation, giveaways, and custom commands.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">twitch</span><span class="app-tag">chatbot</span><span class="app-tag">giveaways</span>
+            </div>
+          
+        </a>
+        <a href="streamelements.html" class="app-card" data-id="1777298469006" style="text-decoration:none;color:inherit">
+          <img src="logo/streamelements-main.png" alt="StreamElements" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">StreamElements</h3>
+          <p class="app-description">All-in-one streaming toolkit with overlays, alerts, and analytics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">overlays</span><span class="app-tag">analytics</span>
+            </div>
+          
+        </a>
+        <a href="streamelements-overlay.html" class="app-card" data-id="1777298469007" style="text-decoration:none;color:inherit">
+          <img src="logo/se-overlay.png" alt="Streamelements Overlay" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Streamelements Overlay</h3>
+          <p class="app-description">Browser-based overlay editor for Twitch and YouTube streaming.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">overlay</span><span class="app-tag">browser</span><span class="app-tag">twitch</span>
+            </div>
+          
+        </a>
+        <a href="streamlabs-merch.html" class="app-card" data-id="1777298469008" style="text-decoration:none;color:inherit">
+          <img src="logo/sl-merch.png" alt="Streamlabs Merch" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Streamlabs Merch</h3>
+          <p class="app-description">Merchandise platform for streamers with print-on-demand integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">merch</span><span class="app-tag">streamers</span><span class="app-tag">print-on-demand</span>
+            </div>
+          
+        </a>
+        <a href="streamlabs-charity.html" class="app-card" data-id="1777298469009" style="text-decoration:none;color:inherit">
+          <img src="logo/sl-charity.png" alt="Streamlabs Charity" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Streamlabs Charity</h3>
+          <p class="app-description">Fundraising platform for streamers with donation tracking and goals.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">charity</span><span class="app-tag">fundraising</span><span class="app-tag">donations</span>
+            </div>
+          
+        </a>
+        <a href="tiltify.html" class="app-card" data-id="1777298469010" style="text-decoration:none;color:inherit">
+          <img src="logo/tiltify.png" alt="Tiltify" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tiltify</h3>
+          <p class="app-description">Fundraising platform for creators with campaign management and analytics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fundraising</span><span class="app-tag">campaigns</span><span class="app-tag">analytics</span>
+            </div>
+          
+        </a>
+        <a href="donorbox.html" class="app-card" data-id="1777298469011" style="text-decoration:none;color:inherit">
+          <img src="logo/donorbox.png" alt="Donorbox" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Donorbox</h3>
+          <p class="app-description">Donation platform for streamers with recurring donations and widgets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">donations</span><span class="app-tag">recurring</span><span class="app-tag">widgets</span>
+            </div>
+          
+        </a>
+        <a href="ko-fi.html" class="app-card" data-id="1777298469012" style="text-decoration:none;color:inherit">
+          <img src="logo/ko-fi.png" alt="Ko-fi" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ko-fi</h3>
+          <p class="app-description">Support platform for creators with one-time donations and shop features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">donations</span><span class="app-tag">shop</span><span class="app-tag">creators</span>
+            </div>
+          
+        </a>
+        <a href="patreon.html" class="app-card" data-id="1777298469013" style="text-decoration:none;color:inherit">
+          <img src="logo/patreon.png" alt="Patreon" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Patreon</h3>
+          <p class="app-description">Membership platform for creators with tiered subscriptions and exclusive content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">membership</span><span class="app-tag">subscriptions</span><span class="app-tag">exclusive</span>
+            </div>
+          
+        </a>
+        <a href="subscribestar.html" class="app-card" data-id="1777298469014" style="text-decoration:none;color:inherit">
+          <img src="logo/subscribestar.png" alt="SubscribeStar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SubscribeStar</h3>
+          <p class="app-description">Creator subscription platform with lower fees and flexible payout options.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">subscriptions</span><span class="app-tag">creators</span><span class="app-tag">lower-fees</span>
+            </div>
+          
+        </a>
+        <a href="buy-me-a-coffee.html" class="app-card" data-id="1777298469015" style="text-decoration:none;color:inherit">
+          <img src="logo/buymeacoffee.png" alt="Buy Me a Coffee" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Buy Me a Coffee</h3>
+          <p class="app-description">Simple support platform for creators with one-time and recurring donations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">donations</span><span class="app-tag">simple</span><span class="app-tag">creators</span>
+            </div>
+          
+        </a>
+        <a href="streamlabs-prime.html" class="app-card" data-id="1777298469016" style="text-decoration:none;color:inherit">
+          <img src="logo/sl-prime.png" alt="Streamlabs Prime" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Streamlabs Prime</h3>
+          <p class="app-description">Premium streaming subscription with advanced features and priority support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">premium</span><span class="app-tag">streaming</span><span class="app-tag">features</span>
+            </div>
+          
+        </a>
+        <a href="twitch-turbo.html" class="app-card" data-id="1777298469017" style="text-decoration:none;color:inherit">
+          <img src="logo/twitch-turbo.png" alt="Twitch Turbo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Twitch Turbo</h3>
+          <p class="app-description">Ad-free viewing subscription for Twitch with extended VOD storage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">twitch</span><span class="app-tag">ad-free</span><span class="app-tag">vod</span>
+            </div>
+          
+        </a>
+        <a href="twitch-prime.html" class="app-card" data-id="1777298469018" style="text-decoration:none;color:inherit">
+          <img src="logo/twitch-prime.png" alt="Twitch Prime" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Twitch Prime</h3>
+          <p class="app-description">Amazon Prime benefit with free Twitch channel subscription and ad-free viewing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">twitch</span><span class="app-tag">amazon</span><span class="app-tag">ad-free</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777298468940,"name":"Cemu","slug":"cemu","version":"2.0","description":"Wii U emulator with 4K upscaling, mod support, and online multiplayer.","category":"games","logoUrl":"logo/cemu.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Cemu22&tracker=22","tags":["emulation","wii-u","4k","mods"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468941,"name":"yuzu","slug":"yuzu","version":"2024.03","description":"Open-source Nintendo Switch emulator with multiplayer and mod support.","category":"games","logoUrl":"logo/yuzu.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=yuzu23&tracker=23","tags":["emulation","switch","open-source","multiplayer"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468942,"name":"Ryujinx","slug":"ryujinx","version":"1.1.1161","description":"Open-source Nintendo Switch emulator focused on accuracy and compatibility.","category":"games","logoUrl":"logo/ryujinx.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ryujinx24&tracker=24","tags":["emulation","switch","accuracy","open-source"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468943,"name":"PPSSPP","slug":"ppsspp","version":"1.17.1","description":"PSP emulator with HD rendering, save states, and cross-platform support.","category":"games","logoUrl":"logo/ppsspp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PPSSPP25&tracker=25","tags":["emulation","psp","hd","cross-platform"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468944,"name":"DuckStation","slug":"duckstation","version":"0.1-6000","description":"PlayStation 1 emulator with enhanced graphics, rewind, and save states.","category":"games","logoUrl":"logo/duckstation.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DuckStation26&tracker=26","tags":["emulation","ps1","enhanced","rewind"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468945,"name":"mGBA","slug":"mgba","version":"0.10.3","description":"Fast, accurate Game Boy Advance emulator with save states and cheats.","category":"games","logoUrl":"logo/mgba.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=mGBA27&tracker=27","tags":["emulation","gba","fast","accurate"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468946,"name":"DeSmuME","slug":"desmume","version":"0.9.13","description":"Nintendo DS emulator with touchscreen support and save states.","category":"games","logoUrl":"logo/desmume.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DeSmuME28&tracker=28","tags":["emulation","nds","touchscreen","savestates"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468947,"name":"Citra","slug":"citra","version":"2024.03","description":"Nintendo 3DS emulator with HD texture packs and online multiplayer support.","category":"games","logoUrl":"logo/citra.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Citra29&tracker=29","tags":["emulation","3ds","hd","multiplayer"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468948,"name":"MelonDS","slug":"melonds","version":"0.9.5","description":"Accurate Nintendo DS emulator with Wi-Fi support and OpenGL rendering.","category":"games","logoUrl":"logo/melonds.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MelonDS30&tracker=30","tags":["emulation","nds","wifi","opengl"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468949,"name":"Mednafen","slug":"mednafen","version":"1.32.1","description":"Multi-system emulator with accurate emulation and netplay support.","category":"games","logoUrl":"logo/mednafen.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mednafen31&tracker=31","tags":["emulation","multi-system","accurate","netplay"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468950,"name":"MAME","slug":"mame","version":"0.263","description":"Multi-Arcade Machine Emulator for preserving and playing classic arcade games.","category":"games","logoUrl":"logo/mame.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MAME32&tracker=32","tags":["arcade","emulation","preservation","classic"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468951,"name":"Flycast","slug":"flycast","version":"2.3","description":"Dreamcast, Naomi, and Atomiswave emulator with online multiplayer support.","category":"games","logoUrl":"logo/flycast.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Flycast33&tracker=33","tags":["emulation","dreamcast","naomi","multiplayer"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468952,"name":"Redream","slug":"redream","version":"1.5.0","description":"Highly compatible Dreamcast emulator with HD rendering and save states.","category":"games","logoUrl":"logo/redream.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Redream34&tracker=34","tags":["emulation","dreamcast","hd","compatible"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468953,"name":"xemu","slug":"xemu","version":"0.7.100","description":"Original Xbox emulator with controller support and save state functionality.","category":"games","logoUrl":"logo/xemu.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=xemu35&tracker=35","tags":["emulation","xbox","original","controllers"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468954,"name":"Xenia","slug":"xenia","version":"2024.03","description":"Xbox 360 emulator with improving compatibility and performance enhancements.","category":"games","logoUrl":"logo/xenia.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Xenia36&tracker=36","tags":["emulation","xbox360","compatibility","performance"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468955,"name":"Play!","slug":"play","version":"0.57","description":"PlayStation 2 emulator focused on compatibility and cross-platform support.","category":"games","logoUrl":"logo/play.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Play!37&tracker=37","tags":["emulation","ps2","compatibility","cross-platform"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468956,"name":"AetherSX2","slug":"aethersx2","version":"3668","description":"PlayStation 2 emulator optimized for Android with controller support.","category":"games","logoUrl":"logo/aethersx2.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AetherSX238&tracker=38","tags":["emulation","ps2","android","mobile"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468957,"name":"Lemuroid","slug":"lemuroid","version":"1.15.0","description":"All-in-one retro game emulator for Android with multiple system support.","category":"games","logoUrl":"logo/lemuroid.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Lemuroid39&tracker=39","tags":["emulation","android","retro","multi-system"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468958,"name":"Delta","slug":"delta","version":"2.0","description":"All-in-one game emulator for iOS with support for multiple Nintendo systems.","category":"games","logoUrl":"logo/delta.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Delta40&tracker=40","tags":["emulation","ios","nintendo","multi-system"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468959,"name":"Provenance","slug":"provenance","version":"3.0","description":"Multi-emulator frontend for iOS and tvOS with controller support.","category":"games","logoUrl":"logo/provenance.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Provenance41&tracker=41","tags":["emulation","ios","tvos","frontend"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468960,"name":"OpenEmu","slug":"openemu","version":"2.4","description":"Multi-system game emulator for macOS with beautiful UI and controller support.","category":"games","logoUrl":"logo/openemu.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OpenEmu42&tracker=42","tags":["emulation","mac","multi-system","beautiful"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468961,"name":"LaunchBox","slug":"launchbox","version":"13.16","description":"Game library manager and frontend for organizing retro and modern games.","category":"games","logoUrl":"logo/launchbox.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LaunchBox43&tracker=43","tags":["library","manager","frontend","organization"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468962,"name":"Playnite","slug":"playnite","version":"10.29","description":"Open-source game library manager with plugin support and theme customization.","category":"games","logoUrl":"logo/playnite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Playnite44&tracker=44","tags":["library","open-source","plugins","themes"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468963,"name":"GOG Galaxy 2.0","slug":"gog-galaxy-2","version":"2.0.74","description":"Unified gaming client integrating libraries from Steam, Epic, and more.","category":"games","logoUrl":"logo/gog-galaxy-2.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GOG Galaxy 2.045&tracker=45","tags":["unified","integration","libraries","cross-platform"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468964,"name":"Lutris","slug":"lutris","version":"0.5.16","description":"Open-source gaming platform for Linux with Wine and emulator integration.","category":"games","logoUrl":"logo/lutris.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Lutris46&tracker=46","tags":["linux","open-source","wine","emulators"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468965,"name":"Heroic Games Launcher","slug":"heroic-games-launcher","version":"2.12.0","description":"Open-source Epic Games and GOG launcher for Linux and macOS.","category":"games","logoUrl":"logo/heroic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Heroic Games Launcher47&tracker=47","tags":["epic","gog","open-source","linux"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468966,"name":"Bottles","slug":"bottles","version":"51.11","description":"Run Windows games on Linux with managed Wine environments and dependencies.","category":"games","logoUrl":"logo/bottles.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bottles48&tracker=48","tags":["linux","wine","windows-games","managed"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468967,"name":"ProtonUp-Qt","slug":"protonup-qt","version":"2.9.2","description":"Tool for installing and managing Proton-GE and Wine-GE for Steam and Lutris.","category":"games","logoUrl":"logo/protonup.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ProtonUp-Qt49&tracker=49","tags":["proton","wine","linux","steam"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468968,"name":"SteamTinkerLaunch","slug":"steamtinkerlaunch","version":"12.0","description":"Tool for launching games with custom Proton/Wine configurations on Linux.","category":"games","logoUrl":"logo/steamtinkerlaunch.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SteamTinkerLaunch50&tracker=50","tags":["steam","proton","linux","customization"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468969,"name":"ProtonDB","slug":"protondb","version":"2024.03","description":"Community-driven database for Proton compatibility reports and fixes.","category":"games","logoUrl":"logo/protondb.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ProtonDB51&tracker=51","tags":["proton","compatibility","community","reports"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468970,"name":"AreWeAntiCheatYet","slug":"areweanticheat-yet","version":"2024.03","description":"Community resource tracking anti-cheat compatibility with Linux and Proton.","category":"games","logoUrl":"logo/awacy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AreWeAntiCheatYet52&tracker=52","tags":["anticheat","linux","proton","compatibility"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468971,"name":"Proton Experimental","slug":"proton-experimental","version":"2024.03","description":"Bleeding-edge Proton build with latest fixes and game compatibility improvements.","category":"games","logoUrl":"logo/proton-exp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Proton Experimental53&tracker=53","tags":["proton","experimental","steam","compatibility"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468972,"name":"Proton GE","slug":"proton-ge","version":"8-29","description":"Community Proton build with additional patches and media codec support.","category":"games","logoUrl":"logo/proton-ge.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Proton GE54&tracker=54","tags":["proton","community","codecs","patches"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468973,"name":"Wine","slug":"wine","version":"9.4","description":"Compatibility layer for running Windows applications and games on Unix systems.","category":"games","logoUrl":"logo/wine.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wine55&tracker=55","tags":["compatibility","windows","linux","unix"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468974,"name":"Wine Staging","slug":"wine-staging","version":"9.4","description":"Wine build with additional patches and experimental features for gaming.","category":"games","logoUrl":"logo/wine-staging.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wine Staging56&tracker=56","tags":["wine","staging","patches","experimental"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468975,"name":"Lutris Wine","slug":"lutris-wine","version":"9.4","description":"Custom Wine builds optimized for gaming through the Lutris platform.","category":"games","logoUrl":"logo/lutris-wine.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Lutris Wine57&tracker=57","tags":["wine","lutris","gaming","optimized"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468976,"name":"DXVK","slug":"dxvk","version":"2.3","description":"Vulkan-based translation layer for Direct3D 9/10/11 games on Linux.","category":"games","logoUrl":"logo/dxvk.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DXVK58&tracker=58","tags":["vulkan","direct3d","translation","linux"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468977,"name":"VKD3D-Proton","slug":"vkd3d-proton","version":"2.11","description":"Vulkan-based translation layer for Direct3D 12 games on Linux.","category":"games","logoUrl":"logo/vkd3d.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=VKD3D-Proton59&tracker=59","tags":["vulkan","direct3d12","translation","proton"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468978,"name":"MangoHud","slug":"mangohud","version":"0.7.2","description":"Performance overlay and monitoring tool for Vulkan and OpenGL games.","category":"games","logoUrl":"logo/mangohud.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MangoHud60&tracker=60","tags":["overlay","monitoring","performance","vulkan"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468979,"name":"GameMode","slug":"gamemode","version":"1.8.2","description":"Optimize system performance for gaming with CPU governor and I/O priority.","category":"games","logoUrl":"logo/gamemode.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GameMode61&tracker=61","tags":["optimization","performance","cpu","linux"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468980,"name":"Gamemode","slug":"gamemode-feral","version":"1.8.2","description":"Daemon to optimize system performance for games on Linux.","category":"games","logoUrl":"logo/gamemode-feral.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Gamemode62&tracker=62","tags":["daemon","optimization","linux","performance"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468981,"name":"ReShade","slug":"reshade","version":"5.9.2","description":"Post-processing injector for games with shaders and visual enhancements.","category":"games","logoUrl":"logo/reshade.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ReShade63&tracker=63","tags":["post-processing","shaders","visual","injector"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468982,"name":"Special K","slug":"special-k","version":"24.3.15","description":"Advanced DLL injection framework for game enhancement and debugging.","category":"games","logoUrl":"logo/special-k.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Special K64&tracker=64","tags":["injection","enhancement","debugging","framework"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468983,"name":"Flawless Widescreen","slug":"flawless-widescreen","version":"1.8.3","description":"Tool for fixing and enhancing widescreen support in PC games.","category":"games","logoUrl":"logo/flawless-widescreen.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Flawless Widescreen65&tracker=65","tags":["widescreen","fixes","enhancement","pc"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468984,"name":"Universal Unreal Engine Unlocker","slug":"uueu","version":"5.0","description":"Tool for unlocking framerate and FOV in Unreal Engine games.","category":"games","logoUrl":"logo/uueu.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Universal Unreal Engine Unlocker66&tracker=66","tags":["unreal-engine","framerate","fov","unlocker"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468985,"name":"NVIDIA Profile Inspector","slug":"nvidia-profile-inspector","version":"2.4.0.6","description":"Advanced tool for tweaking NVIDIA driver settings per game.","category":"games","logoUrl":"logo/nvidia-inspector.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NVIDIA Profile Inspector67&tracker=67","tags":["nvidia","driver","tweaking","profiles"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468986,"name":"RTSS","slug":"rtss","version":"7.3.3","description":"RivaTuner Statistics Server for framerate limiting and OSD overlay.","category":"games","logoUrl":"logo/rtss.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=RTSS68&tracker=68","tags":["framerate","limiting","overlay","statistics"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468988,"name":"EVGA Precision X1","slug":"evga-precision-x1","version":"7.0.5","description":"GPU tuning software with RGB control and performance monitoring.","category":"games","logoUrl":"logo/precision-x1.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=EVGA Precision X170&tracker=70","tags":["gpu","tuning","rgb","monitoring"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468989,"name":"AMD Adrenalin","slug":"amd-adrenalin","version":"24.3.1","description":"AMD GPU driver suite with performance tuning and game optimization.","category":"games","logoUrl":"logo/adrenalin.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AMD Adrenalin71&tracker=71","tags":["amd","gpu","optimization","drivers"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468992,"name":"Intel Arc Control","slug":"intel-arc-control","version":"1.1.6","description":"Intel GPU control panel with performance tuning and game optimization.","category":"games","logoUrl":"logo/arc-control.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Intel Arc Control74&tracker=74","tags":["intel","gpu","arc","optimization"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468993,"name":"CapFrameX","slug":"capframex","version":"1.8.0","description":"Frametime capture and analysis tool for benchmarking and optimization.","category":"games","logoUrl":"logo/capframex.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CapFrameX75&tracker=75","tags":["benchmarking","frametime","analysis","optimization"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298468994,"name":"PresentMon","slug":"presentmon","version":"2.1.0","description":"Tool for capturing and analyzing DirectX and Vulkan presentation metrics.","category":"games","logoUrl":"logo/presentmon.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PresentMon76&tracker=76","tags":["metrics","directx","vulkan","analysis"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469002,"name":"StreamElements OBS.Live","slug":"streamelements-obs-live","version":"2024.03","description":"Overlay and alert management for OBS with Twitch and YouTube integration.","category":"games","logoUrl":"logo/streamelements.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=StreamElements OBS.Live84&tracker=84","tags":["obs","overlays","alerts","integration"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469003,"name":"Streamlabs Cloudbot","slug":"streamlabs-cloudbot","version":"2024.03","description":"Cloud-based chatbot for Twitch and YouTube with moderation and engagement tools.","category":"games","logoUrl":"logo/cloudbot.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Streamlabs Cloudbot85&tracker=85","tags":["chatbot","moderation","twitch","youtube"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469004,"name":"Nightbot","slug":"nightbot","version":"2024.03","description":"Free chatbot for Twitch and YouTube with moderation, commands, and timers.","category":"games","logoUrl":"logo/nightbot.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nightbot86&tracker=86","tags":["chatbot","free","moderation","commands"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469005,"name":"Moobot","slug":"moobot","version":"2024.03","description":"Twitch chatbot with moderation, giveaways, and custom commands.","category":"games","logoUrl":"logo/moobot.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Moobot87&tracker=87","tags":["twitch","chatbot","giveaways","moderation"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469006,"name":"StreamElements","slug":"streamelements","version":"2024.03","description":"All-in-one streaming toolkit with overlays, alerts, and analytics.","category":"games","logoUrl":"logo/streamelements-main.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=StreamElements88&tracker=88","tags":["streaming","overlays","analytics","toolkit"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469007,"name":"Streamelements Overlay","slug":"streamelements-overlay","version":"2024.03","description":"Browser-based overlay editor for Twitch and YouTube streaming.","category":"games","logoUrl":"logo/se-overlay.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Streamelements Overlay89&tracker=89","tags":["overlay","browser","twitch","editor"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469008,"name":"Streamlabs Merch","slug":"streamlabs-merch","version":"2024.03","description":"Merchandise platform for streamers with print-on-demand integration.","category":"games","logoUrl":"logo/sl-merch.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Streamlabs Merch90&tracker=90","tags":["merch","streamers","print-on-demand","monetization"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469009,"name":"Streamlabs Charity","slug":"streamlabs-charity","version":"2024.03","description":"Fundraising platform for streamers with donation tracking and goals.","category":"games","logoUrl":"logo/sl-charity.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Streamlabs Charity91&tracker=91","tags":["charity","fundraising","donations","streamers"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469010,"name":"Tiltify","slug":"tiltify","version":"2024.03","description":"Fundraising platform for creators with campaign management and analytics.","category":"games","logoUrl":"logo/tiltify.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tiltify92&tracker=92","tags":["fundraising","campaigns","analytics","creators"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469011,"name":"Donorbox","slug":"donorbox","version":"2024.03","description":"Donation platform for streamers with recurring donations and widgets.","category":"games","logoUrl":"logo/donorbox.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Donorbox93&tracker=93","tags":["donations","recurring","widgets","streamers"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469012,"name":"Ko-fi","slug":"ko-fi","version":"2024.03","description":"Support platform for creators with one-time donations and shop features.","category":"games","logoUrl":"logo/ko-fi.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ko-fi94&tracker=94","tags":["donations","shop","creators","support"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469013,"name":"Patreon","slug":"patreon","version":"2024.03","description":"Membership platform for creators with tiered subscriptions and exclusive content.","category":"games","logoUrl":"logo/patreon.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Patreon95&tracker=95","tags":["membership","subscriptions","exclusive","creators"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469014,"name":"SubscribeStar","slug":"subscribestar","version":"2024.03","description":"Creator subscription platform with lower fees and flexible payout options.","category":"games","logoUrl":"logo/subscribestar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SubscribeStar96&tracker=96","tags":["subscriptions","creators","lower-fees","payouts"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469015,"name":"Buy Me a Coffee","slug":"buy-me-a-coffee","version":"2024.03","description":"Simple support platform for creators with one-time and recurring donations.","category":"games","logoUrl":"logo/buymeacoffee.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Buy Me a Coffee97&tracker=97","tags":["donations","simple","creators","recurring"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469016,"name":"Streamlabs Prime","slug":"streamlabs-prime","version":"2024.03","description":"Premium streaming subscription with advanced features and priority support.","category":"games","logoUrl":"logo/sl-prime.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Streamlabs Prime98&tracker=98","tags":["premium","streaming","features","support"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469017,"name":"Twitch Turbo","slug":"twitch-turbo","version":"2024.03","description":"Ad-free viewing subscription for Twitch with extended VOD storage.","category":"games","logoUrl":"logo/twitch-turbo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Twitch Turbo99&tracker=99","tags":["twitch","ad-free","vod","subscription"],"scrapedAt":"2026-04-27T14:01:08.919Z"},{"id":1777298469018,"name":"Twitch Prime","slug":"twitch-prime","version":"2024.03","description":"Amazon Prime benefit with free Twitch channel subscription and ad-free viewing.","category":"games","logoUrl":"logo/twitch-prime.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Twitch Prime100&tracker=100","tags":["twitch","amazon","ad-free","subscription"],"scrapedAt":"2026-04-27T14:01:08.919Z"}];
+    const CURRENT_CATEGORY = 'games';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

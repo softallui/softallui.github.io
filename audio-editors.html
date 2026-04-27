@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Audio & Music — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Audio &amp; Music</h1>
+    <p><span class="highlight">92</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="studio-one.html" class="app-card" data-id="1777289759610" style="text-decoration:none;color:inherit">
+          <img src="logo/studio-one.png" alt="Studio One" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Studio One</h3>
+          <p class="app-description">Modern DAW featuring drag-and-drop workflow and integrated mastering suite.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">daw</span><span class="app-tag">workflow</span><span class="app-tag">mastering</span>
+            </div>
+          
+        </a>
+        <a href="reason.html" class="app-card" data-id="1777289759612" style="text-decoration:none;color:inherit">
+          <img src="logo/reason.png" alt="Reason" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Reason</h3>
+          <p class="app-description">Virtual rack-based DAW with synthesizers, effects, and modular routing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">synth</span><span class="app-tag">modular</span><span class="app-tag">rack</span>
+            </div>
+          
+        </a>
+        <a href="cakewalk-bandlab.html" class="app-card" data-id="1777289759613" style="text-decoration:none;color:inherit">
+          <img src="logo/cakewalk.png" alt="Cakewalk by BandLab" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Cakewalk by BandLab</h3>
+          <p class="app-description">Full-featured professional DAW available for free on Windows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">daw</span><span class="app-tag">windows</span>
+            </div>
+          
+        </a>
+        <a href="bitwig-studio.html" class="app-card" data-id="1777289759614" style="text-decoration:none;color:inherit">
+          <img src="logo/bitwig.png" alt="Bitwig Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bitwig Studio</h3>
+          <p class="app-description">Innovative DAW with modulation system and seamless hardware integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">modular</span><span class="app-tag">daw</span><span class="app-tag">experimental</span>
+            </div>
+          
+        </a>
+        <a href="tracktion-waveform.html" class="app-card" data-id="1777289759615" style="text-decoration:none;color:inherit">
+          <img src="logo/tracktion.png" alt="Tracktion Waveform" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tracktion Waveform</h3>
+          <p class="app-description">Cross-platform DAW with free tier and integrated MIDI &amp; audio editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">daw</span><span class="app-tag">cross-platform</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="ardour.html" class="app-card" data-id="1777289759616" style="text-decoration:none;color:inherit">
+          <img src="logo/ardour.png" alt="Ardour" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ardour</h3>
+          <p class="app-description">Open-source digital audio workstation for recording, editing, and mixing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">recording</span><span class="app-tag">mixing</span>
+            </div>
+          
+        </a>
+        <a href="lmms.html" class="app-card" data-id="1777289759617" style="text-decoration:none;color:inherit">
+          <img src="logo/lmms.png" alt="LMMS" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LMMS</h3>
+          <p class="app-description">Free, cross-platform alternative to commercial music production software.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">beats</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="adobe-audition.html" class="app-card" data-id="1777289759618" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-audition.png" alt="Adobe Audition" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Audition</h3>
+          <p class="app-description">Professional audio workstation for recording, mixing, and sound restoration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">adobe</span><span class="app-tag">restoration</span><span class="app-tag">podcast</span>
+            </div>
+          
+        </a>
+        <a href="steinberg-wavelab.html" class="app-card" data-id="1777289759619" style="text-decoration:none;color:inherit">
+          <img src="logo/wavelab.png" alt="Steinberg WaveLab" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Steinberg WaveLab</h3>
+          <p class="app-description">Advanced audio editing, mastering, and analysis software for professionals.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mastering</span><span class="app-tag">editing</span><span class="app-tag">analysis</span>
+            </div>
+          
+        </a>
+        <a href="izotope-rx.html" class="app-card" data-id="1777289759620" style="text-decoration:none;color:inherit">
+          <img src="logo/izotope-rx.png" alt="iZotope RX" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iZotope RX</h3>
+          <p class="app-description">Industry-leading audio repair and noise reduction software for post-production.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">repair</span><span class="app-tag">noise-reduction</span><span class="app-tag">post</span>
+            </div>
+          
+        </a>
+        <a href="sound-forge-pro.html" class="app-card" data-id="1777289759621" style="text-decoration:none;color:inherit">
+          <img src="logo/sound-forge.png" alt="Sound Forge Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sound Forge Pro</h3>
+          <p class="app-description">Comprehensive audio editing and mastering tool for Windows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">editing</span><span class="app-tag">mastering</span><span class="app-tag">windows</span>
+            </div>
+          
+        </a>
+        <a href="ocenaudio.html" class="app-card" data-id="1777289759622" style="text-decoration:none;color:inherit">
+          <img src="logo/ocenaudio.png" alt="Ocenaudio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ocenaudio</h3>
+          <p class="app-description">Fast, cross-platform audio editor with real-time preview and VST support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fast</span><span class="app-tag">cross-platform</span><span class="app-tag">vst</span>
+            </div>
+          
+        </a>
+        <a href="twistedwave.html" class="app-card" data-id="1777289759623" style="text-decoration:none;color:inherit">
+          <img src="logo/twistedwave.png" alt="TwistedWave" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TwistedWave</h3>
+          <p class="app-description">Lightweight, single-track audio editor optimized for macOS.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">lightweight</span><span class="app-tag">editing</span>
+            </div>
+          
+        </a>
+        <a href="fission.html" class="app-card" data-id="1777289759624" style="text-decoration:none;color:inherit">
+          <img src="logo/fission.png" alt="Fission" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fission</h3>
+          <p class="app-description">Lossless audio editor for trimming, joining, and converting files without re-encoding.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">lossless</span><span class="app-tag">trim</span><span class="app-tag">convert</span>
+            </div>
+          
+        </a>
+        <a href="mixcraft.html" class="app-card" data-id="1777289759625" style="text-decoration:none;color:inherit">
+          <img src="logo/mixcraft.png" alt="Mixcraft" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mixcraft</h3>
+          <p class="app-description">User-friendly DAW with virtual instruments, loops, and mixing tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">beginner</span><span class="app-tag">loops</span><span class="app-tag">virtual-instruments</span>
+            </div>
+          
+        </a>
+        <a href="podium-free.html" class="app-card" data-id="1777289759626" style="text-decoration:none;color:inherit">
+          <img src="logo/podium.png" alt="Podium Free" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Podium Free</h3>
+          <p class="app-description">Modern audio sequencer with VST support and intuitive interface.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sequencer</span><span class="app-tag">vst</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="acid-pro.html" class="app-card" data-id="1777289759627" style="text-decoration:none;color:inherit">
+          <img src="logo/acid-pro.png" alt="ACID Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ACID Pro</h3>
+          <p class="app-description">Loop-based music creation software with pitch and tempo stretching.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">loops</span><span class="app-tag">stretching</span><span class="app-tag">creation</span>
+            </div>
+          
+        </a>
+        <a href="magix-samplitude.html" class="app-card" data-id="1777289759628" style="text-decoration:none;color:inherit">
+          <img src="logo/samplitude.png" alt="MAGIX Samplitude" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MAGIX Samplitude</h3>
+          <p class="app-description">High-end DAW for professional recording, mixing, and mastering.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">professional</span><span class="app-tag">mastering</span><span class="app-tag">recording</span>
+            </div>
+          
+        </a>
+        <a href="sequoia.html" class="app-card" data-id="1777289759629" style="text-decoration:none;color:inherit">
+          <img src="logo/sequoia.png" alt="Sequoia" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sequoia</h3>
+          <p class="app-description">Advanced mastering and editing suite from MAGIX for broadcast and music.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mastering</span><span class="app-tag">broadcast</span><span class="app-tag">editing</span>
+            </div>
+          
+        </a>
+        <a href="digital-performer.html" class="app-card" data-id="1777289759630" style="text-decoration:none;color:inherit">
+          <img src="logo/digital-performer.png" alt="Digital Performer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Digital Performer</h3>
+          <p class="app-description">Powerful DAW and MIDI sequencer popular in film scoring and live performance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">scoring</span><span class="app-tag">midi</span><span class="app-tag">live</span>
+            </div>
+          
+        </a>
+        <a href="n-track-studio.html" class="app-card" data-id="1777289759631" style="text-decoration:none;color:inherit">
+          <img src="logo/n-track.png" alt="n-Track Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">n-Track Studio</h3>
+          <p class="app-description">Multi-track recording and mixing software with cloud collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">multi-track</span><span class="app-tag">collaboration</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="mixbus.html" class="app-card" data-id="1777289759632" style="text-decoration:none;color:inherit">
+          <img src="logo/mixbus.png" alt="Mixbus" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mixbus</h3>
+          <p class="app-description">DAW built on Ardour with analog-style mixing console workflow.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mixing</span><span class="app-tag">analog</span><span class="app-tag">console</span>
+            </div>
+          
+        </a>
+        <a href="harrison-mixbus32c.html" class="app-card" data-id="1777289759633" style="text-decoration:none;color:inherit">
+          <img src="logo/harrison-mixbus.png" alt="Harrison Mixbus32C" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Harrison Mixbus32C</h3>
+          <p class="app-description">Professional mixing DAW featuring vintage Harrison console emulation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vintage</span><span class="app-tag">console</span><span class="app-tag">mixing</span>
+            </div>
+          
+        </a>
+        <a href="studio-one-artist.html" class="app-card" data-id="1777289759634" style="text-decoration:none;color:inherit">
+          <img src="logo/studio-one-artist.png" alt="PreSonus Studio One Artist" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PreSonus Studio One Artist</h3>
+          <p class="app-description">Entry-level version of Studio One with essential recording and mixing tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">entry-level</span><span class="app-tag">recording</span><span class="app-tag">mixing</span>
+            </div>
+          
+        </a>
+        <a href="sibelius.html" class="app-card" data-id="1777289759635" style="text-decoration:none;color:inherit">
+          <img src="logo/sibelius.png" alt="Sibelius" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sibelius</h3>
+          <p class="app-description">Industry-leading music notation software for composers and arrangers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">notation</span><span class="app-tag">score</span><span class="app-tag">composing</span>
+            </div>
+          
+        </a>
+        <a href="finale.html" class="app-card" data-id="1777289759636" style="text-decoration:none;color:inherit">
+          <img src="logo/finale.png" alt="Finale" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Finale</h3>
+          <p class="app-description">Comprehensive music notation and engraving software for detailed scores.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">notation</span><span class="app-tag">engraving</span><span class="app-tag">score</span>
+            </div>
+          
+        </a>
+        <a href="dorico.html" class="app-card" data-id="1777289759637" style="text-decoration:none;color:inherit">
+          <img src="logo/dorico.png" alt="Dorico" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Dorico</h3>
+          <p class="app-description">Modern notation software with AI-assisted layout and sound playback.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">layout</span><span class="app-tag">playback</span>
+            </div>
+          
+        </a>
+        <a href="musescore.html" class="app-card" data-id="1777289759638" style="text-decoration:none;color:inherit">
+          <img src="logo/musescore.png" alt="MuseScore" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MuseScore</h3>
+          <p class="app-description">Free, open-source music notation software with cloud sharing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">open-source</span><span class="app-tag">notation</span>
+            </div>
+          
+        </a>
+        <a href="noteflight.html" class="app-card" data-id="1777289759639" style="text-decoration:none;color:inherit">
+          <img src="logo/noteflight.png" alt="Noteflight" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Noteflight</h3>
+          <p class="app-description">Web-based music notation editor with real-time collaboration features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">web</span><span class="app-tag">collaboration</span><span class="app-tag">notation</span>
+            </div>
+          
+        </a>
+        <a href="flat-io.html" class="app-card" data-id="1777289759640" style="text-decoration:none;color:inherit">
+          <img src="logo/flat-io.png" alt="Flat.io" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Flat.io</h3>
+          <p class="app-description">Online sheet music editor and collaborative platform for musicians.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">online</span><span class="app-tag">sheet</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="soundtrap.html" class="app-card" data-id="1777289759641" style="text-decoration:none;color:inherit">
+          <img src="logo/soundtrap.png" alt="Soundtrap" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Soundtrap</h3>
+          <p class="app-description">Browser-based DAW for music creation, podcasting, and education.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">browser</span><span class="app-tag">podcasting</span><span class="app-tag">education</span>
+            </div>
+          
+        </a>
+        <a href="bandlab.html" class="app-card" data-id="1777289759642" style="text-decoration:none;color:inherit">
+          <img src="logo/bandlab.png" alt="BandLab" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">BandLab</h3>
+          <p class="app-description">Free, cloud-based music creation and collaboration platform.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">cloud</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="amped-studio.html" class="app-card" data-id="1777289759643" style="text-decoration:none;color:inherit">
+          <img src="logo/amped-studio.png" alt="Amped Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Amped Studio</h3>
+          <p class="app-description">Hybrid online/offline DAW with VST support and AI mastering tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hybrid</span><span class="app-tag">vst</span><span class="app-tag">ai</span>
+            </div>
+          
+        </a>
+        <a href="chromaphone-2.html" class="app-card" data-id="1777289759644" style="text-decoration:none;color:inherit">
+          <img src="logo/chromaphone.png" alt="Chromaphone 2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Chromaphone 2</h3>
+          <p class="app-description">Physical modeling percussion synthesizer for realistic drum sounds.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">synth</span><span class="app-tag">percussion</span><span class="app-tag">modeling</span>
+            </div>
+          
+        </a>
+        <a href="synth1.html" class="app-card" data-id="1777289759645" style="text-decoration:none;color:inherit">
+          <img src="logo/synth1.png" alt="Synth1" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Synth1</h3>
+          <p class="app-description">Classic freeware VST synthesizer with extensive sound libraries.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vst</span><span class="app-tag">free</span><span class="app-tag">synth</span>
+            </div>
+          
+        </a>
+        <a href="helm.html" class="app-card" data-id="1777289759646" style="text-decoration:none;color:inherit">
+          <img src="logo/helm.png" alt="Helm" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Helm</h3>
+          <p class="app-description">Free, open-source desktop and VST synthesizer with deep modulation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">vst</span><span class="app-tag">modulation</span>
+            </div>
+          
+        </a>
+        <a href="vital.html" class="app-card" data-id="1777289759647" style="text-decoration:none;color:inherit">
+          <img src="logo/vital.png" alt="Vital" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Vital</h3>
+          <p class="app-description">Spectral warping wavetable synthesizer with powerful visual feedback.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">wavetable</span><span class="app-tag">spectral</span><span class="app-tag">visual</span>
+            </div>
+          
+        </a>
+        <a href="surge-xt.html" class="app-card" data-id="1777289759648" style="text-decoration:none;color:inherit">
+          <img src="logo/surge-xt.png" alt="Surge XT" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Surge XT</h3>
+          <p class="app-description">Free, open-source hybrid synthesizer with multiple synthesis engines.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hybrid</span><span class="app-tag">open-source</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="xfer-serum.html" class="app-card" data-id="1777289759649" style="text-decoration:none;color:inherit">
+          <img src="logo/serum.png" alt="Xfer Serum" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Xfer Serum</h3>
+          <p class="app-description">Popular wavetable synthesizer known for clear sound and advanced editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">wavetable</span><span class="app-tag">bass</span><span class="app-tag">electronic</span>
+            </div>
+          
+        </a>
+        <a href="ni-massive.html" class="app-card" data-id="1777289759650" style="text-decoration:none;color:inherit">
+          <img src="logo/massive.png" alt="NI Massive" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NI Massive</h3>
+          <p class="app-description">Legendary virtual analog and wavetable synth for bass and leads.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">bass</span><span class="app-tag">leads</span><span class="app-tag">analog</span>
+            </div>
+          
+        </a>
+        <a href="spectrasonics-omnisphere.html" class="app-card" data-id="1777289759651" style="text-decoration:none;color:inherit">
+          <img src="logo/omnisphere.png" alt="Spectrasonics Omnisphere" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Spectrasonics Omnisphere</h3>
+          <p class="app-description">Flagship synthesizer with vast sound library and granular synthesis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">granular</span><span class="app-tag">library</span><span class="app-tag">flagship</span>
+            </div>
+          
+        </a>
+        <a href="ni-kontakt.html" class="app-card" data-id="1777289759652" style="text-decoration:none;color:inherit">
+          <img src="logo/kontakt.png" alt="Native Instruments Kontakt" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Native Instruments Kontakt</h3>
+          <p class="app-description">Industry-standard software sampler for virtual instruments and libraries.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sampler</span><span class="app-tag">libraries</span><span class="app-tag">instruments</span>
+            </div>
+          
+        </a>
+        <a href="battery-4.html" class="app-card" data-id="1777289759653" style="text-decoration:none;color:inherit">
+          <img src="logo/battery.png" alt="Battery 4" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Battery 4</h3>
+          <p class="app-description">Professional drum and percussion sampler with powerful editing tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">drums</span><span class="app-tag">percussion</span><span class="app-tag">sampler</span>
+            </div>
+          
+        </a>
+        <a href="addictive-drums-2.html" class="app-card" data-id="1777289759654" style="text-decoration:none;color:inherit">
+          <img src="logo/addictive-drums.png" alt="Addictive Drums 2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Addictive Drums 2</h3>
+          <p class="app-description">Realistic drum production suite with multi-sampled kits and effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">drums</span><span class="app-tag">realistic</span><span class="app-tag">production</span>
+            </div>
+          
+        </a>
+        <a href="ezdrummer-3.html" class="app-card" data-id="1777289759655" style="text-decoration:none;color:inherit">
+          <img src="logo/ezdrummer.png" alt="EZdrummer 3" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">EZdrummer 3</h3>
+          <p class="app-description">Intelligent drum production tool with AI-powered groove matching.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">groove</span><span class="app-tag">drums</span>
+            </div>
+          
+        </a>
+        <a href="superior-drummer-3.html" class="app-card" data-id="1777289759656" style="text-decoration:none;color:inherit">
+          <img src="logo/superior-drummer.png" alt="Superior Drummer 3" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Superior Drummer 3</h3>
+          <p class="app-description">Ultimate drum production suite with 230+ GB of sampled content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ultimate</span><span class="app-tag">drums</span><span class="app-tag">sampling</span>
+            </div>
+          
+        </a>
+        <a href="steven-slate-drums.html" class="app-card" data-id="1777289759657" style="text-decoration:none;color:inherit">
+          <img src="logo/slate-drums.png" alt="Steven Slate Drums" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Steven Slate Drums</h3>
+          <p class="app-description">High-quality sampled drum instrument with punchy, modern sounds.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">drums</span><span class="app-tag">modern</span><span class="app-tag">punchy</span>
+            </div>
+          
+        </a>
+        <a href="groove-agent-se.html" class="app-card" data-id="1777289759658" style="text-decoration:none;color:inherit">
+          <img src="logo/groove-agent.png" alt="Groove Agent SE" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Groove Agent SE</h3>
+          <p class="app-description">Virtual drummer plugin with realistic grooves and intelligent fills.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">virtual-drummer</span><span class="app-tag">grooves</span><span class="app-tag">intelligent</span>
+            </div>
+          
+        </a>
+        <a href="drummica.html" class="app-card" data-id="1777289759659" style="text-decoration:none;color:inherit">
+          <img src="logo/drummica.png" alt="DrumMic&#039;a" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DrumMic&#039;a</h3>
+          <p class="app-description">Free sampled drum kit optimized for Kontakt with authentic mic setups.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">kontakt</span><span class="app-tag">mic</span>
+            </div>
+          
+        </a>
+        <a href="spitfire-audio-labs.html" class="app-card" data-id="1777289759660" style="text-decoration:none;color:inherit">
+          <img src="logo/labs.png" alt="Spitfire Audio LABS" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Spitfire Audio LABS</h3>
+          <p class="app-description">Free collection of expressive instruments, synths, and sound effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">instruments</span><span class="app-tag">soundscapes</span>
+            </div>
+          
+        </a>
+        <a href="bbc-symphony-discover.html" class="app-card" data-id="1777289759661" style="text-decoration:none;color:inherit">
+          <img src="logo/bbc-discover.png" alt="BBC Symphony Orchestra Discover" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">BBC Symphony Orchestra Discover</h3>
+          <p class="app-description">Free orchestral library featuring professional BBC musicians.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">orchestral</span><span class="app-tag">free</span><span class="app-tag">bbc</span>
+            </div>
+          
+        </a>
+        <a href="orchestral-tools-discover.html" class="app-card" data-id="1777289759662" style="text-decoration:none;color:inherit">
+          <img src="logo/orchestral-discover.png" alt="Orchestral Tools Discover" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Orchestral Tools Discover</h3>
+          <p class="app-description">Free community-powered orchestral sample library for composers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">orchestral</span><span class="app-tag">community</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="vienna-symphonic-library.html" class="app-card" data-id="1777289759663" style="text-decoration:none;color:inherit">
+          <img src="logo/vienna.png" alt="Vienna Symphonic Library" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Vienna Symphonic Library</h3>
+          <p class="app-description">High-end orchestral and choral sample libraries with deep articulation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">orchestral</span><span class="app-tag">choral</span><span class="app-tag">articulation</span>
+            </div>
+          
+        </a>
+        <a href="eastwest-play.html" class="app-card" data-id="1777289759664" style="text-decoration:none;color:inherit">
+          <img src="logo/eastwest.png" alt="EastWest Play" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">EastWest Play</h3>
+          <p class="app-description">Sample player and plugin for EastWest&#039;s extensive instrument libraries.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">player</span><span class="app-tag">libraries</span><span class="app-tag">instruments</span>
+            </div>
+          
+        </a>
+        <a href="sonivox-eighty-eight.html" class="app-card" data-id="1777289759665" style="text-decoration:none;color:inherit">
+          <img src="logo/eighty-eight.png" alt="Sonivox Eighty-Eight Ensemble" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sonivox Eighty-Eight Ensemble</h3>
+          <p class="app-description">High-quality piano and keyboard sample collection with rich tonality.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">piano</span><span class="app-tag">keys</span><span class="app-tag">tonality</span>
+            </div>
+          
+        </a>
+        <a href="uvi-workstation.html" class="app-card" data-id="1777289759666" style="text-decoration:none;color:inherit">
+          <img src="logo/uvi.png" alt="UVI Workstation" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">UVI Workstation</h3>
+          <p class="app-description">Free multi-format sample player for UVI&#039;s vintage and modern instruments.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">vintage</span><span class="app-tag">modern</span>
+            </div>
+          
+        </a>
+        <a href="spectrasonics-stylus-rmx.html" class="app-card" data-id="1777289759667" style="text-decoration:none;color:inherit">
+          <img src="logo/stylus-rmx.png" alt="Spectrasonics Stylus RMX" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Spectrasonics Stylus RMX</h3>
+          <p class="app-description">Classic groove-based composition tool with multi-track layering.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">groove</span><span class="app-tag">composition</span><span class="app-tag">layering</span>
+            </div>
+          
+        </a>
+        <a href="komplete-kontrol.html" class="app-card" data-id="1777289759668" style="text-decoration:none;color:inherit">
+          <img src="logo/komplete-kontrol.png" alt="Komplete Kontrol" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Komplete Kontrol</h3>
+          <p class="app-description">Central hub for browsing, managing, and playing NI instruments and effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hub</span><span class="app-tag">ni</span><span class="app-tag">browsing</span>
+            </div>
+          
+        </a>
+        <a href="waves-central.html" class="app-card" data-id="1777289759669" style="text-decoration:none;color:inherit">
+          <img src="logo/waves-central.png" alt="Waves Central" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Waves Central</h3>
+          <p class="app-description">Installation and license management for Waves audio plugins and suites.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">license</span><span class="app-tag">plugins</span><span class="app-tag">management</span>
+            </div>
+          
+        </a>
+        <a href="fabfilter-bundle.html" class="app-card" data-id="1777289759670" style="text-decoration:none;color:inherit">
+          <img src="logo/fabfilter.png" alt="FabFilter Bundle" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FabFilter Bundle</h3>
+          <p class="app-description">Premium suite of mixing and mastering plugins with transparent sound.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mixing</span><span class="app-tag">mastering</span><span class="app-tag">premium</span>
+            </div>
+          
+        </a>
+        <a href="soundtoys-5.html" class="app-card" data-id="1777289759671" style="text-decoration:none;color:inherit">
+          <img src="logo/soundtoys.png" alt="Soundtoys 5" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Soundtoys 5</h3>
+          <p class="app-description">Creative audio effects suite with vintage emulations and modern modulation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">effects</span><span class="app-tag">vintage</span><span class="app-tag">modulation</span>
+            </div>
+          
+        </a>
+        <a href="antares-auto-tune.html" class="app-card" data-id="1777289759672" style="text-decoration:none;color:inherit">
+          <img src="logo/auto-tune.png" alt="Antares Auto-Tune" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Antares Auto-Tune</h3>
+          <p class="app-description">Industry-standard pitch correction and vocal effects plugin.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pitch</span><span class="app-tag">correction</span><span class="app-tag">vocal</span>
+            </div>
+          
+        </a>
+        <a href="celemony-melodyne.html" class="app-card" data-id="1777289759673" style="text-decoration:none;color:inherit">
+          <img src="logo/melodyne.png" alt="Celemony Melodyne" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Celemony Melodyne</h3>
+          <p class="app-description">Advanced pitch and timing editing software for natural vocal processing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pitch</span><span class="app-tag">timing</span><span class="app-tag">natural</span>
+            </div>
+          
+        </a>
+        <a href="synchro-arts-vocalign.html" class="app-card" data-id="1777289759674" style="text-decoration:none;color:inherit">
+          <img src="logo/vocalign.png" alt="Synchro Arts Vocalign" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Synchro Arts Vocalign</h3>
+          <p class="app-description">Automatic vocal alignment plugin for doubling and backing tracks.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">alignment</span><span class="app-tag">doubling</span><span class="app-tag">backing</span>
+            </div>
+          
+        </a>
+        <a href="izotope-nectar.html" class="app-card" data-id="1777289759675" style="text-decoration:none;color:inherit">
+          <img src="logo/nectar.png" alt="iZotope Nectar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iZotope Nectar</h3>
+          <p class="app-description">All-in-one vocal production suite with AI assistant and mixing tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vocal</span><span class="app-tag">ai</span><span class="app-tag">suite</span>
+            </div>
+          
+        </a>
+        <a href="fabfilter-pro-q.html" class="app-card" data-id="1777289759676" style="text-decoration:none;color:inherit">
+          <img src="logo/pro-q.png" alt="FabFilter Pro-Q" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FabFilter Pro-Q</h3>
+          <p class="app-description">Precision equalizer with dynamic processing and surgical filtering.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">eq</span><span class="app-tag">dynamic</span><span class="app-tag">surgical</span>
+            </div>
+          
+        </a>
+        <a href="waves-ssl-e-channel.html" class="app-card" data-id="1777289759677" style="text-decoration:none;color:inherit">
+          <img src="logo/ssl-e.png" alt="Waves SSL E-Channel" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Waves SSL E-Channel</h3>
+          <p class="app-description">Emulation of the legendary SSL 4000 E console channel strip.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">console</span><span class="app-tag">ssl</span><span class="app-tag">emulation</span>
+            </div>
+          
+        </a>
+        <a href="valhalla-vintageverb.html" class="app-card" data-id="1777289759678" style="text-decoration:none;color:inherit">
+          <img src="logo/vintageverb.png" alt="ValhallaDSP VintageVerb" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ValhallaDSP VintageVerb</h3>
+          <p class="app-description">High-quality algorithmic reverb plugin inspired by classic hardware.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">reverb</span><span class="app-tag">algorithmic</span><span class="app-tag">classic</span>
+            </div>
+          
+        </a>
+        <a href="soundtoys-echoboy.html" class="app-card" data-id="1777289759679" style="text-decoration:none;color:inherit">
+          <img src="logo/echoboy.png" alt="Soundtoys EchoBoy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Soundtoys EchoBoy</h3>
+          <p class="app-description">Versatile delay plugin with tape, analog, and digital emulation modes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">delay</span><span class="app-tag">tape</span><span class="app-tag">analog</span>
+            </div>
+          
+        </a>
+        <a href="pa-ampeg-svt.html" class="app-card" data-id="1777289759680" style="text-decoration:none;color:inherit">
+          <img src="logo/ampeg-svt.png" alt="Plugin Alliance Ampeg SVT" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Plugin Alliance Ampeg SVT</h3>
+          <p class="app-description">Accurate emulation of the iconic Ampeg SVT bass amplifier head.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">bass</span><span class="app-tag">amp</span><span class="app-tag">ampeg</span>
+            </div>
+          
+        </a>
+        <a href="brainworx-bx-console.html" class="app-card" data-id="1777289759681" style="text-decoration:none;color:inherit">
+          <img src="logo/bx-console.png" alt="Brainworx bx_console" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Brainworx bx_console</h3>
+          <p class="app-description">Channel strip plugin modeled after classic analog mixing consoles.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">console</span><span class="app-tag">channel</span><span class="app-tag">analog</span>
+            </div>
+          
+        </a>
+        <a href="softube-console-1.html" class="app-card" data-id="1777289759682" style="text-decoration:none;color:inherit">
+          <img src="logo/console1.png" alt="Softube Console 1" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Softube Console 1</h3>
+          <p class="app-description">Hardware/software integrated mixing system with tactile control.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hardware</span><span class="app-tag">tactile</span><span class="app-tag">mixing</span>
+            </div>
+          
+        </a>
+        <a href="ik-multimedia-tracks.html" class="app-card" data-id="1777289759683" style="text-decoration:none;color:inherit">
+          <img src="logo/tracks.png" alt="IK Multimedia T-RackS" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">IK Multimedia T-RackS</h3>
+          <p class="app-description">Modular mastering and mixing suite with vintage analog emulations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mastering</span><span class="app-tag">modular</span><span class="app-tag">vintage</span>
+            </div>
+          
+        </a>
+        <a href="apple-mainstage.html" class="app-card" data-id="1777289759684" style="text-decoration:none;color:inherit">
+          <img src="logo/mainstage.png" alt="Apple MainStage" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple MainStage</h3>
+          <p class="app-description">Live performance software for keyboardists, guitarists, and DJs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">live</span><span class="app-tag">performance</span><span class="app-tag">keyboard</span>
+            </div>
+          
+        </a>
+        <a href="ableton-push.html" class="app-card" data-id="1777289759685" style="text-decoration:none;color:inherit">
+          <img src="logo/push.png" alt="Ableton Push" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ableton Push</h3>
+          <p class="app-description">Hardware controller and interface designed for seamless Ableton workflow.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hardware</span><span class="app-tag">controller</span><span class="app-tag">workflow</span>
+            </div>
+          
+        </a>
+        <a href="novation-launchpad.html" class="app-card" data-id="1777289759686" style="text-decoration:none;color:inherit">
+          <img src="logo/launchpad.png" alt="Novation Launchpad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Novation Launchpad</h3>
+          <p class="app-description">Grid controller for clip launching, sequencing, and live performance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">grid</span><span class="app-tag">clip</span><span class="app-tag">launching</span>
+            </div>
+          
+        </a>
+        <a href="arturia-midi-control.html" class="app-card" data-id="1777289759687" style="text-decoration:none;color:inherit">
+          <img src="logo/arturia-mcc.png" alt="Arturia MIDI Control Center" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Arturia MIDI Control Center</h3>
+          <p class="app-description">Configuration utility for Arturia keyboards and controllers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">midi</span><span class="app-tag">controller</span><span class="app-tag">config</span>
+            </div>
+          
+        </a>
+        <a href="focusrite-control.html" class="app-card" data-id="1777289759688" style="text-decoration:none;color:inherit">
+          <img src="logo/focusrite-control.png" alt="Focusrite Control" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Focusrite Control</h3>
+          <p class="app-description">Routing and monitoring software for Focusrite audio interfaces.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">routing</span><span class="app-tag">monitoring</span><span class="app-tag">interface</span>
+            </div>
+          
+        </a>
+        <a href="rme-totalmix-fx.html" class="app-card" data-id="1777289759689" style="text-decoration:none;color:inherit">
+          <img src="logo/totalmix.png" alt="RME TotalMix FX" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">RME TotalMix FX</h3>
+          <p class="app-description">Advanced routing and mixing console for RME audio interfaces.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">routing</span><span class="app-tag">fx</span><span class="app-tag">console</span>
+            </div>
+          
+        </a>
+        <a href="universal-audio-console.html" class="app-card" data-id="1777289759690" style="text-decoration:none;color:inherit">
+          <img src="logo/ua-console.png" alt="Universal Audio Console" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Universal Audio Console</h3>
+          <p class="app-description">Real-time UAD processing console with low-latency monitoring and routing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">real-time</span><span class="app-tag">uad</span><span class="app-tag">monitoring</span>
+            </div>
+          
+        </a>
+        <a href="steinberg-cubase-ai.html" class="app-card" data-id="1777289759691" style="text-decoration:none;color:inherit">
+          <img src="logo/cubase-ai.png" alt="Steinberg Cubase AI" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Steinberg Cubase AI</h3>
+          <p class="app-description">Entry-level version of Cubase bundled with hardware and software.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">entry-level</span><span class="app-tag">bundled</span><span class="app-tag">daw</span>
+            </div>
+          
+        </a>
+        <a href="avid-pro-tools-intro.html" class="app-card" data-id="1777289759692" style="text-decoration:none;color:inherit">
+          <img src="logo/pt-intro.png" alt="Avid Pro Tools Intro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Avid Pro Tools Intro</h3>
+          <p class="app-description">Free version of Pro Tools with 8-track recording and editing limits.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">8-track</span><span class="app-tag">intro</span>
+            </div>
+          
+        </a>
+        <a href="magix-music-maker.html" class="app-card" data-id="1777289759693" style="text-decoration:none;color:inherit">
+          <img src="logo/music-maker.png" alt="MAGIX Music Maker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MAGIX Music Maker</h3>
+          <p class="app-description">Beginner-friendly music creation software with loops and virtual instruments.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">beginner</span><span class="app-tag">loops</span><span class="app-tag">creation</span>
+            </div>
+          
+        </a>
+        <a href="ashampoo-music-studio.html" class="app-card" data-id="1777289759694" style="text-decoration:none;color:inherit">
+          <img src="logo/ashampoo-music.png" alt="Ashampoo Music Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ashampoo Music Studio</h3>
+          <p class="app-description">All-in-one audio editing, recording, and burning suite for home users.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">all-in-one</span><span class="app-tag">home</span><span class="app-tag">burning</span>
+            </div>
+          
+        </a>
+        <a href="acoustica-mixcraft-pro.html" class="app-card" data-id="1777289759695" style="text-decoration:none;color:inherit">
+          <img src="logo/mixcraft-pro.png" alt="Acoustica Mixcraft Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Acoustica Mixcraft Pro</h3>
+          <p class="app-description">Professional tier of Mixcraft with unlimited tracks and premium plugins.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pro</span><span class="app-tag">unlimited</span><span class="app-tag">plugins</span>
+            </div>
+          
+        </a>
+        <a href="wavepad-sound-editor.html" class="app-card" data-id="1777289759696" style="text-decoration:none;color:inherit">
+          <img src="logo/wavepad.png" alt="WavePad Sound Editor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WavePad Sound Editor</h3>
+          <p class="app-description">Simple audio editing software for trimming, cutting, and adding effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">simple</span><span class="app-tag">trimming</span><span class="app-tag">cutting</span>
+            </div>
+          
+        </a>
+        <a href="awave-studio.html" class="app-card" data-id="1777289759697" style="text-decoration:none;color:inherit">
+          <img src="logo/awave.png" alt="Awave Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Awave Studio</h3>
+          <p class="app-description">Multi-track audio editor with extensive format support and synthesis tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">multi-track</span><span class="app-tag">formats</span><span class="app-tag">synthesis</span>
+            </div>
+          
+        </a>
+        <a href="goldwave.html" class="app-card" data-id="1777289759698" style="text-decoration:none;color:inherit">
+          <img src="logo/goldwave.png" alt="GoldWave" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GoldWave</h3>
+          <p class="app-description">Fast, reliable audio editor with batch processing and restoration tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fast</span><span class="app-tag">batch</span><span class="app-tag">restoration</span>
+            </div>
+          
+        </a>
+        <a href="nero-waveeditor.html" class="app-card" data-id="1777289759699" style="text-decoration:none;color:inherit">
+          <img src="logo/nero-wave.png" alt="Nero WaveEditor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nero WaveEditor</h3>
+          <p class="app-description">Audio editing and CD burning tool with visual effects and filters.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">burning</span><span class="app-tag">visual</span><span class="app-tag">filters</span>
+            </div>
+          
+        </a>
+        <a href="sound-forge-audio-studio.html" class="app-card" data-id="1777289759700" style="text-decoration:none;color:inherit">
+          <img src="logo/sound-forge-studio.png" alt="Sound Forge Audio Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sound Forge Audio Studio</h3>
+          <p class="app-description">Entry-level audio editing suite with recording, mastering, and podcast tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">entry-level</span><span class="app-tag">podcast</span><span class="app-tag">mastering</span>
+            </div>
+          
+        </a>
+        <a href="tracktion-waveform-free.html" class="app-card" data-id="1777289759701" style="text-decoration:none;color:inherit">
+          <img src="logo/waveform-free.png" alt="Tracktion Waveform Free" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tracktion Waveform Free</h3>
+          <p class="app-description">Free DAW with unlimited tracks, VST support, and cloud collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">unlimited</span><span class="app-tag">vst</span>
+            </div>
+          
+        </a>
+        <a href="studio-one-prime.html" class="app-card" data-id="1777289759702" style="text-decoration:none;color:inherit">
+          <img src="logo/studio-one-prime.png" alt="PreSonus Studio One Prime" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PreSonus Studio One Prime</h3>
+          <p class="app-description">Free version of Studio One with basic recording, editing, and mixing features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">basic</span><span class="app-tag">mixing</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777289759610,"name":"Studio One","slug":"studio-one","version":"6.6.1","description":"Modern DAW featuring drag-and-drop workflow and integrated mastering suite.","category":"audio-editors","logoUrl":"logo/studio-one.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Studio One8&tracker=8","tags":["daw","workflow","mastering","presonus"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759612,"name":"Reason","slug":"reason","version":"12.5.2","description":"Virtual rack-based DAW with synthesizers, effects, and modular routing.","category":"audio-editors","logoUrl":"logo/reason.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Reason10&tracker=10","tags":["synth","modular","rack","electronic"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759613,"name":"Cakewalk by BandLab","slug":"cakewalk-bandlab","version":"2023.11","description":"Full-featured professional DAW available for free on Windows.","category":"audio-editors","logoUrl":"logo/cakewalk.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Cakewalk by BandLab11&tracker=11","tags":["free","daw","windows","professional"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759614,"name":"Bitwig Studio","slug":"bitwig-studio","version":"5.1.3","description":"Innovative DAW with modulation system and seamless hardware integration.","category":"audio-editors","logoUrl":"logo/bitwig.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bitwig Studio12&tracker=12","tags":["modular","daw","experimental","hardware"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759615,"name":"Tracktion Waveform","slug":"tracktion-waveform","version":"13.3.1","description":"Cross-platform DAW with free tier and integrated MIDI & audio editing.","category":"audio-editors","logoUrl":"logo/tracktion.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tracktion Waveform13&tracker=13","tags":["daw","cross-platform","free","midi"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759616,"name":"Ardour","slug":"ardour","version":"8.3","description":"Open-source digital audio workstation for recording, editing, and mixing.","category":"audio-editors","logoUrl":"logo/ardour.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ardour14&tracker=14","tags":["open-source","recording","mixing","linux"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759617,"name":"LMMS","slug":"lmms","version":"1.2.2","description":"Free, cross-platform alternative to commercial music production software.","category":"audio-editors","logoUrl":"logo/lmms.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LMMS15&tracker=15","tags":["free","beats","open-source","production"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759618,"name":"Adobe Audition","slug":"adobe-audition","version":"24.2","description":"Professional audio workstation for recording, mixing, and sound restoration.","category":"audio-editors","logoUrl":"logo/adobe-audition.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Audition16&tracker=16","tags":["adobe","restoration","podcast","mixing"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759619,"name":"Steinberg WaveLab","slug":"steinberg-wavelab","version":"12.0.30","description":"Advanced audio editing, mastering, and analysis software for professionals.","category":"audio-editors","logoUrl":"logo/wavelab.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Steinberg WaveLab17&tracker=17","tags":["mastering","editing","analysis","professional"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759620,"name":"iZotope RX","slug":"izotope-rx","version":"11.1","description":"Industry-leading audio repair and noise reduction software for post-production.","category":"audio-editors","logoUrl":"logo/izotope-rx.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iZotope RX18&tracker=18","tags":["repair","noise-reduction","post","mastering"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759621,"name":"Sound Forge Pro","slug":"sound-forge-pro","version":"17","description":"Comprehensive audio editing and mastering tool for Windows.","category":"audio-editors","logoUrl":"logo/sound-forge.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sound Forge Pro19&tracker=19","tags":["editing","mastering","windows","batch"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759622,"name":"Ocenaudio","slug":"ocenaudio","version":"3.12.2","description":"Fast, cross-platform audio editor with real-time preview and VST support.","category":"audio-editors","logoUrl":"logo/ocenaudio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ocenaudio20&tracker=20","tags":["fast","cross-platform","vst","editor"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759623,"name":"TwistedWave","slug":"twistedwave","version":"1.6","description":"Lightweight, single-track audio editor optimized for macOS.","category":"audio-editors","logoUrl":"logo/twistedwave.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TwistedWave21&tracker=21","tags":["mac","lightweight","editing","simple"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759624,"name":"Fission","slug":"fission","version":"2.6","description":"Lossless audio editor for trimming, joining, and converting files without re-encoding.","category":"audio-editors","logoUrl":"logo/fission.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fission22&tracker=22","tags":["lossless","trim","convert","mac"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759625,"name":"Mixcraft","slug":"mixcraft","version":"9.1","description":"User-friendly DAW with virtual instruments, loops, and mixing tools.","category":"audio-editors","logoUrl":"logo/mixcraft.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mixcraft23&tracker=23","tags":["beginner","loops","virtual-instruments","daw"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759626,"name":"Podium Free","slug":"podium-free","version":"4.0","description":"Modern audio sequencer with VST support and intuitive interface.","category":"audio-editors","logoUrl":"logo/podium.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Podium Free24&tracker=24","tags":["sequencer","vst","free","windows"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759627,"name":"ACID Pro","slug":"acid-pro","version":"11.0.4","description":"Loop-based music creation software with pitch and tempo stretching.","category":"audio-editors","logoUrl":"logo/acid-pro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ACID Pro25&tracker=25","tags":["loops","stretching","creation","magix"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759628,"name":"MAGIX Samplitude","slug":"magix-samplitude","version":"19.2","description":"High-end DAW for professional recording, mixing, and mastering.","category":"audio-editors","logoUrl":"logo/samplitude.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MAGIX Samplitude26&tracker=26","tags":["professional","mastering","recording","studio"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759629,"name":"Sequoia","slug":"sequoia","version":"16.2","description":"Advanced mastering and editing suite from MAGIX for broadcast and music.","category":"audio-editors","logoUrl":"logo/sequoia.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sequoia27&tracker=27","tags":["mastering","broadcast","editing","high-end"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759630,"name":"Digital Performer","slug":"digital-performer","version":"11.1","description":"Powerful DAW and MIDI sequencer popular in film scoring and live performance.","category":"audio-editors","logoUrl":"logo/digital-performer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Digital Performer28&tracker=28","tags":["scoring","midi","live","professional"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759631,"name":"n-Track Studio","slug":"n-track-studio","version":"10.0","description":"Multi-track recording and mixing software with cloud collaboration.","category":"audio-editors","logoUrl":"logo/n-track.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=n-Track Studio29&tracker=29","tags":["multi-track","collaboration","cloud","recording"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759632,"name":"Mixbus","slug":"mixbus","version":"10.1","description":"DAW built on Ardour with analog-style mixing console workflow.","category":"audio-editors","logoUrl":"logo/mixbus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mixbus30&tracker=30","tags":["mixing","analog","console","daw"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759633,"name":"Harrison Mixbus32C","slug":"harrison-mixbus32c","version":"10.0.1","description":"Professional mixing DAW featuring vintage Harrison console emulation.","category":"audio-editors","logoUrl":"logo/harrison-mixbus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Harrison Mixbus32C31&tracker=31","tags":["vintage","console","mixing","emulation"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759634,"name":"PreSonus Studio One Artist","slug":"studio-one-artist","version":"6.6","description":"Entry-level version of Studio One with essential recording and mixing tools.","category":"audio-editors","logoUrl":"logo/studio-one-artist.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PreSonus Studio One Artist32&tracker=32","tags":["entry-level","recording","mixing","presonus"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759635,"name":"Sibelius","slug":"sibelius","version":"2024.2","description":"Industry-leading music notation software for composers and arrangers.","category":"audio-editors","logoUrl":"logo/sibelius.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sibelius33&tracker=33","tags":["notation","score","composing","professional"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759636,"name":"Finale","slug":"finale","version":"27.3","description":"Comprehensive music notation and engraving software for detailed scores.","category":"audio-editors","logoUrl":"logo/finale.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Finale34&tracker=34","tags":["notation","engraving","score","publishing"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759637,"name":"Dorico","slug":"dorico","version":"5.0.2","description":"Modern notation software with AI-assisted layout and sound playback.","category":"audio-editors","logoUrl":"logo/dorico.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Dorico35&tracker=35","tags":["ai","layout","playback","notation"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759638,"name":"MuseScore","slug":"musescore","version":"4.2","description":"Free, open-source music notation software with cloud sharing.","category":"audio-editors","logoUrl":"logo/musescore.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MuseScore36&tracker=36","tags":["free","open-source","notation","community"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759639,"name":"Noteflight","slug":"noteflight","version":"3.8","description":"Web-based music notation editor with real-time collaboration features.","category":"audio-editors","logoUrl":"logo/noteflight.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Noteflight37&tracker=37","tags":["web","collaboration","notation","cloud"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759640,"name":"Flat.io","slug":"flat-io","version":"2.9.1","description":"Online sheet music editor and collaborative platform for musicians.","category":"audio-editors","logoUrl":"logo/flat-io.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Flat.io38&tracker=38","tags":["online","sheet","collaboration","music"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759641,"name":"Soundtrap","slug":"soundtrap","version":"5.1.0","description":"Browser-based DAW for music creation, podcasting, and education.","category":"audio-editors","logoUrl":"logo/soundtrap.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Soundtrap39&tracker=39","tags":["browser","podcasting","education","collaboration"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759642,"name":"BandLab","slug":"bandlab","version":"4.7.2","description":"Free, cloud-based music creation and collaboration platform.","category":"audio-editors","logoUrl":"logo/bandlab.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=BandLab40&tracker=40","tags":["free","cloud","collaboration","social"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759643,"name":"Amped Studio","slug":"amped-studio","version":"3.2","description":"Hybrid online/offline DAW with VST support and AI mastering tools.","category":"audio-editors","logoUrl":"logo/amped-studio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Amped Studio41&tracker=41","tags":["hybrid","vst","ai","mastering"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759644,"name":"Chromaphone 2","slug":"chromaphone-2","version":"2.5.1","description":"Physical modeling percussion synthesizer for realistic drum sounds.","category":"audio-editors","logoUrl":"logo/chromaphone.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Chromaphone 242&tracker=42","tags":["synth","percussion","modeling","drums"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759645,"name":"Synth1","slug":"synth1","version":"1.13","description":"Classic freeware VST synthesizer with extensive sound libraries.","category":"audio-editors","logoUrl":"logo/synth1.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Synth143&tracker=43","tags":["vst","free","synth","classic"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759646,"name":"Helm","slug":"helm","version":"0.9.0","description":"Free, open-source desktop and VST synthesizer with deep modulation.","category":"audio-editors","logoUrl":"logo/helm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Helm44&tracker=44","tags":["open-source","vst","modulation","synth"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759647,"name":"Vital","slug":"vital","version":"1.6.1","description":"Spectral warping wavetable synthesizer with powerful visual feedback.","category":"audio-editors","logoUrl":"logo/vital.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Vital45&tracker=45","tags":["wavetable","spectral","visual","synth"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759648,"name":"Surge XT","slug":"surge-xt","version":"1.3.1","description":"Free, open-source hybrid synthesizer with multiple synthesis engines.","category":"audio-editors","logoUrl":"logo/surge-xt.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Surge XT46&tracker=46","tags":["hybrid","open-source","free","engines"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759649,"name":"Xfer Serum","slug":"xfer-serum","version":"1.3.7","description":"Popular wavetable synthesizer known for clear sound and advanced editing.","category":"audio-editors","logoUrl":"logo/serum.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Xfer Serum47&tracker=47","tags":["wavetable","bass","electronic","synth"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759650,"name":"NI Massive","slug":"ni-massive","version":"1.5.5","description":"Legendary virtual analog and wavetable synth for bass and leads.","category":"audio-editors","logoUrl":"logo/massive.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NI Massive48&tracker=48","tags":["bass","leads","analog","ni"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759651,"name":"Spectrasonics Omnisphere","slug":"spectrasonics-omnisphere","version":"2.8.1","description":"Flagship synthesizer with vast sound library and granular synthesis.","category":"audio-editors","logoUrl":"logo/omnisphere.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Spectrasonics Omnisphere49&tracker=49","tags":["granular","library","flagship","atmospheric"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759652,"name":"Native Instruments Kontakt","slug":"ni-kontakt","version":"8.1.1","description":"Industry-standard software sampler for virtual instruments and libraries.","category":"audio-editors","logoUrl":"logo/kontakt.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Native Instruments Kontakt50&tracker=50","tags":["sampler","libraries","instruments","standard"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759653,"name":"Battery 4","slug":"battery-4","version":"4.1.6","description":"Professional drum and percussion sampler with powerful editing tools.","category":"audio-editors","logoUrl":"logo/battery.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Battery 451&tracker=51","tags":["drums","percussion","sampler","ni"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759654,"name":"Addictive Drums 2","slug":"addictive-drums-2","version":"2.4.0","description":"Realistic drum production suite with multi-sampled kits and effects.","category":"audio-editors","logoUrl":"logo/addictive-drums.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Addictive Drums 252&tracker=52","tags":["drums","realistic","production","xlntaudio"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759655,"name":"EZdrummer 3","slug":"ezdrummer-3","version":"3.2.1","description":"Intelligent drum production tool with AI-powered groove matching.","category":"audio-editors","logoUrl":"logo/ezdrummer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=EZdrummer 353&tracker=53","tags":["ai","groove","drums","toontrack"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759656,"name":"Superior Drummer 3","slug":"superior-drummer-3","version":"3.3.0","description":"Ultimate drum production suite with 230+ GB of sampled content.","category":"audio-editors","logoUrl":"logo/superior-drummer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Superior Drummer 354&tracker=54","tags":["ultimate","drums","sampling","toontrack"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759657,"name":"Steven Slate Drums","slug":"steven-slate-drums","version":"5.3","description":"High-quality sampled drum instrument with punchy, modern sounds.","category":"audio-editors","logoUrl":"logo/slate-drums.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Steven Slate Drums55&tracker=55","tags":["drums","modern","punchy","ssd"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759658,"name":"Groove Agent SE","slug":"groove-agent-se","version":"12.0","description":"Virtual drummer plugin with realistic grooves and intelligent fills.","category":"audio-editors","logoUrl":"logo/groove-agent.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Groove Agent SE56&tracker=56","tags":["virtual-drummer","grooves","intelligent","steinberg"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759659,"name":"DrumMic'a","slug":"drummica","version":"1.3","description":"Free sampled drum kit optimized for Kontakt with authentic mic setups.","category":"audio-editors","logoUrl":"logo/drummica.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DrumMic'a57&tracker=57","tags":["free","kontakt","mic","sennheiser"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759660,"name":"Spitfire Audio LABS","slug":"spitfire-audio-labs","version":"2.1.0","description":"Free collection of expressive instruments, synths, and sound effects.","category":"audio-editors","logoUrl":"logo/labs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Spitfire Audio LABS58&tracker=58","tags":["free","instruments","soundscapes","spitfire"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759661,"name":"BBC Symphony Orchestra Discover","slug":"bbc-symphony-discover","version":"1.4","description":"Free orchestral library featuring professional BBC musicians.","category":"audio-editors","logoUrl":"logo/bbc-discover.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=BBC Symphony Orchestra Discover59&tracker=59","tags":["orchestral","free","bbc","strings"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759662,"name":"Orchestral Tools Discover","slug":"orchestral-tools-discover","version":"1.2","description":"Free community-powered orchestral sample library for composers.","category":"audio-editors","logoUrl":"logo/orchestral-discover.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Orchestral Tools Discover60&tracker=60","tags":["orchestral","community","free","composing"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759663,"name":"Vienna Symphonic Library","slug":"vienna-symphonic-library","version":"2.0","description":"High-end orchestral and choral sample libraries with deep articulation.","category":"audio-editors","logoUrl":"logo/vienna.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Vienna Symphonic Library61&tracker=61","tags":["orchestral","choral","articulation","premium"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759664,"name":"EastWest Play","slug":"eastwest-play","version":"7.1.12","description":"Sample player and plugin for EastWest's extensive instrument libraries.","category":"audio-editors","logoUrl":"logo/eastwest.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=EastWest Play62&tracker=62","tags":["player","libraries","instruments","eastwest"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759665,"name":"Sonivox Eighty-Eight Ensemble","slug":"sonivox-eighty-eight","version":"2.5","description":"High-quality piano and keyboard sample collection with rich tonality.","category":"audio-editors","logoUrl":"logo/eighty-eight.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sonivox Eighty-Eight Ensemble63&tracker=63","tags":["piano","keys","tonality","sample"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759666,"name":"UVI Workstation","slug":"uvi-workstation","version":"3.1.14","description":"Free multi-format sample player for UVI's vintage and modern instruments.","category":"audio-editors","logoUrl":"logo/uvi.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=UVI Workstation64&tracker=64","tags":["free","vintage","modern","multi-format"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759667,"name":"Spectrasonics Stylus RMX","slug":"spectrasonics-stylus-rmx","version":"1.9.1","description":"Classic groove-based composition tool with multi-track layering.","category":"audio-editors","logoUrl":"logo/stylus-rmx.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Spectrasonics Stylus RMX65&tracker=65","tags":["groove","composition","layering","classic"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759668,"name":"Komplete Kontrol","slug":"komplete-kontrol","version":"3.2.1","description":"Central hub for browsing, managing, and playing NI instruments and effects.","category":"audio-editors","logoUrl":"logo/komplete-kontrol.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Komplete Kontrol66&tracker=66","tags":["hub","ni","browsing","management"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759669,"name":"Waves Central","slug":"waves-central","version":"12.0.1","description":"Installation and license management for Waves audio plugins and suites.","category":"audio-editors","logoUrl":"logo/waves-central.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Waves Central67&tracker=67","tags":["license","plugins","management","waves"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759670,"name":"FabFilter Bundle","slug":"fabfilter-bundle","version":"2024.03","description":"Premium suite of mixing and mastering plugins with transparent sound.","category":"audio-editors","logoUrl":"logo/fabfilter.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FabFilter Bundle68&tracker=68","tags":["mixing","mastering","premium","transparent"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759671,"name":"Soundtoys 5","slug":"soundtoys-5","version":"5.3.5","description":"Creative audio effects suite with vintage emulations and modern modulation.","category":"audio-editors","logoUrl":"logo/soundtoys.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Soundtoys 569&tracker=69","tags":["effects","vintage","modulation","creative"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759672,"name":"Antares Auto-Tune","slug":"antares-auto-tune","version":"10.0.2","description":"Industry-standard pitch correction and vocal effects plugin.","category":"audio-editors","logoUrl":"logo/auto-tune.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Antares Auto-Tune70&tracker=70","tags":["pitch","correction","vocal","standard"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759673,"name":"Celemony Melodyne","slug":"celemony-melodyne","version":"5.4.1","description":"Advanced pitch and timing editing software for natural vocal processing.","category":"audio-editors","logoUrl":"logo/melodyne.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Celemony Melodyne71&tracker=71","tags":["pitch","timing","natural","editing"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759674,"name":"Synchro Arts Vocalign","slug":"synchro-arts-vocalign","version":"5.2","description":"Automatic vocal alignment plugin for doubling and backing tracks.","category":"audio-editors","logoUrl":"logo/vocalign.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Synchro Arts Vocalign72&tracker=72","tags":["alignment","doubling","backing","automatic"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759675,"name":"iZotope Nectar","slug":"izotope-nectar","version":"4.2","description":"All-in-one vocal production suite with AI assistant and mixing tools.","category":"audio-editors","logoUrl":"logo/nectar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iZotope Nectar73&tracker=73","tags":["vocal","ai","suite","mixing"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759676,"name":"FabFilter Pro-Q","slug":"fabfilter-pro-q","version":"4.0.1","description":"Precision equalizer with dynamic processing and surgical filtering.","category":"audio-editors","logoUrl":"logo/pro-q.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FabFilter Pro-Q74&tracker=74","tags":["eq","dynamic","surgical","precision"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759677,"name":"Waves SSL E-Channel","slug":"waves-ssl-e-channel","version":"14.2","description":"Emulation of the legendary SSL 4000 E console channel strip.","category":"audio-editors","logoUrl":"logo/ssl-e.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Waves SSL E-Channel75&tracker=75","tags":["console","ssl","emulation","channel"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759678,"name":"ValhallaDSP VintageVerb","slug":"valhalla-vintageverb","version":"2.3","description":"High-quality algorithmic reverb plugin inspired by classic hardware.","category":"audio-editors","logoUrl":"logo/vintageverb.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ValhallaDSP VintageVerb76&tracker=76","tags":["reverb","algorithmic","classic","affordable"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759679,"name":"Soundtoys EchoBoy","slug":"soundtoys-echoboy","version":"1.5.1","description":"Versatile delay plugin with tape, analog, and digital emulation modes.","category":"audio-editors","logoUrl":"logo/echoboy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Soundtoys EchoBoy77&tracker=77","tags":["delay","tape","analog","emulation"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759680,"name":"Plugin Alliance Ampeg SVT","slug":"pa-ampeg-svt","version":"1.0","description":"Accurate emulation of the iconic Ampeg SVT bass amplifier head.","category":"audio-editors","logoUrl":"logo/ampeg-svt.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Plugin Alliance Ampeg SVT78&tracker=78","tags":["bass","amp","ampeg","emulation"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759681,"name":"Brainworx bx_console","slug":"brainworx-bx-console","version":"1.2","description":"Channel strip plugin modeled after classic analog mixing consoles.","category":"audio-editors","logoUrl":"logo/bx-console.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Brainworx bx_console79&tracker=79","tags":["console","channel","analog","bx"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759682,"name":"Softube Console 1","slug":"softube-console-1","version":"4.0","description":"Hardware/software integrated mixing system with tactile control.","category":"audio-editors","logoUrl":"logo/console1.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Softube Console 180&tracker=80","tags":["hardware","tactile","mixing","integration"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759683,"name":"IK Multimedia T-RackS","slug":"ik-multimedia-tracks","version":"6.1","description":"Modular mastering and mixing suite with vintage analog emulations.","category":"audio-editors","logoUrl":"logo/tracks.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=IK Multimedia T-RackS81&tracker=81","tags":["mastering","modular","vintage","ik"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759684,"name":"Apple MainStage","slug":"apple-mainstage","version":"3.6.5","description":"Live performance software for keyboardists, guitarists, and DJs.","category":"audio-editors","logoUrl":"logo/mainstage.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple MainStage82&tracker=82","tags":["live","performance","keyboard","dj"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759685,"name":"Ableton Push","slug":"ableton-push","version":"3.0.1","description":"Hardware controller and interface designed for seamless Ableton workflow.","category":"audio-editors","logoUrl":"logo/push.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ableton Push83&tracker=83","tags":["hardware","controller","workflow","live"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759686,"name":"Novation Launchpad","slug":"novation-launchpad","version":"2.5","description":"Grid controller for clip launching, sequencing, and live performance.","category":"audio-editors","logoUrl":"logo/launchpad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Novation Launchpad84&tracker=84","tags":["grid","clip","launching","performance"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759687,"name":"Arturia MIDI Control Center","slug":"arturia-midi-control","version":"1.3.0","description":"Configuration utility for Arturia keyboards and controllers.","category":"audio-editors","logoUrl":"logo/arturia-mcc.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Arturia MIDI Control Center85&tracker=85","tags":["midi","controller","config","arturia"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759688,"name":"Focusrite Control","slug":"focusrite-control","version":"4.51.0","description":"Routing and monitoring software for Focusrite audio interfaces.","category":"audio-editors","logoUrl":"logo/focusrite-control.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Focusrite Control86&tracker=86","tags":["routing","monitoring","interface","focusrite"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759689,"name":"RME TotalMix FX","slug":"rme-totalmix-fx","version":"1.75","description":"Advanced routing and mixing console for RME audio interfaces.","category":"audio-editors","logoUrl":"logo/totalmix.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=RME TotalMix FX87&tracker=87","tags":["routing","fx","console","rme"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759690,"name":"Universal Audio Console","slug":"universal-audio-console","version":"7.2.0","description":"Real-time UAD processing console with low-latency monitoring and routing.","category":"audio-editors","logoUrl":"logo/ua-console.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Universal Audio Console88&tracker=88","tags":["real-time","uad","monitoring","routing"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759691,"name":"Steinberg Cubase AI","slug":"steinberg-cubase-ai","version":"12.0.10","description":"Entry-level version of Cubase bundled with hardware and software.","category":"audio-editors","logoUrl":"logo/cubase-ai.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Steinberg Cubase AI89&tracker=89","tags":["entry-level","bundled","daw","steinberg"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759692,"name":"Avid Pro Tools Intro","slug":"avid-pro-tools-intro","version":"2024.2","description":"Free version of Pro Tools with 8-track recording and editing limits.","category":"audio-editors","logoUrl":"logo/pt-intro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Avid Pro Tools Intro90&tracker=90","tags":["free","8-track","intro","avid"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759693,"name":"MAGIX Music Maker","slug":"magix-music-maker","version":"2024","description":"Beginner-friendly music creation software with loops and virtual instruments.","category":"audio-editors","logoUrl":"logo/music-maker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MAGIX Music Maker91&tracker=91","tags":["beginner","loops","creation","magix"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759694,"name":"Ashampoo Music Studio","slug":"ashampoo-music-studio","version":"8.0.1","description":"All-in-one audio editing, recording, and burning suite for home users.","category":"audio-editors","logoUrl":"logo/ashampoo-music.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ashampoo Music Studio92&tracker=92","tags":["all-in-one","home","burning","recording"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759695,"name":"Acoustica Mixcraft Pro","slug":"acoustica-mixcraft-pro","version":"9.0","description":"Professional tier of Mixcraft with unlimited tracks and premium plugins.","category":"audio-editors","logoUrl":"logo/mixcraft-pro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Acoustica Mixcraft Pro93&tracker=93","tags":["pro","unlimited","plugins","mixcraft"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759696,"name":"WavePad Sound Editor","slug":"wavepad-sound-editor","version":"14.50","description":"Simple audio editing software for trimming, cutting, and adding effects.","category":"audio-editors","logoUrl":"logo/wavepad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WavePad Sound Editor94&tracker=94","tags":["simple","trimming","cutting","effects"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759697,"name":"Awave Studio","slug":"awave-studio","version":"13.0","description":"Multi-track audio editor with extensive format support and synthesis tools.","category":"audio-editors","logoUrl":"logo/awave.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Awave Studio95&tracker=95","tags":["multi-track","formats","synthesis","editor"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759698,"name":"GoldWave","slug":"goldwave","version":"6.71","description":"Fast, reliable audio editor with batch processing and restoration tools.","category":"audio-editors","logoUrl":"logo/goldwave.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GoldWave96&tracker=96","tags":["fast","batch","restoration","reliable"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759699,"name":"Nero WaveEditor","slug":"nero-waveeditor","version":"8.0","description":"Audio editing and CD burning tool with visual effects and filters.","category":"audio-editors","logoUrl":"logo/nero-wave.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nero WaveEditor97&tracker=97","tags":["burning","visual","filters","nero"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759700,"name":"Sound Forge Audio Studio","slug":"sound-forge-audio-studio","version":"17","description":"Entry-level audio editing suite with recording, mastering, and podcast tools.","category":"audio-editors","logoUrl":"logo/sound-forge-studio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sound Forge Audio Studio98&tracker=98","tags":["entry-level","podcast","mastering","suite"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759701,"name":"Tracktion Waveform Free","slug":"tracktion-waveform-free","version":"13.0","description":"Free DAW with unlimited tracks, VST support, and cloud collaboration.","category":"audio-editors","logoUrl":"logo/waveform-free.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tracktion Waveform Free99&tracker=99","tags":["free","unlimited","vst","cloud"],"scrapedAt":"2026-04-27T11:35:59.603Z"},{"id":1777289759702,"name":"PreSonus Studio One Prime","slug":"studio-one-prime","version":"6.0","description":"Free version of Studio One with basic recording, editing, and mixing features.","category":"audio-editors","logoUrl":"logo/studio-one-prime.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PreSonus Studio One Prime100&tracker=100","tags":["free","basic","mixing","presonus"],"scrapedAt":"2026-04-27T11:35:59.603Z"}];
+    const CURRENT_CATEGORY = 'audio-editors';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

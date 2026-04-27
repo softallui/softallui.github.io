@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Design Assets — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Design Assets</h1>
+    <p><span class="highlight">98</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="envato-elements.html" class="app-card" data-id="1777298132686" style="text-decoration:none;color:inherit">
+          <img src="logo/envato-elements.png" alt="Envato Elements" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Envato Elements</h3>
+          <p class="app-description">Unlimited downloads of stock photos, videos, templates, fonts, and design assets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">stock</span><span class="app-tag">templates</span><span class="app-tag">fonts</span>
+            </div>
+          
+        </a>
+        <a href="creative-market.html" class="app-card" data-id="1777298132687" style="text-decoration:none;color:inherit">
+          <img src="logo/creative-market.png" alt="Creative Market" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Creative Market</h3>
+          <p class="app-description">Marketplace for unique fonts, graphics, templates, themes, and design assets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">marketplace</span><span class="app-tag">fonts</span><span class="app-tag">graphics</span>
+            </div>
+          
+        </a>
+        <a href="shutterstock.html" class="app-card" data-id="1777298132689" style="text-decoration:none;color:inherit">
+          <img src="logo/shutterstock.png" alt="Shutterstock" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Shutterstock</h3>
+          <p class="app-description">Massive library of royalty-free images, videos, music, and editing tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">stock</span><span class="app-tag">royalty-free</span><span class="app-tag">music</span>
+            </div>
+          
+        </a>
+        <a href="freepik.html" class="app-card" data-id="1777298132690" style="text-decoration:none;color:inherit">
+          <img src="logo/freepik.png" alt="Freepik" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Freepik</h3>
+          <p class="app-description">Free and premium vectors, stock photos, PSD files, and icons for designers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vectors</span><span class="app-tag">free</span><span class="app-tag">psd</span>
+            </div>
+          
+        </a>
+        <a href="flaticon.html" class="app-card" data-id="1777298132691" style="text-decoration:none;color:inherit">
+          <img src="logo/flaticon.png" alt="Flaticon" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Flaticon</h3>
+          <p class="app-description">Largest database of free vector icons in SVG, PNG, EPS, and PSD formats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">vector</span><span class="app-tag">svg</span>
+            </div>
+          
+        </a>
+        <a href="iconfinder.html" class="app-card" data-id="1777298132692" style="text-decoration:none;color:inherit">
+          <img src="logo/iconfinder.png" alt="Iconfinder" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Iconfinder</h3>
+          <p class="app-description">Millions of icons and illustrations for web, mobile, and app design projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">illustrations</span><span class="app-tag">web</span>
+            </div>
+          
+        </a>
+        <a href="font-awesome.html" class="app-card" data-id="1777298132693" style="text-decoration:none;color:inherit">
+          <img src="logo/font-awesome.png" alt="Font Awesome" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Font Awesome</h3>
+          <p class="app-description">Popular icon toolkit with scalable vector icons for web and app development.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">svg</span><span class="app-tag">web</span>
+            </div>
+          
+        </a>
+        <a href="google-fonts.html" class="app-card" data-id="1777298132694" style="text-decoration:none;color:inherit">
+          <img src="logo/google-fonts.png" alt="Google Fonts" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Fonts</h3>
+          <p class="app-description">Free library of open-source fonts optimized for web and mobile applications.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">free</span><span class="app-tag">web</span>
+            </div>
+          
+        </a>
+        <a href="font-squirrel.html" class="app-card" data-id="1777298132696" style="text-decoration:none;color:inherit">
+          <img src="logo/font-squirrel.png" alt="Font Squirrel" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Font Squirrel</h3>
+          <p class="app-description">Curated collection of free, high-quality fonts for commercial use.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">free</span><span class="app-tag">commercial</span>
+            </div>
+          
+        </a>
+        <a href="dafont.html" class="app-card" data-id="1777298132697" style="text-decoration:none;color:inherit">
+          <img src="logo/dafont.png" alt="DaFont" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DaFont</h3>
+          <p class="app-description">Archive of freely downloadable fonts with preview and categorization features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">free</span><span class="app-tag">archive</span>
+            </div>
+          
+        </a>
+        <a href="myfonts.html" class="app-card" data-id="1777298132698" style="text-decoration:none;color:inherit">
+          <img src="logo/myfonts.png" alt="MyFonts" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MyFonts</h3>
+          <p class="app-description">Premium font marketplace with thousands of professional typefaces.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">premium</span><span class="app-tag">typefaces</span>
+            </div>
+          
+        </a>
+        <a href="fontspring.html" class="app-card" data-id="1777298132699" style="text-decoration:none;color:inherit">
+          <img src="logo/fontspring.png" alt="Fontspring" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fontspring</h3>
+          <p class="app-description">Professional font foundry with desktop, web, and app font licensing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">licensing</span><span class="app-tag">web</span>
+            </div>
+          
+        </a>
+        <a href="creative-fabrica.html" class="app-card" data-id="1777298132700" style="text-decoration:none;color:inherit">
+          <img src="logo/creative-fabrica.png" alt="Creative Fabrica" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Creative Fabrica</h3>
+          <p class="app-description">Unlimited downloads of fonts, graphics, crafts, and design assets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">graphics</span><span class="app-tag">crafts</span>
+            </div>
+          
+        </a>
+        <a href="design-bundles.html" class="app-card" data-id="1777298132701" style="text-decoration:none;color:inherit">
+          <img src="logo/design-bundles.png" alt="Design Bundles" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Design Bundles</h3>
+          <p class="app-description">Affordable bundles of fonts, graphics, SVGs, and crafting resources.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">bundles</span><span class="app-tag">svg</span><span class="app-tag">crafts</span>
+            </div>
+          
+        </a>
+        <a href="hungry-jpeg.html" class="app-card" data-id="1777298132702" style="text-decoration:none;color:inherit">
+          <img src="logo/hungry-jpeg.png" alt="The Hungry JPEG" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Hungry JPEG</h3>
+          <p class="app-description">Marketplace for fonts, graphics, templates, and design resources for creators.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">templates</span><span class="app-tag">graphics</span>
+            </div>
+          
+        </a>
+        <a href="graphicriver.html" class="app-card" data-id="1777298132703" style="text-decoration:none;color:inherit">
+          <img src="logo/graphicriver.png" alt="GraphicRiver" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GraphicRiver</h3>
+          <p class="app-description">Marketplace for logos, icons, web templates, and print design assets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">logos</span><span class="app-tag">icons</span><span class="app-tag">templates</span>
+            </div>
+          
+        </a>
+        <a href="themeforest.html" class="app-card" data-id="1777298132704" style="text-decoration:none;color:inherit">
+          <img src="logo/themeforest.png" alt="ThemeForest" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ThemeForest</h3>
+          <p class="app-description">Largest marketplace for WordPress themes, HTML templates, and site templates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">themes</span><span class="app-tag">wordpress</span><span class="app-tag">html</span>
+            </div>
+          
+        </a>
+        <a href="ui8.html" class="app-card" data-id="1777298132705" style="text-decoration:none;color:inherit">
+          <img src="logo/ui8.png" alt="UI8" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">UI8</h3>
+          <p class="app-description">Premium UI kits, icons, illustrations, and design resources for digital products.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ui-kits</span><span class="app-tag">icons</span><span class="app-tag">illustrations</span>
+            </div>
+          
+        </a>
+        <a href="figma-community.html" class="app-card" data-id="1777298132706" style="text-decoration:none;color:inherit">
+          <img src="logo/figma-community.png" alt="Figma Community" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Figma Community</h3>
+          <p class="app-description">Free design resources, templates, and plugins shared by the Figma community.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">figma</span><span class="app-tag">free</span><span class="app-tag">templates</span>
+            </div>
+          
+        </a>
+        <a href="sketch-app-sources.html" class="app-card" data-id="1777298132707" style="text-decoration:none;color:inherit">
+          <img src="logo/sketch-sources.png" alt="Sketch App Sources" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sketch App Sources</h3>
+          <p class="app-description">Free resources for Sketch including UI kits, icons, plugins, and templates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sketch</span><span class="app-tag">free</span><span class="app-tag">ui-kits</span>
+            </div>
+          
+        </a>
+        <a href="invision-freehand.html" class="app-card" data-id="1777298132708" style="text-decoration:none;color:inherit">
+          <img src="logo/invision-freehand.png" alt="InVision Freehand" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">InVision Freehand</h3>
+          <p class="app-description">Collaborative whiteboard with templates and assets for design brainstorming.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">whiteboard</span><span class="app-tag">collaboration</span><span class="app-tag">templates</span>
+            </div>
+          
+        </a>
+        <a href="unsplash.html" class="app-card" data-id="1777298132709" style="text-decoration:none;color:inherit">
+          <img src="logo/unsplash.png" alt="Unsplash" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Unsplash</h3>
+          <p class="app-description">Free high-resolution photos contributed by photographers worldwide.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">photos</span><span class="app-tag">free</span><span class="app-tag">high-res</span>
+            </div>
+          
+        </a>
+        <a href="pexels.html" class="app-card" data-id="1777298132710" style="text-decoration:none;color:inherit">
+          <img src="logo/pexels.png" alt="Pexels" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pexels</h3>
+          <p class="app-description">Free stock photos and videos curated from creators around the world.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">photos</span><span class="app-tag">videos</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="pixabay.html" class="app-card" data-id="1777298132711" style="text-decoration:none;color:inherit">
+          <img src="logo/pixabay.png" alt="Pixabay" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pixabay</h3>
+          <p class="app-description">Free images, videos, music, and vectors released under Creative Commons.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">images</span><span class="app-tag">vectors</span><span class="app-tag">music</span>
+            </div>
+          
+        </a>
+        <a href="burst-shopify.html" class="app-card" data-id="1777298132712" style="text-decoration:none;color:inherit">
+          <img src="logo/burst.png" alt="Burst by Shopify" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Burst by Shopify</h3>
+          <p class="app-description">Free stock photos for entrepreneurs, e-commerce, and business projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">photos</span><span class="app-tag">ecommerce</span><span class="app-tag">business</span>
+            </div>
+          
+        </a>
+        <a href="stocksy.html" class="app-card" data-id="1777298132713" style="text-decoration:none;color:inherit">
+          <img src="logo/stocksy.png" alt="Stocksy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Stocksy</h3>
+          <p class="app-description">Authentic, diverse stock photos and videos from independent artists.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">authentic</span><span class="app-tag">diverse</span><span class="app-tag">artists</span>
+            </div>
+          
+        </a>
+        <a href="death-to-stock.html" class="app-card" data-id="1777298132714" style="text-decoration:none;color:inherit">
+          <img src="logo/death-to-stock.png" alt="Death to Stock" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Death to Stock</h3>
+          <p class="app-description">Unique, non-generic stock photos and videos from creative photographers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">unique</span><span class="app-tag">non-generic</span><span class="app-tag">creative</span>
+            </div>
+          
+        </a>
+        <a href="nappy.html" class="app-card" data-id="1777298132715" style="text-decoration:none;color:inherit">
+          <img src="logo/nappy.png" alt="Nappy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nappy</h3>
+          <p class="app-description">Beautiful free photos of Black and Brown people for commercial use.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diverse</span><span class="app-tag">free</span><span class="app-tag">commercial</span>
+            </div>
+          
+        </a>
+        <a href="kaboompics.html" class="app-card" data-id="1777298132716" style="text-decoration:none;color:inherit">
+          <img src="logo/kaboompics.png" alt="Kaboompics" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kaboompics</h3>
+          <p class="app-description">Free lifestyle photos with color palette information for designers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">lifestyle</span><span class="app-tag">free</span><span class="app-tag">color-palette</span>
+            </div>
+          
+        </a>
+        <a href="foodiesfeed.html" class="app-card" data-id="1777298132717" style="text-decoration:none;color:inherit">
+          <img src="logo/foodiesfeed.png" alt="Foodiesfeed" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Foodiesfeed</h3>
+          <p class="app-description">Free high-resolution food photos for culinary and restaurant projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">food</span><span class="app-tag">free</span><span class="app-tag">high-res</span>
+            </div>
+          
+        </a>
+        <a href="coverr.html" class="app-card" data-id="1777298132718" style="text-decoration:none;color:inherit">
+          <img src="logo/coverr.png" alt="Coverr" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Coverr</h3>
+          <p class="app-description">Free beautiful video footage for websites, backgrounds, and projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">videos</span><span class="app-tag">free</span><span class="app-tag">backgrounds</span>
+            </div>
+          
+        </a>
+        <a href="mixkit.html" class="app-card" data-id="1777298132719" style="text-decoration:none;color:inherit">
+          <img src="logo/mixkit.png" alt="Mixkit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mixkit</h3>
+          <p class="app-description">Free stock videos, music tracks, sound effects, and video templates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">videos</span><span class="app-tag">music</span><span class="app-tag">sound-effects</span>
+            </div>
+          
+        </a>
+        <a href="videvo.html" class="app-card" data-id="1777298132720" style="text-decoration:none;color:inherit">
+          <img src="logo/videvo.png" alt="Videvo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Videvo</h3>
+          <p class="app-description">Free and premium stock footage, motion graphics, and video templates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">footage</span><span class="app-tag">motion-graphics</span><span class="app-tag">templates</span>
+            </div>
+          
+        </a>
+        <a href="motion-array.html" class="app-card" data-id="1777298132721" style="text-decoration:none;color:inherit">
+          <img src="logo/motion-array.png" alt="Motion Array" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Motion Array</h3>
+          <p class="app-description">Unlimited downloads of video templates, music, SFX, and motion graphics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">video-templates</span><span class="app-tag">music</span><span class="app-tag">sfx</span>
+            </div>
+          
+        </a>
+        <a href="storyblocks.html" class="app-card" data-id="1777298132722" style="text-decoration:none;color:inherit">
+          <img src="logo/storyblocks.png" alt="Storyblocks" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Storyblocks</h3>
+          <p class="app-description">Unlimited stock videos, audio, images, and templates for creators.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">videos</span><span class="app-tag">audio</span><span class="app-tag">images</span>
+            </div>
+          
+        </a>
+        <a href="artlist.html" class="app-card" data-id="1777298132723" style="text-decoration:none;color:inherit">
+          <img src="logo/artlist.png" alt="Artlist" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Artlist</h3>
+          <p class="app-description">Royalty-free music and SFX for filmmakers, YouTubers, and content creators.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">sfx</span><span class="app-tag">royalty-free</span>
+            </div>
+          
+        </a>
+        <a href="epidemic-sound.html" class="app-card" data-id="1777298132724" style="text-decoration:none;color:inherit">
+          <img src="logo/epidemic-sound.png" alt="Epidemic Sound" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Epidemic Sound</h3>
+          <p class="app-description">High-quality royalty-free music and sound effects for content creators.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">sfx</span><span class="app-tag">royalty-free</span>
+            </div>
+          
+        </a>
+        <a href="audiojungle.html" class="app-card" data-id="1777298132725" style="text-decoration:none;color:inherit">
+          <img src="logo/audiojungle.png" alt="AudioJungle" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AudioJungle</h3>
+          <p class="app-description">Marketplace for royalty-free music tracks, sound effects, and audio loops.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">sfx</span><span class="app-tag">loops</span>
+            </div>
+          
+        </a>
+        <a href="freesound.html" class="app-card" data-id="1777298132726" style="text-decoration:none;color:inherit">
+          <img src="logo/freesound.png" alt="Freesound" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Freesound</h3>
+          <p class="app-description">Collaborative database of Creative Commons licensed sound effects and samples.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sfx</span><span class="app-tag">samples</span><span class="app-tag">creative-commons</span>
+            </div>
+          
+        </a>
+        <a href="zapsplat.html" class="app-card" data-id="1777298132727" style="text-decoration:none;color:inherit">
+          <img src="logo/zapsplat.png" alt="ZapSplat" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ZapSplat</h3>
+          <p class="app-description">Free sound effects and music tracks for games, videos, and multimedia projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sfx</span><span class="app-tag">music</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="soundly.html" class="app-card" data-id="1777298132728" style="text-decoration:none;color:inherit">
+          <img src="logo/soundly.png" alt="Soundly" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Soundly</h3>
+          <p class="app-description">Cloud-based sound effects library with search, preview, and direct integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sfx</span><span class="app-tag">cloud</span><span class="app-tag">search</span>
+            </div>
+          
+        </a>
+        <a href="boom-library.html" class="app-card" data-id="1777298132729" style="text-decoration:none;color:inherit">
+          <img src="logo/boom-library.png" alt="Boom Library" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Boom Library</h3>
+          <p class="app-description">Professional sound effects and music for film, games, and broadcast.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sfx</span><span class="app-tag">professional</span><span class="app-tag">film</span>
+            </div>
+          
+        </a>
+        <a href="procreate-brushes.html" class="app-card" data-id="1777298132730" style="text-decoration:none;color:inherit">
+          <img src="logo/procreate-brushes.png" alt="Procreate Brushes" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Procreate Brushes</h3>
+          <p class="app-description">Custom brush sets for Procreate including textures, effects, and artistic tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">brushes</span><span class="app-tag">procreate</span><span class="app-tag">textures</span>
+            </div>
+          
+        </a>
+        <a href="adobe-photoshop-actions.html" class="app-card" data-id="1777298132731" style="text-decoration:none;color:inherit">
+          <img src="logo/ps-actions.png" alt="Adobe Photoshop Actions" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Photoshop Actions</h3>
+          <p class="app-description">Automated editing presets for Photoshop to speed up photo retouching workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">actions</span><span class="app-tag">photoshop</span><span class="app-tag">presets</span>
+            </div>
+          
+        </a>
+        <a href="lightroom-presets.html" class="app-card" data-id="1777298132732" style="text-decoration:none;color:inherit">
+          <img src="logo/lr-presets.png" alt="Lightroom Presets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Lightroom Presets</h3>
+          <p class="app-description">One-click photo editing presets for Adobe Lightroom mobile and desktop.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presets</span><span class="app-tag">lightroom</span><span class="app-tag">photo-editing</span>
+            </div>
+          
+        </a>
+        <a href="vsco-presets.html" class="app-card" data-id="1777298132733" style="text-decoration:none;color:inherit">
+          <img src="logo/vsco-presets.png" alt="VSCO Presets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">VSCO Presets</h3>
+          <p class="app-description">Film-inspired presets for VSCO app with vintage and modern photo filters.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presets</span><span class="app-tag">vsco</span><span class="app-tag">film</span>
+            </div>
+          
+        </a>
+        <a href="after-effects-templates.html" class="app-card" data-id="1777298132734" style="text-decoration:none;color:inherit">
+          <img src="logo/ae-templates.png" alt="After Effects Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">After Effects Templates</h3>
+          <p class="app-description">Pre-built motion graphics templates for Adobe After Effects projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">templates</span><span class="app-tag">after-effects</span><span class="app-tag">motion-graphics</span>
+            </div>
+          
+        </a>
+        <a href="premiere-pro-presets.html" class="app-card" data-id="1777298132735" style="text-decoration:none;color:inherit">
+          <img src="logo/pr-presets.png" alt="Premiere Pro Presets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Premiere Pro Presets</h3>
+          <p class="app-description">Transitions, titles, and effects presets for Adobe Premiere Pro editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presets</span><span class="app-tag">premiere</span><span class="app-tag">transitions</span>
+            </div>
+          
+        </a>
+        <a href="final-cut-pro-templates.html" class="app-card" data-id="1777298132736" style="text-decoration:none;color:inherit">
+          <img src="logo/fcp-templates.png" alt="Final Cut Pro Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Final Cut Pro Templates</h3>
+          <p class="app-description">Titles, transitions, and effects templates for Final Cut Pro video editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">templates</span><span class="app-tag">final-cut</span><span class="app-tag">titles</span>
+            </div>
+          
+        </a>
+        <a href="davinci-resolve-luts.html" class="app-card" data-id="1777298132737" style="text-decoration:none;color:inherit">
+          <img src="logo/davinci-luts.png" alt="DaVinci Resolve LUTs" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DaVinci Resolve LUTs</h3>
+          <p class="app-description">Color grading presets and LUTs for DaVinci Resolve video color correction.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">luts</span><span class="app-tag">color-grading</span><span class="app-tag">davinci</span>
+            </div>
+          
+        </a>
+        <a href="filmconvert-presets.html" class="app-card" data-id="1777298132738" style="text-decoration:none;color:inherit">
+          <img src="logo/filmconvert.png" alt="FilmConvert Presets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FilmConvert Presets</h3>
+          <p class="app-description">Film emulation presets for authentic analog looks in digital video.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">film-emulation</span><span class="app-tag">presets</span><span class="app-tag">analog</span>
+            </div>
+          
+        </a>
+        <a href="dehancer-pro-presets.html" class="app-card" data-id="1777298132739" style="text-decoration:none;color:inherit">
+          <img src="logo/dehancer.png" alt="Dehancer Pro Presets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Dehancer Pro Presets</h3>
+          <p class="app-description">Film grain, halation, and bloom presets for cinematic video grading.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">film</span><span class="app-tag">grain</span><span class="app-tag">halation</span>
+            </div>
+          
+        </a>
+        <a href="illustrator-patterns.html" class="app-card" data-id="1777298132740" style="text-decoration:none;color:inherit">
+          <img src="logo/ai-patterns.png" alt="Illustrator Patterns" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Illustrator Patterns</h3>
+          <p class="app-description">Seamless pattern swatches and vector repeats for Adobe Illustrator.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">patterns</span><span class="app-tag">illustrator</span><span class="app-tag">vector</span>
+            </div>
+          
+        </a>
+        <a href="photoshop-brushes.html" class="app-card" data-id="1777298132741" style="text-decoration:none;color:inherit">
+          <img src="logo/ps-brushes.png" alt="Photoshop Brushes" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Photoshop Brushes</h3>
+          <p class="app-description">Custom brush sets for Photoshop including watercolor, ink, and texture brushes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">brushes</span><span class="app-tag">photoshop</span><span class="app-tag">watercolor</span>
+            </div>
+          
+        </a>
+        <a href="procreate-stamps.html" class="app-card" data-id="1777298132742" style="text-decoration:none;color:inherit">
+          <img src="logo/procreate-stamps.png" alt="Procreate Stamps" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Procreate Stamps</h3>
+          <p class="app-description">Pre-made stamp brushes for Procreate including shapes, textures, and effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">stamps</span><span class="app-tag">procreate</span><span class="app-tag">shapes</span>
+            </div>
+          
+        </a>
+        <a href="affinity-designer-assets.html" class="app-card" data-id="1777298132743" style="text-decoration:none;color:inherit">
+          <img src="logo/affinity-assets.png" alt="Affinity Designer Assets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Affinity Designer Assets</h3>
+          <p class="app-description">Vector assets, symbols, and styles for Affinity Designer projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">assets</span><span class="app-tag">affinity</span><span class="app-tag">vector</span>
+            </div>
+          
+        </a>
+        <a href="figma-ui-kits.html" class="app-card" data-id="1777298132744" style="text-decoration:none;color:inherit">
+          <img src="logo/figma-ui-kits.png" alt="Figma UI Kits" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Figma UI Kits</h3>
+          <p class="app-description">Complete UI component libraries for Figma with auto-layout and variants.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ui-kits</span><span class="app-tag">figma</span><span class="app-tag">components</span>
+            </div>
+          
+        </a>
+        <a href="sketch-ui-libraries.html" class="app-card" data-id="1777298132745" style="text-decoration:none;color:inherit">
+          <img src="logo/sketch-ui.png" alt="Sketch UI Libraries" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sketch UI Libraries</h3>
+          <p class="app-description">Reusable UI symbols and style guides for Sketch design systems.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ui</span><span class="app-tag">sketch</span><span class="app-tag">symbols</span>
+            </div>
+          
+        </a>
+        <a href="adobe-xd-ui-kits.html" class="app-card" data-id="1777298132746" style="text-decoration:none;color:inherit">
+          <img src="logo/xd-ui-kits.png" alt="Adobe XD UI Kits" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe XD UI Kits</h3>
+          <p class="app-description">Pre-designed UI components and templates for Adobe XD prototyping.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ui-kits</span><span class="app-tag">adobe-xd</span><span class="app-tag">components</span>
+            </div>
+          
+        </a>
+        <a href="webflow-templates.html" class="app-card" data-id="1777298132747" style="text-decoration:none;color:inherit">
+          <img src="logo/webflow-templates.png" alt="Webflow Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Webflow Templates</h3>
+          <p class="app-description">Responsive website templates for Webflow with CMS and interactions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">templates</span><span class="app-tag">webflow</span><span class="app-tag">responsive</span>
+            </div>
+          
+        </a>
+        <a href="wordpress-themes.html" class="app-card" data-id="1777298132748" style="text-decoration:none;color:inherit">
+          <img src="logo/wp-themes.png" alt="WordPress Themes" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WordPress Themes</h3>
+          <p class="app-description">Customizable WordPress themes for blogs, business, and e-commerce sites.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">themes</span><span class="app-tag">wordpress</span><span class="app-tag">customizable</span>
+            </div>
+          
+        </a>
+        <a href="elementor-templates.html" class="app-card" data-id="1777298132749" style="text-decoration:none;color:inherit">
+          <img src="logo/elementor-templates.png" alt="Elementor Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Elementor Templates</h3>
+          <p class="app-description">Drag-and-drop page templates for WordPress with Elementor builder.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">templates</span><span class="app-tag">elementor</span><span class="app-tag">wordpress</span>
+            </div>
+          
+        </a>
+        <a href="divi-layouts.html" class="app-card" data-id="1777298132750" style="text-decoration:none;color:inherit">
+          <img src="logo/divi-layouts.png" alt="Divi Layouts" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Divi Layouts</h3>
+          <p class="app-description">Pre-made page layouts and sections for Divi WordPress theme builder.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">layouts</span><span class="app-tag">divi</span><span class="app-tag">wordpress</span>
+            </div>
+          
+        </a>
+        <a href="shopify-themes.html" class="app-card" data-id="1777298132751" style="text-decoration:none;color:inherit">
+          <img src="logo/shopify-themes.png" alt="Shopify Themes" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Shopify Themes</h3>
+          <p class="app-description">Professional e-commerce themes for Shopify stores with mobile optimization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">themes</span><span class="app-tag">shopify</span><span class="app-tag">ecommerce</span>
+            </div>
+          
+        </a>
+        <a href="wix-templates.html" class="app-card" data-id="1777298132752" style="text-decoration:none;color:inherit">
+          <img src="logo/wix-templates.png" alt="Wix Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wix Templates</h3>
+          <p class="app-description">Drag-and-drop website templates for Wix with built-in functionality.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">templates</span><span class="app-tag">wix</span><span class="app-tag">drag-drop</span>
+            </div>
+          
+        </a>
+        <a href="squarespace-templates.html" class="app-card" data-id="1777298132753" style="text-decoration:none;color:inherit">
+          <img src="logo/squarespace-templates.png" alt="Squarespace Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Squarespace Templates</h3>
+          <p class="app-description">Beautiful, responsive templates for Squarespace portfolios and business sites.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">templates</span><span class="app-tag">squarespace</span><span class="app-tag">responsive</span>
+            </div>
+          
+        </a>
+        <a href="email-templates.html" class="app-card" data-id="1777298132754" style="text-decoration:none;color:inherit">
+          <img src="logo/email-templates.png" alt="Email Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Email Templates</h3>
+          <p class="app-description">Responsive HTML email templates for newsletters and marketing campaigns.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">html</span><span class="app-tag">responsive</span>
+            </div>
+          
+        </a>
+        <a href="mailchimp-templates.html" class="app-card" data-id="1777298132755" style="text-decoration:none;color:inherit">
+          <img src="logo/mailchimp-templates.png" alt="Mailchimp Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mailchimp Templates</h3>
+          <p class="app-description">Pre-designed email templates optimized for Mailchimp campaign builder.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">mailchimp</span><span class="app-tag">campaigns</span>
+            </div>
+          
+        </a>
+        <a href="social-media-templates.html" class="app-card" data-id="1777298132756" style="text-decoration:none;color:inherit">
+          <img src="logo/social-templates.png" alt="Social Media Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Social Media Templates</h3>
+          <p class="app-description">Ready-to-use templates for Instagram, Facebook, Twitter, and LinkedIn posts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">social-media</span><span class="app-tag">templates</span><span class="app-tag">instagram</span>
+            </div>
+          
+        </a>
+        <a href="canva-templates.html" class="app-card" data-id="1777298132757" style="text-decoration:none;color:inherit">
+          <img src="logo/canva-templates.png" alt="Canva Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Canva Templates</h3>
+          <p class="app-description">Editable design templates for Canva including social posts, presentations, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">canva</span><span class="app-tag">templates</span><span class="app-tag">editable</span>
+            </div>
+          
+        </a>
+        <a href="presentation-templates.html" class="app-card" data-id="1777298132758" style="text-decoration:none;color:inherit">
+          <img src="logo/presentation-templates.png" alt="Presentation Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Presentation Templates</h3>
+          <p class="app-description">Professional PowerPoint and Keynote templates for business presentations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presentations</span><span class="app-tag">powerpoint</span><span class="app-tag">keynote</span>
+            </div>
+          
+        </a>
+        <a href="google-slides-themes.html" class="app-card" data-id="1777298132759" style="text-decoration:none;color:inherit">
+          <img src="logo/slides-themes.png" alt="Google Slides Themes" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Slides Themes</h3>
+          <p class="app-description">Free and premium themes for Google Slides with collaborative editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">google-slides</span><span class="app-tag">themes</span><span class="app-tag">collaborative</span>
+            </div>
+          
+        </a>
+        <a href="mockup-templates.html" class="app-card" data-id="1777298132760" style="text-decoration:none;color:inherit">
+          <img src="logo/mockup-templates.png" alt="Mockup Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mockup Templates</h3>
+          <p class="app-description">Realistic product mockups for showcasing designs on devices, packaging, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mockups</span><span class="app-tag">product</span><span class="app-tag">realistic</span>
+            </div>
+          
+        </a>
+        <a href="placeit-mockups.html" class="app-card" data-id="1777298132761" style="text-decoration:none;color:inherit">
+          <img src="logo/placeit.png" alt="Placeit Mockups" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Placeit Mockups</h3>
+          <p class="app-description">Online mockup generator with thousands of templates for branding and products.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mockups</span><span class="app-tag">online</span><span class="app-tag">branding</span>
+            </div>
+          
+        </a>
+        <a href="smartmockups.html" class="app-card" data-id="1777298132762" style="text-decoration:none;color:inherit">
+          <img src="logo/smartmockups.png" alt="Smartmockups" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Smartmockups</h3>
+          <p class="app-description">Browser-based mockup creator for devices, apparel, and print materials.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mockups</span><span class="app-tag">browser</span><span class="app-tag">devices</span>
+            </div>
+          
+        </a>
+        <a href="mediamodifier.html" class="app-card" data-id="1777298132763" style="text-decoration:none;color:inherit">
+          <img src="logo/mediamodifier.png" alt="Mediamodifier" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mediamodifier</h3>
+          <p class="app-description">Online design tool with mockups, logo maker, and social media templates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mockups</span><span class="app-tag">logo-maker</span><span class="app-tag">online</span>
+            </div>
+          
+        </a>
+        <a href="logo-templates.html" class="app-card" data-id="1777298132764" style="text-decoration:none;color:inherit">
+          <img src="logo/logo-templates.png" alt="Logo Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Logo Templates</h3>
+          <p class="app-description">Customizable logo templates for businesses, brands, and personal projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">logos</span><span class="app-tag">templates</span><span class="app-tag">customizable</span>
+            </div>
+          
+        </a>
+        <a href="looka-logo-maker.html" class="app-card" data-id="1777298132765" style="text-decoration:none;color:inherit">
+          <img src="logo/looka.png" alt="Looka Logo Maker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Looka Logo Maker</h3>
+          <p class="app-description">AI-powered logo generator with brand kit and business card templates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">logo</span><span class="app-tag">ai</span><span class="app-tag">brand-kit</span>
+            </div>
+          
+        </a>
+        <a href="hatchful-shopify.html" class="app-card" data-id="1777298132766" style="text-decoration:none;color:inherit">
+          <img src="logo/hatchful.png" alt="Hatchful by Shopify" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hatchful by Shopify</h3>
+          <p class="app-description">Free logo maker with industry-specific templates and brand assets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">logo</span><span class="app-tag">free</span><span class="app-tag">shopify</span>
+            </div>
+          
+        </a>
+        <a href="brandmark.html" class="app-card" data-id="1777298132767" style="text-decoration:none;color:inherit">
+          <img src="logo/brandmark.png" alt="Brandmark" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Brandmark</h3>
+          <p class="app-description">AI logo designer with color palette, font pairing, and brand guidelines.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">logo</span><span class="app-tag">ai</span><span class="app-tag">branding</span>
+            </div>
+          
+        </a>
+        <a href="tailor-brands.html" class="app-card" data-id="1777298132768" style="text-decoration:none;color:inherit">
+          <img src="logo/tailor-brands.png" alt="Tailor Brands" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tailor Brands</h3>
+          <p class="app-description">AI-powered branding platform with logo, business cards, and social media kits.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">branding</span><span class="app-tag">ai</span><span class="app-tag">logo</span>
+            </div>
+          
+        </a>
+        <a href="vector-stock.html" class="app-card" data-id="1777298132769" style="text-decoration:none;color:inherit">
+          <img src="logo/vector-stock.png" alt="Vector Stock" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Vector Stock</h3>
+          <p class="app-description">Royalty-free vector illustrations, icons, and graphics for design projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vectors</span><span class="app-tag">illustrations</span><span class="app-tag">icons</span>
+            </div>
+          
+        </a>
+        <a href="vecteezy.html" class="app-card" data-id="1777298132770" style="text-decoration:none;color:inherit">
+          <img src="logo/vecteezy.png" alt="Vecteezy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Vecteezy</h3>
+          <p class="app-description">Free and premium vector art, illustrations, and design resources.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vectors</span><span class="app-tag">free</span><span class="app-tag">illustrations</span>
+            </div>
+          
+        </a>
+        <a href="svg-repo.html" class="app-card" data-id="1777298132771" style="text-decoration:none;color:inherit">
+          <img src="logo/svg-repo.png" alt="SVG Repo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SVG Repo</h3>
+          <p class="app-description">Free SVG vector icons and illustrations with commercial use license.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">svg</span><span class="app-tag">icons</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="iconscout.html" class="app-card" data-id="1777298132772" style="text-decoration:none;color:inherit">
+          <img src="logo/iconscout.png" alt="IconScout" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">IconScout</h3>
+          <p class="app-description">Millions of icons, illustrations, and 3D assets for design and development.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">illustrations</span><span class="app-tag">3d</span>
+            </div>
+          
+        </a>
+        <a href="icons8.html" class="app-card" data-id="1777298132773" style="text-decoration:none;color:inherit">
+          <img src="logo/icons8.png" alt="Icons8" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Icons8</h3>
+          <p class="app-description">Icons, photos, illustrations, and music in multiple styles and formats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">photos</span><span class="app-tag">illustrations</span>
+            </div>
+          
+        </a>
+        <a href="streamline-icons.html" class="app-card" data-id="1777298132774" style="text-decoration:none;color:inherit">
+          <img src="logo/streamline.png" alt="Streamline Icons" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Streamline Icons</h3>
+          <p class="app-description">Consistent icon system with 100k+ icons in multiple styles and formats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">consistent</span><span class="app-tag">multiple-styles</span>
+            </div>
+          
+        </a>
+        <a href="heroicons.html" class="app-card" data-id="1777298132775" style="text-decoration:none;color:inherit">
+          <img src="logo/heroicons.png" alt="Heroicons" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Heroicons</h3>
+          <p class="app-description">Beautiful hand-crafted SVG icons by the makers of Tailwind CSS.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">svg</span><span class="app-tag">tailwind</span>
+            </div>
+          
+        </a>
+        <a href="lucide-icons.html" class="app-card" data-id="1777298132776" style="text-decoration:none;color:inherit">
+          <img src="logo/lucide.png" alt="Lucide Icons" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Lucide Icons</h3>
+          <p class="app-description">Beautiful, consistent, and customizable open-source icon library.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">open-source</span><span class="app-tag">customizable</span>
+            </div>
+          
+        </a>
+        <a href="tabler-icons.html" class="app-card" data-id="1777298132777" style="text-decoration:none;color:inherit">
+          <img src="logo/tabler-icons.png" alt="Tabler Icons" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tabler Icons</h3>
+          <p class="app-description">Over 4000 free, open-source SVG icons for web and app projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">svg</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="phosphor-icons.html" class="app-card" data-id="1777298132778" style="text-decoration:none;color:inherit">
+          <img src="logo/phosphor.png" alt="Phosphor Icons" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Phosphor Icons</h3>
+          <p class="app-description">Flexible icon family for interfaces, diagrams, presentations, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">flexible</span><span class="app-tag">interfaces</span>
+            </div>
+          
+        </a>
+        <a href="radix-icons.html" class="app-card" data-id="1777298132779" style="text-decoration:none;color:inherit">
+          <img src="logo/radix-icons.png" alt="Radix Icons" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Radix Icons</h3>
+          <p class="app-description">Crisp, consistent 15x15 icon set designed for web and app interfaces.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">crisp</span><span class="app-tag">consistent</span>
+            </div>
+          
+        </a>
+        <a href="iconpark.html" class="app-card" data-id="1777298132780" style="text-decoration:none;color:inherit">
+          <img src="logo/iconpark.png" alt="IconPark" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">IconPark</h3>
+          <p class="app-description">Open-source icon library with 2000+ icons in multiple styles and formats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">open-source</span><span class="app-tag">multiple-styles</span>
+            </div>
+          
+        </a>
+        <a href="material-design-icons.html" class="app-card" data-id="1777298132781" style="text-decoration:none;color:inherit">
+          <img src="logo/material-icons.png" alt="Material Design Icons" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Material Design Icons</h3>
+          <p class="app-description">Google&#039;s official icon library following Material Design guidelines.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">material-design</span><span class="app-tag">google</span>
+            </div>
+          
+        </a>
+        <a href="ant-design-icons.html" class="app-card" data-id="1777298132782" style="text-decoration:none;color:inherit">
+          <img src="logo/ant-icons.png" alt="Ant Design Icons" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ant Design Icons</h3>
+          <p class="app-description">High-quality SVG icons for Ant Design and React applications.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">ant-design</span><span class="app-tag">react</span>
+            </div>
+          
+        </a>
+        <a href="bootstrap-icons.html" class="app-card" data-id="1777298132783" style="text-decoration:none;color:inherit">
+          <img src="logo/bootstrap-icons.png" alt="Bootstrap Icons" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bootstrap Icons</h3>
+          <p class="app-description">Free, high-quality icons for Bootstrap projects with SVG and font formats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">bootstrap</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="feather-icons.html" class="app-card" data-id="1777298132784" style="text-decoration:none;color:inherit">
+          <img src="logo/feather-icons.png" alt="Feather Icons" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Feather Icons</h3>
+          <p class="app-description">Simply beautiful open-source icons with clean, minimal design.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">open-source</span><span class="app-tag">minimal</span>
+            </div>
+          
+        </a>
+        <a href="ionicons.html" class="app-card" data-id="1777298132785" style="text-decoration:none;color:inherit">
+          <img src="logo/ionicons.png" alt="Ionicons" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ionicons</h3>
+          <p class="app-description">Premium icon pack for iOS, Android, and web applications.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">icons</span><span class="app-tag">premium</span><span class="app-tag">ios</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777298132686,"name":"Envato Elements","slug":"envato-elements","version":"2024.1","description":"Unlimited downloads of stock photos, videos, templates, fonts, and design assets.","category":"design-assets","logoUrl":"logo/envato-elements.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Envato Elements1&tracker=1","tags":["stock","templates","fonts","unlimited"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132687,"name":"Creative Market","slug":"creative-market","version":"2024.1","description":"Marketplace for unique fonts, graphics, templates, themes, and design assets.","category":"design-assets","logoUrl":"logo/creative-market.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Creative Market2&tracker=2","tags":["marketplace","fonts","graphics","themes"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132689,"name":"Shutterstock","slug":"shutterstock","version":"2024.1","description":"Massive library of royalty-free images, videos, music, and editing tools.","category":"design-assets","logoUrl":"logo/shutterstock.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Shutterstock4&tracker=4","tags":["stock","royalty-free","music","editing"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132690,"name":"Freepik","slug":"freepik","version":"2024.1","description":"Free and premium vectors, stock photos, PSD files, and icons for designers.","category":"design-assets","logoUrl":"logo/freepik.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Freepik5&tracker=5","tags":["vectors","free","psd","icons"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132691,"name":"Flaticon","slug":"flaticon","version":"2024.1","description":"Largest database of free vector icons in SVG, PNG, EPS, and PSD formats.","category":"design-assets","logoUrl":"logo/flaticon.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Flaticon6&tracker=6","tags":["icons","vector","svg","free"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132692,"name":"Iconfinder","slug":"iconfinder","version":"2024.1","description":"Millions of icons and illustrations for web, mobile, and app design projects.","category":"design-assets","logoUrl":"logo/iconfinder.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Iconfinder7&tracker=7","tags":["icons","illustrations","web","mobile"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132693,"name":"Font Awesome","slug":"font-awesome","version":"6.5.0","description":"Popular icon toolkit with scalable vector icons for web and app development.","category":"design-assets","logoUrl":"logo/font-awesome.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Font Awesome8&tracker=8","tags":["icons","svg","web","toolkit"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132694,"name":"Google Fonts","slug":"google-fonts","version":"2024.1","description":"Free library of open-source fonts optimized for web and mobile applications.","category":"design-assets","logoUrl":"logo/google-fonts.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Fonts9&tracker=9","tags":["fonts","free","web","open-source"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132696,"name":"Font Squirrel","slug":"font-squirrel","version":"2024.1","description":"Curated collection of free, high-quality fonts for commercial use.","category":"design-assets","logoUrl":"logo/font-squirrel.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Font Squirrel11&tracker=11","tags":["fonts","free","commercial","curated"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132697,"name":"DaFont","slug":"dafont","version":"2024.1","description":"Archive of freely downloadable fonts with preview and categorization features.","category":"design-assets","logoUrl":"logo/dafont.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DaFont12&tracker=12","tags":["fonts","free","archive","preview"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132698,"name":"MyFonts","slug":"myfonts","version":"2024.1","description":"Premium font marketplace with thousands of professional typefaces.","category":"design-assets","logoUrl":"logo/myfonts.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MyFonts13&tracker=13","tags":["fonts","premium","typefaces","marketplace"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132699,"name":"Fontspring","slug":"fontspring","version":"2024.1","description":"Professional font foundry with desktop, web, and app font licensing.","category":"design-assets","logoUrl":"logo/fontspring.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fontspring14&tracker=14","tags":["fonts","licensing","web","professional"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132700,"name":"Creative Fabrica","slug":"creative-fabrica","version":"2024.1","description":"Unlimited downloads of fonts, graphics, crafts, and design assets.","category":"design-assets","logoUrl":"logo/creative-fabrica.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Creative Fabrica15&tracker=15","tags":["fonts","graphics","crafts","unlimited"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132701,"name":"Design Bundles","slug":"design-bundles","version":"2024.1","description":"Affordable bundles of fonts, graphics, SVGs, and crafting resources.","category":"design-assets","logoUrl":"logo/design-bundles.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Design Bundles16&tracker=16","tags":["bundles","svg","crafts","affordable"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132702,"name":"The Hungry JPEG","slug":"hungry-jpeg","version":"2024.1","description":"Marketplace for fonts, graphics, templates, and design resources for creators.","category":"design-assets","logoUrl":"logo/hungry-jpeg.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Hungry JPEG17&tracker=17","tags":["fonts","templates","graphics","marketplace"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132703,"name":"GraphicRiver","slug":"graphicriver","version":"2024.1","description":"Marketplace for logos, icons, web templates, and print design assets.","category":"design-assets","logoUrl":"logo/graphicriver.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GraphicRiver18&tracker=18","tags":["logos","icons","templates","print"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132704,"name":"ThemeForest","slug":"themeforest","version":"2024.1","description":"Largest marketplace for WordPress themes, HTML templates, and site templates.","category":"design-assets","logoUrl":"logo/themeforest.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ThemeForest19&tracker=19","tags":["themes","wordpress","html","templates"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132705,"name":"UI8","slug":"ui8","version":"2024.1","description":"Premium UI kits, icons, illustrations, and design resources for digital products.","category":"design-assets","logoUrl":"logo/ui8.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=UI820&tracker=20","tags":["ui-kits","icons","illustrations","premium"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132706,"name":"Figma Community","slug":"figma-community","version":"2024.1","description":"Free design resources, templates, and plugins shared by the Figma community.","category":"design-assets","logoUrl":"logo/figma-community.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Figma Community21&tracker=21","tags":["figma","free","templates","plugins"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132707,"name":"Sketch App Sources","slug":"sketch-app-sources","version":"2024.1","description":"Free resources for Sketch including UI kits, icons, plugins, and templates.","category":"design-assets","logoUrl":"logo/sketch-sources.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sketch App Sources22&tracker=22","tags":["sketch","free","ui-kits","plugins"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132708,"name":"InVision Freehand","slug":"invision-freehand","version":"2024.1","description":"Collaborative whiteboard with templates and assets for design brainstorming.","category":"design-assets","logoUrl":"logo/invision-freehand.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=InVision Freehand23&tracker=23","tags":["whiteboard","collaboration","templates","brainstorming"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132709,"name":"Unsplash","slug":"unsplash","version":"2024.1","description":"Free high-resolution photos contributed by photographers worldwide.","category":"design-assets","logoUrl":"logo/unsplash.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Unsplash24&tracker=24","tags":["photos","free","high-res","community"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132710,"name":"Pexels","slug":"pexels","version":"2024.1","description":"Free stock photos and videos curated from creators around the world.","category":"design-assets","logoUrl":"logo/pexels.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pexels25&tracker=25","tags":["photos","videos","free","curated"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132711,"name":"Pixabay","slug":"pixabay","version":"2024.1","description":"Free images, videos, music, and vectors released under Creative Commons.","category":"design-assets","logoUrl":"logo/pixabay.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pixabay26&tracker=26","tags":["images","vectors","music","creative-commons"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132712,"name":"Burst by Shopify","slug":"burst-shopify","version":"2024.1","description":"Free stock photos for entrepreneurs, e-commerce, and business projects.","category":"design-assets","logoUrl":"logo/burst.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Burst by Shopify27&tracker=27","tags":["photos","ecommerce","business","free"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132713,"name":"Stocksy","slug":"stocksy","version":"2024.1","description":"Authentic, diverse stock photos and videos from independent artists.","category":"design-assets","logoUrl":"logo/stocksy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Stocksy28&tracker=28","tags":["authentic","diverse","artists","premium"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132714,"name":"Death to Stock","slug":"death-to-stock","version":"2024.1","description":"Unique, non-generic stock photos and videos from creative photographers.","category":"design-assets","logoUrl":"logo/death-to-stock.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Death to Stock29&tracker=29","tags":["unique","non-generic","creative","subscription"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132715,"name":"Nappy","slug":"nappy","version":"2024.1","description":"Beautiful free photos of Black and Brown people for commercial use.","category":"design-assets","logoUrl":"logo/nappy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nappy30&tracker=30","tags":["diverse","free","commercial","inclusive"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132716,"name":"Kaboompics","slug":"kaboompics","version":"2024.1","description":"Free lifestyle photos with color palette information for designers.","category":"design-assets","logoUrl":"logo/kaboompics.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kaboompics31&tracker=31","tags":["lifestyle","free","color-palette","design"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132717,"name":"Foodiesfeed","slug":"foodiesfeed","version":"2024.1","description":"Free high-resolution food photos for culinary and restaurant projects.","category":"design-assets","logoUrl":"logo/foodiesfeed.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Foodiesfeed32&tracker=32","tags":["food","free","high-res","culinary"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132718,"name":"Coverr","slug":"coverr","version":"2024.1","description":"Free beautiful video footage for websites, backgrounds, and projects.","category":"design-assets","logoUrl":"logo/coverr.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Coverr33&tracker=33","tags":["videos","free","backgrounds","websites"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132719,"name":"Mixkit","slug":"mixkit","version":"2024.1","description":"Free stock videos, music tracks, sound effects, and video templates.","category":"design-assets","logoUrl":"logo/mixkit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mixkit34&tracker=34","tags":["videos","music","sound-effects","free"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132720,"name":"Videvo","slug":"videvo","version":"2024.1","description":"Free and premium stock footage, motion graphics, and video templates.","category":"design-assets","logoUrl":"logo/videvo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Videvo35&tracker=35","tags":["footage","motion-graphics","templates","free"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132721,"name":"Motion Array","slug":"motion-array","version":"2024.1","description":"Unlimited downloads of video templates, music, SFX, and motion graphics.","category":"design-assets","logoUrl":"logo/motion-array.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Motion Array36&tracker=36","tags":["video-templates","music","sfx","unlimited"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132722,"name":"Storyblocks","slug":"storyblocks","version":"2024.1","description":"Unlimited stock videos, audio, images, and templates for creators.","category":"design-assets","logoUrl":"logo/storyblocks.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Storyblocks37&tracker=37","tags":["videos","audio","images","unlimited"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132723,"name":"Artlist","slug":"artlist","version":"2024.1","description":"Royalty-free music and SFX for filmmakers, YouTubers, and content creators.","category":"design-assets","logoUrl":"logo/artlist.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Artlist38&tracker=38","tags":["music","sfx","royalty-free","filmmakers"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132724,"name":"Epidemic Sound","slug":"epidemic-sound","version":"2024.1","description":"High-quality royalty-free music and sound effects for content creators.","category":"design-assets","logoUrl":"logo/epidemic-sound.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Epidemic Sound39&tracker=39","tags":["music","sfx","royalty-free","creators"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132725,"name":"AudioJungle","slug":"audiojungle","version":"2024.1","description":"Marketplace for royalty-free music tracks, sound effects, and audio loops.","category":"design-assets","logoUrl":"logo/audiojungle.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AudioJungle40&tracker=40","tags":["music","sfx","loops","marketplace"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132726,"name":"Freesound","slug":"freesound","version":"2024.1","description":"Collaborative database of Creative Commons licensed sound effects and samples.","category":"design-assets","logoUrl":"logo/freesound.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Freesound41&tracker=41","tags":["sfx","samples","creative-commons","collaborative"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132727,"name":"ZapSplat","slug":"zapsplat","version":"2024.1","description":"Free sound effects and music tracks for games, videos, and multimedia projects.","category":"design-assets","logoUrl":"logo/zapsplat.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ZapSplat42&tracker=42","tags":["sfx","music","free","games"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132728,"name":"Soundly","slug":"soundly","version":"2024.1","description":"Cloud-based sound effects library with search, preview, and direct integration.","category":"design-assets","logoUrl":"logo/soundly.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Soundly43&tracker=43","tags":["sfx","cloud","search","integration"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132729,"name":"Boom Library","slug":"boom-library","version":"2024.1","description":"Professional sound effects and music for film, games, and broadcast.","category":"design-assets","logoUrl":"logo/boom-library.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Boom Library44&tracker=44","tags":["sfx","professional","film","games"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132730,"name":"Procreate Brushes","slug":"procreate-brushes","version":"2024.1","description":"Custom brush sets for Procreate including textures, effects, and artistic tools.","category":"design-assets","logoUrl":"logo/procreate-brushes.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Procreate Brushes45&tracker=45","tags":["brushes","procreate","textures","artistic"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132731,"name":"Adobe Photoshop Actions","slug":"adobe-photoshop-actions","version":"2024.1","description":"Automated editing presets for Photoshop to speed up photo retouching workflows.","category":"design-assets","logoUrl":"logo/ps-actions.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Photoshop Actions46&tracker=46","tags":["actions","photoshop","presets","automation"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132732,"name":"Lightroom Presets","slug":"lightroom-presets","version":"2024.1","description":"One-click photo editing presets for Adobe Lightroom mobile and desktop.","category":"design-assets","logoUrl":"logo/lr-presets.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Lightroom Presets47&tracker=47","tags":["presets","lightroom","photo-editing","one-click"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132733,"name":"VSCO Presets","slug":"vsco-presets","version":"2024.1","description":"Film-inspired presets for VSCO app with vintage and modern photo filters.","category":"design-assets","logoUrl":"logo/vsco-presets.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=VSCO Presets48&tracker=48","tags":["presets","vsco","film","filters"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132734,"name":"After Effects Templates","slug":"after-effects-templates","version":"2024.1","description":"Pre-built motion graphics templates for Adobe After Effects projects.","category":"design-assets","logoUrl":"logo/ae-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=After Effects Templates49&tracker=49","tags":["templates","after-effects","motion-graphics","pre-built"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132735,"name":"Premiere Pro Presets","slug":"premiere-pro-presets","version":"2024.1","description":"Transitions, titles, and effects presets for Adobe Premiere Pro editing.","category":"design-assets","logoUrl":"logo/pr-presets.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Premiere Pro Presets50&tracker=50","tags":["presets","premiere","transitions","effects"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132736,"name":"Final Cut Pro Templates","slug":"final-cut-pro-templates","version":"2024.1","description":"Titles, transitions, and effects templates for Final Cut Pro video editing.","category":"design-assets","logoUrl":"logo/fcp-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Final Cut Pro Templates51&tracker=51","tags":["templates","final-cut","titles","transitions"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132737,"name":"DaVinci Resolve LUTs","slug":"davinci-resolve-luts","version":"2024.1","description":"Color grading presets and LUTs for DaVinci Resolve video color correction.","category":"design-assets","logoUrl":"logo/davinci-luts.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DaVinci Resolve LUTs52&tracker=52","tags":["luts","color-grading","davinci","presets"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132738,"name":"FilmConvert Presets","slug":"filmconvert-presets","version":"2024.1","description":"Film emulation presets for authentic analog looks in digital video.","category":"design-assets","logoUrl":"logo/filmconvert.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FilmConvert Presets53&tracker=53","tags":["film-emulation","presets","analog","video"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132739,"name":"Dehancer Pro Presets","slug":"dehancer-pro-presets","version":"2024.1","description":"Film grain, halation, and bloom presets for cinematic video grading.","category":"design-assets","logoUrl":"logo/dehancer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Dehancer Pro Presets54&tracker=54","tags":["film","grain","halation","cinematic"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132740,"name":"Illustrator Patterns","slug":"illustrator-patterns","version":"2024.1","description":"Seamless pattern swatches and vector repeats for Adobe Illustrator.","category":"design-assets","logoUrl":"logo/ai-patterns.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Illustrator Patterns55&tracker=55","tags":["patterns","illustrator","vector","seamless"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132741,"name":"Photoshop Brushes","slug":"photoshop-brushes","version":"2024.1","description":"Custom brush sets for Photoshop including watercolor, ink, and texture brushes.","category":"design-assets","logoUrl":"logo/ps-brushes.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Photoshop Brushes56&tracker=56","tags":["brushes","photoshop","watercolor","textures"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132742,"name":"Procreate Stamps","slug":"procreate-stamps","version":"2024.1","description":"Pre-made stamp brushes for Procreate including shapes, textures, and effects.","category":"design-assets","logoUrl":"logo/procreate-stamps.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Procreate Stamps57&tracker=57","tags":["stamps","procreate","shapes","effects"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132743,"name":"Affinity Designer Assets","slug":"affinity-designer-assets","version":"2024.1","description":"Vector assets, symbols, and styles for Affinity Designer projects.","category":"design-assets","logoUrl":"logo/affinity-assets.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Affinity Designer Assets58&tracker=58","tags":["assets","affinity","vector","symbols"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132744,"name":"Figma UI Kits","slug":"figma-ui-kits","version":"2024.1","description":"Complete UI component libraries for Figma with auto-layout and variants.","category":"design-assets","logoUrl":"logo/figma-ui-kits.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Figma UI Kits59&tracker=59","tags":["ui-kits","figma","components","auto-layout"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132745,"name":"Sketch UI Libraries","slug":"sketch-ui-libraries","version":"2024.1","description":"Reusable UI symbols and style guides for Sketch design systems.","category":"design-assets","logoUrl":"logo/sketch-ui.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sketch UI Libraries60&tracker=60","tags":["ui","sketch","symbols","design-systems"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132746,"name":"Adobe XD UI Kits","slug":"adobe-xd-ui-kits","version":"2024.1","description":"Pre-designed UI components and templates for Adobe XD prototyping.","category":"design-assets","logoUrl":"logo/xd-ui-kits.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe XD UI Kits61&tracker=61","tags":["ui-kits","adobe-xd","components","prototyping"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132747,"name":"Webflow Templates","slug":"webflow-templates","version":"2024.1","description":"Responsive website templates for Webflow with CMS and interactions.","category":"design-assets","logoUrl":"logo/webflow-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Webflow Templates62&tracker=62","tags":["templates","webflow","responsive","cms"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132748,"name":"WordPress Themes","slug":"wordpress-themes","version":"2024.1","description":"Customizable WordPress themes for blogs, business, and e-commerce sites.","category":"design-assets","logoUrl":"logo/wp-themes.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WordPress Themes63&tracker=63","tags":["themes","wordpress","customizable","ecommerce"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132749,"name":"Elementor Templates","slug":"elementor-templates","version":"2024.1","description":"Drag-and-drop page templates for WordPress with Elementor builder.","category":"design-assets","logoUrl":"logo/elementor-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Elementor Templates64&tracker=64","tags":["templates","elementor","wordpress","drag-drop"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132750,"name":"Divi Layouts","slug":"divi-layouts","version":"2024.1","description":"Pre-made page layouts and sections for Divi WordPress theme builder.","category":"design-assets","logoUrl":"logo/divi-layouts.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Divi Layouts65&tracker=65","tags":["layouts","divi","wordpress","builder"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132751,"name":"Shopify Themes","slug":"shopify-themes","version":"2024.1","description":"Professional e-commerce themes for Shopify stores with mobile optimization.","category":"design-assets","logoUrl":"logo/shopify-themes.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Shopify Themes66&tracker=66","tags":["themes","shopify","ecommerce","mobile"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132752,"name":"Wix Templates","slug":"wix-templates","version":"2024.1","description":"Drag-and-drop website templates for Wix with built-in functionality.","category":"design-assets","logoUrl":"logo/wix-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wix Templates67&tracker=67","tags":["templates","wix","drag-drop","functionality"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132753,"name":"Squarespace Templates","slug":"squarespace-templates","version":"2024.1","description":"Beautiful, responsive templates for Squarespace portfolios and business sites.","category":"design-assets","logoUrl":"logo/squarespace-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Squarespace Templates68&tracker=68","tags":["templates","squarespace","responsive","portfolios"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132754,"name":"Email Templates","slug":"email-templates","version":"2024.1","description":"Responsive HTML email templates for newsletters and marketing campaigns.","category":"design-assets","logoUrl":"logo/email-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Email Templates69&tracker=69","tags":["email","html","responsive","marketing"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132755,"name":"Mailchimp Templates","slug":"mailchimp-templates","version":"2024.1","description":"Pre-designed email templates optimized for Mailchimp campaign builder.","category":"design-assets","logoUrl":"logo/mailchimp-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mailchimp Templates70&tracker=70","tags":["email","mailchimp","campaigns","pre-designed"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132756,"name":"Social Media Templates","slug":"social-media-templates","version":"2024.1","description":"Ready-to-use templates for Instagram, Facebook, Twitter, and LinkedIn posts.","category":"design-assets","logoUrl":"logo/social-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Social Media Templates71&tracker=71","tags":["social-media","templates","instagram","facebook"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132757,"name":"Canva Templates","slug":"canva-templates","version":"2024.1","description":"Editable design templates for Canva including social posts, presentations, and more.","category":"design-assets","logoUrl":"logo/canva-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Canva Templates72&tracker=72","tags":["canva","templates","editable","social"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132758,"name":"Presentation Templates","slug":"presentation-templates","version":"2024.1","description":"Professional PowerPoint and Keynote templates for business presentations.","category":"design-assets","logoUrl":"logo/presentation-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Presentation Templates73&tracker=73","tags":["presentations","powerpoint","keynote","business"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132759,"name":"Google Slides Themes","slug":"google-slides-themes","version":"2024.1","description":"Free and premium themes for Google Slides with collaborative editing.","category":"design-assets","logoUrl":"logo/slides-themes.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Slides Themes74&tracker=74","tags":["google-slides","themes","collaborative","free"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132760,"name":"Mockup Templates","slug":"mockup-templates","version":"2024.1","description":"Realistic product mockups for showcasing designs on devices, packaging, and more.","category":"design-assets","logoUrl":"logo/mockup-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mockup Templates75&tracker=75","tags":["mockups","product","realistic","showcase"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132761,"name":"Placeit Mockups","slug":"placeit-mockups","version":"2024.1","description":"Online mockup generator with thousands of templates for branding and products.","category":"design-assets","logoUrl":"logo/placeit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Placeit Mockups76&tracker=76","tags":["mockups","online","branding","generator"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132762,"name":"Smartmockups","slug":"smartmockups","version":"2024.1","description":"Browser-based mockup creator for devices, apparel, and print materials.","category":"design-assets","logoUrl":"logo/smartmockups.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Smartmockups77&tracker=77","tags":["mockups","browser","devices","apparel"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132763,"name":"Mediamodifier","slug":"mediamodifier","version":"2024.1","description":"Online design tool with mockups, logo maker, and social media templates.","category":"design-assets","logoUrl":"logo/mediamodifier.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mediamodifier78&tracker=78","tags":["mockups","logo-maker","online","social"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132764,"name":"Logo Templates","slug":"logo-templates","version":"2024.1","description":"Customizable logo templates for businesses, brands, and personal projects.","category":"design-assets","logoUrl":"logo/logo-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Logo Templates79&tracker=79","tags":["logos","templates","customizable","branding"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132765,"name":"Looka Logo Maker","slug":"looka-logo-maker","version":"2024.1","description":"AI-powered logo generator with brand kit and business card templates.","category":"design-assets","logoUrl":"logo/looka.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Looka Logo Maker80&tracker=80","tags":["logo","ai","brand-kit","generator"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132766,"name":"Hatchful by Shopify","slug":"hatchful-shopify","version":"2024.1","description":"Free logo maker with industry-specific templates and brand assets.","category":"design-assets","logoUrl":"logo/hatchful.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hatchful by Shopify81&tracker=81","tags":["logo","free","shopify","industry"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132767,"name":"Brandmark","slug":"brandmark","version":"2024.1","description":"AI logo designer with color palette, font pairing, and brand guidelines.","category":"design-assets","logoUrl":"logo/brandmark.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Brandmark82&tracker=82","tags":["logo","ai","branding","guidelines"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132768,"name":"Tailor Brands","slug":"tailor-brands","version":"2024.1","description":"AI-powered branding platform with logo, business cards, and social media kits.","category":"design-assets","logoUrl":"logo/tailor-brands.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tailor Brands83&tracker=83","tags":["branding","ai","logo","social-kit"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132769,"name":"Vector Stock","slug":"vector-stock","version":"2024.1","description":"Royalty-free vector illustrations, icons, and graphics for design projects.","category":"design-assets","logoUrl":"logo/vector-stock.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Vector Stock84&tracker=84","tags":["vectors","illustrations","icons","royalty-free"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132770,"name":"Vecteezy","slug":"vecteezy","version":"2024.1","description":"Free and premium vector art, illustrations, and design resources.","category":"design-assets","logoUrl":"logo/vecteezy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Vecteezy85&tracker=85","tags":["vectors","free","illustrations","art"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132771,"name":"SVG Repo","slug":"svg-repo","version":"2024.1","description":"Free SVG vector icons and illustrations with commercial use license.","category":"design-assets","logoUrl":"logo/svg-repo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SVG Repo86&tracker=86","tags":["svg","icons","free","commercial"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132772,"name":"IconScout","slug":"iconscout","version":"2024.1","description":"Millions of icons, illustrations, and 3D assets for design and development.","category":"design-assets","logoUrl":"logo/iconscout.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=IconScout87&tracker=87","tags":["icons","illustrations","3d","development"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132773,"name":"Icons8","slug":"icons8","version":"2024.1","description":"Icons, photos, illustrations, and music in multiple styles and formats.","category":"design-assets","logoUrl":"logo/icons8.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Icons888&tracker=88","tags":["icons","photos","illustrations","music"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132774,"name":"Streamline Icons","slug":"streamline-icons","version":"4.0.0","description":"Consistent icon system with 100k+ icons in multiple styles and formats.","category":"design-assets","logoUrl":"logo/streamline.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Streamline Icons89&tracker=89","tags":["icons","consistent","multiple-styles","system"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132775,"name":"Heroicons","slug":"heroicons","version":"2.1.0","description":"Beautiful hand-crafted SVG icons by the makers of Tailwind CSS.","category":"design-assets","logoUrl":"logo/heroicons.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Heroicons90&tracker=90","tags":["icons","svg","tailwind","hand-crafted"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132776,"name":"Lucide Icons","slug":"lucide-icons","version":"0.350.0","description":"Beautiful, consistent, and customizable open-source icon library.","category":"design-assets","logoUrl":"logo/lucide.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Lucide Icons91&tracker=91","tags":["icons","open-source","customizable","consistent"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132777,"name":"Tabler Icons","slug":"tabler-icons","version":"2.47.0","description":"Over 4000 free, open-source SVG icons for web and app projects.","category":"design-assets","logoUrl":"logo/tabler-icons.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tabler Icons92&tracker=92","tags":["icons","svg","open-source","free"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132778,"name":"Phosphor Icons","slug":"phosphor-icons","version":"2.0.0","description":"Flexible icon family for interfaces, diagrams, presentations, and more.","category":"design-assets","logoUrl":"logo/phosphor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Phosphor Icons93&tracker=93","tags":["icons","flexible","interfaces","family"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132779,"name":"Radix Icons","slug":"radix-icons","version":"1.3.0","description":"Crisp, consistent 15x15 icon set designed for web and app interfaces.","category":"design-assets","logoUrl":"logo/radix-icons.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Radix Icons94&tracker=94","tags":["icons","crisp","consistent","interfaces"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132780,"name":"IconPark","slug":"iconpark","version":"2.0.0","description":"Open-source icon library with 2000+ icons in multiple styles and formats.","category":"design-assets","logoUrl":"logo/iconpark.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=IconPark95&tracker=95","tags":["icons","open-source","multiple-styles","library"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132781,"name":"Material Design Icons","slug":"material-design-icons","version":"7.4.0","description":"Google's official icon library following Material Design guidelines.","category":"design-assets","logoUrl":"logo/material-icons.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Material Design Icons96&tracker=96","tags":["icons","material-design","google","guidelines"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132782,"name":"Ant Design Icons","slug":"ant-design-icons","version":"4.12.0","description":"High-quality SVG icons for Ant Design and React applications.","category":"design-assets","logoUrl":"logo/ant-icons.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ant Design Icons97&tracker=97","tags":["icons","ant-design","react","svg"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132783,"name":"Bootstrap Icons","slug":"bootstrap-icons","version":"1.11.3","description":"Free, high-quality icons for Bootstrap projects with SVG and font formats.","category":"design-assets","logoUrl":"logo/bootstrap-icons.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bootstrap Icons98&tracker=98","tags":["icons","bootstrap","free","svg"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132784,"name":"Feather Icons","slug":"feather-icons","version":"4.29.0","description":"Simply beautiful open-source icons with clean, minimal design.","category":"design-assets","logoUrl":"logo/feather-icons.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Feather Icons99&tracker=99","tags":["icons","open-source","minimal","clean"],"scrapedAt":"2026-04-27T13:55:32.686Z"},{"id":1777298132785,"name":"Ionicons","slug":"ionicons","version":"7.2.0","description":"Premium icon pack for iOS, Android, and web applications.","category":"design-assets","logoUrl":"logo/ionicons.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ionicons100&tracker=100","tags":["icons","premium","ios","android"],"scrapedAt":"2026-04-27T13:55:32.686Z"}];
+    const CURRENT_CATEGORY = 'design-assets';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

@@ -1,0 +1,1213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Apple — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Apple</h1>
+    <p><span class="highlight">92</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="safari.html" class="app-card" data-id="1777299099915" style="text-decoration:none;color:inherit">
+          <img src="logo/safari.png" alt="Safari" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Safari</h3>
+          <p class="app-description">Apple&#039;s fast, energy-efficient web browser with privacy features and iCloud sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">browser</span><span class="app-tag">apple</span><span class="app-tag">privacy</span>
+            </div>
+          
+        </a>
+        <a href="mail.html" class="app-card" data-id="1777299099916" style="text-decoration:none;color:inherit">
+          <img src="logo/mail.png" alt="Mail" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mail</h3>
+          <p class="app-description">Native email client for Mac and iOS with smart mailboxes and iCloud integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">apple</span><span class="app-tag">icloud</span>
+            </div>
+          
+        </a>
+        <a href="messages.html" class="app-card" data-id="1777299099917" style="text-decoration:none;color:inherit">
+          <img src="logo/messages.png" alt="Messages" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Messages</h3>
+          <p class="app-description">Apple&#039;s messaging app with iMessage, end-to-end encryption, and cross-device sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">messaging</span><span class="app-tag">imessage</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="facetime.html" class="app-card" data-id="1777299099918" style="text-decoration:none;color:inherit">
+          <img src="logo/facetime.png" alt="FaceTime" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FaceTime</h3>
+          <p class="app-description">Video and audio calling app with SharePlay, spatial audio, and HD quality.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">video-calls</span><span class="app-tag">audio</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="notes.html" class="app-card" data-id="1777299099919" style="text-decoration:none;color:inherit">
+          <img src="logo/notes.png" alt="Notes" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Notes</h3>
+          <p class="app-description">Native note-taking app with rich text, sketches, and iCloud sync across devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">notes</span><span class="app-tag">apple</span><span class="app-tag">icloud</span>
+            </div>
+          
+        </a>
+        <a href="reminders.html" class="app-card" data-id="1777299099920" style="text-decoration:none;color:inherit">
+          <img src="logo/reminders.png" alt="Reminders" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Reminders</h3>
+          <p class="app-description">Task management app with smart lists, location-based alerts, and Siri integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tasks</span><span class="app-tag">apple</span><span class="app-tag">siri</span>
+            </div>
+          
+        </a>
+        <a href="calendar.html" class="app-card" data-id="1777299099921" style="text-decoration:none;color:inherit">
+          <img src="logo/calendar.png" alt="Calendar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Calendar</h3>
+          <p class="app-description">Native calendar app with iCloud sync, event invitations, and time zone support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">calendar</span><span class="app-tag">apple</span><span class="app-tag">icloud</span>
+            </div>
+          
+        </a>
+        <a href="contacts.html" class="app-card" data-id="1777299099922" style="text-decoration:none;color:inherit">
+          <img src="logo/contacts.png" alt="Contacts" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Contacts</h3>
+          <p class="app-description">Address book app with iCloud sync, smart groups, and contact merging.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">contacts</span><span class="app-tag">apple</span><span class="app-tag">icloud</span>
+            </div>
+          
+        </a>
+        <a href="maps.html" class="app-card" data-id="1777299099923" style="text-decoration:none;color:inherit">
+          <img src="logo/maps.png" alt="Maps" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Maps</h3>
+          <p class="app-description">Apple Maps with detailed 3D views, Flyover, and turn-by-turn navigation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">maps</span><span class="app-tag">navigation</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="photos.html" class="app-card" data-id="1777299099924" style="text-decoration:none;color:inherit">
+          <img src="logo/photos.png" alt="Photos" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Photos</h3>
+          <p class="app-description">Photo management app with AI-powered search, editing tools, and iCloud Photos.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">photos</span><span class="app-tag">editing</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="compressor.html" class="app-card" data-id="1777299099930" style="text-decoration:none;color:inherit">
+          <img src="logo/compressor.png" alt="Compressor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Compressor</h3>
+          <p class="app-description">Video encoding and compression tool optimized for Final Cut Pro workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">encoding</span><span class="app-tag">compression</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="mainstage.html" class="app-card" data-id="1777299099931" style="text-decoration:none;color:inherit">
+          <img src="logo/mainstage.png" alt="MainStage" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MainStage</h3>
+          <p class="app-description">Live performance software for keyboardists, guitarists, and DJs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">live-performance</span><span class="app-tag">music</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="keynote.html" class="app-card" data-id="1777299099932" style="text-decoration:none;color:inherit">
+          <img src="logo/keynote.png" alt="Keynote" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Keynote</h3>
+          <p class="app-description">Presentation software with cinematic transitions and professional themes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presentations</span><span class="app-tag">apple</span><span class="app-tag">transitions</span>
+            </div>
+          
+        </a>
+        <a href="pages.html" class="app-card" data-id="1777299099933" style="text-decoration:none;color:inherit">
+          <img src="logo/pages.png" alt="Pages" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pages</h3>
+          <p class="app-description">Word processor with beautiful templates and iCloud sync across devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">word-processor</span><span class="app-tag">apple</span><span class="app-tag">templates</span>
+            </div>
+          
+        </a>
+        <a href="numbers.html" class="app-card" data-id="1777299099934" style="text-decoration:none;color:inherit">
+          <img src="logo/numbers.png" alt="Numbers" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Numbers</h3>
+          <p class="app-description">Spreadsheet app with interactive charts and flexible canvas layout.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">spreadsheet</span><span class="app-tag">apple</span><span class="app-tag">charts</span>
+            </div>
+          
+        </a>
+        <a href="testflight.html" class="app-card" data-id="1777299099935" style="text-decoration:none;color:inherit">
+          <img src="logo/testflight.png" alt="TestFlight" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TestFlight</h3>
+          <p class="app-description">App for testing iOS, iPadOS, and tvOS apps before public release.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">testing</span><span class="app-tag">apps</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-configurator.html" class="app-card" data-id="1777299099936" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-configurator.png" alt="Apple Configurator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Configurator</h3>
+          <p class="app-description">Tool for deploying and managing iOS, iPadOS, and tvOS devices in organizations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">device-management</span><span class="app-tag">enterprise</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-developer.html" class="app-card" data-id="1777299099937" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-developer.png" alt="Apple Developer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Developer</h3>
+          <p class="app-description">App for Apple developers to access documentation, videos, and WWDC content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">developer</span><span class="app-tag">documentation</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="swift-playgrounds.html" class="app-card" data-id="1777299099938" style="text-decoration:none;color:inherit">
+          <img src="logo/swift-playgrounds.png" alt="Swift Playgrounds" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Swift Playgrounds</h3>
+          <p class="app-description">Interactive app for learning Swift programming through puzzles and challenges.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">swift</span><span class="app-tag">learning</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="instruments.html" class="app-card" data-id="1777299099940" style="text-decoration:none;color:inherit">
+          <img src="logo/instruments.png" alt="Instruments" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Instruments</h3>
+          <p class="app-description">Performance analysis and testing tool included with Xcode for app optimization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">profiling</span><span class="app-tag">testing</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="simulator.html" class="app-card" data-id="1777299099941" style="text-decoration:none;color:inherit">
+          <img src="logo/simulator.png" alt="Simulator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Simulator</h3>
+          <p class="app-description">iOS, iPadOS, watchOS, and tvOS simulator for testing apps without devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">simulator</span><span class="app-tag">testing</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="reality-composer.html" class="app-card" data-id="1777299099942" style="text-decoration:none;color:inherit">
+          <img src="logo/reality-composer.png" alt="Reality Composer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Reality Composer</h3>
+          <p class="app-description">App for creating augmented reality experiences with drag-and-drop simplicity.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ar</span><span class="app-tag">realitykit</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="reality-converter.html" class="app-card" data-id="1777299099943" style="text-decoration:none;color:inherit">
+          <img src="logo/reality-converter.png" alt="Reality Converter" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Reality Converter</h3>
+          <p class="app-description">Tool for converting 3D models to USDZ format for AR experiences.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">3d</span><span class="app-tag">usdz</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="create-ml.html" class="app-card" data-id="1777299099944" style="text-decoration:none;color:inherit">
+          <img src="logo/create-ml.png" alt="Create ML" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Create ML</h3>
+          <p class="app-description">Tool for training machine learning models with a visual interface.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">machine-learning</span><span class="app-tag">ai</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="classroom.html" class="app-card" data-id="1777299099945" style="text-decoration:none;color:inherit">
+          <img src="logo/classroom.png" alt="Classroom" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Classroom</h3>
+          <p class="app-description">App for teachers to guide students through lessons and manage devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">education</span><span class="app-tag">teaching</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="schoolwork.html" class="app-card" data-id="1777299099946" style="text-decoration:none;color:inherit">
+          <img src="logo/schoolwork.png" alt="Schoolwork" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Schoolwork</h3>
+          <p class="app-description">App for students to view assignments, track progress, and collaborate.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">education</span><span class="app-tag">students</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-business-manager.html" class="app-card" data-id="1777299099947" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-business-manager.png" alt="Apple Business Manager" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Business Manager</h3>
+          <p class="app-description">Web portal for deploying and managing Apple devices in business environments.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">enterprise</span><span class="app-tag">mdm</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-school-manager.html" class="app-card" data-id="1777299099948" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-school-manager.png" alt="Apple School Manager" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple School Manager</h3>
+          <p class="app-description">Web portal for managing Apple devices and accounts in educational institutions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">education</span><span class="app-tag">mdm</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-remote-desktop.html" class="app-card" data-id="1777299099949" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-remote-desktop.png" alt="Apple Remote Desktop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Remote Desktop</h3>
+          <p class="app-description">Remote management tool for controlling and supporting Mac computers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">remote</span><span class="app-tag">management</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="system-information.html" class="app-card" data-id="1777299099950" style="text-decoration:none;color:inherit">
+          <img src="logo/system-information.png" alt="System Information" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">System Information</h3>
+          <p class="app-description">Utility for viewing detailed hardware and software information about your Mac.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diagnostic</span><span class="app-tag">hardware</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="activity-monitor.html" class="app-card" data-id="1777299099951" style="text-decoration:none;color:inherit">
+          <img src="logo/activity-monitor.png" alt="Activity Monitor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Activity Monitor</h3>
+          <p class="app-description">System utility for monitoring CPU, memory, energy, disk, and network usage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">monitoring</span><span class="app-tag">performance</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="disk-utility.html" class="app-card" data-id="1777299099952" style="text-decoration:none;color:inherit">
+          <img src="logo/disk-utility.png" alt="Disk Utility" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Disk Utility</h3>
+          <p class="app-description">Tool for formatting, partitioning, and repairing disks and volumes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">disk</span><span class="app-tag">formatting</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="terminal.html" class="app-card" data-id="1777299099953" style="text-decoration:none;color:inherit">
+          <img src="logo/terminal.png" alt="Terminal" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Terminal</h3>
+          <p class="app-description">Command-line interface for accessing Unix shell and running scripts on macOS.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cli</span><span class="app-tag">shell</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="console.html" class="app-card" data-id="1777299099954" style="text-decoration:none;color:inherit">
+          <img src="logo/console.png" alt="Console" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Console</h3>
+          <p class="app-description">Log viewer for diagnosing system and application issues on macOS.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">logs</span><span class="app-tag">diagnostic</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="script-editor.html" class="app-card" data-id="1777299099955" style="text-decoration:none;color:inherit">
+          <img src="logo/script-editor.png" alt="Script Editor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Script Editor</h3>
+          <p class="app-description">App for creating and editing AppleScript and JavaScript for Automation scripts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">applescript</span><span class="app-tag">automation</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="automator.html" class="app-card" data-id="1777299099956" style="text-decoration:none;color:inherit">
+          <img src="logo/automator.png" alt="Automator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Automator</h3>
+          <p class="app-description">Tool for creating workflows to automate repetitive tasks on macOS.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">automation</span><span class="app-tag">workflows</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="migration-assistant.html" class="app-card" data-id="1777299099957" style="text-decoration:none;color:inherit">
+          <img src="logo/migration-assistant.png" alt="Migration Assistant" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Migration Assistant</h3>
+          <p class="app-description">Tool for transferring data, apps, and settings from another Mac or PC.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">migration</span><span class="app-tag">transfer</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="time-machine.html" class="app-card" data-id="1777299099959" style="text-decoration:none;color:inherit">
+          <img src="logo/time-machine.png" alt="Time Machine" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Time Machine</h3>
+          <p class="app-description">Built-in backup utility for automatic, incremental backups of your Mac.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">backup</span><span class="app-tag">automatic</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="boot-camp-assistant.html" class="app-card" data-id="1777299099960" style="text-decoration:none;color:inherit">
+          <img src="logo/boot-camp.png" alt="Boot Camp Assistant" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Boot Camp Assistant</h3>
+          <p class="app-description">Utility for installing Windows on Intel-based Macs with dual-boot support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">windows</span><span class="app-tag">dual-boot</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="airdrop.html" class="app-card" data-id="1777299099961" style="text-decoration:none;color:inherit">
+          <img src="logo/airdrop.png" alt="AirDrop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AirDrop</h3>
+          <p class="app-description">Wireless file sharing between Apple devices using Bluetooth and Wi-Fi.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">file-sharing</span><span class="app-tag">wireless</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="handoff.html" class="app-card" data-id="1777299099962" style="text-decoration:none;color:inherit">
+          <img src="logo/handoff.png" alt="Handoff" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Handoff</h3>
+          <p class="app-description">Feature for continuing tasks across Apple devices seamlessly.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">continuity</span><span class="app-tag">sync</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="universal-control.html" class="app-card" data-id="1777299099963" style="text-decoration:none;color:inherit">
+          <img src="logo/universal-control.png" alt="Universal Control" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Universal Control</h3>
+          <p class="app-description">Feature for controlling multiple Apple devices with one keyboard and mouse.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">control</span><span class="app-tag">multi-device</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="sidecar.html" class="app-card" data-id="1777299099964" style="text-decoration:none;color:inherit">
+          <img src="logo/sidecar.png" alt="Sidecar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sidecar</h3>
+          <p class="app-description">Feature for using iPad as a second display for your Mac.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">display</span><span class="app-tag">ipad</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="continuity-camera.html" class="app-card" data-id="1777299099965" style="text-decoration:none;color:inherit">
+          <img src="logo/continuity-camera.png" alt="Continuity Camera" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Continuity Camera</h3>
+          <p class="app-description">Feature for using iPhone camera as a webcam for Mac video calls.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">camera</span><span class="app-tag">webcam</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-fitness-plus.html" class="app-card" data-id="1777299099966" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-fitness-plus.png" alt="Apple Fitness+" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Fitness+</h3>
+          <p class="app-description">Subscription fitness service with workouts integrated with Apple Watch.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fitness</span><span class="app-tag">workouts</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-news-plus.html" class="app-card" data-id="1777299099967" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-news-plus.png" alt="Apple News+" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple News+</h3>
+          <p class="app-description">Subscription service for unlimited access to magazines and premium news.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">news</span><span class="app-tag">magazines</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-arcade.html" class="app-card" data-id="1777299099968" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-arcade.png" alt="Apple Arcade" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Arcade</h3>
+          <p class="app-description">Gaming subscription with exclusive, ad-free games across Apple devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">subscription</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-tv.html" class="app-card" data-id="1777299099969" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-tv.png" alt="Apple TV" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple TV</h3>
+          <p class="app-description">App for watching Apple TV+ originals, movies, and purchased content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">movies</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-podcasts.html" class="app-card" data-id="1777299099971" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-podcasts.png" alt="Apple Podcasts" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Podcasts</h3>
+          <p class="app-description">App for discovering, subscribing to, and listening to podcasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">podcasts</span><span class="app-tag">audio</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-books.html" class="app-card" data-id="1777299099972" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-books.png" alt="Apple Books" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Books</h3>
+          <p class="app-description">E-reader app for purchasing and reading ebooks and audiobooks.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ebooks</span><span class="app-tag">reading</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="wallet.html" class="app-card" data-id="1777299099973" style="text-decoration:none;color:inherit">
+          <img src="logo/wallet.png" alt="Wallet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wallet</h3>
+          <p class="app-description">App for storing credit cards, transit passes, tickets, and digital keys.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">payments</span><span class="app-tag">passes</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-pay.html" class="app-card" data-id="1777299099974" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-pay.png" alt="Apple Pay" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Pay</h3>
+          <p class="app-description">Secure payment system for contactless purchases with Face ID or Touch ID.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">payments</span><span class="app-tag">secure</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="find-my.html" class="app-card" data-id="1777299099975" style="text-decoration:none;color:inherit">
+          <img src="logo/find-my.png" alt="Find My" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Find My</h3>
+          <p class="app-description">App for locating Apple devices, sharing locations, and finding items with AirTag.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tracking</span><span class="app-tag">location</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="airtag.html" class="app-card" data-id="1777299099976" style="text-decoration:none;color:inherit">
+          <img src="logo/airtag.png" alt="AirTag" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AirTag</h3>
+          <p class="app-description">Bluetooth tracker for finding personal items with the Find My network.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tracker</span><span class="app-tag">bluetooth</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="home.html" class="app-card" data-id="1777299099977" style="text-decoration:none;color:inherit">
+          <img src="logo/home.png" alt="Home" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Home</h3>
+          <p class="app-description">App for controlling HomeKit-compatible smart home devices and scenes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">smart-home</span><span class="app-tag">homekit</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="shortcuts.html" class="app-card" data-id="1777299099978" style="text-decoration:none;color:inherit">
+          <img src="logo/shortcuts.png" alt="Shortcuts" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Shortcuts</h3>
+          <p class="app-description">App for creating custom automations and quick actions across Apple devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">automation</span><span class="app-tag">workflow</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="focus.html" class="app-card" data-id="1777299099979" style="text-decoration:none;color:inherit">
+          <img src="logo/focus.png" alt="Focus" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Focus</h3>
+          <p class="app-description">Feature for filtering notifications and apps based on your current activity.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">notifications</span><span class="app-tag">productivity</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="screen-time.html" class="app-card" data-id="1777299099980" style="text-decoration:none;color:inherit">
+          <img src="logo/screen-time.png" alt="Screen Time" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Screen Time</h3>
+          <p class="app-description">Tool for monitoring and managing device usage and app limits.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">monitoring</span><span class="app-tag">parental-control</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="family-sharing.html" class="app-card" data-id="1777299099981" style="text-decoration:none;color:inherit">
+          <img src="logo/family-sharing.png" alt="Family Sharing" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Family Sharing</h3>
+          <p class="app-description">Feature for sharing purchases, subscriptions, and iCloud storage with family.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sharing</span><span class="app-tag">family</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="icloud.html" class="app-card" data-id="1777299099982" style="text-decoration:none;color:inherit">
+          <img src="logo/icloud.png" alt="iCloud" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iCloud</h3>
+          <p class="app-description">Cloud service for syncing photos, files, backups, and more across Apple devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud</span><span class="app-tag">sync</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="icloud-photos.html" class="app-card" data-id="1777299099984" style="text-decoration:none;color:inherit">
+          <img src="logo/icloud-photos.png" alt="iCloud Photos" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iCloud Photos</h3>
+          <p class="app-description">Service for syncing photo library across all Apple devices automatically.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">photos</span><span class="app-tag">sync</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="icloud-keychain.html" class="app-card" data-id="1777299099985" style="text-decoration:none;color:inherit">
+          <img src="logo/icloud-keychain.png" alt="iCloud Keychain" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iCloud Keychain</h3>
+          <p class="app-description">Secure password manager that syncs passwords and credit cards across devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">passwords</span><span class="app-tag">security</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="icloud-backup.html" class="app-card" data-id="1777299099986" style="text-decoration:none;color:inherit">
+          <img src="logo/icloud-backup.png" alt="iCloud Backup" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iCloud Backup</h3>
+          <p class="app-description">Automatic backup service for iPhone, iPad, and iPod touch data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">backup</span><span class="app-tag">automatic</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="icloud-mail.html" class="app-card" data-id="1777299099987" style="text-decoration:none;color:inherit">
+          <img src="logo/icloud-mail.png" alt="iCloud Mail" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iCloud Mail</h3>
+          <p class="app-description">Free email service with iCloud integration and custom domain support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">icloud</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="hide-my-email.html" class="app-card" data-id="1777299099988" style="text-decoration:none;color:inherit">
+          <img src="logo/hide-my-email.png" alt="Hide My Email" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hide My Email</h3>
+          <p class="app-description">Privacy feature for generating unique email addresses to protect your identity.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">privacy</span><span class="app-tag">email</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="sign-in-with-apple.html" class="app-card" data-id="1777299099989" style="text-decoration:none;color:inherit">
+          <img src="logo/sign-in-with-apple.png" alt="Sign in with Apple" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sign in with Apple</h3>
+          <p class="app-description">Secure authentication method for apps and websites using Apple ID.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">authentication</span><span class="app-tag">privacy</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="app-store.html" class="app-card" data-id="1777299099990" style="text-decoration:none;color:inherit">
+          <img src="logo/app-store.png" alt="App Store" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">App Store</h3>
+          <p class="app-description">Official marketplace for downloading iOS, iPadOS, macOS, watchOS, and tvOS apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apps</span><span class="app-tag">marketplace</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="mac-app-store.html" class="app-card" data-id="1777299099991" style="text-decoration:none;color:inherit">
+          <img src="logo/mac-app-store.png" alt="Mac App Store" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mac App Store</h3>
+          <p class="app-description">App store for macOS applications with curated collections and reviews.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apps</span><span class="app-tag">mac</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-configurator-2.html" class="app-card" data-id="1777299099992" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-configurator-2.png" alt="Apple Configurator 2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Configurator 2</h3>
+          <p class="app-description">Tool for preparing and deploying iOS, iPadOS, and tvOS devices in bulk.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">deployment</span><span class="app-tag">enterprise</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-service-toolkit.html" class="app-card" data-id="1777299099993" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-service-toolkit.png" alt="Apple Service Toolkit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Service Toolkit</h3>
+          <p class="app-description">Diagnostic and repair tools for Apple Authorized Service Providers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diagnostic</span><span class="app-tag">repair</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-diagnostics.html" class="app-card" data-id="1777299099994" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-diagnostics.png" alt="Apple Diagnostics" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Diagnostics</h3>
+          <p class="app-description">Built-in hardware diagnostic tool for identifying Mac hardware issues.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diagnostic</span><span class="app-tag">hardware</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-hardware-test.html" class="app-card" data-id="1777299099995" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-hardware-test.png" alt="Apple Hardware Test" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Hardware Test</h3>
+          <p class="app-description">Legacy diagnostic tool for testing Mac hardware components.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diagnostic</span><span class="app-tag">hardware</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-silicon-migration.html" class="app-card" data-id="1777299099996" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-silicon-migration.png" alt="Apple Silicon Migration Assistant" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Silicon Migration Assistant</h3>
+          <p class="app-description">Tool for migrating data from Intel Macs to Apple Silicon Macs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">migration</span><span class="app-tag">apple-silicon</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="rosetta-2.html" class="app-card" data-id="1777299099997" style="text-decoration:none;color:inherit">
+          <img src="logo/rosetta-2.png" alt="Rosetta 2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Rosetta 2</h3>
+          <p class="app-description">Translation process for running Intel-based apps on Apple Silicon Macs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">translation</span><span class="app-tag">apple-silicon</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="universal-binary.html" class="app-card" data-id="1777299099998" style="text-decoration:none;color:inherit">
+          <img src="logo/universal-binary.png" alt="Universal Binary" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Universal Binary</h3>
+          <p class="app-description">App format supporting both Intel and Apple Silicon architectures.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">binary</span><span class="app-tag">apple-silicon</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="swift-package-manager.html" class="app-card" data-id="1777299099999" style="text-decoration:none;color:inherit">
+          <img src="logo/swift-package-manager.png" alt="Swift Package Manager" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Swift Package Manager</h3>
+          <p class="app-description">Tool for managing Swift code libraries and dependencies in Xcode projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">swift</span><span class="app-tag">dependencies</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="cocoapods.html" class="app-card" data-id="1777299100000" style="text-decoration:none;color:inherit">
+          <img src="logo/cocoapods.png" alt="CocoaPods" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CocoaPods</h3>
+          <p class="app-description">Dependency manager for Swift and Objective-C Cocoa projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dependencies</span><span class="app-tag">cocoa</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="carthage.html" class="app-card" data-id="1777299100001" style="text-decoration:none;color:inherit">
+          <img src="logo/carthage.png" alt="Carthage" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Carthage</h3>
+          <p class="app-description">Decentralized dependency manager for Cocoa projects with binary frameworks.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dependencies</span><span class="app-tag">cocoa</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="fastlane.html" class="app-card" data-id="1777299100002" style="text-decoration:none;color:inherit">
+          <img src="logo/fastlane.png" alt="Fastlane" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fastlane</h3>
+          <p class="app-description">Automation tool for building and releasing iOS and Mac apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">automation</span><span class="app-tag">ci-cd</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="app-store-connect.html" class="app-card" data-id="1777299100003" style="text-decoration:none;color:inherit">
+          <img src="logo/app-store-connect.png" alt="App Store Connect" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">App Store Connect</h3>
+          <p class="app-description">Web portal for managing app submissions, analytics, and TestFlight builds.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">app-management</span><span class="app-tag">analytics</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="transporter.html" class="app-card" data-id="1777299100004" style="text-decoration:none;color:inherit">
+          <img src="logo/transporter.png" alt="Transporter" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Transporter</h3>
+          <p class="app-description">App for uploading content to App Store Connect and Apple Music.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">upload</span><span class="app-tag">app-store</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-configurator-iphone.html" class="app-card" data-id="1777299100005" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-configurator-iphone.png" alt="Apple Configurator for iPhone" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Configurator for iPhone</h3>
+          <p class="app-description">iOS app for preparing and supervising iOS devices in educational settings.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">education</span><span class="app-tag">supervision</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-support.html" class="app-card" data-id="1777299100006" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-support.png" alt="Apple Support" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Support</h3>
+          <p class="app-description">App for getting help with Apple products, scheduling repairs, and chatting with experts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">support</span><span class="app-tag">help</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-store.html" class="app-card" data-id="1777299100007" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-store-app.png" alt="Apple Store" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Store</h3>
+          <p class="app-description">App for shopping Apple products, scheduling Genius Bar appointments, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">shopping</span><span class="app-tag">genius-bar</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-wallet.html" class="app-card" data-id="1777299100008" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-wallet.png" alt="Apple Wallet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Wallet</h3>
+          <p class="app-description">Digital wallet for storing passes, tickets, keys, and payment cards.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">wallet</span><span class="app-tag">passes</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="apple-id.html" class="app-card" data-id="1777299100009" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-id.png" alt="Apple ID" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple ID</h3>
+          <p class="app-description">Account management for accessing Apple services and devices securely.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">account</span><span class="app-tag">security</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="two-factor-authentication.html" class="app-card" data-id="1777299100010" style="text-decoration:none;color:inherit">
+          <img src="logo/2fa.png" alt="Two-Factor Authentication" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Two-Factor Authentication</h3>
+          <p class="app-description">Security feature for protecting Apple ID with verification codes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">security</span><span class="app-tag">2fa</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="advanced-data-protection.html" class="app-card" data-id="1777299100011" style="text-decoration:none;color:inherit">
+          <img src="logo/advanced-data-protection.png" alt="Advanced Data Protection" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Advanced Data Protection</h3>
+          <p class="app-description">End-to-end encryption for iCloud data including Photos, Notes, and Backups.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">encryption</span><span class="app-tag">privacy</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="privacy-report.html" class="app-card" data-id="1777299100012" style="text-decoration:none;color:inherit">
+          <img src="logo/privacy-report.png" alt="Privacy Report" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Privacy Report</h3>
+          <p class="app-description">Feature showing how often apps access your data and network activity.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">privacy</span><span class="app-tag">monitoring</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="app-tracking-transparency.html" class="app-card" data-id="1777299100013" style="text-decoration:none;color:inherit">
+          <img src="logo/att.png" alt="App Tracking Transparency" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">App Tracking Transparency</h3>
+          <p class="app-description">Privacy feature requiring apps to request permission before tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">privacy</span><span class="app-tag">tracking</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="mail-privacy-protection.html" class="app-card" data-id="1777299100014" style="text-decoration:none;color:inherit">
+          <img src="logo/mail-privacy.png" alt="Mail Privacy Protection" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mail Privacy Protection</h3>
+          <p class="app-description">Feature that hides IP address and prevents email tracking in Mail app.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">privacy</span><span class="app-tag">email</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="icloud-private-relay.html" class="app-card" data-id="1777299100015" style="text-decoration:none;color:inherit">
+          <img src="logo/private-relay.png" alt="iCloud Private Relay" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iCloud Private Relay</h3>
+          <p class="app-description">Privacy service that encrypts Safari browsing and hides IP address.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">privacy</span><span class="app-tag">vpn</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777299099915,"name":"Safari","slug":"safari","version":"17.4","description":"Apple's fast, energy-efficient web browser with privacy features and iCloud sync.","category":"apple","logoUrl":"logo/safari.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Safari1&tracker=1","tags":["browser","apple","privacy","icloud"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099916,"name":"Mail","slug":"mail","version":"17.0","description":"Native email client for Mac and iOS with smart mailboxes and iCloud integration.","category":"apple","logoUrl":"logo/mail.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mail2&tracker=2","tags":["email","apple","icloud","native"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099917,"name":"Messages","slug":"messages","version":"17.0","description":"Apple's messaging app with iMessage, end-to-end encryption, and cross-device sync.","category":"apple","logoUrl":"logo/messages.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Messages3&tracker=3","tags":["messaging","imessage","apple","encryption"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099918,"name":"FaceTime","slug":"facetime","version":"17.0","description":"Video and audio calling app with SharePlay, spatial audio, and HD quality.","category":"apple","logoUrl":"logo/facetime.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FaceTime4&tracker=4","tags":["video-calls","audio","apple","shareplay"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099919,"name":"Notes","slug":"notes","version":"17.0","description":"Native note-taking app with rich text, sketches, and iCloud sync across devices.","category":"apple","logoUrl":"logo/notes.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Notes5&tracker=5","tags":["notes","apple","icloud","sketches"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099920,"name":"Reminders","slug":"reminders","version":"17.0","description":"Task management app with smart lists, location-based alerts, and Siri integration.","category":"apple","logoUrl":"logo/reminders.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Reminders6&tracker=6","tags":["tasks","apple","siri","alerts"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099921,"name":"Calendar","slug":"calendar","version":"17.0","description":"Native calendar app with iCloud sync, event invitations, and time zone support.","category":"apple","logoUrl":"logo/calendar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Calendar7&tracker=7","tags":["calendar","apple","icloud","events"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099922,"name":"Contacts","slug":"contacts","version":"17.0","description":"Address book app with iCloud sync, smart groups, and contact merging.","category":"apple","logoUrl":"logo/contacts.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Contacts8&tracker=8","tags":["contacts","apple","icloud","address-book"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099923,"name":"Maps","slug":"maps","version":"17.0","description":"Apple Maps with detailed 3D views, Flyover, and turn-by-turn navigation.","category":"apple","logoUrl":"logo/maps.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Maps9&tracker=9","tags":["maps","navigation","apple","3d"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099924,"name":"Photos","slug":"photos","version":"17.0","description":"Photo management app with AI-powered search, editing tools, and iCloud Photos.","category":"apple","logoUrl":"logo/photos.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Photos10&tracker=10","tags":["photos","editing","apple","icloud"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099930,"name":"Compressor","slug":"compressor","version":"4.7.0","description":"Video encoding and compression tool optimized for Final Cut Pro workflows.","category":"apple","logoUrl":"logo/compressor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Compressor16&tracker=16","tags":["encoding","compression","apple","video"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099931,"name":"MainStage","slug":"mainstage","version":"3.6.5","description":"Live performance software for keyboardists, guitarists, and DJs.","category":"apple","logoUrl":"logo/mainstage.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MainStage17&tracker=17","tags":["live-performance","music","apple","dj"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099932,"name":"Keynote","slug":"keynote","version":"13.2","description":"Presentation software with cinematic transitions and professional themes.","category":"apple","logoUrl":"logo/keynote.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Keynote18&tracker=18","tags":["presentations","apple","transitions","themes"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099933,"name":"Pages","slug":"pages","version":"13.2","description":"Word processor with beautiful templates and iCloud sync across devices.","category":"apple","logoUrl":"logo/pages.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pages19&tracker=19","tags":["word-processor","apple","templates","icloud"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099934,"name":"Numbers","slug":"numbers","version":"13.2","description":"Spreadsheet app with interactive charts and flexible canvas layout.","category":"apple","logoUrl":"logo/numbers.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Numbers20&tracker=20","tags":["spreadsheet","apple","charts","canvas"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099935,"name":"TestFlight","slug":"testflight","version":"3.5.0","description":"App for testing iOS, iPadOS, and tvOS apps before public release.","category":"apple","logoUrl":"logo/testflight.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TestFlight21&tracker=21","tags":["testing","apps","apple","beta"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099936,"name":"Apple Configurator","slug":"apple-configurator","version":"2.18","description":"Tool for deploying and managing iOS, iPadOS, and tvOS devices in organizations.","category":"apple","logoUrl":"logo/apple-configurator.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Configurator22&tracker=22","tags":["device-management","enterprise","apple","deployment"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099937,"name":"Apple Developer","slug":"apple-developer","version":"3.8.0","description":"App for Apple developers to access documentation, videos, and WWDC content.","category":"apple","logoUrl":"logo/apple-developer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Developer23&tracker=23","tags":["developer","documentation","apple","wwdc"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099938,"name":"Swift Playgrounds","slug":"swift-playgrounds","version":"4.4","description":"Interactive app for learning Swift programming through puzzles and challenges.","category":"apple","logoUrl":"logo/swift-playgrounds.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Swift Playgrounds24&tracker=24","tags":["swift","learning","apple","coding"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099940,"name":"Instruments","slug":"instruments","version":"15.3","description":"Performance analysis and testing tool included with Xcode for app optimization.","category":"apple","logoUrl":"logo/instruments.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Instruments26&tracker=26","tags":["profiling","testing","apple","xcode"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099941,"name":"Simulator","slug":"simulator","version":"15.3","description":"iOS, iPadOS, watchOS, and tvOS simulator for testing apps without devices.","category":"apple","logoUrl":"logo/simulator.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Simulator27&tracker=27","tags":["simulator","testing","apple","development"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099942,"name":"Reality Composer","slug":"reality-composer","version":"1.7","description":"App for creating augmented reality experiences with drag-and-drop simplicity.","category":"apple","logoUrl":"logo/reality-composer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Reality Composer28&tracker=28","tags":["ar","realitykit","apple","3d"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099943,"name":"Reality Converter","slug":"reality-converter","version":"1.0","description":"Tool for converting 3D models to USDZ format for AR experiences.","category":"apple","logoUrl":"logo/reality-converter.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Reality Converter29&tracker=29","tags":["3d","usdz","apple","ar"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099944,"name":"Create ML","slug":"create-ml","version":"1.0","description":"Tool for training machine learning models with a visual interface.","category":"apple","logoUrl":"logo/create-ml.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Create ML30&tracker=30","tags":["machine-learning","ai","apple","training"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099945,"name":"Classroom","slug":"classroom","version":"5.7","description":"App for teachers to guide students through lessons and manage devices.","category":"apple","logoUrl":"logo/classroom.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Classroom31&tracker=31","tags":["education","teaching","apple","management"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099946,"name":"Schoolwork","slug":"schoolwork","version":"2.7","description":"App for students to view assignments, track progress, and collaborate.","category":"apple","logoUrl":"logo/schoolwork.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Schoolwork32&tracker=32","tags":["education","students","apple","assignments"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099947,"name":"Apple Business Manager","slug":"apple-business-manager","version":"2024.1","description":"Web portal for deploying and managing Apple devices in business environments.","category":"apple","logoUrl":"logo/apple-business-manager.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Business Manager33&tracker=33","tags":["enterprise","mdm","apple","deployment"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099948,"name":"Apple School Manager","slug":"apple-school-manager","version":"2024.1","description":"Web portal for managing Apple devices and accounts in educational institutions.","category":"apple","logoUrl":"logo/apple-school-manager.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple School Manager34&tracker=34","tags":["education","mdm","apple","management"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099949,"name":"Apple Remote Desktop","slug":"apple-remote-desktop","version":"3.9.7","description":"Remote management tool for controlling and supporting Mac computers.","category":"apple","logoUrl":"logo/apple-remote-desktop.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Remote Desktop35&tracker=35","tags":["remote","management","apple","support"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099950,"name":"System Information","slug":"system-information","version":"14.0","description":"Utility for viewing detailed hardware and software information about your Mac.","category":"apple","logoUrl":"logo/system-information.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=System Information36&tracker=36","tags":["diagnostic","hardware","apple","info"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099951,"name":"Activity Monitor","slug":"activity-monitor","version":"14.0","description":"System utility for monitoring CPU, memory, energy, disk, and network usage.","category":"apple","logoUrl":"logo/activity-monitor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Activity Monitor37&tracker=37","tags":["monitoring","performance","apple","system"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099952,"name":"Disk Utility","slug":"disk-utility","version":"14.0","description":"Tool for formatting, partitioning, and repairing disks and volumes.","category":"apple","logoUrl":"logo/disk-utility.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Disk Utility38&tracker=38","tags":["disk","formatting","apple","repair"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099953,"name":"Terminal","slug":"terminal","version":"2.14","description":"Command-line interface for accessing Unix shell and running scripts on macOS.","category":"apple","logoUrl":"logo/terminal.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Terminal39&tracker=39","tags":["cli","shell","apple","unix"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099954,"name":"Console","slug":"console","version":"14.0","description":"Log viewer for diagnosing system and application issues on macOS.","category":"apple","logoUrl":"logo/console.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Console40&tracker=40","tags":["logs","diagnostic","apple","debugging"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099955,"name":"Script Editor","slug":"script-editor","version":"2.13","description":"App for creating and editing AppleScript and JavaScript for Automation scripts.","category":"apple","logoUrl":"logo/script-editor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Script Editor41&tracker=41","tags":["applescript","automation","apple","scripting"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099956,"name":"Automator","slug":"automator","version":"2.14","description":"Tool for creating workflows to automate repetitive tasks on macOS.","category":"apple","logoUrl":"logo/automator.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Automator42&tracker=42","tags":["automation","workflows","apple","tasks"],"scrapedAt":"2026-04-27T14:11:39.915Z"},{"id":1777299099957,"name":"Migration Assistant","slug":"migration-assistant","version":"14.0","description":"Tool for transferring data, apps, and settings from another Mac or PC.","category":"apple","logoUrl":"logo/migration-assistant.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Migration Assistant43&tracker=43","tags":["migration","transfer","apple","setup"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099959,"name":"Time Machine","slug":"time-machine","version":"14.0","description":"Built-in backup utility for automatic, incremental backups of your Mac.","category":"apple","logoUrl":"logo/time-machine.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Time Machine44&tracker=44","tags":["backup","automatic","apple","recovery"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099960,"name":"Boot Camp Assistant","slug":"boot-camp-assistant","version":"6.1.0","description":"Utility for installing Windows on Intel-based Macs with dual-boot support.","category":"apple","logoUrl":"logo/boot-camp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Boot Camp Assistant45&tracker=45","tags":["windows","dual-boot","apple","intel"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099961,"name":"AirDrop","slug":"airdrop","version":"14.0","description":"Wireless file sharing between Apple devices using Bluetooth and Wi-Fi.","category":"apple","logoUrl":"logo/airdrop.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AirDrop46&tracker=46","tags":["file-sharing","wireless","apple","bluetooth"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099962,"name":"Handoff","slug":"handoff","version":"14.0","description":"Feature for continuing tasks across Apple devices seamlessly.","category":"apple","logoUrl":"logo/handoff.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Handoff47&tracker=47","tags":["continuity","sync","apple","cross-device"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099963,"name":"Universal Control","slug":"universal-control","version":"14.0","description":"Feature for controlling multiple Apple devices with one keyboard and mouse.","category":"apple","logoUrl":"logo/universal-control.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Universal Control48&tracker=48","tags":["control","multi-device","apple","productivity"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099964,"name":"Sidecar","slug":"sidecar","version":"14.0","description":"Feature for using iPad as a second display for your Mac.","category":"apple","logoUrl":"logo/sidecar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sidecar49&tracker=49","tags":["display","ipad","apple","extended-desktop"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099965,"name":"Continuity Camera","slug":"continuity-camera","version":"14.0","description":"Feature for using iPhone camera as a webcam for Mac video calls.","category":"apple","logoUrl":"logo/continuity-camera.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Continuity Camera50&tracker=50","tags":["camera","webcam","apple","iphone"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099966,"name":"Apple Fitness+","slug":"apple-fitness-plus","version":"2024.1","description":"Subscription fitness service with workouts integrated with Apple Watch.","category":"apple","logoUrl":"logo/apple-fitness-plus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Fitness+51&tracker=51","tags":["fitness","workouts","apple","watch"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099967,"name":"Apple News+","slug":"apple-news-plus","version":"2024.1","description":"Subscription service for unlimited access to magazines and premium news.","category":"apple","logoUrl":"logo/apple-news-plus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple News+52&tracker=52","tags":["news","magazines","apple","subscription"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099968,"name":"Apple Arcade","slug":"apple-arcade","version":"2024.1","description":"Gaming subscription with exclusive, ad-free games across Apple devices.","category":"apple","logoUrl":"logo/apple-arcade.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Arcade53&tracker=53","tags":["gaming","subscription","apple","exclusive"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099969,"name":"Apple TV","slug":"apple-tv","version":"10.2","description":"App for watching Apple TV+ originals, movies, and purchased content.","category":"apple","logoUrl":"logo/apple-tv.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple TV54&tracker=54","tags":["streaming","movies","apple","tv-plus"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099971,"name":"Apple Podcasts","slug":"apple-podcasts","version":"1.4.0","description":"App for discovering, subscribing to, and listening to podcasts.","category":"apple","logoUrl":"logo/apple-podcasts.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Podcasts56&tracker=56","tags":["podcasts","audio","apple","streaming"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099972,"name":"Apple Books","slug":"apple-books","version":"4.8","description":"E-reader app for purchasing and reading ebooks and audiobooks.","category":"apple","logoUrl":"logo/apple-books.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Books57&tracker=57","tags":["ebooks","reading","apple","audiobooks"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099973,"name":"Wallet","slug":"wallet","version":"17.0","description":"App for storing credit cards, transit passes, tickets, and digital keys.","category":"apple","logoUrl":"logo/wallet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wallet58&tracker=58","tags":["payments","passes","apple","digital-wallet"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099974,"name":"Apple Pay","slug":"apple-pay","version":"2024.1","description":"Secure payment system for contactless purchases with Face ID or Touch ID.","category":"apple","logoUrl":"logo/apple-pay.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Pay59&tracker=59","tags":["payments","secure","apple","contactless"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099975,"name":"Find My","slug":"find-my","version":"17.0","description":"App for locating Apple devices, sharing locations, and finding items with AirTag.","category":"apple","logoUrl":"logo/find-my.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Find My60&tracker=60","tags":["tracking","location","apple","airtag"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099976,"name":"AirTag","slug":"airtag","version":"1.0","description":"Bluetooth tracker for finding personal items with the Find My network.","category":"apple","logoUrl":"logo/airtag.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AirTag61&tracker=61","tags":["tracker","bluetooth","apple","find-my"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099977,"name":"Home","slug":"home","version":"17.0","description":"App for controlling HomeKit-compatible smart home devices and scenes.","category":"apple","logoUrl":"logo/home.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Home62&tracker=62","tags":["smart-home","homekit","apple","automation"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099978,"name":"Shortcuts","slug":"shortcuts","version":"17.0","description":"App for creating custom automations and quick actions across Apple devices.","category":"apple","logoUrl":"logo/shortcuts.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Shortcuts63&tracker=63","tags":["automation","workflow","apple","siri"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099979,"name":"Focus","slug":"focus","version":"17.0","description":"Feature for filtering notifications and apps based on your current activity.","category":"apple","logoUrl":"logo/focus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Focus64&tracker=64","tags":["notifications","productivity","apple","filtering"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099980,"name":"Screen Time","slug":"screen-time","version":"17.0","description":"Tool for monitoring and managing device usage and app limits.","category":"apple","logoUrl":"logo/screen-time.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Screen Time65&tracker=65","tags":["monitoring","parental-control","apple","usage"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099981,"name":"Family Sharing","slug":"family-sharing","version":"17.0","description":"Feature for sharing purchases, subscriptions, and iCloud storage with family.","category":"apple","logoUrl":"logo/family-sharing.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Family Sharing66&tracker=66","tags":["sharing","family","apple","icloud"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099982,"name":"iCloud","slug":"icloud","version":"17.0","description":"Cloud service for syncing photos, files, backups, and more across Apple devices.","category":"apple","logoUrl":"logo/icloud.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iCloud67&tracker=67","tags":["cloud","sync","apple","backup"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099984,"name":"iCloud Photos","slug":"icloud-photos","version":"17.0","description":"Service for syncing photo library across all Apple devices automatically.","category":"apple","logoUrl":"logo/icloud-photos.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iCloud Photos69&tracker=69","tags":["photos","sync","apple","library"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099985,"name":"iCloud Keychain","slug":"icloud-keychain","version":"17.0","description":"Secure password manager that syncs passwords and credit cards across devices.","category":"apple","logoUrl":"logo/icloud-keychain.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iCloud Keychain70&tracker=70","tags":["passwords","security","apple","sync"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099986,"name":"iCloud Backup","slug":"icloud-backup","version":"17.0","description":"Automatic backup service for iPhone, iPad, and iPod touch data.","category":"apple","logoUrl":"logo/icloud-backup.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iCloud Backup71&tracker=71","tags":["backup","automatic","apple","recovery"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099987,"name":"iCloud Mail","slug":"icloud-mail","version":"17.0","description":"Free email service with iCloud integration and custom domain support.","category":"apple","logoUrl":"logo/icloud-mail.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iCloud Mail72&tracker=72","tags":["email","icloud","apple","custom-domain"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099988,"name":"Hide My Email","slug":"hide-my-email","version":"17.0","description":"Privacy feature for generating unique email addresses to protect your identity.","category":"apple","logoUrl":"logo/hide-my-email.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hide My Email73&tracker=73","tags":["privacy","email","apple","security"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099989,"name":"Sign in with Apple","slug":"sign-in-with-apple","version":"2024.1","description":"Secure authentication method for apps and websites using Apple ID.","category":"apple","logoUrl":"logo/sign-in-with-apple.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sign in with Apple74&tracker=74","tags":["authentication","privacy","apple","security"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099990,"name":"App Store","slug":"app-store","version":"17.0","description":"Official marketplace for downloading iOS, iPadOS, macOS, watchOS, and tvOS apps.","category":"apple","logoUrl":"logo/app-store.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=App Store75&tracker=75","tags":["apps","marketplace","apple","downloads"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099991,"name":"Mac App Store","slug":"mac-app-store","version":"14.0","description":"App store for macOS applications with curated collections and reviews.","category":"apple","logoUrl":"logo/mac-app-store.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mac App Store76&tracker=76","tags":["apps","mac","apple","marketplace"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099992,"name":"Apple Configurator 2","slug":"apple-configurator-2","version":"2.18","description":"Tool for preparing and deploying iOS, iPadOS, and tvOS devices in bulk.","category":"apple","logoUrl":"logo/apple-configurator-2.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Configurator 277&tracker=77","tags":["deployment","enterprise","apple","mdm"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099993,"name":"Apple Service Toolkit","slug":"apple-service-toolkit","version":"2.1.0","description":"Diagnostic and repair tools for Apple Authorized Service Providers.","category":"apple","logoUrl":"logo/apple-service-toolkit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Service Toolkit78&tracker=78","tags":["diagnostic","repair","apple","service"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099994,"name":"Apple Diagnostics","slug":"apple-diagnostics","version":"1.0","description":"Built-in hardware diagnostic tool for identifying Mac hardware issues.","category":"apple","logoUrl":"logo/apple-diagnostics.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Diagnostics79&tracker=79","tags":["diagnostic","hardware","apple","troubleshooting"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099995,"name":"Apple Hardware Test","slug":"apple-hardware-test","version":"1.0","description":"Legacy diagnostic tool for testing Mac hardware components.","category":"apple","logoUrl":"logo/apple-hardware-test.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Hardware Test80&tracker=80","tags":["diagnostic","hardware","apple","legacy"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099996,"name":"Apple Silicon Migration Assistant","slug":"apple-silicon-migration","version":"1.0","description":"Tool for migrating data from Intel Macs to Apple Silicon Macs.","category":"apple","logoUrl":"logo/apple-silicon-migration.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Silicon Migration Assistant81&tracker=81","tags":["migration","apple-silicon","apple","transfer"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099997,"name":"Rosetta 2","slug":"rosetta-2","version":"2.0","description":"Translation process for running Intel-based apps on Apple Silicon Macs.","category":"apple","logoUrl":"logo/rosetta-2.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Rosetta 282&tracker=82","tags":["translation","apple-silicon","apple","compatibility"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099998,"name":"Universal Binary","slug":"universal-binary","version":"2.0","description":"App format supporting both Intel and Apple Silicon architectures.","category":"apple","logoUrl":"logo/universal-binary.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Universal Binary83&tracker=83","tags":["binary","apple-silicon","apple","architecture"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299099999,"name":"Swift Package Manager","slug":"swift-package-manager","version":"5.10","description":"Tool for managing Swift code libraries and dependencies in Xcode projects.","category":"apple","logoUrl":"logo/swift-package-manager.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Swift Package Manager84&tracker=84","tags":["swift","dependencies","apple","xcode"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100000,"name":"CocoaPods","slug":"cocoapods","version":"1.15.0","description":"Dependency manager for Swift and Objective-C Cocoa projects.","category":"apple","logoUrl":"logo/cocoapods.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CocoaPods85&tracker=85","tags":["dependencies","cocoa","apple","objective-c"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100001,"name":"Carthage","slug":"carthage","version":"0.39.0","description":"Decentralized dependency manager for Cocoa projects with binary frameworks.","category":"apple","logoUrl":"logo/carthage.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Carthage86&tracker=86","tags":["dependencies","cocoa","apple","frameworks"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100002,"name":"Fastlane","slug":"fastlane","version":"2.217.0","description":"Automation tool for building and releasing iOS and Mac apps.","category":"apple","logoUrl":"logo/fastlane.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fastlane87&tracker=87","tags":["automation","ci-cd","apple","deployment"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100003,"name":"App Store Connect","slug":"app-store-connect","version":"2024.1","description":"Web portal for managing app submissions, analytics, and TestFlight builds.","category":"apple","logoUrl":"logo/app-store-connect.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=App Store Connect88&tracker=88","tags":["app-management","analytics","apple","testflight"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100004,"name":"Transporter","slug":"transporter","version":"1.2.3","description":"App for uploading content to App Store Connect and Apple Music.","category":"apple","logoUrl":"logo/transporter.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Transporter89&tracker=89","tags":["upload","app-store","apple","content"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100005,"name":"Apple Configurator for iPhone","slug":"apple-configurator-iphone","version":"2.0","description":"iOS app for preparing and supervising iOS devices in educational settings.","category":"apple","logoUrl":"logo/apple-configurator-iphone.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Configurator for iPhone90&tracker=90","tags":["education","supervision","apple","ios"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100006,"name":"Apple Support","slug":"apple-support","version":"6.5.0","description":"App for getting help with Apple products, scheduling repairs, and chatting with experts.","category":"apple","logoUrl":"logo/apple-support.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Support91&tracker=91","tags":["support","help","apple","repairs"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100007,"name":"Apple Store","slug":"apple-store","version":"6.5.0","description":"App for shopping Apple products, scheduling Genius Bar appointments, and more.","category":"apple","logoUrl":"logo/apple-store-app.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Store92&tracker=92","tags":["shopping","genius-bar","apple","retail"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100008,"name":"Apple Wallet","slug":"apple-wallet","version":"17.0","description":"Digital wallet for storing passes, tickets, keys, and payment cards.","category":"apple","logoUrl":"logo/apple-wallet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Wallet93&tracker=93","tags":["wallet","passes","apple","payments"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100009,"name":"Apple ID","slug":"apple-id","version":"2024.1","description":"Account management for accessing Apple services and devices securely.","category":"apple","logoUrl":"logo/apple-id.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple ID94&tracker=94","tags":["account","security","apple","services"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100010,"name":"Two-Factor Authentication","slug":"two-factor-authentication","version":"2024.1","description":"Security feature for protecting Apple ID with verification codes.","category":"apple","logoUrl":"logo/2fa.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Two-Factor Authentication95&tracker=95","tags":["security","2fa","apple","verification"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100011,"name":"Advanced Data Protection","slug":"advanced-data-protection","version":"17.0","description":"End-to-end encryption for iCloud data including Photos, Notes, and Backups.","category":"apple","logoUrl":"logo/advanced-data-protection.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Advanced Data Protection96&tracker=96","tags":["encryption","privacy","apple","icloud"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100012,"name":"Privacy Report","slug":"privacy-report","version":"17.0","description":"Feature showing how often apps access your data and network activity.","category":"apple","logoUrl":"logo/privacy-report.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Privacy Report97&tracker=97","tags":["privacy","monitoring","apple","transparency"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100013,"name":"App Tracking Transparency","slug":"app-tracking-transparency","version":"17.0","description":"Privacy feature requiring apps to request permission before tracking.","category":"apple","logoUrl":"logo/att.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=App Tracking Transparency98&tracker=98","tags":["privacy","tracking","apple","permission"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100014,"name":"Mail Privacy Protection","slug":"mail-privacy-protection","version":"17.0","description":"Feature that hides IP address and prevents email tracking in Mail app.","category":"apple","logoUrl":"logo/mail-privacy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mail Privacy Protection99&tracker=99","tags":["privacy","email","apple","protection"],"scrapedAt":"2026-04-27T14:11:39.916Z"},{"id":1777299100015,"name":"iCloud Private Relay","slug":"icloud-private-relay","version":"17.0","description":"Privacy service that encrypts Safari browsing and hides IP address.","category":"apple","logoUrl":"logo/private-relay.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iCloud Private Relay100&tracker=100","tags":["privacy","vpn","apple","safari"],"scrapedAt":"2026-04-27T14:11:39.916Z"}];
+    const CURRENT_CATEGORY = 'apple';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

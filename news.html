@@ -1,0 +1,1235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>News — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>News</h1>
+    <p><span class="highlight">94</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="apple-news.html" class="app-card" data-id="1777300967642" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-news.png" alt="Apple News" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple News</h3>
+          <p class="app-description">Curated news platform with personalized stories from trusted sources and Apple News+ subscriptions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">curated</span><span class="app-tag">personalized</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="google-news.html" class="app-card" data-id="1777300967643" style="text-decoration:none;color:inherit">
+          <img src="logo/google-news.png" alt="Google News" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google News</h3>
+          <p class="app-description">AI-powered news aggregator with personalized feeds, full coverage, and fact-checking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">aggregator</span><span class="app-tag">ai</span><span class="app-tag">personalized</span>
+            </div>
+          
+        </a>
+        <a href="flipboard.html" class="app-card" data-id="1777300967644" style="text-decoration:none;color:inherit">
+          <img src="logo/flipboard.png" alt="Flipboard" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Flipboard</h3>
+          <p class="app-description">Magazine-style news app for curating and reading stories from around the world.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">magazine</span><span class="app-tag">curated</span><span class="app-tag">stories</span>
+            </div>
+          
+        </a>
+        <a href="newsblur.html" class="app-card" data-id="1777300967649" style="text-decoration:none;color:inherit">
+          <img src="logo/newsblur.png" alt="NewsBlur" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NewsBlur</h3>
+          <p class="app-description">Personal news reader that brings people together to talk about the world.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">rss</span><span class="app-tag">social</span><span class="app-tag">personal</span>
+            </div>
+          
+        </a>
+        <a href="new-york-times.html" class="app-card" data-id="1777300967650" style="text-decoration:none;color:inherit">
+          <img src="logo/nyt.png" alt="The New York Times" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The New York Times</h3>
+          <p class="app-description">Official app for breaking news, investigations, and award-winning journalism.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">newspaper</span><span class="app-tag">breaking-news</span><span class="app-tag">investigations</span>
+            </div>
+          
+        </a>
+        <a href="washington-post.html" class="app-card" data-id="1777300967651" style="text-decoration:none;color:inherit">
+          <img src="logo/wapo.png" alt="The Washington Post" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Washington Post</h3>
+          <p class="app-description">Award-winning journalism with breaking news, politics, and in-depth reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">newspaper</span><span class="app-tag">politics</span><span class="app-tag">breaking-news</span>
+            </div>
+          
+        </a>
+        <a href="the-guardian.html" class="app-card" data-id="1777300967652" style="text-decoration:none;color:inherit">
+          <img src="logo/guardian.png" alt="The Guardian" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Guardian</h3>
+          <p class="app-description">Independent journalism with global news, investigations, and opinion pieces.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">independent</span><span class="app-tag">global</span><span class="app-tag">investigations</span>
+            </div>
+          
+        </a>
+        <a href="bbc-news.html" class="app-card" data-id="1777300967653" style="text-decoration:none;color:inherit">
+          <img src="logo/bbc-news.png" alt="BBC News" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">BBC News</h3>
+          <p class="app-description">Trusted international news coverage with live updates and video reports.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">international</span><span class="app-tag">live</span><span class="app-tag">video</span>
+            </div>
+          
+        </a>
+        <a href="reuters.html" class="app-card" data-id="1777300967654" style="text-decoration:none;color:inherit">
+          <img src="logo/reuters.png" alt="Reuters" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Reuters</h3>
+          <p class="app-description">Global news agency with breaking news, business, and financial reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">global</span><span class="app-tag">breaking-news</span><span class="app-tag">business</span>
+            </div>
+          
+        </a>
+        <a href="associated-press.html" class="app-card" data-id="1777300967655" style="text-decoration:none;color:inherit">
+          <img src="logo/ap.png" alt="Associated Press" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Associated Press</h3>
+          <p class="app-description">Fast, accurate news from the world&#039;s largest independent news organization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fast</span><span class="app-tag">accurate</span><span class="app-tag">independent</span>
+            </div>
+          
+        </a>
+        <a href="cnn.html" class="app-card" data-id="1777300967656" style="text-decoration:none;color:inherit">
+          <img src="logo/cnn.png" alt="CNN" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CNN</h3>
+          <p class="app-description">Breaking news, live video, and original series from CNN&#039;s global network.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">breaking-news</span><span class="app-tag">live-video</span><span class="app-tag">global</span>
+            </div>
+          
+        </a>
+        <a href="fox-news.html" class="app-card" data-id="1777300967657" style="text-decoration:none;color:inherit">
+          <img src="logo/fox-news.png" alt="Fox News" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fox News</h3>
+          <p class="app-description">Breaking news, politics, and opinion from Fox News Channel.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">breaking-news</span><span class="app-tag">politics</span><span class="app-tag">opinion</span>
+            </div>
+          
+        </a>
+        <a href="msnbc.html" class="app-card" data-id="1777300967658" style="text-decoration:none;color:inherit">
+          <img src="logo/msnbc.png" alt="MSNBC" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MSNBC</h3>
+          <p class="app-description">Live news, politics, and analysis from MSNBC&#039;s award-winning journalists.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">live</span><span class="app-tag">politics</span><span class="app-tag">analysis</span>
+            </div>
+          
+        </a>
+        <a href="al-jazeera.html" class="app-card" data-id="1777300967659" style="text-decoration:none;color:inherit">
+          <img src="logo/al-jazeera.png" alt="Al Jazeera" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Al Jazeera</h3>
+          <p class="app-description">International news with focus on Middle East, global affairs, and documentaries.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">international</span><span class="app-tag">middle-east</span><span class="app-tag">documentaries</span>
+            </div>
+          
+        </a>
+        <a href="bloomberg.html" class="app-card" data-id="1777300967660" style="text-decoration:none;color:inherit">
+          <img src="logo/bloomberg.png" alt="Bloomberg" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bloomberg</h3>
+          <p class="app-description">Business and financial news with market data, analysis, and expert insights.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">business</span><span class="app-tag">financial</span><span class="app-tag">markets</span>
+            </div>
+          
+        </a>
+        <a href="the-economist.html" class="app-card" data-id="1777300967663" style="text-decoration:none;color:inherit">
+          <img src="logo/economist.png" alt="The Economist" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Economist</h3>
+          <p class="app-description">Weekly news magazine with global politics, business, and economics coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">magazine</span><span class="app-tag">global</span><span class="app-tag">politics</span>
+            </div>
+          
+        </a>
+        <a href="time.html" class="app-card" data-id="1777300967664" style="text-decoration:none;color:inherit">
+          <img src="logo/time.png" alt="TIME" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TIME</h3>
+          <p class="app-description">News magazine covering politics, culture, technology, and world events.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">magazine</span><span class="app-tag">politics</span><span class="app-tag">culture</span>
+            </div>
+          
+        </a>
+        <a href="newsweek.html" class="app-card" data-id="1777300967665" style="text-decoration:none;color:inherit">
+          <img src="logo/newsweek.png" alt="Newsweek" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Newsweek</h3>
+          <p class="app-description">News magazine with politics, world news, health, and culture coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">magazine</span><span class="app-tag">politics</span><span class="app-tag">world</span>
+            </div>
+          
+        </a>
+        <a href="politico.html" class="app-card" data-id="1777300967666" style="text-decoration:none;color:inherit">
+          <img src="logo/politico.png" alt="Politico" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Politico</h3>
+          <p class="app-description">Political news and analysis with focus on US politics and policy.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">politics</span><span class="app-tag">analysis</span><span class="app-tag">us</span>
+            </div>
+          
+        </a>
+        <a href="the-hill.html" class="app-card" data-id="1777300967667" style="text-decoration:none;color:inherit">
+          <img src="logo/the-hill.png" alt="The Hill" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Hill</h3>
+          <p class="app-description">Political news covering Congress, campaigns, and policy from Washington.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">politics</span><span class="app-tag">congress</span><span class="app-tag">campaigns</span>
+            </div>
+          
+        </a>
+        <a href="axios.html" class="app-card" data-id="1777300967668" style="text-decoration:none;color:inherit">
+          <img src="logo/axios.png" alt="Axios" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Axios</h3>
+          <p class="app-description">Smart brevity news app with concise reporting on politics, tech, and business.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">brevity</span><span class="app-tag">politics</span><span class="app-tag">tech</span>
+            </div>
+          
+        </a>
+        <a href="vox.html" class="app-card" data-id="1777300967669" style="text-decoration:none;color:inherit">
+          <img src="logo/vox.png" alt="Vox" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Vox</h3>
+          <p class="app-description">Explanatory journalism with deep dives into politics, culture, and science.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">explanatory</span><span class="app-tag">politics</span><span class="app-tag">culture</span>
+            </div>
+          
+        </a>
+        <a href="propublica.html" class="app-card" data-id="1777300967670" style="text-decoration:none;color:inherit">
+          <img src="logo/propublica.png" alt="ProPublica" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ProPublica</h3>
+          <p class="app-description">Investigative journalism nonprofit exposing abuse of power and betrayals of public trust.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">investigative</span><span class="app-tag">nonprofit</span><span class="app-tag">exposés</span>
+            </div>
+          
+        </a>
+        <a href="npr-news.html" class="app-card" data-id="1777300967671" style="text-decoration:none;color:inherit">
+          <img src="logo/npr.png" alt="NPR News" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NPR News</h3>
+          <p class="app-description">Public radio news with in-depth reporting, podcasts, and local coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">public-radio</span><span class="app-tag">podcasts</span><span class="app-tag">local</span>
+            </div>
+          
+        </a>
+        <a href="pbs-newshour.html" class="app-card" data-id="1777300967672" style="text-decoration:none;color:inherit">
+          <img src="logo/pbs.png" alt="PBS NewsHour" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PBS NewsHour</h3>
+          <p class="app-description">Public television news with thoughtful analysis and in-depth reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">public-tv</span><span class="app-tag">analysis</span><span class="app-tag">in-depth</span>
+            </div>
+          
+        </a>
+        <a href="ap-news.html" class="app-card" data-id="1777300967673" style="text-decoration:none;color:inherit">
+          <img src="logo/ap-news.png" alt="AP News" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AP News</h3>
+          <p class="app-description">Fast, accurate news from the Associated Press wire service.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">wire-service</span><span class="app-tag">fast</span><span class="app-tag">accurate</span>
+            </div>
+          
+        </a>
+        <a href="usa-today.html" class="app-card" data-id="1777300967674" style="text-decoration:none;color:inherit">
+          <img src="logo/usa-today.png" alt="USA Today" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">USA Today</h3>
+          <p class="app-description">National news with sports, entertainment, and lifestyle coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">national</span><span class="app-tag">sports</span><span class="app-tag">entertainment</span>
+            </div>
+          
+        </a>
+        <a href="la-times.html" class="app-card" data-id="1777300967675" style="text-decoration:none;color:inherit">
+          <img src="logo/la-times.png" alt="LA Times" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LA Times</h3>
+          <p class="app-description">California and national news with investigative reporting and local coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">california</span><span class="app-tag">local</span><span class="app-tag">investigative</span>
+            </div>
+          
+        </a>
+        <a href="chicago-tribune.html" class="app-card" data-id="1777300967676" style="text-decoration:none;color:inherit">
+          <img src="logo/chicago-tribune.png" alt="Chicago Tribune" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Chicago Tribune</h3>
+          <p class="app-description">Midwest news with local coverage, sports, and investigative journalism.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">midwest</span><span class="app-tag">local</span><span class="app-tag">sports</span>
+            </div>
+          
+        </a>
+        <a href="boston-globe.html" class="app-card" data-id="1777300967677" style="text-decoration:none;color:inherit">
+          <img src="logo/boston-globe.png" alt="Boston Globe" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Boston Globe</h3>
+          <p class="app-description">New England news with local coverage, politics, and sports reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">new-england</span><span class="app-tag">local</span><span class="app-tag">politics</span>
+            </div>
+          
+        </a>
+        <a href="sf-chronicle.html" class="app-card" data-id="1777300967678" style="text-decoration:none;color:inherit">
+          <img src="logo/sf-chronicle.png" alt="SF Chronicle" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SF Chronicle</h3>
+          <p class="app-description">San Francisco Bay Area news with local coverage and tech reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">bay-area</span><span class="app-tag">local</span><span class="app-tag">tech</span>
+            </div>
+          
+        </a>
+        <a href="miami-herald.html" class="app-card" data-id="1777300967679" style="text-decoration:none;color:inherit">
+          <img src="logo/miami-herald.png" alt="Miami Herald" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Miami Herald</h3>
+          <p class="app-description">South Florida news with local coverage, Latin America focus, and sports.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">florida</span><span class="app-tag">local</span><span class="app-tag">latin-america</span>
+            </div>
+          
+        </a>
+        <a href="seattle-times.html" class="app-card" data-id="1777300967680" style="text-decoration:none;color:inherit">
+          <img src="logo/seattle-times.png" alt="Seattle Times" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Seattle Times</h3>
+          <p class="app-description">Pacific Northwest news with local coverage and investigative reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pacific-northwest</span><span class="app-tag">local</span><span class="app-tag">investigative</span>
+            </div>
+          
+        </a>
+        <a href="denver-post.html" class="app-card" data-id="1777300967681" style="text-decoration:none;color:inherit">
+          <img src="logo/denver-post.png" alt="Denver Post" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Denver Post</h3>
+          <p class="app-description">Colorado news with local coverage, outdoor recreation, and politics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">colorado</span><span class="app-tag">local</span><span class="app-tag">outdoor</span>
+            </div>
+          
+        </a>
+        <a href="atlanta-journal-constitution.html" class="app-card" data-id="1777300967682" style="text-decoration:none;color:inherit">
+          <img src="logo/ajc.png" alt="Atlanta Journal-Constitution" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Atlanta Journal-Constitution</h3>
+          <p class="app-description">Georgia news with local coverage, politics, and Southern culture.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">georgia</span><span class="app-tag">local</span><span class="app-tag">politics</span>
+            </div>
+          
+        </a>
+        <a href="dallas-morning-news.html" class="app-card" data-id="1777300967683" style="text-decoration:none;color:inherit">
+          <img src="logo/dallas-news.png" alt="Dallas Morning News" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Dallas Morning News</h3>
+          <p class="app-description">Texas news with local coverage, business, and sports reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">texas</span><span class="app-tag">local</span><span class="app-tag">business</span>
+            </div>
+          
+        </a>
+        <a href="houston-chronicle.html" class="app-card" data-id="1777300967684" style="text-decoration:none;color:inherit">
+          <img src="logo/houston-chronicle.png" alt="Houston Chronicle" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Houston Chronicle</h3>
+          <p class="app-description">Houston and Texas news with energy industry coverage and local reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">houston</span><span class="app-tag">texas</span><span class="app-tag">energy</span>
+            </div>
+          
+        </a>
+        <a href="philadelphia-inquirer.html" class="app-card" data-id="1777300967685" style="text-decoration:none;color:inherit">
+          <img src="logo/philly-inquirer.png" alt="Philadelphia Inquirer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Philadelphia Inquirer</h3>
+          <p class="app-description">Pennsylvania news with local coverage, politics, and investigative journalism.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pennsylvania</span><span class="app-tag">local</span><span class="app-tag">politics</span>
+            </div>
+          
+        </a>
+        <a href="detroit-free-press.html" class="app-card" data-id="1777300967686" style="text-decoration:none;color:inherit">
+          <img src="logo/detroit-free-press.png" alt="Detroit Free Press" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Detroit Free Press</h3>
+          <p class="app-description">Michigan news with local coverage, auto industry reporting, and sports.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">michigan</span><span class="app-tag">local</span><span class="app-tag">auto-industry</span>
+            </div>
+          
+        </a>
+        <a href="minneapolis-star-tribune.html" class="app-card" data-id="1777300967687" style="text-decoration:none;color:inherit">
+          <img src="logo/star-tribune.png" alt="Minneapolis Star Tribune" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Minneapolis Star Tribune</h3>
+          <p class="app-description">Minnesota news with local coverage, politics, and Midwest reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">minnesota</span><span class="app-tag">local</span><span class="app-tag">politics</span>
+            </div>
+          
+        </a>
+        <a href="portland-oregonian.html" class="app-card" data-id="1777300967688" style="text-decoration:none;color:inherit">
+          <img src="logo/oregonian.png" alt="Portland Oregonian" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Portland Oregonian</h3>
+          <p class="app-description">Oregon news with local coverage, environmental reporting, and Pacific Northwest focus.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">oregon</span><span class="app-tag">local</span><span class="app-tag">environmental</span>
+            </div>
+          
+        </a>
+        <a href="arizona-republic.html" class="app-card" data-id="1777300967689" style="text-decoration:none;color:inherit">
+          <img src="logo/arizona-republic.png" alt="Arizona Republic" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Arizona Republic</h3>
+          <p class="app-description">Arizona news with local coverage, border issues, and Southwest reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">arizona</span><span class="app-tag">local</span><span class="app-tag">border</span>
+            </div>
+          
+        </a>
+        <a href="tampa-bay-times.html" class="app-card" data-id="1777300967690" style="text-decoration:none;color:inherit">
+          <img src="logo/tampa-bay-times.png" alt="Tampa Bay Times" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tampa Bay Times</h3>
+          <p class="app-description">Florida news with local coverage, politics, and investigative journalism.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">florida</span><span class="app-tag">local</span><span class="app-tag">politics</span>
+            </div>
+          
+        </a>
+        <a href="st-louis-post-dispatch.html" class="app-card" data-id="1777300967691" style="text-decoration:none;color:inherit">
+          <img src="logo/stl-post.png" alt="St. Louis Post-Dispatch" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">St. Louis Post-Dispatch</h3>
+          <p class="app-description">Missouri news with local coverage, Midwest reporting, and community focus.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">missouri</span><span class="app-tag">local</span><span class="app-tag">midwest</span>
+            </div>
+          
+        </a>
+        <a href="the-atlantic.html" class="app-card" data-id="1777300967692" style="text-decoration:none;color:inherit">
+          <img src="logo/atlantic.png" alt="The Atlantic" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Atlantic</h3>
+          <p class="app-description">Magazine with long-form journalism on politics, culture, technology, and ideas.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">magazine</span><span class="app-tag">long-form</span><span class="app-tag">culture</span>
+            </div>
+          
+        </a>
+        <a href="the-new-yorker.html" class="app-card" data-id="1777300967693" style="text-decoration:none;color:inherit">
+          <img src="logo/new-yorker.png" alt="The New Yorker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The New Yorker</h3>
+          <p class="app-description">Magazine with in-depth reporting, fiction, poetry, and cultural commentary.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">magazine</span><span class="app-tag">reporting</span><span class="app-tag">fiction</span>
+            </div>
+          
+        </a>
+        <a href="wired.html" class="app-card" data-id="1777300967694" style="text-decoration:none;color:inherit">
+          <img src="logo/wired.png" alt="Wired" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wired</h3>
+          <p class="app-description">Technology and culture magazine covering innovation, science, and digital life.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">culture</span><span class="app-tag">innovation</span>
+            </div>
+          
+        </a>
+        <a href="wired-uk.html" class="app-card" data-id="1777300967695" style="text-decoration:none;color:inherit">
+          <img src="logo/wired-uk.png" alt="Wired UK" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wired UK</h3>
+          <p class="app-description">UK edition of Wired with technology, science, and culture coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">uk</span><span class="app-tag">science</span>
+            </div>
+          
+        </a>
+        <a href="techcrunch.html" class="app-card" data-id="1777300967696" style="text-decoration:none;color:inherit">
+          <img src="logo/techcrunch.png" alt="TechCrunch" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TechCrunch</h3>
+          <p class="app-description">Technology news covering startups, venture capital, and innovation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">startups</span><span class="app-tag">venture-capital</span>
+            </div>
+          
+        </a>
+        <a href="the-verge.html" class="app-card" data-id="1777300967697" style="text-decoration:none;color:inherit">
+          <img src="logo/the-verge.png" alt="The Verge" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Verge</h3>
+          <p class="app-description">Technology, science, art, and culture news with in-depth reviews and features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">science</span><span class="app-tag">reviews</span>
+            </div>
+          
+        </a>
+        <a href="ars-technica.html" class="app-card" data-id="1777300967698" style="text-decoration:none;color:inherit">
+          <img src="logo/ars-technica.png" alt="Ars Technica" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ars Technica</h3>
+          <p class="app-description">In-depth technology news with expert analysis and technical coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">analysis</span><span class="app-tag">technical</span>
+            </div>
+          
+        </a>
+        <a href="engadget.html" class="app-card" data-id="1777300967699" style="text-decoration:none;color:inherit">
+          <img src="logo/engadget.png" alt="Engadget" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Engadget</h3>
+          <p class="app-description">Consumer technology news with product reviews and gadget coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">consumer</span><span class="app-tag">reviews</span>
+            </div>
+          
+        </a>
+        <a href="cnet.html" class="app-card" data-id="1777300967700" style="text-decoration:none;color:inherit">
+          <img src="logo/cnet.png" alt="CNET" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CNET</h3>
+          <p class="app-description">Technology news, reviews, and how-to guides for consumers and professionals.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">reviews</span><span class="app-tag">how-to</span>
+            </div>
+          
+        </a>
+        <a href="zdnet.html" class="app-card" data-id="1777300967701" style="text-decoration:none;color:inherit">
+          <img src="logo/zdnet.png" alt="ZDNet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ZDNet</h3>
+          <p class="app-description">Business technology news with enterprise IT coverage and analysis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">business</span><span class="app-tag">enterprise</span>
+            </div>
+          
+        </a>
+        <a href="venturebeat.html" class="app-card" data-id="1777300967702" style="text-decoration:none;color:inherit">
+          <img src="logo/venturebeat.png" alt="VentureBeat" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">VentureBeat</h3>
+          <p class="app-description">Technology news focused on innovation, gaming, and transformative tech.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">innovation</span><span class="app-tag">gaming</span>
+            </div>
+          
+        </a>
+        <a href="recode.html" class="app-card" data-id="1777300967703" style="text-decoration:none;color:inherit">
+          <img src="logo/recode.png" alt="Recode" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Recode</h3>
+          <p class="app-description">Technology news and analysis on digital media, platforms, and business.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">digital-media</span><span class="app-tag">platforms</span>
+            </div>
+          
+        </a>
+        <a href="protocol.html" class="app-card" data-id="1777300967704" style="text-decoration:none;color:inherit">
+          <img src="logo/protocol.png" alt="Protocol" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Protocol</h3>
+          <p class="app-description">Technology news covering power, policy, and the people shaping tech.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">policy</span><span class="app-tag">power</span>
+            </div>
+          
+        </a>
+        <a href="the-information.html" class="app-card" data-id="1777300967705" style="text-decoration:none;color:inherit">
+          <img src="logo/the-information.png" alt="The Information" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Information</h3>
+          <p class="app-description">Premium technology news with exclusive reporting on Silicon Valley.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">premium</span><span class="app-tag">exclusive</span>
+            </div>
+          
+        </a>
+        <a href="stratechery.html" class="app-card" data-id="1777300967706" style="text-decoration:none;color:inherit">
+          <img src="logo/stratechery.png" alt="Stratechery" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Stratechery</h3>
+          <p class="app-description">Technology strategy analysis with in-depth essays on business and tech.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">strategy</span><span class="app-tag">analysis</span>
+            </div>
+          
+        </a>
+        <a href="daring-fireball.html" class="app-card" data-id="1777300967707" style="text-decoration:none;color:inherit">
+          <img src="logo/daring-fireball.png" alt="Daring Fireball" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Daring Fireball</h3>
+          <p class="app-description">Apple-focused blog with news, commentary, and links on technology.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">blog</span><span class="app-tag">commentary</span>
+            </div>
+          
+        </a>
+        <a href="macrumors.html" class="app-card" data-id="1777300967708" style="text-decoration:none;color:inherit">
+          <img src="logo/macrumors.png" alt="MacRumors" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MacRumors</h3>
+          <p class="app-description">Apple news and rumors with product leaks, reviews, and community forums.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">rumors</span><span class="app-tag">reviews</span>
+            </div>
+          
+        </a>
+        <a href="9to5mac.html" class="app-card" data-id="1777300967709" style="text-decoration:none;color:inherit">
+          <img src="logo/9to5mac.png" alt="9to5Mac" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+OTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">9to5Mac</h3>
+          <p class="app-description">Apple news with breaking stories, reviews, and how-to guides.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">breaking</span><span class="app-tag">reviews</span>
+            </div>
+          
+        </a>
+        <a href="android-police.html" class="app-card" data-id="1777300967710" style="text-decoration:none;color:inherit">
+          <img src="logo/android-police.png" alt="Android Police" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Android Police</h3>
+          <p class="app-description">Android news with app reviews, device coverage, and Google updates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">android</span><span class="app-tag">apps</span><span class="app-tag">devices</span>
+            </div>
+          
+        </a>
+        <a href="android-central.html" class="app-card" data-id="1777300967711" style="text-decoration:none;color:inherit">
+          <img src="logo/android-central.png" alt="Android Central" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Android Central</h3>
+          <p class="app-description">Android news, reviews, and how-to guides for enthusiasts and professionals.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">android</span><span class="app-tag">reviews</span><span class="app-tag">how-to</span>
+            </div>
+          
+        </a>
+        <a href="xda-developers.html" class="app-card" data-id="1777300967712" style="text-decoration:none;color:inherit">
+          <img src="logo/xda.png" alt="XDA Developers" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">XDA Developers</h3>
+          <p class="app-description">Android development community with news, ROMs, and technical guides.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">android</span><span class="app-tag">development</span><span class="app-tag">roms</span>
+            </div>
+          
+        </a>
+        <a href="gsmarena.html" class="app-card" data-id="1777300967713" style="text-decoration:none;color:inherit">
+          <img src="logo/gsmarena.png" alt="GSMArena" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GSMArena</h3>
+          <p class="app-description">Mobile phone news with specifications, reviews, and comparisons.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile</span><span class="app-tag">specifications</span><span class="app-tag">reviews</span>
+            </div>
+          
+        </a>
+        <a href="phonearena.html" class="app-card" data-id="1777300967714" style="text-decoration:none;color:inherit">
+          <img src="logo/phonearena.png" alt="PhoneArena" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PhoneArena</h3>
+          <p class="app-description">Mobile technology news with phone reviews, comparisons, and industry coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile</span><span class="app-tag">reviews</span><span class="app-tag">comparisons</span>
+            </div>
+          
+        </a>
+        <a href="android-authority.html" class="app-card" data-id="1777300967715" style="text-decoration:none;color:inherit">
+          <img src="logo/android-authority.png" alt="Android Authority" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Android Authority</h3>
+          <p class="app-description">Android news and reviews with in-depth analysis and how-to content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">android</span><span class="app-tag">analysis</span><span class="app-tag">how-to</span>
+            </div>
+          
+        </a>
+        <a href="the-next-web.html" class="app-card" data-id="1777300967716" style="text-decoration:none;color:inherit">
+          <img src="logo/tnw.png" alt="The Next Web" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Next Web</h3>
+          <p class="app-description">Technology news covering startups, innovation, and digital culture.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">startups</span><span class="app-tag">innovation</span>
+            </div>
+          
+        </a>
+        <a href="mashable.html" class="app-card" data-id="1777300967717" style="text-decoration:none;color:inherit">
+          <img src="logo/mashable.png" alt="Mashable" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mashable</h3>
+          <p class="app-description">Digital culture news with technology, entertainment, and social media coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">digital-culture</span><span class="app-tag">technology</span><span class="app-tag">entertainment</span>
+            </div>
+          
+        </a>
+        <a href="gizmodo.html" class="app-card" data-id="1777300967718" style="text-decoration:none;color:inherit">
+          <img src="logo/gizmodo.png" alt="Gizmodo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Gizmodo</h3>
+          <p class="app-description">Technology and science news with a focus on gadgets, design, and innovation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">technology</span><span class="app-tag">science</span><span class="app-tag">gadgets</span>
+            </div>
+          
+        </a>
+        <a href="kotaku.html" class="app-card" data-id="1777300967719" style="text-decoration:none;color:inherit">
+          <img src="logo/kotaku.png" alt="Kotaku" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kotaku</h3>
+          <p class="app-description">Gaming news with reviews, industry coverage, and gaming culture.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">reviews</span><span class="app-tag">industry</span>
+            </div>
+          
+        </a>
+        <a href="polygon.html" class="app-card" data-id="1777300967720" style="text-decoration:none;color:inherit">
+          <img src="logo/polygon.png" alt="Polygon" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Polygon</h3>
+          <p class="app-description">Gaming news with reviews, features, and coverage of gaming culture.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">reviews</span><span class="app-tag">features</span>
+            </div>
+          
+        </a>
+        <a href="ign.html" class="app-card" data-id="1777300967721" style="text-decoration:none;color:inherit">
+          <img src="logo/ign.png" alt="IGN" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">IGN</h3>
+          <p class="app-description">Gaming and entertainment news with reviews, previews, and video content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">entertainment</span><span class="app-tag">reviews</span>
+            </div>
+          
+        </a>
+        <a href="gamespot.html" class="app-card" data-id="1777300967722" style="text-decoration:none;color:inherit">
+          <img src="logo/gamespot.png" alt="GameSpot" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GameSpot</h3>
+          <p class="app-description">Gaming news with reviews, previews, and video content for gamers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">reviews</span><span class="app-tag">previews</span>
+            </div>
+          
+        </a>
+        <a href="eurogamer.html" class="app-card" data-id="1777300967723" style="text-decoration:none;color:inherit">
+          <img src="logo/eurogamer.png" alt="Eurogamer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Eurogamer</h3>
+          <p class="app-description">European gaming news with reviews, features, and industry coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">european</span><span class="app-tag">reviews</span>
+            </div>
+          
+        </a>
+        <a href="pc-gamer.html" class="app-card" data-id="1777300967724" style="text-decoration:none;color:inherit">
+          <img src="logo/pc-gamer.png" alt="PC Gamer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PC Gamer</h3>
+          <p class="app-description">PC gaming news with reviews, hardware coverage, and gaming culture.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pc-gaming</span><span class="app-tag">reviews</span><span class="app-tag">hardware</span>
+            </div>
+          
+        </a>
+        <a href="rock-paper-shotgun.html" class="app-card" data-id="1777300967725" style="text-decoration:none;color:inherit">
+          <img src="logo/rps.png" alt="Rock Paper Shotgun" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Rock Paper Shotgun</h3>
+          <p class="app-description">PC gaming news with witty writing, reviews, and indie game coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pc-gaming</span><span class="app-tag">witty</span><span class="app-tag">reviews</span>
+            </div>
+          
+        </a>
+        <a href="destructoid.html" class="app-card" data-id="1777300967726" style="text-decoration:none;color:inherit">
+          <img src="logo/destructoid.png" alt="Destructoid" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Destructoid</h3>
+          <p class="app-description">Gaming news with reviews, previews, and community-focused content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">reviews</span><span class="app-tag">previews</span>
+            </div>
+          
+        </a>
+        <a href="game-informer.html" class="app-card" data-id="1777300967727" style="text-decoration:none;color:inherit">
+          <img src="logo/game-informer.png" alt="Game Informer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Game Informer</h3>
+          <p class="app-description">Gaming magazine with exclusive previews, reviews, and industry coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">magazine</span><span class="app-tag">previews</span>
+            </div>
+          
+        </a>
+        <a href="gamesradar.html" class="app-card" data-id="1777300967728" style="text-decoration:none;color:inherit">
+          <img src="logo/gamesradar.png" alt="GamesRadar+" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GamesRadar+</h3>
+          <p class="app-description">Gaming news with reviews, guides, and coverage of all gaming platforms.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">reviews</span><span class="app-tag">guides</span>
+            </div>
+          
+        </a>
+        <a href="vg247.html" class="app-card" data-id="1777300967729" style="text-decoration:none;color:inherit">
+          <img src="logo/vg247.png" alt="VG247" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">VG247</h3>
+          <p class="app-description">Video game news with reviews, previews, and industry analysis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">reviews</span><span class="app-tag">previews</span>
+            </div>
+          
+        </a>
+        <a href="gematsu.html" class="app-card" data-id="1777300967730" style="text-decoration:none;color:inherit">
+          <img src="logo/gematsu.png" alt="Gematsu" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Gematsu</h3>
+          <p class="app-description">Video game news focused on Japanese games and industry coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">japanese</span><span class="app-tag">industry</span>
+            </div>
+          
+        </a>
+        <a href="siliconera.html" class="app-card" data-id="1777300967731" style="text-decoration:none;color:inherit">
+          <img src="logo/siliconera.png" alt="Siliconera" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Siliconera</h3>
+          <p class="app-description">Gaming news with focus on Japanese games, RPGs, and niche titles.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">japanese</span><span class="app-tag">rpg</span>
+            </div>
+          
+        </a>
+        <a href="dualshockers.html" class="app-card" data-id="1777300967732" style="text-decoration:none;color:inherit">
+          <img src="logo/dualshockers.png" alt="DualShockers" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DualShockers</h3>
+          <p class="app-description">Gaming news with reviews, guides, and coverage of all gaming platforms.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">reviews</span><span class="app-tag">guides</span>
+            </div>
+          
+        </a>
+        <a href="push-square.html" class="app-card" data-id="1777300967733" style="text-decoration:none;color:inherit">
+          <img src="logo/push-square.png" alt="Push Square" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Push Square</h3>
+          <p class="app-description">PlayStation-focused gaming news with reviews, news, and community content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">playstation</span><span class="app-tag">gaming</span><span class="app-tag">reviews</span>
+            </div>
+          
+        </a>
+        <a href="nintendo-life.html" class="app-card" data-id="1777300967734" style="text-decoration:none;color:inherit">
+          <img src="logo/nintendo-life.png" alt="Nintendo Life" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nintendo Life</h3>
+          <p class="app-description">Nintendo-focused gaming news with reviews, news, and retro coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">nintendo</span><span class="app-tag">gaming</span><span class="app-tag">reviews</span>
+            </div>
+          
+        </a>
+        <a href="xbox-achievements.html" class="app-card" data-id="1777300967735" style="text-decoration:none;color:inherit">
+          <img src="logo/xbox-achievements.png" alt="Xbox Achievements" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Xbox Achievements</h3>
+          <p class="app-description">Xbox-focused gaming news with achievement guides and community features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">xbox</span><span class="app-tag">gaming</span><span class="app-tag">achievements</span>
+            </div>
+          
+        </a>
+        <a href="trueachievements.html" class="app-card" data-id="1777300967736" style="text-decoration:none;color:inherit">
+          <img src="logo/trueachievements.png" alt="TrueAchievements" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TrueAchievements</h3>
+          <p class="app-description">Xbox achievement tracking and gaming news with guides and community.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">xbox</span><span class="app-tag">achievements</span><span class="app-tag">guides</span>
+            </div>
+          
+        </a>
+        <a href="truetrophies.html" class="app-card" data-id="1777300967737" style="text-decoration:none;color:inherit">
+          <img src="logo/truetrophies.png" alt="TrueTrophies" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TrueTrophies</h3>
+          <p class="app-description">PlayStation trophy tracking and gaming news with guides and community.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">playstation</span><span class="app-tag">trophies</span><span class="app-tag">guides</span>
+            </div>
+          
+        </a>
+        <a href="exophase.html" class="app-card" data-id="1777300967738" style="text-decoration:none;color:inherit">
+          <img src="logo/exophase.png" alt="Exophase" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Exophase</h3>
+          <p class="app-description">Gaming achievement tracking across multiple platforms with news and guides.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">achievements</span><span class="app-tag">multi-platform</span><span class="app-tag">guides</span>
+            </div>
+          
+        </a>
+        <a href="howlongtobeat.html" class="app-card" data-id="1777300967739" style="text-decoration:none;color:inherit">
+          <img src="logo/hltb.png" alt="HowLongToBeat" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HowLongToBeat</h3>
+          <p class="app-description">Gaming database tracking game lengths with community-submitted data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">database</span><span class="app-tag">community</span>
+            </div>
+          
+        </a>
+        <a href="metacritic.html" class="app-card" data-id="1777300967740" style="text-decoration:none;color:inherit">
+          <img src="logo/metacritic.png" alt="Metacritic" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Metacritic</h3>
+          <p class="app-description">Review aggregation site for games, movies, TV, and music with critic scores.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">reviews</span><span class="app-tag">aggregation</span><span class="app-tag">critic-scores</span>
+            </div>
+          
+        </a>
+        <a href="opencritic.html" class="app-card" data-id="1777300967741" style="text-decoration:none;color:inherit">
+          <img src="logo/opencritic.png" alt="OpenCritic" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OpenCritic</h3>
+          <p class="app-description">Open review aggregation for video games with transparent scoring.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">reviews</span><span class="app-tag">aggregation</span><span class="app-tag">transparent</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777300967642,"name":"Apple News","slug":"apple-news","version":"17.0","description":"Curated news platform with personalized stories from trusted sources and Apple News+ subscriptions.","category":"news","logoUrl":"logo/apple-news.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple News1&tracker=1","tags":["curated","personalized","apple","subscriptions"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967643,"name":"Google News","slug":"google-news","version":"5.85.0","description":"AI-powered news aggregator with personalized feeds, full coverage, and fact-checking.","category":"news","logoUrl":"logo/google-news.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google News2&tracker=2","tags":["aggregator","ai","personalized","fact-checking"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967644,"name":"Flipboard","slug":"flipboard","version":"4.3.50","description":"Magazine-style news app for curating and reading stories from around the world.","category":"news","logoUrl":"logo/flipboard.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Flipboard3&tracker=3","tags":["magazine","curated","stories","visual"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967649,"name":"NewsBlur","slug":"newsblur","version":"2024.03","description":"Personal news reader that brings people together to talk about the world.","category":"news","logoUrl":"logo/newsblur.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NewsBlur8&tracker=8","tags":["rss","social","personal","community"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967650,"name":"The New York Times","slug":"new-york-times","version":"10.25.0","description":"Official app for breaking news, investigations, and award-winning journalism.","category":"news","logoUrl":"logo/nyt.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The New York Times9&tracker=9","tags":["newspaper","breaking-news","investigations","premium"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967651,"name":"The Washington Post","slug":"washington-post","version":"4.15.0","description":"Award-winning journalism with breaking news, politics, and in-depth reporting.","category":"news","logoUrl":"logo/wapo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Washington Post10&tracker=10","tags":["newspaper","politics","breaking-news","reporting"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967652,"name":"The Guardian","slug":"the-guardian","version":"9.25.0","description":"Independent journalism with global news, investigations, and opinion pieces.","category":"news","logoUrl":"logo/guardian.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Guardian11&tracker=11","tags":["independent","global","investigations","opinion"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967653,"name":"BBC News","slug":"bbc-news","version":"6.18.0","description":"Trusted international news coverage with live updates and video reports.","category":"news","logoUrl":"logo/bbc-news.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=BBC News12&tracker=12","tags":["international","live","video","trusted"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967654,"name":"Reuters","slug":"reuters","version":"8.12.0","description":"Global news agency with breaking news, business, and financial reporting.","category":"news","logoUrl":"logo/reuters.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Reuters13&tracker=13","tags":["global","breaking-news","business","financial"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967655,"name":"Associated Press","slug":"associated-press","version":"5.8.0","description":"Fast, accurate news from the world's largest independent news organization.","category":"news","logoUrl":"logo/ap.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Associated Press14&tracker=14","tags":["fast","accurate","independent","global"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967656,"name":"CNN","slug":"cnn","version":"7.25.0","description":"Breaking news, live video, and original series from CNN's global network.","category":"news","logoUrl":"logo/cnn.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CNN15&tracker=15","tags":["breaking-news","live-video","global","tv"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967657,"name":"Fox News","slug":"fox-news","version":"5.12.0","description":"Breaking news, politics, and opinion from Fox News Channel.","category":"news","logoUrl":"logo/fox-news.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fox News16&tracker=16","tags":["breaking-news","politics","opinion","tv"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967658,"name":"MSNBC","slug":"msnbc","version":"6.8.0","description":"Live news, politics, and analysis from MSNBC's award-winning journalists.","category":"news","logoUrl":"logo/msnbc.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MSNBC17&tracker=17","tags":["live","politics","analysis","tv"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967659,"name":"Al Jazeera","slug":"al-jazeera","version":"4.25.0","description":"International news with focus on Middle East, global affairs, and documentaries.","category":"news","logoUrl":"logo/al-jazeera.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Al Jazeera18&tracker=18","tags":["international","middle-east","documentaries","global"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967660,"name":"Bloomberg","slug":"bloomberg","version":"3.15.0","description":"Business and financial news with market data, analysis, and expert insights.","category":"news","logoUrl":"logo/bloomberg.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bloomberg19&tracker=19","tags":["business","financial","markets","analysis"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967663,"name":"The Economist","slug":"the-economist","version":"4.8.0","description":"Weekly news magazine with global politics, business, and economics coverage.","category":"news","logoUrl":"logo/economist.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Economist22&tracker=22","tags":["magazine","global","politics","economics"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967664,"name":"TIME","slug":"time","version":"5.2.0","description":"News magazine covering politics, culture, technology, and world events.","category":"news","logoUrl":"logo/time.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TIME23&tracker=23","tags":["magazine","politics","culture","technology"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967665,"name":"Newsweek","slug":"newsweek","version":"2024.03","description":"News magazine with politics, world news, health, and culture coverage.","category":"news","logoUrl":"logo/newsweek.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Newsweek24&tracker=24","tags":["magazine","politics","world","health"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967666,"name":"Politico","slug":"politico","version":"2024.03","description":"Political news and analysis with focus on US politics and policy.","category":"news","logoUrl":"logo/politico.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Politico25&tracker=25","tags":["politics","analysis","us","policy"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967667,"name":"The Hill","slug":"the-hill","version":"2024.03","description":"Political news covering Congress, campaigns, and policy from Washington.","category":"news","logoUrl":"logo/the-hill.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Hill26&tracker=26","tags":["politics","congress","campaigns","washington"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967668,"name":"Axios","slug":"axios","version":"2024.03","description":"Smart brevity news app with concise reporting on politics, tech, and business.","category":"news","logoUrl":"logo/axios.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Axios27&tracker=27","tags":["brevity","politics","tech","business"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967669,"name":"Vox","slug":"vox","version":"2024.03","description":"Explanatory journalism with deep dives into politics, culture, and science.","category":"news","logoUrl":"logo/vox.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Vox28&tracker=28","tags":["explanatory","politics","culture","science"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967670,"name":"ProPublica","slug":"propublica","version":"2024.03","description":"Investigative journalism nonprofit exposing abuse of power and betrayals of public trust.","category":"news","logoUrl":"logo/propublica.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ProPublica29&tracker=29","tags":["investigative","nonprofit","exposés","public-interest"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967671,"name":"NPR News","slug":"npr-news","version":"5.12.0","description":"Public radio news with in-depth reporting, podcasts, and local coverage.","category":"news","logoUrl":"logo/npr.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NPR News30&tracker=30","tags":["public-radio","podcasts","local","in-depth"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967672,"name":"PBS NewsHour","slug":"pbs-newshour","version":"2024.03","description":"Public television news with thoughtful analysis and in-depth reporting.","category":"news","logoUrl":"logo/pbs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PBS NewsHour31&tracker=31","tags":["public-tv","analysis","in-depth","thoughtful"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967673,"name":"AP News","slug":"ap-news","version":"5.8.0","description":"Fast, accurate news from the Associated Press wire service.","category":"news","logoUrl":"logo/ap-news.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AP News32&tracker=32","tags":["wire-service","fast","accurate","breaking"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967674,"name":"USA Today","slug":"usa-today","version":"2024.03","description":"National news with sports, entertainment, and lifestyle coverage.","category":"news","logoUrl":"logo/usa-today.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=USA Today33&tracker=33","tags":["national","sports","entertainment","lifestyle"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967675,"name":"LA Times","slug":"la-times","version":"2024.03","description":"California and national news with investigative reporting and local coverage.","category":"news","logoUrl":"logo/la-times.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LA Times34&tracker=34","tags":["california","local","investigative","national"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967676,"name":"Chicago Tribune","slug":"chicago-tribune","version":"2024.03","description":"Midwest news with local coverage, sports, and investigative journalism.","category":"news","logoUrl":"logo/chicago-tribune.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Chicago Tribune35&tracker=35","tags":["midwest","local","sports","investigative"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967677,"name":"Boston Globe","slug":"boston-globe","version":"2024.03","description":"New England news with local coverage, politics, and sports reporting.","category":"news","logoUrl":"logo/boston-globe.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Boston Globe36&tracker=36","tags":["new-england","local","politics","sports"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967678,"name":"SF Chronicle","slug":"sf-chronicle","version":"2024.03","description":"San Francisco Bay Area news with local coverage and tech reporting.","category":"news","logoUrl":"logo/sf-chronicle.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SF Chronicle37&tracker=37","tags":["bay-area","local","tech","san-francisco"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967679,"name":"Miami Herald","slug":"miami-herald","version":"2024.03","description":"South Florida news with local coverage, Latin America focus, and sports.","category":"news","logoUrl":"logo/miami-herald.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Miami Herald38&tracker=38","tags":["florida","local","latin-america","sports"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967680,"name":"Seattle Times","slug":"seattle-times","version":"2024.03","description":"Pacific Northwest news with local coverage and investigative reporting.","category":"news","logoUrl":"logo/seattle-times.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Seattle Times39&tracker=39","tags":["pacific-northwest","local","investigative","seattle"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967681,"name":"Denver Post","slug":"denver-post","version":"2024.03","description":"Colorado news with local coverage, outdoor recreation, and politics.","category":"news","logoUrl":"logo/denver-post.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Denver Post40&tracker=40","tags":["colorado","local","outdoor","politics"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967682,"name":"Atlanta Journal-Constitution","slug":"atlanta-journal-constitution","version":"2024.03","description":"Georgia news with local coverage, politics, and Southern culture.","category":"news","logoUrl":"logo/ajc.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Atlanta Journal-Constitution41&tracker=41","tags":["georgia","local","politics","southern"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967683,"name":"Dallas Morning News","slug":"dallas-morning-news","version":"2024.03","description":"Texas news with local coverage, business, and sports reporting.","category":"news","logoUrl":"logo/dallas-news.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Dallas Morning News42&tracker=42","tags":["texas","local","business","sports"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967684,"name":"Houston Chronicle","slug":"houston-chronicle","version":"2024.03","description":"Houston and Texas news with energy industry coverage and local reporting.","category":"news","logoUrl":"logo/houston-chronicle.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Houston Chronicle43&tracker=43","tags":["houston","texas","energy","local"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967685,"name":"Philadelphia Inquirer","slug":"philadelphia-inquirer","version":"2024.03","description":"Pennsylvania news with local coverage, politics, and investigative journalism.","category":"news","logoUrl":"logo/philly-inquirer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Philadelphia Inquirer44&tracker=44","tags":["pennsylvania","local","politics","investigative"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967686,"name":"Detroit Free Press","slug":"detroit-free-press","version":"2024.03","description":"Michigan news with local coverage, auto industry reporting, and sports.","category":"news","logoUrl":"logo/detroit-free-press.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Detroit Free Press45&tracker=45","tags":["michigan","local","auto-industry","sports"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967687,"name":"Minneapolis Star Tribune","slug":"minneapolis-star-tribune","version":"2024.03","description":"Minnesota news with local coverage, politics, and Midwest reporting.","category":"news","logoUrl":"logo/star-tribune.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Minneapolis Star Tribune46&tracker=46","tags":["minnesota","local","politics","midwest"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967688,"name":"Portland Oregonian","slug":"portland-oregonian","version":"2024.03","description":"Oregon news with local coverage, environmental reporting, and Pacific Northwest focus.","category":"news","logoUrl":"logo/oregonian.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Portland Oregonian47&tracker=47","tags":["oregon","local","environmental","pacific-northwest"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967689,"name":"Arizona Republic","slug":"arizona-republic","version":"2024.03","description":"Arizona news with local coverage, border issues, and Southwest reporting.","category":"news","logoUrl":"logo/arizona-republic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Arizona Republic48&tracker=48","tags":["arizona","local","border","southwest"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967690,"name":"Tampa Bay Times","slug":"tampa-bay-times","version":"2024.03","description":"Florida news with local coverage, politics, and investigative journalism.","category":"news","logoUrl":"logo/tampa-bay-times.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tampa Bay Times49&tracker=49","tags":["florida","local","politics","investigative"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967691,"name":"St. Louis Post-Dispatch","slug":"st-louis-post-dispatch","version":"2024.03","description":"Missouri news with local coverage, Midwest reporting, and community focus.","category":"news","logoUrl":"logo/stl-post.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=St. Louis Post-Dispatch50&tracker=50","tags":["missouri","local","midwest","community"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967692,"name":"The Atlantic","slug":"the-atlantic","version":"2024.03","description":"Magazine with long-form journalism on politics, culture, technology, and ideas.","category":"news","logoUrl":"logo/atlantic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Atlantic51&tracker=51","tags":["magazine","long-form","culture","ideas"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967693,"name":"The New Yorker","slug":"the-new-yorker","version":"2024.03","description":"Magazine with in-depth reporting, fiction, poetry, and cultural commentary.","category":"news","logoUrl":"logo/new-yorker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The New Yorker52&tracker=52","tags":["magazine","reporting","fiction","culture"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967694,"name":"Wired","slug":"wired","version":"2024.03","description":"Technology and culture magazine covering innovation, science, and digital life.","category":"news","logoUrl":"logo/wired.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wired53&tracker=53","tags":["technology","culture","innovation","science"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967695,"name":"Wired UK","slug":"wired-uk","version":"2024.03","description":"UK edition of Wired with technology, science, and culture coverage.","category":"news","logoUrl":"logo/wired-uk.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wired UK54&tracker=54","tags":["technology","uk","science","culture"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967696,"name":"TechCrunch","slug":"techcrunch","version":"2024.03","description":"Technology news covering startups, venture capital, and innovation.","category":"news","logoUrl":"logo/techcrunch.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TechCrunch55&tracker=55","tags":["technology","startups","venture-capital","innovation"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967697,"name":"The Verge","slug":"the-verge","version":"2024.03","description":"Technology, science, art, and culture news with in-depth reviews and features.","category":"news","logoUrl":"logo/the-verge.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Verge56&tracker=56","tags":["technology","science","reviews","culture"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967698,"name":"Ars Technica","slug":"ars-technica","version":"2024.03","description":"In-depth technology news with expert analysis and technical coverage.","category":"news","logoUrl":"logo/ars-technica.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ars Technica57&tracker=57","tags":["technology","analysis","technical","expert"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967699,"name":"Engadget","slug":"engadget","version":"2024.03","description":"Consumer technology news with product reviews and gadget coverage.","category":"news","logoUrl":"logo/engadget.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Engadget58&tracker=58","tags":["technology","consumer","reviews","gadgets"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967700,"name":"CNET","slug":"cnet","version":"2024.03","description":"Technology news, reviews, and how-to guides for consumers and professionals.","category":"news","logoUrl":"logo/cnet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CNET59&tracker=59","tags":["technology","reviews","how-to","consumer"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967701,"name":"ZDNet","slug":"zdnet","version":"2024.03","description":"Business technology news with enterprise IT coverage and analysis.","category":"news","logoUrl":"logo/zdnet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ZDNet60&tracker=60","tags":["technology","business","enterprise","it"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967702,"name":"VentureBeat","slug":"venturebeat","version":"2024.03","description":"Technology news focused on innovation, gaming, and transformative tech.","category":"news","logoUrl":"logo/venturebeat.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=VentureBeat61&tracker=61","tags":["technology","innovation","gaming","transformative"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967703,"name":"Recode","slug":"recode","version":"2024.03","description":"Technology news and analysis on digital media, platforms, and business.","category":"news","logoUrl":"logo/recode.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Recode62&tracker=62","tags":["technology","digital-media","platforms","business"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967704,"name":"Protocol","slug":"protocol","version":"2024.03","description":"Technology news covering power, policy, and the people shaping tech.","category":"news","logoUrl":"logo/protocol.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Protocol63&tracker=63","tags":["technology","policy","power","people"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967705,"name":"The Information","slug":"the-information","version":"2024.03","description":"Premium technology news with exclusive reporting on Silicon Valley.","category":"news","logoUrl":"logo/the-information.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Information64&tracker=64","tags":["technology","premium","exclusive","silicon-valley"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967706,"name":"Stratechery","slug":"stratechery","version":"2024.03","description":"Technology strategy analysis with in-depth essays on business and tech.","category":"news","logoUrl":"logo/stratechery.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Stratechery65&tracker=65","tags":["technology","strategy","analysis","business"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967707,"name":"Daring Fireball","slug":"daring-fireball","version":"2024.03","description":"Apple-focused blog with news, commentary, and links on technology.","category":"news","logoUrl":"logo/daring-fireball.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Daring Fireball66&tracker=66","tags":["apple","blog","commentary","technology"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967708,"name":"MacRumors","slug":"macrumors","version":"2024.03","description":"Apple news and rumors with product leaks, reviews, and community forums.","category":"news","logoUrl":"logo/macrumors.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MacRumors67&tracker=67","tags":["apple","rumors","reviews","community"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967709,"name":"9to5Mac","slug":"9to5mac","version":"2024.03","description":"Apple news with breaking stories, reviews, and how-to guides.","category":"news","logoUrl":"logo/9to5mac.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=9to5Mac68&tracker=68","tags":["apple","breaking","reviews","how-to"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967710,"name":"Android Police","slug":"android-police","version":"2024.03","description":"Android news with app reviews, device coverage, and Google updates.","category":"news","logoUrl":"logo/android-police.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Android Police69&tracker=69","tags":["android","apps","devices","google"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967711,"name":"Android Central","slug":"android-central","version":"2024.03","description":"Android news, reviews, and how-to guides for enthusiasts and professionals.","category":"news","logoUrl":"logo/android-central.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Android Central70&tracker=70","tags":["android","reviews","how-to","enthusiasts"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967712,"name":"XDA Developers","slug":"xda-developers","version":"2024.03","description":"Android development community with news, ROMs, and technical guides.","category":"news","logoUrl":"logo/xda.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=XDA Developers71&tracker=71","tags":["android","development","roms","technical"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967713,"name":"GSMArena","slug":"gsmarena","version":"2024.03","description":"Mobile phone news with specifications, reviews, and comparisons.","category":"news","logoUrl":"logo/gsmarena.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GSMArena72&tracker=72","tags":["mobile","specifications","reviews","comparisons"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967714,"name":"PhoneArena","slug":"phonearena","version":"2024.03","description":"Mobile technology news with phone reviews, comparisons, and industry coverage.","category":"news","logoUrl":"logo/phonearena.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PhoneArena73&tracker=73","tags":["mobile","reviews","comparisons","industry"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967715,"name":"Android Authority","slug":"android-authority","version":"2024.03","description":"Android news and reviews with in-depth analysis and how-to content.","category":"news","logoUrl":"logo/android-authority.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Android Authority74&tracker=74","tags":["android","analysis","how-to","reviews"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967716,"name":"The Next Web","slug":"the-next-web","version":"2024.03","description":"Technology news covering startups, innovation, and digital culture.","category":"news","logoUrl":"logo/tnw.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Next Web75&tracker=75","tags":["technology","startups","innovation","culture"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967717,"name":"Mashable","slug":"mashable","version":"2024.03","description":"Digital culture news with technology, entertainment, and social media coverage.","category":"news","logoUrl":"logo/mashable.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mashable76&tracker=76","tags":["digital-culture","technology","entertainment","social"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967718,"name":"Gizmodo","slug":"gizmodo","version":"2024.03","description":"Technology and science news with a focus on gadgets, design, and innovation.","category":"news","logoUrl":"logo/gizmodo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Gizmodo77&tracker=77","tags":["technology","science","gadgets","design"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967719,"name":"Kotaku","slug":"kotaku","version":"2024.03","description":"Gaming news with reviews, industry coverage, and gaming culture.","category":"news","logoUrl":"logo/kotaku.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kotaku78&tracker=78","tags":["gaming","reviews","industry","culture"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967720,"name":"Polygon","slug":"polygon","version":"2024.03","description":"Gaming news with reviews, features, and coverage of gaming culture.","category":"news","logoUrl":"logo/polygon.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Polygon79&tracker=79","tags":["gaming","reviews","features","culture"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967721,"name":"IGN","slug":"ign","version":"2024.03","description":"Gaming and entertainment news with reviews, previews, and video content.","category":"news","logoUrl":"logo/ign.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=IGN80&tracker=80","tags":["gaming","entertainment","reviews","video"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967722,"name":"GameSpot","slug":"gamespot","version":"2024.03","description":"Gaming news with reviews, previews, and video content for gamers.","category":"news","logoUrl":"logo/gamespot.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GameSpot81&tracker=81","tags":["gaming","reviews","previews","video"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967723,"name":"Eurogamer","slug":"eurogamer","version":"2024.03","description":"European gaming news with reviews, features, and industry coverage.","category":"news","logoUrl":"logo/eurogamer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Eurogamer82&tracker=82","tags":["gaming","european","reviews","industry"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967724,"name":"PC Gamer","slug":"pc-gamer","version":"2024.03","description":"PC gaming news with reviews, hardware coverage, and gaming culture.","category":"news","logoUrl":"logo/pc-gamer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PC Gamer83&tracker=83","tags":["pc-gaming","reviews","hardware","culture"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967725,"name":"Rock Paper Shotgun","slug":"rock-paper-shotgun","version":"2024.03","description":"PC gaming news with witty writing, reviews, and indie game coverage.","category":"news","logoUrl":"logo/rps.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Rock Paper Shotgun84&tracker=84","tags":["pc-gaming","witty","reviews","indie"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967726,"name":"Destructoid","slug":"destructoid","version":"2024.03","description":"Gaming news with reviews, previews, and community-focused content.","category":"news","logoUrl":"logo/destructoid.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Destructoid85&tracker=85","tags":["gaming","reviews","previews","community"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967727,"name":"Game Informer","slug":"game-informer","version":"2024.03","description":"Gaming magazine with exclusive previews, reviews, and industry coverage.","category":"news","logoUrl":"logo/game-informer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Game Informer86&tracker=86","tags":["gaming","magazine","previews","exclusive"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967728,"name":"GamesRadar+","slug":"gamesradar","version":"2024.03","description":"Gaming news with reviews, guides, and coverage of all gaming platforms.","category":"news","logoUrl":"logo/gamesradar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GamesRadar+87&tracker=87","tags":["gaming","reviews","guides","multi-platform"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967729,"name":"VG247","slug":"vg247","version":"2024.03","description":"Video game news with reviews, previews, and industry analysis.","category":"news","logoUrl":"logo/vg247.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=VG24788&tracker=88","tags":["gaming","reviews","previews","analysis"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967730,"name":"Gematsu","slug":"gematsu","version":"2024.03","description":"Video game news focused on Japanese games and industry coverage.","category":"news","logoUrl":"logo/gematsu.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Gematsu89&tracker=89","tags":["gaming","japanese","industry","news"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967731,"name":"Siliconera","slug":"siliconera","version":"2024.03","description":"Gaming news with focus on Japanese games, RPGs, and niche titles.","category":"news","logoUrl":"logo/siliconera.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Siliconera90&tracker=90","tags":["gaming","japanese","rpg","niche"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967732,"name":"DualShockers","slug":"dualshockers","version":"2024.03","description":"Gaming news with reviews, guides, and coverage of all gaming platforms.","category":"news","logoUrl":"logo/dualshockers.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DualShockers91&tracker=91","tags":["gaming","reviews","guides","multi-platform"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967733,"name":"Push Square","slug":"push-square","version":"2024.03","description":"PlayStation-focused gaming news with reviews, news, and community content.","category":"news","logoUrl":"logo/push-square.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Push Square92&tracker=92","tags":["playstation","gaming","reviews","community"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967734,"name":"Nintendo Life","slug":"nintendo-life","version":"2024.03","description":"Nintendo-focused gaming news with reviews, news, and retro coverage.","category":"news","logoUrl":"logo/nintendo-life.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nintendo Life93&tracker=93","tags":["nintendo","gaming","reviews","retro"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967735,"name":"Xbox Achievements","slug":"xbox-achievements","version":"2024.03","description":"Xbox-focused gaming news with achievement guides and community features.","category":"news","logoUrl":"logo/xbox-achievements.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Xbox Achievements94&tracker=94","tags":["xbox","gaming","achievements","guides"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967736,"name":"TrueAchievements","slug":"trueachievements","version":"2024.03","description":"Xbox achievement tracking and gaming news with guides and community.","category":"news","logoUrl":"logo/trueachievements.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TrueAchievements95&tracker=95","tags":["xbox","achievements","guides","community"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967737,"name":"TrueTrophies","slug":"truetrophies","version":"2024.03","description":"PlayStation trophy tracking and gaming news with guides and community.","category":"news","logoUrl":"logo/truetrophies.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TrueTrophies96&tracker=96","tags":["playstation","trophies","guides","community"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967738,"name":"Exophase","slug":"exophase","version":"2024.03","description":"Gaming achievement tracking across multiple platforms with news and guides.","category":"news","logoUrl":"logo/exophase.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Exophase97&tracker=97","tags":["achievements","multi-platform","guides","tracking"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967739,"name":"HowLongToBeat","slug":"howlongtobeat","version":"2024.03","description":"Gaming database tracking game lengths with community-submitted data.","category":"news","logoUrl":"logo/hltb.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HowLongToBeat98&tracker=98","tags":["gaming","database","community","game-length"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967740,"name":"Metacritic","slug":"metacritic","version":"2024.03","description":"Review aggregation site for games, movies, TV, and music with critic scores.","category":"news","logoUrl":"logo/metacritic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Metacritic99&tracker=99","tags":["reviews","aggregation","critic-scores","entertainment"],"scrapedAt":"2026-04-27T14:42:47.642Z"},{"id":1777300967741,"name":"OpenCritic","slug":"opencritic","version":"2024.03","description":"Open review aggregation for video games with transparent scoring.","category":"news","logoUrl":"logo/opencritic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OpenCritic100&tracker=100","tags":["reviews","aggregation","transparent","games"],"scrapedAt":"2026-04-27T14:42:47.642Z"}];
+    const CURRENT_CATEGORY = 'news';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

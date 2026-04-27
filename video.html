@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Video — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Video</h1>
+    <p><span class="highlight">87</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="final-cut-pro.html" class="app-card" data-id="1777294165608" style="text-decoration:none;color:inherit">
+          <img src="logo/final-cut-pro.png" alt="Final Cut Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Final Cut Pro</h3>
+          <p class="app-description">Professional video editing software optimized for macOS with magnetic timeline.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">nle</span><span class="app-tag">mac</span>
+            </div>
+          
+        </a>
+        <a href="avid-media-composer.html" class="app-card" data-id="1777294165609" style="text-decoration:none;color:inherit">
+          <img src="logo/media-composer.png" alt="Avid Media Composer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Avid Media Composer</h3>
+          <p class="app-description">Enterprise-grade editing software used in Hollywood film and TV production.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">enterprise</span><span class="app-tag">film</span><span class="app-tag">tv</span>
+            </div>
+          
+        </a>
+        <a href="vegas-pro.html" class="app-card" data-id="1777294165610" style="text-decoration:none;color:inherit">
+          <img src="logo/vegas-pro.png" alt="VEGAS Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">VEGAS Pro</h3>
+          <p class="app-description">Powerful NLE with advanced audio tools and GPU-accelerated rendering.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">nle</span><span class="app-tag">audio</span><span class="app-tag">gpu</span>
+            </div>
+          
+        </a>
+        <a href="filmora.html" class="app-card" data-id="1777294165611" style="text-decoration:none;color:inherit">
+          <img src="logo/filmora.png" alt="Wondershare Filmora" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wondershare Filmora</h3>
+          <p class="app-description">User-friendly video editor with drag-and-drop effects and templates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">beginner</span><span class="app-tag">templates</span><span class="app-tag">effects</span>
+            </div>
+          
+        </a>
+        <a href="powerdirector.html" class="app-card" data-id="1777294165612" style="text-decoration:none;color:inherit">
+          <img src="logo/powerdirector.png" alt="CyberLink PowerDirector" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CyberLink PowerDirector</h3>
+          <p class="app-description">Fast video editing suite with AI tools, 360° editing, and screen recording.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">fast</span><span class="app-tag">360</span>
+            </div>
+          
+        </a>
+        <a href="movavi-video-editor.html" class="app-card" data-id="1777294165613" style="text-decoration:none;color:inherit">
+          <img src="logo/movavi.png" alt="Movavi Video Editor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Movavi Video Editor</h3>
+          <p class="app-description">Simple yet feature-rich video editor for quick projects and social media.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">simple</span><span class="app-tag">social-media</span><span class="app-tag">quick</span>
+            </div>
+          
+        </a>
+        <a href="pinnacle-studio.html" class="app-card" data-id="1777294165614" style="text-decoration:none;color:inherit">
+          <img src="logo/pinnacle-studio.png" alt="Pinnacle Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pinnacle Studio</h3>
+          <p class="app-description">Feature-packed video editor with multi-cam, masking, and stop-motion tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">multi-cam</span><span class="app-tag">masking</span><span class="app-tag">windows</span>
+            </div>
+          
+        </a>
+        <a href="lightworks.html" class="app-card" data-id="1777294165615" style="text-decoration:none;color:inherit">
+          <img src="logo/lightworks.png" alt="Lightworks" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Lightworks</h3>
+          <p class="app-description">Professional NLE used in major Hollywood productions with cross-platform support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">professional</span><span class="app-tag">cross-platform</span><span class="app-tag">nle</span>
+            </div>
+          
+        </a>
+        <a href="shotcut.html" class="app-card" data-id="1777294165616" style="text-decoration:none;color:inherit">
+          <img src="logo/shotcut.png" alt="Shotcut" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Shotcut</h3>
+          <p class="app-description">Free, open-source video editor with native timeline editing and format support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">open-source</span><span class="app-tag">native</span>
+            </div>
+          
+        </a>
+        <a href="openshot.html" class="app-card" data-id="1777294165617" style="text-decoration:none;color:inherit">
+          <img src="logo/openshot.png" alt="OpenShot" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OpenShot</h3>
+          <p class="app-description">Easy-to-use open-source video editor with drag-and-drop and keyframe animation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">easy</span><span class="app-tag">animation</span>
+            </div>
+          
+        </a>
+        <a href="kdenlive.html" class="app-card" data-id="1777294165618" style="text-decoration:none;color:inherit">
+          <img src="logo/kdenlive.png" alt="Kdenlive" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kdenlive</h3>
+          <p class="app-description">Professional open-source video editor with proxy editing and multi-track timeline.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">proxy</span><span class="app-tag">multi-track</span>
+            </div>
+          
+        </a>
+        <a href="hitfilm.html" class="app-card" data-id="1777294165620" style="text-decoration:none;color:inherit">
+          <img src="logo/hitfilm.png" alt="HitFilm" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HitFilm</h3>
+          <p class="app-description">All-in-one video editing and VFX compositing software for creators.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vfx</span><span class="app-tag">compositing</span><span class="app-tag">editing</span>
+            </div>
+          
+        </a>
+        <a href="olive-video-editor.html" class="app-card" data-id="1777294165621" style="text-decoration:none;color:inherit">
+          <img src="logo/olive.png" alt="Olive Video Editor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Olive Video Editor</h3>
+          <p class="app-description">Free, non-linear open-source video editor with node-based compositing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">node</span><span class="app-tag">non-linear</span>
+            </div>
+          
+        </a>
+        <a href="video-studio.html" class="app-card" data-id="1777294165622" style="text-decoration:none;color:inherit">
+          <img src="logo/video-studio.png" alt="Corel VideoStudio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Corel VideoStudio</h3>
+          <p class="app-description">User-friendly video editor with creative templates, color grading, and 360° support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">templates</span><span class="app-tag">color</span><span class="app-tag">360</span>
+            </div>
+          
+        </a>
+        <a href="magix-movie-edit-pro.html" class="app-card" data-id="1777294165623" style="text-decoration:none;color:inherit">
+          <img src="logo/magix-movie.png" alt="MAGIX Movie Edit Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MAGIX Movie Edit Pro</h3>
+          <p class="app-description">Intuitive video editor with automatic scene detection and AI assistance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">scene-detection</span><span class="app-tag">intuitive</span>
+            </div>
+          
+        </a>
+        <a href="nuke.html" class="app-card" data-id="1777294165627" style="text-decoration:none;color:inherit">
+          <img src="logo/nuke.png" alt="Nuke" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nuke</h3>
+          <p class="app-description">Industry-standard compositing software for feature films and VFX studios.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">compositing</span><span class="app-tag">vfx</span><span class="app-tag">film</span>
+            </div>
+          
+        </a>
+        <a href="silhouette.html" class="app-card" data-id="1777294165629" style="text-decoration:none;color:inherit">
+          <img src="logo/silhouette.png" alt="Silhouette" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Silhouette</h3>
+          <p class="app-description">Comprehensive paint, roto, and compositing software for visual effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">paint</span><span class="app-tag">roto</span><span class="app-tag">compositing</span>
+            </div>
+          
+        </a>
+        <a href="magic-bullet-suite.html" class="app-card" data-id="1777294165632" style="text-decoration:none;color:inherit">
+          <img src="logo/magic-bullet.png" alt="Magic Bullet Suite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Magic Bullet Suite</h3>
+          <p class="app-description">Color grading and finishing toolkit for cinematic looks and skin tones.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">color</span><span class="app-tag">grading</span><span class="app-tag">cinematic</span>
+            </div>
+          
+        </a>
+        <a href="neat-video.html" class="app-card" data-id="1777294165633" style="text-decoration:none;color:inherit">
+          <img src="logo/neat-video.png" alt="Neat Video" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Neat Video</h3>
+          <p class="app-description">Advanced noise reduction plugin for low-light and high-ISO video footage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">noise-reduction</span><span class="app-tag">low-light</span><span class="app-tag">plugin</span>
+            </div>
+          
+        </a>
+        <a href="topaz-video-ai.html" class="app-card" data-id="1777294165634" style="text-decoration:none;color:inherit">
+          <img src="logo/topaz-video-ai.png" alt="Topaz Video AI" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Topaz Video AI</h3>
+          <p class="app-description">AI-powered video upscaler, stabilizer, and frame interpolator.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">upscaling</span><span class="app-tag">stabilization</span>
+            </div>
+          
+        </a>
+        <a href="avclabs-video-enhancer.html" class="app-card" data-id="1777294165635" style="text-decoration:none;color:inherit">
+          <img src="logo/avclabs.png" alt="AVCLabs Video Enhancer AI" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AVCLabs Video Enhancer AI</h3>
+          <p class="app-description">AI video enhancement tool for face refinement, colorization, and super-resolution.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">face-refinement</span><span class="app-tag">colorization</span>
+            </div>
+          
+        </a>
+        <a href="streamlabs-desktop.html" class="app-card" data-id="1777294165637" style="text-decoration:none;color:inherit">
+          <img src="logo/streamlabs.png" alt="Streamlabs Desktop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Streamlabs Desktop</h3>
+          <p class="app-description">All-in-one streaming software with alerts, themes, and multi-platform support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">alerts</span><span class="app-tag">themes</span>
+            </div>
+          
+        </a>
+        <a href="xsplit-broadcaster.html" class="app-card" data-id="1777294165638" style="text-decoration:none;color:inherit">
+          <img src="logo/xsplit.png" alt="XSplit Broadcaster" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">XSplit Broadcaster</h3>
+          <p class="app-description">Professional streaming and recording software with scene management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">recording</span><span class="app-tag">scenes</span>
+            </div>
+          
+        </a>
+        <a href="vmix.html" class="app-card" data-id="1777294165639" style="text-decoration:none;color:inherit">
+          <img src="logo/vmix.png" alt="vMix" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">vMix</h3>
+          <p class="app-description">Professional live production software for video mixing, streaming, and recording.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">live</span><span class="app-tag">production</span><span class="app-tag">mixing</span>
+            </div>
+          
+        </a>
+        <a href="wirecast.html" class="app-card" data-id="1777294165640" style="text-decoration:none;color:inherit">
+          <img src="logo/wirecast.png" alt="Wirecast" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wirecast</h3>
+          <p class="app-description">Live video streaming production tool with multi-camera and graphics support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">multi-camera</span><span class="app-tag">graphics</span>
+            </div>
+          
+        </a>
+        <a href="ecamm-live.html" class="app-card" data-id="1777294165641" style="text-decoration:none;color:inherit">
+          <img src="logo/ecamm.png" alt="Ecamm Live" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ecamm Live</h3>
+          <p class="app-description">Intuitive live streaming software designed specifically for Mac creators.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">mac</span><span class="app-tag">creators</span>
+            </div>
+          
+        </a>
+        <a href="camtasia.html" class="app-card" data-id="1777294165643" style="text-decoration:none;color:inherit">
+          <img src="logo/camtasia.png" alt="Camtasia" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Camtasia</h3>
+          <p class="app-description">Screen recorder and video editor optimized for tutorials and training videos.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">screen-recorder</span><span class="app-tag">tutorials</span><span class="app-tag">training</span>
+            </div>
+          
+        </a>
+        <a href="screenflow.html" class="app-card" data-id="1777294165644" style="text-decoration:none;color:inherit">
+          <img src="logo/screenflow.png" alt="ScreenFlow" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ScreenFlow</h3>
+          <p class="app-description">Mac-only screen recording and video editing software with powerful timeline.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">screen-recorder</span><span class="app-tag">mac</span><span class="app-tag">timeline</span>
+            </div>
+          
+        </a>
+        <a href="bandicam.html" class="app-card" data-id="1777294165645" style="text-decoration:none;color:inherit">
+          <img src="logo/bandicam.png" alt="Bandicam" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bandicam</h3>
+          <p class="app-description">Lightweight screen recorder for gaming, software demos, and video capture.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">capture</span><span class="app-tag">lightweight</span>
+            </div>
+          
+        </a>
+        <a href="action.html" class="app-card" data-id="1777294165646" style="text-decoration:none;color:inherit">
+          <img src="logo/action.png" alt="Action!" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Action!</h3>
+          <p class="app-description">High-performance screen recorder with real-time webcam overlay and streaming.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">recorder</span><span class="app-tag">webcam</span><span class="app-tag">streaming</span>
+            </div>
+          
+        </a>
+        <a href="sharex.html" class="app-card" data-id="1777294165647" style="text-decoration:none;color:inherit">
+          <img src="logo/sharex.png" alt="ShareX" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ShareX</h3>
+          <p class="app-description">Open-source screen capture and recording tool with advanced workflow automation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">capture</span><span class="app-tag">automation</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="greenshot.html" class="app-card" data-id="1777294165648" style="text-decoration:none;color:inherit">
+          <img src="logo/greenshot.png" alt="Greenshot" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Greenshot</h3>
+          <p class="app-description">Lightweight screenshot and screen capture utility with quick annotation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">screenshot</span><span class="app-tag">annotation</span><span class="app-tag">lightweight</span>
+            </div>
+          
+        </a>
+        <a href="shutter-encoder.html" class="app-card" data-id="1777294165651" style="text-decoration:none;color:inherit">
+          <img src="logo/shutter-encoder.png" alt="Shutter Encoder" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Shutter Encoder</h3>
+          <p class="app-description">User-friendly GUI for FFmpeg with professional video editing functions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ffmpeg-gui</span><span class="app-tag">professional</span><span class="app-tag">conversion</span>
+            </div>
+          
+        </a>
+        <a href="any-video-converter.html" class="app-card" data-id="1777294165652" style="text-decoration:none;color:inherit">
+          <img src="logo/avc.png" alt="Any Video Converter" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Any Video Converter</h3>
+          <p class="app-description">Free video converter with DVD burning, editing, and download features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">converter</span><span class="app-tag">free</span><span class="app-tag">burning</span>
+            </div>
+          
+        </a>
+        <a href="format-factory.html" class="app-card" data-id="1777294165653" style="text-decoration:none;color:inherit">
+          <img src="logo/format-factory.png" alt="Format Factory" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Format Factory</h3>
+          <p class="app-description">Multimedia converter supporting video, audio, and image formats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">multimedia</span><span class="app-tag">converter</span><span class="app-tag">audio</span>
+            </div>
+          
+        </a>
+        <a href="xmedia-recode.html" class="app-card" data-id="1777294165654" style="text-decoration:none;color:inherit">
+          <img src="logo/xmedia.png" alt="XMedia Recode" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">XMedia Recode</h3>
+          <p class="app-description">Fast media converter with batch processing and preset management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fast</span><span class="app-tag">batch</span><span class="app-tag">presets</span>
+            </div>
+          
+        </a>
+        <a href="avidemux.html" class="app-card" data-id="1777294165655" style="text-decoration:none;color:inherit">
+          <img src="logo/avidemux.png" alt="Avidemux" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Avidemux</h3>
+          <p class="app-description">Simple video editor for quick cuts, filtering, and encoding tasks.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">simple</span><span class="app-tag">cuts</span><span class="app-tag">filtering</span>
+            </div>
+          
+        </a>
+        <a href="virtualdub.html" class="app-card" data-id="1777294165656" style="text-decoration:none;color:inherit">
+          <img src="logo/virtualdub.png" alt="VirtualDub" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">VirtualDub</h3>
+          <p class="app-description">Classic video capture and processing utility for Windows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">capture</span><span class="app-tag">processing</span><span class="app-tag">classic</span>
+            </div>
+          
+        </a>
+        <a href="kmplayer.html" class="app-card" data-id="1777294165661" style="text-decoration:none;color:inherit">
+          <img src="logo/kmplayer.png" alt="KMPlayer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">KMPlayer</h3>
+          <p class="app-description">Advanced media player with 3D, 4K, and VR video playback support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">3d</span><span class="app-tag">4k</span><span class="app-tag">vr</span>
+            </div>
+          
+        </a>
+        <a href="gom-player.html" class="app-card" data-id="1777294165662" style="text-decoration:none;color:inherit">
+          <img src="logo/gom-player.png" alt="GOM Player" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GOM Player</h3>
+          <p class="app-description">Popular media player with codec finder and subtitle synchronization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">codec</span><span class="app-tag">subtitle</span><span class="app-tag">popular</span>
+            </div>
+          
+        </a>
+        <a href="mpc-be.html" class="app-card" data-id="1777294165663" style="text-decoration:none;color:inherit">
+          <img src="logo/mpc-be.png" alt="Media Player Classic - BE" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Media Player Classic - BE</h3>
+          <p class="app-description">Fork of MPC-HC with active development and improved codecs support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fork</span><span class="app-tag">active</span><span class="app-tag">codecs</span>
+            </div>
+          
+        </a>
+        <a href="mpv.html" class="app-card" data-id="1777294165664" style="text-decoration:none;color:inherit">
+          <img src="logo/mpv.png" alt="MPV" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MPV</h3>
+          <p class="app-description">Minimalist, command-line based media player with high-quality video output.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">minimalist</span><span class="app-tag">cli</span><span class="app-tag">high-quality</span>
+            </div>
+          
+        </a>
+        <a href="infuse.html" class="app-card" data-id="1777294165665" style="text-decoration:none;color:inherit">
+          <img src="logo/infuse.png" alt="Infuse" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Infuse</h3>
+          <p class="app-description">Elegant video player for Apple devices with direct playback and library sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">elegant</span><span class="app-tag">library</span>
+            </div>
+          
+        </a>
+        <a href="plex-media-server.html" class="app-card" data-id="1777294165666" style="text-decoration:none;color:inherit">
+          <img src="logo/plex.png" alt="Plex Media Server" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Plex Media Server</h3>
+          <p class="app-description">Media server for organizing and streaming personal video libraries.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">server</span><span class="app-tag">library</span><span class="app-tag">streaming</span>
+            </div>
+          
+        </a>
+        <a href="jellyfin.html" class="app-card" data-id="1777294165667" style="text-decoration:none;color:inherit">
+          <img src="logo/jellyfin.png" alt="Jellyfin" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Jellyfin</h3>
+          <p class="app-description">Free, open-source media server for streaming without subscriptions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">free</span><span class="app-tag">streaming</span>
+            </div>
+          
+        </a>
+        <a href="emby.html" class="app-card" data-id="1777294165668" style="text-decoration:none;color:inherit">
+          <img src="logo/emby.png" alt="Emby" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Emby</h3>
+          <p class="app-description">Personal media server with live TV, DVR, and cross-device streaming.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">server</span><span class="app-tag">live-tv</span><span class="app-tag">dvr</span>
+            </div>
+          
+        </a>
+        <a href="kodi.html" class="app-card" data-id="1777294165669" style="text-decoration:none;color:inherit">
+          <img src="logo/kodi.png" alt="Kodi" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kodi</h3>
+          <p class="app-description">Open-source media center for organizing and playing local and online video.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">media-center</span><span class="app-tag">open-source</span><span class="app-tag">addons</span>
+            </div>
+          
+        </a>
+        <a href="stremio.html" class="app-card" data-id="1777294165670" style="text-decoration:none;color:inherit">
+          <img src="logo/stremio.png" alt="Stremio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Stremio</h3>
+          <p class="app-description">Modern media center for streaming movies, TV shows, and web channels.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">modern</span><span class="app-tag">addons</span>
+            </div>
+          
+        </a>
+        <a href="makemkv.html" class="app-card" data-id="1777294165671" style="text-decoration:none;color:inherit">
+          <img src="logo/makemkv.png" alt="MakeMKV" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MakeMKV</h3>
+          <p class="app-description">Tool for converting Blu-ray and DVD discs to MKV format without re-encoding.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">bluray</span><span class="app-tag">dvd</span><span class="app-tag">mkv</span>
+            </div>
+          
+        </a>
+        <a href="dvdfab.html" class="app-card" data-id="1777294165672" style="text-decoration:none;color:inherit">
+          <img src="logo/dvdfab.png" alt="DVDFab" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DVDFab</h3>
+          <p class="app-description">Comprehensive DVD and Blu-ray backup, conversion, and copying software.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">backup</span><span class="app-tag">conversion</span><span class="app-tag">bluray</span>
+            </div>
+          
+        </a>
+        <a href="anydvd.html" class="app-card" data-id="1777294165673" style="text-decoration:none;color:inherit">
+          <img src="logo/anydvd.png" alt="AnyDVD" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AnyDVD</h3>
+          <p class="app-description">Background utility for automatically decrypting DVD and Blu-ray discs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">decrypt</span><span class="app-tag">background</span><span class="app-tag">bluray</span>
+            </div>
+          
+        </a>
+        <a href="imgburn.html" class="app-card" data-id="1777294165674" style="text-decoration:none;color:inherit">
+          <img src="logo/imgburn.png" alt="ImgBurn" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ImgBurn</h3>
+          <p class="app-description">Lightweight CD, DVD, HD-DVD, and Blu-ray burning software.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">burning</span><span class="app-tag">lightweight</span><span class="app-tag">optical</span>
+            </div>
+          
+        </a>
+        <a href="power2go.html" class="app-card" data-id="1777294165675" style="text-decoration:none;color:inherit">
+          <img src="logo/power2go.png" alt="CyberLink Power2Go" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CyberLink Power2Go</h3>
+          <p class="app-description">Disc burning and backup software with encryption and disc labeling.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">burning</span><span class="app-tag">lightweight</span><span class="app-tag">optical</span>
+            </div>
+          
+        </a>
+        <a href="wondershare-filmora.html" class="app-card" data-id="1777294165681" style="text-decoration:none;color:inherit">
+          <img src="logo/wondershare-filmora.png" alt="Wondershare Filmora" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wondershare Filmora</h3>
+          <p class="app-description">User-friendly video editor with drag-and-drop effects and templates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">beginner</span><span class="app-tag">templates</span><span class="app-tag">effects</span>
+            </div>
+          
+        </a>
+        <a href="cyberlink-powerdirector.html" class="app-card" data-id="1777294165682" style="text-decoration:none;color:inherit">
+          <img src="logo/cyberlink-powerdirector.png" alt="CyberLink PowerDirector" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CyberLink PowerDirector</h3>
+          <p class="app-description">Fast video editing suite with AI tools, 360° editing, and screen recording.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">fast</span><span class="app-tag">360</span>
+            </div>
+          
+        </a>
+        <a href="corel-videostudio.html" class="app-card" data-id="1777294165692" style="text-decoration:none;color:inherit">
+          <img src="logo/corel-videostudio.png" alt="Corel VideoStudio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Corel VideoStudio</h3>
+          <p class="app-description">User-friendly video editor with creative templates, color grading, and 360° support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">templates</span><span class="app-tag">color</span><span class="app-tag">360</span>
+            </div>
+          
+        </a>
+        <a href="cyberlink-power2go.html" class="app-card" data-id="1777294165745" style="text-decoration:none;color:inherit">
+          <img src="logo/cyberlink-power2go.png" alt="CyberLink Power2Go" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CyberLink Power2Go</h3>
+          <p class="app-description">Disc burning and backup software with encryption and disc labeling.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">burning</span><span class="app-tag">backup</span><span class="app-tag">encryption</span>
+            </div>
+          
+        </a>
+        <a href="roxio-creator.html" class="app-card" data-id="1777294165746" style="text-decoration:none;color:inherit">
+          <img src="logo/roxio-creator.png" alt="Roxio Creator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Roxio Creator</h3>
+          <p class="app-description">All-in-one media suite for burning, capturing, and editing video projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">burning</span><span class="app-tag">suite</span><span class="app-tag">capture</span>
+            </div>
+          
+        </a>
+        <a href="nero-video.html" class="app-card" data-id="1777294165747" style="text-decoration:none;color:inherit">
+          <img src="logo/nero-video.png" alt="Nero Video" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nero Video</h3>
+          <p class="app-description">User-friendly video editing and DVD authoring software with templates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dvd</span><span class="app-tag">authoring</span><span class="app-tag">templates</span>
+            </div>
+          
+        </a>
+        <a href="dvd-architect.html" class="app-card" data-id="1777294165748" style="text-decoration:none;color:inherit">
+          <img src="logo/dvd-architect.png" alt="DVD Architect" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DVD Architect</h3>
+          <p class="app-description">Professional DVD menu authoring and burning software from VEGAS.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dvd</span><span class="app-tag">menu</span><span class="app-tag">authoring</span>
+            </div>
+          
+        </a>
+        <a href="dvdstyler.html" class="app-card" data-id="1777294165749" style="text-decoration:none;color:inherit">
+          <img src="logo/dvdstyler.png" alt="DVDStyler" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DVDStyler</h3>
+          <p class="app-description">Free, cross-platform DVD authoring software with customizable menus.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dvd</span><span class="app-tag">authoring</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="devede.html" class="app-card" data-id="1777294165750" style="text-decoration:none;color:inherit">
+          <img src="logo/devede.png" alt="DeVeDe" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DeVeDe</h3>
+          <p class="app-description">Open-source DVD and Blu-ray video disk creator for Linux and Windows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dvd</span><span class="app-tag">bluray</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="xvid4psp.html" class="app-card" data-id="1777294165751" style="text-decoration:none;color:inherit">
+          <img src="logo/xvid4psp.png" alt="Xvid4PSP" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Xvid4PSP</h3>
+          <p class="app-description">Advanced video converter and encoder with AVI/MKV optimization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">converter</span><span class="app-tag">encoder</span><span class="app-tag">avi</span>
+            </div>
+          
+        </a>
+        <a href="staxrip.html" class="app-card" data-id="1777294165752" style="text-decoration:none;color:inherit">
+          <img src="logo/staxrip.png" alt="StaxRip" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">StaxRip</h3>
+          <p class="app-description">GUI front-end for various video encoders like x264, x265, and NVENC.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gui</span><span class="app-tag">encoder</span><span class="app-tag">x264</span>
+            </div>
+          
+        </a>
+        <a href="mkvtoolnix.html" class="app-card" data-id="1777294165753" style="text-decoration:none;color:inherit">
+          <img src="logo/mkvtoolnix.png" alt="MKVToolNix" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MKVToolNix</h3>
+          <p class="app-description">Essential tools for creating, modifying, and inspecting Matroska files.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mkv</span><span class="app-tag">tool</span><span class="app-tag">multiplexing</span>
+            </div>
+          
+        </a>
+        <a href="mp4box.html" class="app-card" data-id="1777294165754" style="text-decoration:none;color:inherit">
+          <img src="logo/mp4box.png" alt="MP4Box" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MP4Box</h3>
+          <p class="app-description">Multiplexing and splitting tool for ISO/MP4 media files.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mp4</span><span class="app-tag">multiplexing</span><span class="app-tag">splitting</span>
+            </div>
+          
+        </a>
+        <a href="losslesscut.html" class="app-card" data-id="1777294165755" style="text-decoration:none;color:inherit">
+          <img src="logo/losslesscut.png" alt="LosslessCut" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LosslessCut</h3>
+          <p class="app-description">Fast, lossless video and audio cutter, merger, and trimmer.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">lossless</span><span class="app-tag">trim</span><span class="app-tag">merge</span>
+            </div>
+          
+        </a>
+        <a href="aegisub.html" class="app-card" data-id="1777294165756" style="text-decoration:none;color:inherit">
+          <img src="logo/aegisub.png" alt="Aegisub" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Aegisub</h3>
+          <p class="app-description">Advanced subtitle editor with precise timing and styling capabilities.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">subtitle</span><span class="app-tag">timing</span><span class="app-tag">styling</span>
+            </div>
+          
+        </a>
+        <a href="subtitle-edit.html" class="app-card" data-id="1777294165757" style="text-decoration:none;color:inherit">
+          <img src="logo/subtitle-edit.png" alt="Subtitle Edit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Subtitle Edit</h3>
+          <p class="app-description">Free subtitle editor with waveform visualization and translation tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">subtitle</span><span class="app-tag">waveform</span><span class="app-tag">translation</span>
+            </div>
+          
+        </a>
+        <a href="jubler.html" class="app-card" data-id="1777294165758" style="text-decoration:none;color:inherit">
+          <img src="logo/jubler.png" alt="Jubler" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Jubler</h3>
+          <p class="app-description">Open-source subtitle editor with speech recognition and auto-sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">subtitle</span><span class="app-tag">open-source</span><span class="app-tag">auto-sync</span>
+            </div>
+          
+        </a>
+        <a href="davinci-resolve-studio.html" class="app-card" data-id="1777294165759" style="text-decoration:none;color:inherit">
+          <img src="logo/davinci-resolve-studio.png" alt="DaVinci Resolve Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DaVinci Resolve Studio</h3>
+          <p class="app-description">Paid version of Resolve with Neural Engine, HDR grading, and multi-user.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">neural-engine</span><span class="app-tag">hdr</span><span class="app-tag">multi-user</span>
+            </div>
+          
+        </a>
+        <a href="premiere-pro-beta.html" class="app-card" data-id="1777294165760" style="text-decoration:none;color:inherit">
+          <img src="logo/premiere-pro-beta.png" alt="Premiere Pro Beta" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Premiere Pro Beta</h3>
+          <p class="app-description">Beta testing build of Premiere with upcoming features and AI tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">beta</span><span class="app-tag">testing</span><span class="app-tag">ai</span>
+            </div>
+          
+        </a>
+        <a href="final-cut-pro-x.html" class="app-card" data-id="1777294165761" style="text-decoration:none;color:inherit">
+          <img src="logo/final-cut-pro-x.png" alt="Final Cut Pro X" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Final Cut Pro X</h3>
+          <p class="app-description">Next-gen version of FCP with ProRes RAW and enhanced multicam.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">prores</span><span class="app-tag">multicam</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="vegas-movie-studio.html" class="app-card" data-id="1777294165762" style="text-decoration:none;color:inherit">
+          <img src="logo/vegas-movie-studio.png" alt="VEGAS Movie Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">VEGAS Movie Studio</h3>
+          <p class="app-description">Entry-level version of VEGAS for hobbyists and beginners.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">entry-level</span><span class="app-tag">hobbyist</span><span class="app-tag">beginner</span>
+            </div>
+          
+        </a>
+        <a href="filmorago.html" class="app-card" data-id="1777294165763" style="text-decoration:none;color:inherit">
+          <img src="logo/filmorago.png" alt="FilmoraGo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FilmoraGo</h3>
+          <p class="app-description">Mobile video editor with quick cuts, music, and social sharing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile</span><span class="app-tag">quick</span><span class="app-tag">social</span>
+            </div>
+          
+        </a>
+        <a href="quik.html" class="app-card" data-id="1777294165764" style="text-decoration:none;color:inherit">
+          <img src="logo/quik.png" alt="Quik" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Quik</h3>
+          <p class="app-description">Automated video editor by GoPro with highlight detection and templates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gopro</span><span class="app-tag">automated</span><span class="app-tag">highlights</span>
+            </div>
+          
+        </a>
+        <a href="inshot.html" class="app-card" data-id="1777294165765" style="text-decoration:none;color:inherit">
+          <img src="logo/inshot.png" alt="InShot" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">InShot</h3>
+          <p class="app-description">Popular mobile video editor with stickers, music, and canvas resizing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile</span><span class="app-tag">stickers</span><span class="app-tag">music</span>
+            </div>
+          
+        </a>
+        <a href="vn-video-editor.html" class="app-card" data-id="1777294165766" style="text-decoration:none;color:inherit">
+          <img src="logo/vn-video-editor.png" alt="VN Video Editor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">VN Video Editor</h3>
+          <p class="app-description">Professional-grade mobile video editor with multi-track and keyframing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile</span><span class="app-tag">multi-track</span><span class="app-tag">keyframe</span>
+            </div>
+          
+        </a>
+        <a href="capcut.html" class="app-card" data-id="1777294165767" style="text-decoration:none;color:inherit">
+          <img src="logo/capcut.png" alt="CapCut" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CapCut</h3>
+          <p class="app-description">All-in-one video editing app with AI effects, auto-captions, and trends.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">auto-captions</span><span class="app-tag">trends</span>
+            </div>
+          
+        </a>
+        <a href="splice.html" class="app-card" data-id="1777294165768" style="text-decoration:none;color:inherit">
+          <img src="logo/splice.png" alt="Splice" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Splice</h3>
+          <p class="app-description">Desktop and mobile video editor optimized for fast social content creation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">social</span><span class="app-tag">fast</span><span class="app-tag">cross-platform</span>
+            </div>
+          
+        </a>
+        <a href="wevideo.html" class="app-card" data-id="1777294165769" style="text-decoration:none;color:inherit">
+          <img src="logo/wevideo.png" alt="WeVideo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WeVideo</h3>
+          <p class="app-description">Cloud-based video editor with collaboration, templates, and media assets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud</span><span class="app-tag">collaboration</span><span class="app-tag">templates</span>
+            </div>
+          
+        </a>
+        <a href="clipchamp.html" class="app-card" data-id="1777294165770" style="text-decoration:none;color:inherit">
+          <img src="logo/clipchamp.png" alt="Clipchamp" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Clipchamp</h3>
+          <p class="app-description">Browser-based video editor acquired by Microsoft with screen recording.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">browser</span><span class="app-tag">microsoft</span><span class="app-tag">screen-record</span>
+            </div>
+          
+        </a>
+        <a href="canva-video.html" class="app-card" data-id="1777294165771" style="text-decoration:none;color:inherit">
+          <img src="logo/canva-video.png" alt="Canva Video" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Canva Video</h3>
+          <p class="app-description">Drag-and-drop video creator with stock media and animation presets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">drag-drop</span><span class="app-tag">stock</span><span class="app-tag">animation</span>
+            </div>
+          
+        </a>
+        <a href="renderforest.html" class="app-card" data-id="1777294165772" style="text-decoration:none;color:inherit">
+          <img src="logo/renderforest.png" alt="Renderforest" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Renderforest</h3>
+          <p class="app-description">Cloud-based video maker with intros, mockups, and explainer templates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud</span><span class="app-tag">intros</span><span class="app-tag">mockups</span>
+            </div>
+          
+        </a>
+        <a href="biteable.html" class="app-card" data-id="1777294165773" style="text-decoration:none;color:inherit">
+          <img src="logo/biteable.png" alt="Biteable" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Biteable</h3>
+          <p class="app-description">Animated video maker for marketing, presentations, and social media.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">animated</span><span class="app-tag">marketing</span><span class="app-tag">presentations</span>
+            </div>
+          
+        </a>
+        <a href="animaker.html" class="app-card" data-id="1777294165774" style="text-decoration:none;color:inherit">
+          <img src="logo/animaker.png" alt="Animaker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Animaker</h3>
+          <p class="app-description">DIY video animation platform with character builder and voice sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">animation</span><span class="app-tag">character</span><span class="app-tag">voice-sync</span>
+            </div>
+          
+        </a>
+        <a href="powtoon.html" class="app-card" data-id="1777294165775" style="text-decoration:none;color:inherit">
+          <img src="logo/powtoon.png" alt="Powtoon" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Powtoon</h3>
+          <p class="app-description">Cloud-based animated video and presentation software for education and business.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud</span><span class="app-tag">education</span><span class="app-tag">business</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777294165608,"name":"Final Cut Pro","slug":"final-cut-pro","version":"10.7.1","description":"Professional video editing software optimized for macOS with magnetic timeline.","category":"video","logoUrl":"logo/final-cut-pro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Final Cut Pro3&tracker=3","tags":["apple","nle","mac","professional"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165609,"name":"Avid Media Composer","slug":"avid-media-composer","version":"2023.12","description":"Enterprise-grade editing software used in Hollywood film and TV production.","category":"video","logoUrl":"logo/media-composer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Avid Media Composer4&tracker=4","tags":["enterprise","film","tv","collaboration"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165610,"name":"VEGAS Pro","slug":"vegas-pro","version":"21.0","description":"Powerful NLE with advanced audio tools and GPU-accelerated rendering.","category":"video","logoUrl":"logo/vegas-pro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=VEGAS Pro5&tracker=5","tags":["nle","audio","gpu","windows"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165611,"name":"Wondershare Filmora","slug":"filmora","version":"13.2.0","description":"User-friendly video editor with drag-and-drop effects and templates.","category":"video","logoUrl":"logo/filmora.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Filmora6&tracker=6","tags":["beginner","templates","effects","easy"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165612,"name":"CyberLink PowerDirector","slug":"powerdirector","version":"21.0","description":"Fast video editing suite with AI tools, 360° editing, and screen recording.","category":"video","logoUrl":"logo/powerdirector.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PowerDirector7&tracker=7","tags":["ai","fast","360","suite"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165613,"name":"Movavi Video Editor","slug":"movavi-video-editor","version":"24.1.0","description":"Simple yet feature-rich video editor for quick projects and social media.","category":"video","logoUrl":"logo/movavi.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Movavi Video Editor8&tracker=8","tags":["simple","social-media","quick","cross-platform"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165614,"name":"Pinnacle Studio","slug":"pinnacle-studio","version":"26.0","description":"Feature-packed video editor with multi-cam, masking, and stop-motion tools.","category":"video","logoUrl":"logo/pinnacle-studio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pinnacle Studio9&tracker=9","tags":["multi-cam","masking","windows","features"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165615,"name":"Lightworks","slug":"lightworks","version":"2023.2","description":"Professional NLE used in major Hollywood productions with cross-platform support.","category":"video","logoUrl":"logo/lightworks.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Lightworks10&tracker=10","tags":["professional","cross-platform","nle","film"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165616,"name":"Shotcut","slug":"shotcut","version":"24.02","description":"Free, open-source video editor with native timeline editing and format support.","category":"video","logoUrl":"logo/shotcut.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Shotcut11&tracker=11","tags":["free","open-source","native","formats"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165617,"name":"OpenShot","slug":"openshot","version":"3.1.1","description":"Easy-to-use open-source video editor with drag-and-drop and keyframe animation.","category":"video","logoUrl":"logo/openshot.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OpenShot12&tracker=12","tags":["open-source","easy","animation","free"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165618,"name":"Kdenlive","slug":"kdenlive","version":"24.02.0","description":"Professional open-source video editor with proxy editing and multi-track timeline.","category":"video","logoUrl":"logo/kdenlive.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kdenlive13&tracker=13","tags":["open-source","proxy","multi-track","linux"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165620,"name":"HitFilm","slug":"hitfilm","version":"23.1","description":"All-in-one video editing and VFX compositing software for creators.","category":"video","logoUrl":"logo/hitfilm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HitFilm15&tracker=15","tags":["vfx","compositing","editing","creators"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165621,"name":"Olive Video Editor","slug":"olive-video-editor","version":"0.2.0","description":"Free, non-linear open-source video editor with node-based compositing.","category":"video","logoUrl":"logo/olive.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Olive Video Editor16&tracker=16","tags":["open-source","node","non-linear","free"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165622,"name":"Corel VideoStudio","slug":"video-studio","version":"2024","description":"User-friendly video editor with creative templates, color grading, and 360° support.","category":"video","logoUrl":"logo/video-studio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Corel VideoStudio17&tracker=17","tags":["templates","color","360","corel"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165623,"name":"MAGIX Movie Edit Pro","slug":"magix-movie-edit-pro","version":"2024","description":"Intuitive video editor with automatic scene detection and AI assistance.","category":"video","logoUrl":"logo/magix-movie.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MAGIX Movie Edit Pro18&tracker=18","tags":["ai","scene-detection","intuitive","magix"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165627,"name":"Nuke","slug":"nuke","version":"15.1","description":"Industry-standard compositing software for feature films and VFX studios.","category":"video","logoUrl":"logo/nuke.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nuke22&tracker=22","tags":["compositing","vfx","film","foundry"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165629,"name":"Silhouette","slug":"silhouette","version":"2024.0","description":"Comprehensive paint, roto, and compositing software for visual effects.","category":"video","logoUrl":"logo/silhouette.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Silhouette24&tracker=24","tags":["paint","roto","compositing","vfx"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165632,"name":"Magic Bullet Suite","slug":"magic-bullet-suite","version":"14.0","description":"Color grading and finishing toolkit for cinematic looks and skin tones.","category":"video","logoUrl":"logo/magic-bullet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Magic Bullet Suite27&tracker=27","tags":["color","grading","cinematic","finishing"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165633,"name":"Neat Video","slug":"neat-video","version":"5.8.0","description":"Advanced noise reduction plugin for low-light and high-ISO video footage.","category":"video","logoUrl":"logo/neat-video.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Neat Video28&tracker=28","tags":["noise-reduction","low-light","plugin","clean"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165634,"name":"Topaz Video AI","slug":"topaz-video-ai","version":"5.1.0","description":"AI-powered video upscaler, stabilizer, and frame interpolator.","category":"video","logoUrl":"logo/topaz-video-ai.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Topaz Video AI29&tracker=29","tags":["ai","upscaling","stabilization","interpolation"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165635,"name":"AVCLabs Video Enhancer AI","slug":"avclabs-video-enhancer","version":"2.0.0","description":"AI video enhancement tool for face refinement, colorization, and super-resolution.","category":"video","logoUrl":"logo/avclabs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AVCLabs Video Enhancer AI30&tracker=30","tags":["ai","face-refinement","colorization","enhancement"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165637,"name":"Streamlabs Desktop","slug":"streamlabs-desktop","version":"1.24.0","description":"All-in-one streaming software with alerts, themes, and multi-platform support.","category":"video","logoUrl":"logo/streamlabs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Streamlabs Desktop32&tracker=32","tags":["streaming","alerts","themes","multi-platform"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165638,"name":"XSplit Broadcaster","slug":"xsplit-broadcaster","version":"4.5.24","description":"Professional streaming and recording software with scene management.","category":"video","logoUrl":"logo/xsplit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=XSplit Broadcaster33&tracker=33","tags":["streaming","recording","scenes","professional"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165639,"name":"vMix","slug":"vmix","version":"28.0","description":"Professional live production software for video mixing, streaming, and recording.","category":"video","logoUrl":"logo/vmix.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=vMix34&tracker=34","tags":["live","production","mixing","windows"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165640,"name":"Wirecast","slug":"wirecast","version":"17.0","description":"Live video streaming production tool with multi-camera and graphics support.","category":"video","logoUrl":"logo/wirecast.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wirecast35&tracker=35","tags":["streaming","multi-camera","graphics","production"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165641,"name":"Ecamm Live","slug":"ecamm-live","version":"4.5.0","description":"Intuitive live streaming software designed specifically for Mac creators.","category":"video","logoUrl":"logo/ecamm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ecamm Live36&tracker=36","tags":["streaming","mac","creators","intuitive"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165643,"name":"Camtasia","slug":"camtasia","version":"2023.1","description":"Screen recorder and video editor optimized for tutorials and training videos.","category":"video","logoUrl":"logo/camtasia.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Camtasia38&tracker=38","tags":["screen-recorder","tutorials","training","editing"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165644,"name":"ScreenFlow","slug":"screenflow","version":"10.1.0","description":"Mac-only screen recording and video editing software with powerful timeline.","category":"video","logoUrl":"logo/screenflow.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ScreenFlow39&tracker=39","tags":["screen-recorder","mac","timeline","tutorials"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165645,"name":"Bandicam","slug":"bandicam","version":"4.6.5","description":"Lightweight screen recorder for gaming, software demos, and video capture.","category":"video","logoUrl":"logo/bandicam.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bandicam40&tracker=40","tags":["gaming","capture","lightweight","demo"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165646,"name":"Action!","slug":"action","version":"4.60","description":"High-performance screen recorder with real-time webcam overlay and streaming.","category":"video","logoUrl":"logo/action.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Action!41&tracker=41","tags":["recorder","webcam","streaming","performance"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165647,"name":"ShareX","slug":"sharex","version":"15.0.0","description":"Open-source screen capture and recording tool with advanced workflow automation.","category":"video","logoUrl":"logo/sharex.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ShareX42&tracker=42","tags":["capture","automation","open-source","workflow"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165648,"name":"Greenshot","slug":"greenshot","version":"1.3.274","description":"Lightweight screenshot and screen capture utility with quick annotation.","category":"video","logoUrl":"logo/greenshot.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Greenshot43&tracker=43","tags":["screenshot","annotation","lightweight","free"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165651,"name":"Shutter Encoder","slug":"shutter-encoder","version":"17.4","description":"User-friendly GUI for FFmpeg with professional video editing functions.","category":"video","logoUrl":"logo/shutter-encoder.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Shutter Encoder46&tracker=46","tags":["ffmpeg-gui","professional","conversion","editing"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165652,"name":"Any Video Converter","slug":"any-video-converter","version":"7.3.0","description":"Free video converter with DVD burning, editing, and download features.","category":"video","logoUrl":"logo/avc.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Any Video Converter47&tracker=47","tags":["converter","free","burning","download"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165653,"name":"Format Factory","slug":"format-factory","version":"5.18.0","description":"Multimedia converter supporting video, audio, and image formats.","category":"video","logoUrl":"logo/format-factory.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Format Factory48&tracker=48","tags":["multimedia","converter","audio","image"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165654,"name":"XMedia Recode","slug":"xmedia-recode","version":"3.6.1.0","description":"Fast media converter with batch processing and preset management.","category":"video","logoUrl":"logo/xmedia.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=XMedia Recode49&tracker=49","tags":["fast","batch","presets","converter"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165655,"name":"Avidemux","slug":"avidemux","version":"2.8.1","description":"Simple video editor for quick cuts, filtering, and encoding tasks.","category":"video","logoUrl":"logo/avidemux.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Avidemux50&tracker=50","tags":["simple","cuts","filtering","encoding"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165656,"name":"VirtualDub","slug":"virtualdub","version":"1.10.4","description":"Classic video capture and processing utility for Windows.","category":"video","logoUrl":"logo/virtualdub.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=VirtualDub51&tracker=51","tags":["capture","processing","classic","windows"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165661,"name":"KMPlayer","slug":"kmplayer","version":"2024.0","description":"Advanced media player with 3D, 4K, and VR video playback support.","category":"video","logoUrl":"logo/kmplayer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=KMPlayer56&tracker=56","tags":["3d","4k","vr","playback"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165662,"name":"GOM Player","slug":"gom-player","version":"2.3.88","description":"Popular media player with codec finder and subtitle synchronization.","category":"video","logoUrl":"logo/gom-player.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GOM Player57&tracker=57","tags":["codec","subtitle","popular","player"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165663,"name":"Media Player Classic - BE","slug":"mpc-be","version":"1.7.20","description":"Fork of MPC-HC with active development and improved codecs support.","category":"video","logoUrl":"logo/mpc-be.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MPC-BE58&tracker=58","tags":["fork","active","codecs","lightweight"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165664,"name":"MPV","slug":"mpv","version":"0.38.0","description":"Minimalist, command-line based media player with high-quality video output.","category":"video","logoUrl":"logo/mpv.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MPV59&tracker=59","tags":["minimalist","cli","high-quality","cross-platform"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165665,"name":"Infuse","slug":"infuse","version":"7.8.0","description":"Elegant video player for Apple devices with direct playback and library sync.","category":"video","logoUrl":"logo/infuse.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Infuse60&tracker=60","tags":["apple","elegant","library","direct"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165666,"name":"Plex Media Server","slug":"plex-media-server","version":"1.40.0","description":"Media server for organizing and streaming personal video libraries.","category":"video","logoUrl":"logo/plex.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Plex Media Server61&tracker=61","tags":["server","library","streaming","organizing"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165667,"name":"Jellyfin","slug":"jellyfin","version":"10.9.0","description":"Free, open-source media server for streaming without subscriptions.","category":"video","logoUrl":"logo/jellyfin.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Jellyfin62&tracker=62","tags":["open-source","free","streaming","server"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165668,"name":"Emby","slug":"emby","version":"4.8.5","description":"Personal media server with live TV, DVR, and cross-device streaming.","category":"video","logoUrl":"logo/emby.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Emby63&tracker=63","tags":["server","live-tv","dvr","streaming"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165669,"name":"Kodi","slug":"kodi","version":"21.0","description":"Open-source media center for organizing and playing local and online video.","category":"video","logoUrl":"logo/kodi.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kodi64&tracker=64","tags":["media-center","open-source","addons","organizing"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165670,"name":"Stremio","slug":"stremio","version":"5.0.0","description":"Modern media center for streaming movies, TV shows, and web channels.","category":"video","logoUrl":"logo/stremio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Stremio65&tracker=65","tags":["streaming","modern","addons","movies"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165671,"name":"MakeMKV","slug":"makemkv","version":"1.17.8","description":"Tool for converting Blu-ray and DVD discs to MKV format without re-encoding.","category":"video","logoUrl":"logo/makemkv.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MakeMKV66&tracker=66","tags":["bluray","dvd","mkv","lossless"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165672,"name":"DVDFab","slug":"dvdfab","version":"13.2.0","description":"Comprehensive DVD and Blu-ray backup, conversion, and copying software.","category":"video","logoUrl":"logo/dvdfab.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DVDFab67&tracker=67","tags":["backup","conversion","bluray","copying"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165673,"name":"AnyDVD","slug":"anydvd","version":"9.6.0","description":"Background utility for automatically decrypting DVD and Blu-ray discs.","category":"video","logoUrl":"logo/anydvd.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AnyDVD68&tracker=68","tags":["decrypt","background","bluray","dvd"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165674,"name":"ImgBurn","slug":"imgburn","version":"2.5.8.0","description":"Lightweight CD, DVD, HD-DVD, and Blu-ray burning software.","category":"video","logoUrl":"logo/imgburn.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ImgBurn69&tracker=69","tags":["burning","lightweight","optical","iso"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165675,"name":"CyberLink Power2Go","slug":"power2go","version":"14.0","description":"Disc burning and backup software with encryption and disc labeling.","category":"video","logoUrl":"logo/power2go.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Power2Go70&tracker=70","tags":["burning","lightweight","optical","iso"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165681,"name":"Wondershare Filmora","slug":"wondershare-filmora","version":"13.2.0","description":"User-friendly video editor with drag-and-drop effects and templates.","category":"video","logoUrl":"logo/wondershare-filmora.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wondershare Filmora6&tracker=6","tags":["beginner","templates","effects","easy"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165682,"name":"CyberLink PowerDirector","slug":"cyberlink-powerdirector","version":"21.0","description":"Fast video editing suite with AI tools, 360° editing, and screen recording.","category":"video","logoUrl":"logo/cyberlink-powerdirector.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CyberLink PowerDirector7&tracker=7","tags":["ai","fast","360","suite"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165692,"name":"Corel VideoStudio","slug":"corel-videostudio","version":"2024","description":"User-friendly video editor with creative templates, color grading, and 360° support.","category":"video","logoUrl":"logo/corel-videostudio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Corel VideoStudio17&tracker=17","tags":["templates","color","360","corel"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165745,"name":"CyberLink Power2Go","slug":"cyberlink-power2go","version":"14.0","description":"Disc burning and backup software with encryption and disc labeling.","category":"video","logoUrl":"logo/cyberlink-power2go.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Power2Go70&tracker=70","tags":["burning","backup","encryption","labeling"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165746,"name":"Roxio Creator","slug":"roxio-creator","version":"2024","description":"All-in-one media suite for burning, capturing, and editing video projects.","category":"video","logoUrl":"logo/roxio-creator.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Roxio Creator71&tracker=71","tags":["burning","suite","capture","editing"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165747,"name":"Nero Video","slug":"nero-video","version":"2024","description":"User-friendly video editing and DVD authoring software with templates.","category":"video","logoUrl":"logo/nero-video.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nero Video72&tracker=72","tags":["dvd","authoring","templates","editing"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165748,"name":"DVD Architect","slug":"dvd-architect","version":"6.0","description":"Professional DVD menu authoring and burning software from VEGAS.","category":"video","logoUrl":"logo/dvd-architect.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DVD Architect73&tracker=73","tags":["dvd","menu","authoring","professional"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165749,"name":"DVDStyler","slug":"dvdstyler","version":"3.3.3","description":"Free, cross-platform DVD authoring software with customizable menus.","category":"video","logoUrl":"logo/dvdstyler.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DVDStyler74&tracker=74","tags":["dvd","authoring","free","menus"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165750,"name":"DeVeDe","slug":"devede","version":"4.18.0","description":"Open-source DVD and Blu-ray video disk creator for Linux and Windows.","category":"video","logoUrl":"logo/devede.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DeVeDe75&tracker=75","tags":["dvd","bluray","open-source","creator"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165751,"name":"Xvid4PSP","slug":"xvid4psp","version":"8.0.5","description":"Advanced video converter and encoder with AVI/MKV optimization.","category":"video","logoUrl":"logo/xvid4psp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Xvid4PSP76&tracker=76","tags":["converter","encoder","avi","mkv"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165752,"name":"StaxRip","slug":"staxrip","version":"2.15.0","description":"GUI front-end for various video encoders like x264, x265, and NVENC.","category":"video","logoUrl":"logo/staxrip.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=StaxRip77&tracker=77","tags":["gui","encoder","x264","x265"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165753,"name":"MKVToolNix","slug":"mkvtoolnix","version":"83.0","description":"Essential tools for creating, modifying, and inspecting Matroska files.","category":"video","logoUrl":"logo/mkvtoolnix.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MKVToolNix78&tracker=78","tags":["mkv","tool","multiplexing","modifying"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165754,"name":"MP4Box","slug":"mp4box","version":"2.3.0","description":"Multiplexing and splitting tool for ISO/MP4 media files.","category":"video","logoUrl":"logo/mp4box.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MP4Box79&tracker=79","tags":["mp4","multiplexing","splitting","iso"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165755,"name":"LosslessCut","slug":"losslesscut","version":"3.61.0","description":"Fast, lossless video and audio cutter, merger, and trimmer.","category":"video","logoUrl":"logo/losslesscut.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LosslessCut80&tracker=80","tags":["lossless","trim","merge","fast"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165756,"name":"Aegisub","slug":"aegisub","version":"3.2.2","description":"Advanced subtitle editor with precise timing and styling capabilities.","category":"video","logoUrl":"logo/aegisub.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Aegisub81&tracker=81","tags":["subtitle","timing","styling","editor"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165757,"name":"Subtitle Edit","slug":"subtitle-edit","version":"4.0.0","description":"Free subtitle editor with waveform visualization and translation tools.","category":"video","logoUrl":"logo/subtitle-edit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Subtitle Edit82&tracker=82","tags":["subtitle","waveform","translation","free"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165758,"name":"Jubler","slug":"jubler","version":"6.2.0","description":"Open-source subtitle editor with speech recognition and auto-sync.","category":"video","logoUrl":"logo/jubler.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Jubler83&tracker=83","tags":["subtitle","open-source","auto-sync","speech"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165759,"name":"DaVinci Resolve Studio","slug":"davinci-resolve-studio","version":"18.6.6","description":"Paid version of Resolve with Neural Engine, HDR grading, and multi-user.","category":"video","logoUrl":"logo/davinci-resolve-studio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DaVinci Resolve Studio84&tracker=84","tags":["neural-engine","hdr","multi-user","paid"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165760,"name":"Premiere Pro Beta","slug":"premiere-pro-beta","version":"25.0.0","description":"Beta testing build of Premiere with upcoming features and AI tools.","category":"video","logoUrl":"logo/premiere-pro-beta.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Premiere Pro Beta85&tracker=85","tags":["beta","testing","ai","adobe"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165761,"name":"Final Cut Pro X","slug":"final-cut-pro-x","version":"10.8.0","description":"Next-gen version of FCP with ProRes RAW and enhanced multicam.","category":"video","logoUrl":"logo/final-cut-pro-x.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Final Cut Pro X86&tracker=86","tags":["prores","multicam","apple","next-gen"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165762,"name":"VEGAS Movie Studio","slug":"vegas-movie-studio","version":"19.0","description":"Entry-level version of VEGAS for hobbyists and beginners.","category":"video","logoUrl":"logo/vegas-movie-studio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=VEGAS Movie Studio87&tracker=87","tags":["entry-level","hobbyist","beginner","vegas"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165763,"name":"FilmoraGo","slug":"filmorago","version":"6.1.0","description":"Mobile video editor with quick cuts, music, and social sharing.","category":"video","logoUrl":"logo/filmorago.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FilmoraGo88&tracker=88","tags":["mobile","quick","social","wondershare"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165764,"name":"Quik","slug":"quik","version":"6.12.0","description":"Automated video editor by GoPro with highlight detection and templates.","category":"video","logoUrl":"logo/quik.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Quik89&tracker=89","tags":["gopro","automated","highlights","templates"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165765,"name":"InShot","slug":"inshot","version":"1.98.0","description":"Popular mobile video editor with stickers, music, and canvas resizing.","category":"video","logoUrl":"logo/inshot.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=InShot90&tracker=90","tags":["mobile","stickers","music","canvas"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165766,"name":"VN Video Editor","slug":"vn-video-editor","version":"2.4.0","description":"Professional-grade mobile video editor with multi-track and keyframing.","category":"video","logoUrl":"logo/vn-video-editor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=VN Video Editor91&tracker=91","tags":["mobile","multi-track","keyframe","professional"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165767,"name":"CapCut","slug":"capcut","version":"9.5.0","description":"All-in-one video editing app with AI effects, auto-captions, and trends.","category":"video","logoUrl":"logo/capcut.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CapCut92&tracker=92","tags":["ai","auto-captions","trends","mobile"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165768,"name":"Splice","slug":"splice","version":"3.10.0","description":"Desktop and mobile video editor optimized for fast social content creation.","category":"video","logoUrl":"logo/splice.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Splice93&tracker=93","tags":["social","fast","cross-platform","creation"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165769,"name":"WeVideo","slug":"wevideo","version":"2024.0","description":"Cloud-based video editor with collaboration, templates, and media assets.","category":"video","logoUrl":"logo/wevideo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WeVideo94&tracker=94","tags":["cloud","collaboration","templates","web"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165770,"name":"Clipchamp","slug":"clipchamp","version":"3.5.0","description":"Browser-based video editor acquired by Microsoft with screen recording.","category":"video","logoUrl":"logo/clipchamp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Clipchamp95&tracker=95","tags":["browser","microsoft","screen-record","templates"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165771,"name":"Canva Video","slug":"canva-video","version":"2024.1","description":"Drag-and-drop video creator with stock media and animation presets.","category":"video","logoUrl":"logo/canva-video.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Canva Video96&tracker=96","tags":["drag-drop","stock","animation","web"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165772,"name":"Renderforest","slug":"renderforest","version":"4.2.0","description":"Cloud-based video maker with intros, mockups, and explainer templates.","category":"video","logoUrl":"logo/renderforest.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Renderforest97&tracker=97","tags":["cloud","intros","mockups","explainer"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165773,"name":"Biteable","slug":"biteable","version":"2024.0","description":"Animated video maker for marketing, presentations, and social media.","category":"video","logoUrl":"logo/biteable.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Biteable98&tracker=98","tags":["animated","marketing","presentations","social"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165774,"name":"Animaker","slug":"animaker","version":"5.0","description":"DIY video animation platform with character builder and voice sync.","category":"video","logoUrl":"logo/animaker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Animaker99&tracker=99","tags":["animation","character","voice-sync","diy"],"scrapedAt":"2026-04-27T12:49:25.606Z"},{"id":1777294165775,"name":"Powtoon","slug":"powtoon","version":"2024.0","description":"Cloud-based animated video and presentation software for education and business.","category":"video","logoUrl":"logo/powtoon.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Powtoon100&tracker=100","tags":["cloud","education","business","animated"],"scrapedAt":"2026-04-27T12:49:25.606Z"}];
+    const CURRENT_CATEGORY = 'video';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Photography — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Photography</h1>
+    <p><span class="highlight">71</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="adobe-lightroom-classic.html" class="app-card" data-id="1777293497518" style="text-decoration:none;color:inherit">
+          <img src="logo/lightroom-classic.png" alt="Adobe Lightroom Classic" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Lightroom Classic</h3>
+          <p class="app-description">Professional photo editing and organization software with powerful cataloging and RAW processing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">raw</span><span class="app-tag">cataloging</span><span class="app-tag">editing</span>
+            </div>
+          
+        </a>
+        <a href="capture-one-pro.html" class="app-card" data-id="1777293497519" style="text-decoration:none;color:inherit">
+          <img src="logo/capture-one.png" alt="Capture One Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Capture One Pro</h3>
+          <p class="app-description">Professional RAW converter and photo editor with advanced tethering and color grading.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">raw</span><span class="app-tag">tethering</span><span class="app-tag">color-grading</span>
+            </div>
+          
+        </a>
+        <a href="topaz-denoise-ai.html" class="app-card" data-id="1777293497527" style="text-decoration:none;color:inherit">
+          <img src="logo/topaz-denoise.png" alt="Topaz DeNoise AI" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Topaz DeNoise AI</h3>
+          <p class="app-description">Specialized AI noise reduction software for low-light and high-ISO photos.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">noise-reduction</span><span class="app-tag">low-light</span>
+            </div>
+          
+        </a>
+        <a href="topaz-sharpen-ai.html" class="app-card" data-id="1777293497528" style="text-decoration:none;color:inherit">
+          <img src="logo/topaz-sharpen.png" alt="Topaz Sharpen AI" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Topaz Sharpen AI</h3>
+          <p class="app-description">AI-powered sharpening tool for fixing motion blur and focus issues.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">sharpening</span><span class="app-tag">motion-blur</span>
+            </div>
+          
+        </a>
+        <a href="adobe-photoshop-elements.html" class="app-card" data-id="1777293497537" style="text-decoration:none;color:inherit">
+          <img src="logo/photoshop-elements.png" alt="Adobe Photoshop Elements" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Photoshop Elements</h3>
+          <p class="app-description">Consumer photo editor with guided edits and AI-powered features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">consumer</span><span class="app-tag">guided-edits</span><span class="app-tag">ai</span>
+            </div>
+          
+        </a>
+        <a href="nik-collection.html" class="app-card" data-id="1777293497543" style="text-decoration:none;color:inherit">
+          <img src="logo/nik-collection.png" alt="Nik Collection" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nik Collection</h3>
+          <p class="app-description">Suite of professional photo editing plugins for creative effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">plugins</span><span class="app-tag">effects</span><span class="app-tag">creative</span>
+            </div>
+          
+        </a>
+        <a href="silver-efex-pro.html" class="app-card" data-id="1777293497544" style="text-decoration:none;color:inherit">
+          <img src="logo/silver-efex.png" alt="Silver Efex Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Silver Efex Pro</h3>
+          <p class="app-description">Professional black and white photo editing plugin with film emulation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">black-white</span><span class="app-tag">film</span><span class="app-tag">plugin</span>
+            </div>
+          
+        </a>
+        <a href="color-efex-pro.html" class="app-card" data-id="1777293497545" style="text-decoration:none;color:inherit">
+          <img src="logo/color-efex.png" alt="Color Efex Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Color Efex Pro</h3>
+          <p class="app-description">Creative color correction and enhancement plugin with 55+ filters.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">color</span><span class="app-tag">filters</span><span class="app-tag">plugin</span>
+            </div>
+          
+        </a>
+        <a href="viveza.html" class="app-card" data-id="1777293497546" style="text-decoration:none;color:inherit">
+          <img src="logo/viveza.png" alt="Viveza" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Viveza</h3>
+          <p class="app-description">Selective color and light adjustment plugin with U Point technology.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">selective</span><span class="app-tag">u-point</span><span class="app-tag">plugin</span>
+            </div>
+          
+        </a>
+        <a href="hdr-efex-pro.html" class="app-card" data-id="1777293497547" style="text-decoration:none;color:inherit">
+          <img src="logo/hdr-efex.png" alt="HDR Efex Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HDR Efex Pro</h3>
+          <p class="app-description">Professional HDR software with tone mapping and creative presets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hdr</span><span class="app-tag">tone-mapping</span><span class="app-tag">plugin</span>
+            </div>
+          
+        </a>
+        <a href="portraitpro.html" class="app-card" data-id="1777293497548" style="text-decoration:none;color:inherit">
+          <img src="logo/portraitpro.png" alt="PortraitPro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PortraitPro</h3>
+          <p class="app-description">AI-powered portrait retouching software with natural-looking results.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">portrait</span><span class="app-tag">ai</span><span class="app-tag">retouching</span>
+            </div>
+          
+        </a>
+        <a href="imagenomic-portraiture.html" class="app-card" data-id="1777293497549" style="text-decoration:none;color:inherit">
+          <img src="logo/portraiture.png" alt="Imagenomic Portraiture" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Imagenomic Portraiture</h3>
+          <p class="app-description">Professional portrait retouching plugin for skin smoothing and enhancement.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">portrait</span><span class="app-tag">skin</span><span class="app-tag">plugin</span>
+            </div>
+          
+        </a>
+        <a href="retouch4me.html" class="app-card" data-id="1777293497550" style="text-decoration:none;color:inherit">
+          <img src="logo/retouch4me.png" alt="Retouch4me" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Retouch4me</h3>
+          <p class="app-description">AI-powered retouching plugins for portrait and beauty photography.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">retouching</span><span class="app-tag">portrait</span>
+            </div>
+          
+        </a>
+        <a href="beauty-box.html" class="app-card" data-id="1777293497551" style="text-decoration:none;color:inherit">
+          <img src="logo/beauty-box.png" alt="Beauty Box" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Beauty Box</h3>
+          <p class="app-description">Automatic skin retouching plugin for video and photo editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">skin</span><span class="app-tag">retouching</span><span class="app-tag">automatic</span>
+            </div>
+          
+        </a>
+        <a href="helicon-focus.html" class="app-card" data-id="1777293497552" style="text-decoration:none;color:inherit">
+          <img src="logo/helicon-focus.png" alt="Helicon Focus" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Helicon Focus</h3>
+          <p class="app-description">Focus stacking software for macro and landscape photography.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">focus-stacking</span><span class="app-tag">macro</span><span class="app-tag">landscape</span>
+            </div>
+          
+        </a>
+        <a href="zerene-stacker.html" class="app-card" data-id="1777293497553" style="text-decoration:none;color:inherit">
+          <img src="logo/zerene-stacker.png" alt="Zerene Stacker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zerene Stacker</h3>
+          <p class="app-description">Professional focus stacking software for extreme depth of field.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">focus-stacking</span><span class="app-tag">macro</span><span class="app-tag">professional</span>
+            </div>
+          
+        </a>
+        <a href="ptgui-pro.html" class="app-card" data-id="1777293497554" style="text-decoration:none;color:inherit">
+          <img src="logo/ptgui-pro.png" alt="PTGui Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PTGui Pro</h3>
+          <p class="app-description">Professional panorama stitching software with precise control.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">panorama</span><span class="app-tag">stitching</span><span class="app-tag">professional</span>
+            </div>
+          
+        </a>
+        <a href="autopano-pro.html" class="app-card" data-id="1777293497556" style="text-decoration:none;color:inherit">
+          <img src="logo/autopano.png" alt="AutoPano Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AutoPano Pro</h3>
+          <p class="app-description">Advanced panorama stitching with automatic alignment and blending.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">panorama</span><span class="app-tag">automatic</span><span class="app-tag">blending</span>
+            </div>
+          
+        </a>
+        <a href="microsoft-ice.html" class="app-card" data-id="1777293497557" style="text-decoration:none;color:inherit">
+          <img src="logo/microsoft-ice.png" alt="Microsoft ICE" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Microsoft ICE</h3>
+          <p class="app-description">Free panorama stitching tool with automatic alignment and blending.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">panorama</span><span class="app-tag">free</span><span class="app-tag">automatic</span>
+            </div>
+          
+        </a>
+        <a href="photoninja.html" class="app-card" data-id="1777293497559" style="text-decoration:none;color:inherit">
+          <img src="logo/photoninja.png" alt="PhotoNinja" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PhotoNinja</h3>
+          <p class="app-description">RAW processor with advanced color science and lens corrections.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">raw</span><span class="app-tag">color-science</span><span class="app-tag">lens-correction</span>
+            </div>
+          
+        </a>
+        <a href="capture-one-express.html" class="app-card" data-id="1777293497560" style="text-decoration:none;color:inherit">
+          <img src="logo/capture-one-express.png" alt="Capture One Express" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Capture One Express</h3>
+          <p class="app-description">Free version of Capture One with essential RAW processing tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">raw</span><span class="app-tag">free</span><span class="app-tag">essential</span>
+            </div>
+          
+        </a>
+        <a href="lightroom-mobile.html" class="app-card" data-id="1777293497561" style="text-decoration:none;color:inherit">
+          <img src="logo/lightroom-mobile.png" alt="Lightroom Mobile" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Lightroom Mobile</h3>
+          <p class="app-description">Mobile photo editing app with cloud sync and preset support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile</span><span class="app-tag">cloud</span><span class="app-tag">presets</span>
+            </div>
+          
+        </a>
+        <a href="snapseed.html" class="app-card" data-id="1777293497562" style="text-decoration:none;color:inherit">
+          <img src="logo/snapseed.png" alt="Snapseed" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Snapseed</h3>
+          <p class="app-description">Professional mobile photo editor with selective adjustments and filters.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile</span><span class="app-tag">selective</span><span class="app-tag">filters</span>
+            </div>
+          
+        </a>
+        <a href="vsco.html" class="app-card" data-id="1777293497563" style="text-decoration:none;color:inherit">
+          <img src="logo/vsco.png" alt="VSCO" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">VSCO</h3>
+          <p class="app-description">Photo editing app with film-inspired presets and creative community.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presets</span><span class="app-tag">film</span><span class="app-tag">community</span>
+            </div>
+          
+        </a>
+        <a href="afterlight.html" class="app-card" data-id="1777293497564" style="text-decoration:none;color:inherit">
+          <img src="logo/afterlight.png" alt="Afterlight" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Afterlight</h3>
+          <p class="app-description">Creative photo editor with filters, textures, and framing tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">filters</span><span class="app-tag">textures</span><span class="app-tag">creative</span>
+            </div>
+          
+        </a>
+        <a href="touchretouch.html" class="app-card" data-id="1777293497565" style="text-decoration:none;color:inherit">
+          <img src="logo/touchretouch.png" alt="TouchRetouch" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TouchRetouch</h3>
+          <p class="app-description">Specialized app for removing unwanted objects from photos.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">object-removal</span><span class="app-tag">retouching</span><span class="app-tag">mobile</span>
+            </div>
+          
+        </a>
+        <a href="enlight-photofox.html" class="app-card" data-id="1777293497566" style="text-decoration:none;color:inherit">
+          <img src="logo/photofox.png" alt="Enlight Photofox" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Enlight Photofox</h3>
+          <p class="app-description">Creative photo editor with layers, blending modes, and artistic effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">layers</span><span class="app-tag">blending</span><span class="app-tag">artistic</span>
+            </div>
+          
+        </a>
+        <a href="pixelmator-photo.html" class="app-card" data-id="1777293497567" style="text-decoration:none;color:inherit">
+          <img src="logo/pixelmator-photo.png" alt="Pixelmator Photo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pixelmator Photo</h3>
+          <p class="app-description">Professional photo editor for iPad with ML-powered enhancements.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ipad</span><span class="app-tag">ml</span><span class="app-tag">professional</span>
+            </div>
+          
+        </a>
+        <a href="halide.html" class="app-card" data-id="1777293497568" style="text-decoration:none;color:inherit">
+          <img src="logo/halide.png" alt="Halide" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Halide</h3>
+          <p class="app-description">Professional camera app for iPhone with manual controls and RAW.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">camera</span><span class="app-tag">manual</span><span class="app-tag">raw</span>
+            </div>
+          
+        </a>
+        <a href="procam.html" class="app-card" data-id="1777293497569" style="text-decoration:none;color:inherit">
+          <img src="logo/procam.png" alt="ProCam" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ProCam</h3>
+          <p class="app-description">Advanced camera app with manual controls and RAW capture.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">camera</span><span class="app-tag">manual</span><span class="app-tag">raw</span>
+            </div>
+          
+        </a>
+        <a href="procamera.html" class="app-card" data-id="1777293497570" style="text-decoration:none;color:inherit">
+          <img src="logo/procamera.png" alt="ProCamera" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ProCamera</h3>
+          <p class="app-description">Professional iPhone camera with HDR, low-light, and RAW support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">camera</span><span class="app-tag">hdr</span><span class="app-tag">low-light</span>
+            </div>
+          
+        </a>
+        <a href="camera-plus-2.html" class="app-card" data-id="1777293497571" style="text-decoration:none;color:inherit">
+          <img src="logo/camera-plus.png" alt="Camera+ 2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Camera+ 2</h3>
+          <p class="app-description">Feature-rich camera app with manual controls and editing tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">camera</span><span class="app-tag">editing</span><span class="app-tag">manual</span>
+            </div>
+          
+        </a>
+        <a href="obscura-camera.html" class="app-card" data-id="1777293497572" style="text-decoration:none;color:inherit">
+          <img src="logo/obscura.png" alt="Obscura Camera" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Obscura Camera</h3>
+          <p class="app-description">Minimalist camera app with gesture controls and manual settings.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">camera</span><span class="app-tag">minimalist</span><span class="app-tag">gestures</span>
+            </div>
+          
+        </a>
+        <a href="halide-mark-ii.html" class="app-card" data-id="1777293497573" style="text-decoration:none;color:inherit">
+          <img src="logo/halide-mark2.png" alt="Halide Mark II" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Halide Mark II</h3>
+          <p class="app-description">Next-gen camera app with focus peaking and advanced RAW processing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">camera</span><span class="app-tag">focus-peaking</span><span class="app-tag">raw</span>
+            </div>
+          
+        </a>
+        <a href="adobe-photoshop-express.html" class="app-card" data-id="1777293497574" style="text-decoration:none;color:inherit">
+          <img src="logo/ps-express.png" alt="Adobe Photoshop Express" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Photoshop Express</h3>
+          <p class="app-description">Quick photo editor with filters, corrections, and creative effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">quick</span><span class="app-tag">filters</span><span class="app-tag">corrections</span>
+            </div>
+          
+        </a>
+        <a href="fotor.html" class="app-card" data-id="1777293497576" style="text-decoration:none;color:inherit">
+          <img src="logo/fotor.png" alt="Fotor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fotor</h3>
+          <p class="app-description">All-in-one photo editor with collage maker and batch processing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">collage</span><span class="app-tag">batch</span><span class="app-tag">all-in-one</span>
+            </div>
+          
+        </a>
+        <a href="befunky.html" class="app-card" data-id="1777293497577" style="text-decoration:none;color:inherit">
+          <img src="logo/befunky.png" alt="BeFunky" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">BeFunky</h3>
+          <p class="app-description">Easy-to-use photo editor with artistic effects and design tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">easy</span><span class="app-tag">artistic</span><span class="app-tag">design</span>
+            </div>
+          
+        </a>
+        <a href="picmonkey.html" class="app-card" data-id="1777293497578" style="text-decoration:none;color:inherit">
+          <img src="logo/picmonkey.png" alt="PicMonkey" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PicMonkey</h3>
+          <p class="app-description">Photo editor and graphic design tool with templates and effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">templates</span><span class="app-tag">design</span><span class="app-tag">effects</span>
+            </div>
+          
+        </a>
+        <a href="photopea.html" class="app-card" data-id="1777293497581" style="text-decoration:none;color:inherit">
+          <img src="logo/photopea.png" alt="Photopea" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Photopea</h3>
+          <p class="app-description">Browser-based Photoshop alternative with PSD support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">browser</span><span class="app-tag">psd</span><span class="app-tag">photoshop</span>
+            </div>
+          
+        </a>
+        <a href="lunapic.html" class="app-card" data-id="1777293497582" style="text-decoration:none;color:inherit">
+          <img src="logo/lunapic.png" alt="LunaPic" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LunaPic</h3>
+          <p class="app-description">Free online photo editor with animation and artistic effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">online</span><span class="app-tag">free</span><span class="app-tag">animation</span>
+            </div>
+          
+        </a>
+        <a href="aftershot-pro-3.html" class="app-card" data-id="1777293497584" style="text-decoration:none;color:inherit">
+          <img src="logo/aftershot-pro.png" alt="AfterShot Pro 3" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AfterShot Pro 3</h3>
+          <p class="app-description">Fast RAW photo editor with non-destructive editing and batch processing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">raw</span><span class="app-tag">batch</span><span class="app-tag">fast</span>
+            </div>
+          
+        </a>
+        <a href="silky-pix-developer-studio.html" class="app-card" data-id="1777293497585" style="text-decoration:none;color:inherit">
+          <img src="logo/silkypix.png" alt="SilkyPix Developer Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SilkyPix Developer Studio</h3>
+          <p class="app-description">Professional RAW converter with precise color and tone control.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">raw</span><span class="app-tag">converter</span><span class="app-tag">color</span>
+            </div>
+          
+        </a>
+        <a href="sony-imaging-edge.html" class="app-card" data-id="1777293497588" style="text-decoration:none;color:inherit">
+          <img src="logo/sony-imaging-edge.png" alt="Sony Imaging Edge" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sony Imaging Edge</h3>
+          <p class="app-description">Official Sony software for RAW processing and remote shooting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sony</span><span class="app-tag">raw</span><span class="app-tag">remote</span>
+            </div>
+          
+        </a>
+        <a href="fujifilm-x-raw-studio.html" class="app-card" data-id="1777293497589" style="text-decoration:none;color:inherit">
+          <img src="logo/fujifilm-raw.png" alt="Fujifilm X RAW Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fujifilm X RAW Studio</h3>
+          <p class="app-description">Official Fujifilm software for processing RAW files with camera profiles.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fujifilm</span><span class="app-tag">raw</span><span class="app-tag">profiles</span>
+            </div>
+          
+        </a>
+        <a href="olympus-workspace.html" class="app-card" data-id="1777293497590" style="text-decoration:none;color:inherit">
+          <img src="logo/olympus-workspace.png" alt="Olympus Workspace" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Olympus Workspace</h3>
+          <p class="app-description">Official Olympus software for RAW processing and image management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">olympus</span><span class="app-tag">raw</span><span class="app-tag">management</span>
+            </div>
+          
+        </a>
+        <a href="panasonic-lumix-tether.html" class="app-card" data-id="1777293497591" style="text-decoration:none;color:inherit">
+          <img src="logo/panasonic-tether.png" alt="Panasonic Lumix Tether" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Panasonic Lumix Tether</h3>
+          <p class="app-description">Official tethering software for Panasonic Lumix cameras.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">panasonic</span><span class="app-tag">tethering</span><span class="app-tag">official</span>
+            </div>
+          
+        </a>
+        <a href="leica-fotos.html" class="app-card" data-id="1777293497592" style="text-decoration:none;color:inherit">
+          <img src="logo/leica-fotos.png" alt="Leica FOTOS" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Leica FOTOS</h3>
+          <p class="app-description">Official Leica app for transferring and editing photos wirelessly.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">leica</span><span class="app-tag">wireless</span><span class="app-tag">transfer</span>
+            </div>
+          
+        </a>
+        <a href="hasselblad-phocus.html" class="app-card" data-id="1777293497593" style="text-decoration:none;color:inherit">
+          <img src="logo/hasselblad-phocus.png" alt="Hasselblad Phocus" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hasselblad Phocus</h3>
+          <p class="app-description">Professional RAW processing software for Hasselblad cameras.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hasselblad</span><span class="app-tag">raw</span><span class="app-tag">professional</span>
+            </div>
+          
+        </a>
+        <a href="phase-one-capture-one-pro.html" class="app-card" data-id="1777293497594" style="text-decoration:none;color:inherit">
+          <img src="logo/phase-one-c1.png" alt="Phase One Capture One Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Phase One Capture One Pro</h3>
+          <p class="app-description">Professional tethering and RAW processing for medium format cameras.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">medium-format</span><span class="app-tag">tethering</span><span class="app-tag">professional</span>
+            </div>
+          
+        </a>
+        <a href="dxo-viewpoint.html" class="app-card" data-id="1777293497595" style="text-decoration:none;color:inherit">
+          <img src="logo/dxo-viewpoint.png" alt="DxO ViewPoint" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DxO ViewPoint</h3>
+          <p class="app-description">Specialized software for correcting perspective and lens distortions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">perspective</span><span class="app-tag">distortion</span><span class="app-tag">lens</span>
+            </div>
+          
+        </a>
+        <a href="dxo-filmpack.html" class="app-card" data-id="1777293497596" style="text-decoration:none;color:inherit">
+          <img src="logo/dxo-filmpack.png" alt="DxO FilmPack" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DxO FilmPack</h3>
+          <p class="app-description">Film emulation software with authentic analog looks and grain.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">film-emulation</span><span class="app-tag">analog</span><span class="app-tag">grain</span>
+            </div>
+          
+        </a>
+        <a href="dxo-pureraw.html" class="app-card" data-id="1777293497597" style="text-decoration:none;color:inherit">
+          <img src="logo/dxo-pureraw.png" alt="DxO PureRAW" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DxO PureRAW</h3>
+          <p class="app-description">AI-powered RAW preprocessing for optimal image quality.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">raw</span><span class="app-tag">preprocessing</span>
+            </div>
+          
+        </a>
+        <a href="imagenomic-noiseware.html" class="app-card" data-id="1777293497599" style="text-decoration:none;color:inherit">
+          <img src="logo/noiseware.png" alt="Imagenomic Noiseware" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Imagenomic Noiseware</h3>
+          <p class="app-description">Professional noise reduction plugin with AI-powered algorithms.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">noise-reduction</span><span class="app-tag">ai</span><span class="app-tag">plugin</span>
+            </div>
+          
+        </a>
+        <a href="topaz-mask-ai.html" class="app-card" data-id="1777293497600" style="text-decoration:none;color:inherit">
+          <img src="logo/topaz-mask.png" alt="Topaz Mask AI" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Topaz Mask AI</h3>
+          <p class="app-description">AI-powered masking tool for precise subject selection and cutouts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">masking</span><span class="app-tag">selection</span>
+            </div>
+          
+        </a>
+        <a href="luminar-ai.html" class="app-card" data-id="1777293497601" style="text-decoration:none;color:inherit">
+          <img src="logo/luminar-ai.png" alt="Luminar AI" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Luminar AI</h3>
+          <p class="app-description">AI-powered photo editor with templates and automated enhancements.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">templates</span><span class="app-tag">automated</span>
+            </div>
+          
+        </a>
+        <a href="skylum-aurora-hdr-pro.html" class="app-card" data-id="1777293497602" style="text-decoration:none;color:inherit">
+          <img src="logo/aurora-hdr-pro.png" alt="Skylum Aurora HDR Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Skylum Aurora HDR Pro</h3>
+          <p class="app-description">Advanced HDR software with AI tone mapping and creative presets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hdr</span><span class="app-tag">ai</span><span class="app-tag">tone-mapping</span>
+            </div>
+          
+        </a>
+        <a href="macphun-intensify-pro.html" class="app-card" data-id="1777293497603" style="text-decoration:none;color:inherit">
+          <img src="logo/intensify.png" alt="Macphun Intensify Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Macphun Intensify Pro</h3>
+          <p class="app-description">Photo enhancement software for bringing out details and textures.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">enhancement</span><span class="app-tag">details</span><span class="app-tag">textures</span>
+            </div>
+          
+        </a>
+        <a href="macphun-snapheal-pro.html" class="app-card" data-id="1777293497604" style="text-decoration:none;color:inherit">
+          <img src="logo/snapheal.png" alt="Macphun Snapheal Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Macphun Snapheal Pro</h3>
+          <p class="app-description">Specialized retouching tool for removing unwanted objects and blemishes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">retouching</span><span class="app-tag">object-removal</span><span class="app-tag">blemishes</span>
+            </div>
+          
+        </a>
+        <a href="alien-skin-exposure-x6.html" class="app-card" data-id="1777293497605" style="text-decoration:none;color:inherit">
+          <img src="logo/alien-skin-exposure.png" alt="Alien Skin Exposure X6" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Alien Skin Exposure X6</h3>
+          <p class="app-description">Non-destructive photo editor with film emulation and creative presets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">film-emulation</span><span class="app-tag">presets</span><span class="app-tag">non-destructive</span>
+            </div>
+          
+        </a>
+        <a href="imagenomic-real-grain.html" class="app-card" data-id="1777293497606" style="text-decoration:none;color:inherit">
+          <img src="logo/real-grain.png" alt="Imagenomic Real Grain" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Imagenomic Real Grain</h3>
+          <p class="app-description">Authentic film grain simulation plugin for digital photos.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">grain</span><span class="app-tag">film</span><span class="app-tag">plugin</span>
+            </div>
+          
+        </a>
+        <a href="red-giant-universe.html" class="app-card" data-id="1777293497607" style="text-decoration:none;color:inherit">
+          <img src="logo/red-giant-universe.png" alt="Red Giant Universe" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Red Giant Universe</h3>
+          <p class="app-description">Creative effects suite for photo and video with vintage and stylized looks.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">effects</span><span class="app-tag">vintage</span><span class="app-tag">stylized</span>
+            </div>
+          
+        </a>
+        <a href="focalpoint-2.html" class="app-card" data-id="1777293497608" style="text-decoration:none;color:inherit">
+          <img src="logo/focalpoint.png" alt="FocalPoint 2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FocalPoint 2</h3>
+          <p class="app-description">Selective focus plugin for creating depth of field effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">focus</span><span class="app-tag">depth-of-field</span><span class="app-tag">plugin</span>
+            </div>
+          
+        </a>
+        <a href="dft-rays.html" class="app-card" data-id="1777293497609" style="text-decoration:none;color:inherit">
+          <img src="logo/dft-rays.png" alt="DFT Rays" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DFT Rays</h3>
+          <p class="app-description">Lens flare and light ray effects plugin for creative photography.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">lens-flare</span><span class="app-tag">light-rays</span><span class="app-tag">plugin</span>
+            </div>
+          
+        </a>
+        <a href="dft-sapphire.html" class="app-card" data-id="1777293497610" style="text-decoration:none;color:inherit">
+          <img src="logo/dft-sapphire.png" alt="DFT Sapphire" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DFT Sapphire</h3>
+          <p class="app-description">Professional visual effects plugin suite with 300+ filters.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vfx</span><span class="app-tag">filters</span><span class="app-tag">plugin</span>
+            </div>
+          
+        </a>
+        <a href="boris-fx-continuum.html" class="app-card" data-id="1777293497611" style="text-decoration:none;color:inherit">
+          <img src="logo/boris-continuum.png" alt="Boris FX Continuum" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Boris FX Continuum</h3>
+          <p class="app-description">Comprehensive effects suite for photo and video post-production.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">effects</span><span class="app-tag">post-production</span><span class="app-tag">plugin</span>
+            </div>
+          
+        </a>
+        <a href="pixel-film-studios.html" class="app-card" data-id="1777293497612" style="text-decoration:none;color:inherit">
+          <img src="logo/pixel-film.png" alt="Pixel Film Studios" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pixel Film Studios</h3>
+          <p class="app-description">Creative plugins and transitions for photo and video editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">plugins</span><span class="app-tag">transitions</span><span class="app-tag">creative</span>
+            </div>
+          
+        </a>
+        <a href="filmconvert-nitrate.html" class="app-card" data-id="1777293497613" style="text-decoration:none;color:inherit">
+          <img src="logo/filmconvert.png" alt="FilmConvert Nitrate" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FilmConvert Nitrate</h3>
+          <p class="app-description">Authentic film grain and color emulation for digital photos.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">film</span><span class="app-tag">grain</span><span class="app-tag">color</span>
+            </div>
+          
+        </a>
+        <a href="dehancer-pro.html" class="app-card" data-id="1777293497614" style="text-decoration:none;color:inherit">
+          <img src="logo/dehancer.png" alt="Dehancer Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Dehancer Pro</h3>
+          <p class="app-description">Film emulation plugin with grain, halation, and bloom effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">film</span><span class="app-tag">grain</span><span class="app-tag">halation</span>
+            </div>
+          
+        </a>
+        <a href="colorperfect.html" class="app-card" data-id="1777293497615" style="text-decoration:none;color:inherit">
+          <img src="logo/colorperfect.png" alt="ColorPerfect" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ColorPerfect</h3>
+          <p class="app-description">Advanced color grading plugin for black and white conversion.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">color-grading</span><span class="app-tag">black-white</span><span class="app-tag">plugin</span>
+            </div>
+          
+        </a>
+        <a href="phototools-professional.html" class="app-card" data-id="1777293497616" style="text-decoration:none;color:inherit">
+          <img src="logo/phototools.png" alt="PhotoTools Professional" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PhotoTools Professional</h3>
+          <p class="app-description">Suite of professional photo editing plugins for creative effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">plugins</span><span class="app-tag">professional</span><span class="app-tag">creative</span>
+            </div>
+          
+        </a>
+        <a href="photokit-2.html" class="app-card" data-id="1777293497617" style="text-decoration:none;color:inherit">
+          <img src="logo/photokit.png" alt="PhotoKit 2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PhotoKit 2</h3>
+          <p class="app-description">Professional photo editing plugin with authentic film and print effects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">plugin</span><span class="app-tag">film</span><span class="app-tag">print</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777293497518,"name":"Adobe Lightroom Classic","slug":"adobe-lightroom-classic","version":"13.2.0","description":"Professional photo editing and organization software with powerful cataloging and RAW processing.","category":"photography","logoUrl":"logo/lightroom-classic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Lightroom Classic1&tracker=1","tags":["raw","cataloging","editing","adobe"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497519,"name":"Capture One Pro","slug":"capture-one-pro","version":"23.1.0","description":"Professional RAW converter and photo editor with advanced tethering and color grading.","category":"photography","logoUrl":"logo/capture-one.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Capture One Pro2&tracker=2","tags":["raw","tethering","color-grading","professional"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497527,"name":"Topaz DeNoise AI","slug":"topaz-denoise-ai","version":"3.1.0","description":"Specialized AI noise reduction software for low-light and high-ISO photos.","category":"photography","logoUrl":"logo/topaz-denoise.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Topaz DeNoise AI10&tracker=10","tags":["ai","noise-reduction","low-light","iso"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497528,"name":"Topaz Sharpen AI","slug":"topaz-sharpen-ai","version":"4.1.0","description":"AI-powered sharpening tool for fixing motion blur and focus issues.","category":"photography","logoUrl":"logo/topaz-sharpen.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Topaz Sharpen AI11&tracker=11","tags":["ai","sharpening","motion-blur","focus"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497537,"name":"Adobe Photoshop Elements","slug":"adobe-photoshop-elements","version":"2024","description":"Consumer photo editor with guided edits and AI-powered features.","category":"photography","logoUrl":"logo/photoshop-elements.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Photoshop Elements20&tracker=20","tags":["consumer","guided-edits","ai","easy"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497543,"name":"Nik Collection","slug":"nik-collection","version":"6.0.0","description":"Suite of professional photo editing plugins for creative effects.","category":"photography","logoUrl":"logo/nik-collection.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nik Collection26&tracker=26","tags":["plugins","effects","creative","professional"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497544,"name":"Silver Efex Pro","slug":"silver-efex-pro","version":"3.5.0","description":"Professional black and white photo editing plugin with film emulation.","category":"photography","logoUrl":"logo/silver-efex.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Silver Efex Pro27&tracker=27","tags":["black-white","film","plugin","monochrome"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497545,"name":"Color Efex Pro","slug":"color-efex-pro","version":"4.5.0","description":"Creative color correction and enhancement plugin with 55+ filters.","category":"photography","logoUrl":"logo/color-efex.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Color Efex Pro28&tracker=28","tags":["color","filters","plugin","enhancement"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497546,"name":"Viveza","slug":"viveza","version":"2.1.0","description":"Selective color and light adjustment plugin with U Point technology.","category":"photography","logoUrl":"logo/viveza.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Viveza29&tracker=29","tags":["selective","u-point","plugin","adjustment"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497547,"name":"HDR Efex Pro","slug":"hdr-efex-pro","version":"2.3.0","description":"Professional HDR software with tone mapping and creative presets.","category":"photography","logoUrl":"logo/hdr-efex.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HDR Efex Pro30&tracker=30","tags":["hdr","tone-mapping","plugin","presets"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497548,"name":"PortraitPro","slug":"portraitpro","version":"23.1.0","description":"AI-powered portrait retouching software with natural-looking results.","category":"photography","logoUrl":"logo/portraitpro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PortraitPro31&tracker=31","tags":["portrait","ai","retouching","natural"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497549,"name":"Imagenomic Portraiture","slug":"imagenomic-portraiture","version":"4.0.0","description":"Professional portrait retouching plugin for skin smoothing and enhancement.","category":"photography","logoUrl":"logo/portraiture.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Imagenomic Portraiture32&tracker=32","tags":["portrait","skin","plugin","retouching"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497550,"name":"Retouch4me","slug":"retouch4me","version":"1.9.0","description":"AI-powered retouching plugins for portrait and beauty photography.","category":"photography","logoUrl":"logo/retouch4me.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Retouch4me33&tracker=33","tags":["ai","retouching","portrait","beauty"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497551,"name":"Beauty Box","slug":"beauty-box","version":"5.1.0","description":"Automatic skin retouching plugin for video and photo editing.","category":"photography","logoUrl":"logo/beauty-box.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Beauty Box34&tracker=34","tags":["skin","retouching","automatic","plugin"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497552,"name":"Helicon Focus","slug":"helicon-focus","version":"8.2.1","description":"Focus stacking software for macro and landscape photography.","category":"photography","logoUrl":"logo/helicon-focus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Helicon Focus35&tracker=35","tags":["focus-stacking","macro","landscape","depth"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497553,"name":"Zerene Stacker","slug":"zerene-stacker","version":"1.04","description":"Professional focus stacking software for extreme depth of field.","category":"photography","logoUrl":"logo/zerene-stacker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zerene Stacker36&tracker=36","tags":["focus-stacking","macro","professional","depth"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497554,"name":"PTGui Pro","slug":"ptgui-pro","version":"12.19","description":"Professional panorama stitching software with precise control.","category":"photography","logoUrl":"logo/ptgui-pro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PTGui Pro37&tracker=37","tags":["panorama","stitching","professional","control"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497556,"name":"AutoPano Pro","slug":"autopano-pro","version":"4.4.0","description":"Advanced panorama stitching with automatic alignment and blending.","category":"photography","logoUrl":"logo/autopano.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AutoPano Pro39&tracker=39","tags":["panorama","automatic","blending","stitching"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497557,"name":"Microsoft ICE","slug":"microsoft-ice","version":"1.4.40","description":"Free panorama stitching tool with automatic alignment and blending.","category":"photography","logoUrl":"logo/microsoft-ice.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Microsoft ICE40&tracker=40","tags":["panorama","free","automatic","microsoft"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497559,"name":"PhotoNinja","slug":"photoninja","version":"1.4.0","description":"RAW processor with advanced color science and lens corrections.","category":"photography","logoUrl":"logo/photoninja.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PhotoNinja42&tracker=42","tags":["raw","color-science","lens-correction","processor"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497560,"name":"Capture One Express","slug":"capture-one-express","version":"23.1.0","description":"Free version of Capture One with essential RAW processing tools.","category":"photography","logoUrl":"logo/capture-one-express.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Capture One Express43&tracker=43","tags":["raw","free","essential","capture-one"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497561,"name":"Lightroom Mobile","slug":"lightroom-mobile","version":"9.2.0","description":"Mobile photo editing app with cloud sync and preset support.","category":"photography","logoUrl":"logo/lightroom-mobile.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Lightroom Mobile44&tracker=44","tags":["mobile","cloud","presets","editing"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497562,"name":"Snapseed","slug":"snapseed","version":"2.20.0","description":"Professional mobile photo editor with selective adjustments and filters.","category":"photography","logoUrl":"logo/snapseed.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Snapseed45&tracker=45","tags":["mobile","selective","filters","google"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497563,"name":"VSCO","slug":"vsco","version":"330.0","description":"Photo editing app with film-inspired presets and creative community.","category":"photography","logoUrl":"logo/vsco.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=VSCO46&tracker=46","tags":["presets","film","community","mobile"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497564,"name":"Afterlight","slug":"afterlight","version":"2.10.0","description":"Creative photo editor with filters, textures, and framing tools.","category":"photography","logoUrl":"logo/afterlight.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Afterlight47&tracker=47","tags":["filters","textures","creative","mobile"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497565,"name":"TouchRetouch","slug":"touchretouch","version":"4.4.10","description":"Specialized app for removing unwanted objects from photos.","category":"photography","logoUrl":"logo/touchretouch.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TouchRetouch48&tracker=48","tags":["object-removal","retouching","mobile","specialized"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497566,"name":"Enlight Photofox","slug":"enlight-photofox","version":"3.8.0","description":"Creative photo editor with layers, blending modes, and artistic effects.","category":"photography","logoUrl":"logo/photofox.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Enlight Photofox49&tracker=49","tags":["layers","blending","artistic","creative"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497567,"name":"Pixelmator Photo","slug":"pixelmator-photo","version":"3.2.0","description":"Professional photo editor for iPad with ML-powered enhancements.","category":"photography","logoUrl":"logo/pixelmator-photo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pixelmator Photo50&tracker=50","tags":["ipad","ml","professional","enhancements"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497568,"name":"Halide","slug":"halide","version":"2.11.0","description":"Professional camera app for iPhone with manual controls and RAW.","category":"photography","logoUrl":"logo/halide.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Halide51&tracker=51","tags":["camera","manual","raw","iphone"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497569,"name":"ProCam","slug":"procam","version":"8.6.0","description":"Advanced camera app with manual controls and RAW capture.","category":"photography","logoUrl":"logo/procam.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ProCam52&tracker=52","tags":["camera","manual","raw","advanced"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497570,"name":"ProCamera","slug":"procamera","version":"17.1.0","description":"Professional iPhone camera with HDR, low-light, and RAW support.","category":"photography","logoUrl":"logo/procamera.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ProCamera53&tracker=53","tags":["camera","hdr","low-light","iphone"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497571,"name":"Camera+ 2","slug":"camera-plus-2","version":"9.4.0","description":"Feature-rich camera app with manual controls and editing tools.","category":"photography","logoUrl":"logo/camera-plus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Camera+ 254&tracker=54","tags":["camera","editing","manual","iphone"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497572,"name":"Obscura Camera","slug":"obscura-camera","version":"4.1.0","description":"Minimalist camera app with gesture controls and manual settings.","category":"photography","logoUrl":"logo/obscura.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Obscura Camera55&tracker=55","tags":["camera","minimalist","gestures","manual"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497573,"name":"Halide Mark II","slug":"halide-mark-ii","version":"2.12.0","description":"Next-gen camera app with focus peaking and advanced RAW processing.","category":"photography","logoUrl":"logo/halide-mark2.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Halide Mark II56&tracker=56","tags":["camera","focus-peaking","raw","advanced"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497574,"name":"Adobe Photoshop Express","slug":"adobe-photoshop-express","version":"8.7.0","description":"Quick photo editor with filters, corrections, and creative effects.","category":"photography","logoUrl":"logo/ps-express.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Photoshop Express57&tracker=57","tags":["quick","filters","corrections","mobile"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497576,"name":"Fotor","slug":"fotor","version":"4.3.0","description":"All-in-one photo editor with collage maker and batch processing.","category":"photography","logoUrl":"logo/fotor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fotor59&tracker=59","tags":["collage","batch","all-in-one","editing"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497577,"name":"BeFunky","slug":"befunky","version":"3.9.0","description":"Easy-to-use photo editor with artistic effects and design tools.","category":"photography","logoUrl":"logo/befunky.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=BeFunky60&tracker=60","tags":["easy","artistic","design","online"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497578,"name":"PicMonkey","slug":"picmonkey","version":"2.8.0","description":"Photo editor and graphic design tool with templates and effects.","category":"photography","logoUrl":"logo/picmonkey.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PicMonkey61&tracker=61","tags":["templates","design","effects","online"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497581,"name":"Photopea","slug":"photopea","version":"4.2.0","description":"Browser-based Photoshop alternative with PSD support.","category":"photography","logoUrl":"logo/photopea.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Photopea64&tracker=64","tags":["browser","psd","photoshop","online"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497582,"name":"LunaPic","slug":"lunapic","version":"2.5.0","description":"Free online photo editor with animation and artistic effects.","category":"photography","logoUrl":"logo/lunapic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LunaPic65&tracker=65","tags":["online","free","animation","artistic"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497584,"name":"AfterShot Pro 3","slug":"aftershot-pro-3","version":"3.5.0","description":"Fast RAW photo editor with non-destructive editing and batch processing.","category":"photography","logoUrl":"logo/aftershot-pro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AfterShot Pro 367&tracker=67","tags":["raw","batch","fast","non-destructive"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497585,"name":"SilkyPix Developer Studio","slug":"silky-pix-developer-studio","version":"11.0.10","description":"Professional RAW converter with precise color and tone control.","category":"photography","logoUrl":"logo/silkypix.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SilkyPix Developer Studio68&tracker=68","tags":["raw","converter","color","professional"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497588,"name":"Sony Imaging Edge","slug":"sony-imaging-edge","version":"5.1.0","description":"Official Sony software for RAW processing and remote shooting.","category":"photography","logoUrl":"logo/sony-imaging-edge.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sony Imaging Edge71&tracker=71","tags":["sony","raw","remote","official"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497589,"name":"Fujifilm X RAW Studio","slug":"fujifilm-x-raw-studio","version":"2.1.0","description":"Official Fujifilm software for processing RAW files with camera profiles.","category":"photography","logoUrl":"logo/fujifilm-raw.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fujifilm X RAW Studio72&tracker=72","tags":["fujifilm","raw","profiles","official"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497590,"name":"Olympus Workspace","slug":"olympus-workspace","version":"1.3.0","description":"Official Olympus software for RAW processing and image management.","category":"photography","logoUrl":"logo/olympus-workspace.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Olympus Workspace73&tracker=73","tags":["olympus","raw","management","official"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497591,"name":"Panasonic Lumix Tether","slug":"panasonic-lumix-tether","version":"2.0.0","description":"Official tethering software for Panasonic Lumix cameras.","category":"photography","logoUrl":"logo/panasonic-tether.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Panasonic Lumix Tether74&tracker=74","tags":["panasonic","tethering","official","remote"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497592,"name":"Leica FOTOS","slug":"leica-fotos","version":"2.1.0","description":"Official Leica app for transferring and editing photos wirelessly.","category":"photography","logoUrl":"logo/leica-fotos.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Leica FOTOS75&tracker=75","tags":["leica","wireless","transfer","official"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497593,"name":"Hasselblad Phocus","slug":"hasselblad-phocus","version":"3.7.0","description":"Professional RAW processing software for Hasselblad cameras.","category":"photography","logoUrl":"logo/hasselblad-phocus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hasselblad Phocus76&tracker=76","tags":["hasselblad","raw","professional","medium-format"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497594,"name":"Phase One Capture One Pro","slug":"phase-one-capture-one-pro","version":"23.1.0","description":"Professional tethering and RAW processing for medium format cameras.","category":"photography","logoUrl":"logo/phase-one-c1.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Phase One Capture One Pro77&tracker=77","tags":["medium-format","tethering","professional","raw"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497595,"name":"DxO ViewPoint","slug":"dxo-viewpoint","version":"3.5.0","description":"Specialized software for correcting perspective and lens distortions.","category":"photography","logoUrl":"logo/dxo-viewpoint.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DxO ViewPoint78&tracker=78","tags":["perspective","distortion","lens","correction"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497596,"name":"DxO FilmPack","slug":"dxo-filmpack","version":"7.0.0","description":"Film emulation software with authentic analog looks and grain.","category":"photography","logoUrl":"logo/dxo-filmpack.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DxO FilmPack79&tracker=79","tags":["film-emulation","analog","grain","vintage"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497597,"name":"DxO PureRAW","slug":"dxo-pureraw","version":"4.1.0","description":"AI-powered RAW preprocessing for optimal image quality.","category":"photography","logoUrl":"logo/dxo-pureraw.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DxO PureRAW80&tracker=80","tags":["ai","raw","preprocessing","quality"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497599,"name":"Imagenomic Noiseware","slug":"imagenomic-noiseware","version":"6.0.0","description":"Professional noise reduction plugin with AI-powered algorithms.","category":"photography","logoUrl":"logo/noiseware.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Imagenomic Noiseware82&tracker=82","tags":["noise-reduction","ai","plugin","professional"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497600,"name":"Topaz Mask AI","slug":"topaz-mask-ai","version":"1.3.0","description":"AI-powered masking tool for precise subject selection and cutouts.","category":"photography","logoUrl":"logo/topaz-mask.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Topaz Mask AI83&tracker=83","tags":["ai","masking","selection","cutouts"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497601,"name":"Luminar AI","slug":"luminar-ai","version":"1.5.0","description":"AI-powered photo editor with templates and automated enhancements.","category":"photography","logoUrl":"logo/luminar-ai.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Luminar AI84&tracker=84","tags":["ai","templates","automated","skylum"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497602,"name":"Skylum Aurora HDR Pro","slug":"skylum-aurora-hdr-pro","version":"2.0.2","description":"Advanced HDR software with AI tone mapping and creative presets.","category":"photography","logoUrl":"logo/aurora-hdr-pro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Skylum Aurora HDR Pro85&tracker=85","tags":["hdr","ai","tone-mapping","presets"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497603,"name":"Macphun Intensify Pro","slug":"macphun-intensify-pro","version":"1.2.0","description":"Photo enhancement software for bringing out details and textures.","category":"photography","logoUrl":"logo/intensify.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Macphun Intensify Pro86&tracker=86","tags":["enhancement","details","textures","clarity"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497604,"name":"Macphun Snapheal Pro","slug":"macphun-snapheal-pro","version":"1.6.0","description":"Specialized retouching tool for removing unwanted objects and blemishes.","category":"photography","logoUrl":"logo/snapheal.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Macphun Snapheal Pro87&tracker=87","tags":["retouching","object-removal","blemishes","healing"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497605,"name":"Alien Skin Exposure X6","slug":"alien-skin-exposure-x6","version":"6.1.0","description":"Non-destructive photo editor with film emulation and creative presets.","category":"photography","logoUrl":"logo/alien-skin-exposure.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Alien Skin Exposure X688&tracker=88","tags":["film-emulation","presets","non-destructive","creative"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497606,"name":"Imagenomic Real Grain","slug":"imagenomic-real-grain","version":"2.0.0","description":"Authentic film grain simulation plugin for digital photos.","category":"photography","logoUrl":"logo/real-grain.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Imagenomic Real Grain89&tracker=89","tags":["grain","film","plugin","authentic"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497607,"name":"Red Giant Universe","slug":"red-giant-universe","version":"3.4.0","description":"Creative effects suite for photo and video with vintage and stylized looks.","category":"photography","logoUrl":"logo/red-giant-universe.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Red Giant Universe90&tracker=90","tags":["effects","vintage","stylized","creative"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497608,"name":"FocalPoint 2","slug":"focalpoint-2","version":"2.1.0","description":"Selective focus plugin for creating depth of field effects.","category":"photography","logoUrl":"logo/focalpoint.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FocalPoint 291&tracker=91","tags":["focus","depth-of-field","plugin","selective"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497609,"name":"DFT Rays","slug":"dft-rays","version":"1.0.0","description":"Lens flare and light ray effects plugin for creative photography.","category":"photography","logoUrl":"logo/dft-rays.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DFT Rays92&tracker=92","tags":["lens-flare","light-rays","plugin","creative"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497610,"name":"DFT Sapphire","slug":"dft-sapphire","version":"2024.0","description":"Professional visual effects plugin suite with 300+ filters.","category":"photography","logoUrl":"logo/dft-sapphire.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DFT Sapphire93&tracker=93","tags":["vfx","filters","plugin","professional"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497611,"name":"Boris FX Continuum","slug":"boris-fx-continuum","version":"2024.0","description":"Comprehensive effects suite for photo and video post-production.","category":"photography","logoUrl":"logo/boris-continuum.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Boris FX Continuum94&tracker=94","tags":["effects","post-production","plugin","comprehensive"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497612,"name":"Pixel Film Studios","slug":"pixel-film-studios","version":"2.0.0","description":"Creative plugins and transitions for photo and video editing.","category":"photography","logoUrl":"logo/pixel-film.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pixel Film Studios95&tracker=95","tags":["plugins","transitions","creative","video"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497613,"name":"FilmConvert Nitrate","slug":"filmconvert-nitrate","version":"2.20.0","description":"Authentic film grain and color emulation for digital photos.","category":"photography","logoUrl":"logo/filmconvert.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FilmConvert Nitrate96&tracker=96","tags":["film","grain","color","emulation"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497614,"name":"Dehancer Pro","slug":"dehancer-pro","version":"1.2.0","description":"Film emulation plugin with grain, halation, and bloom effects.","category":"photography","logoUrl":"logo/dehancer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Dehancer Pro97&tracker=97","tags":["film","grain","halation","emulation"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497615,"name":"ColorPerfect","slug":"colorperfect","version":"2.6.0","description":"Advanced color grading plugin for black and white conversion.","category":"photography","logoUrl":"logo/colorperfect.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ColorPerfect98&tracker=98","tags":["color-grading","black-white","plugin","conversion"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497616,"name":"PhotoTools Professional","slug":"phototools-professional","version":"3.0.0","description":"Suite of professional photo editing plugins for creative effects.","category":"photography","logoUrl":"logo/phototools.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PhotoTools Professional99&tracker=99","tags":["plugins","professional","creative","suite"],"scrapedAt":"2026-04-27T12:38:17.518Z"},{"id":1777293497617,"name":"PhotoKit 2","slug":"photokit-2","version":"2.3.0","description":"Professional photo editing plugin with authentic film and print effects.","category":"photography","logoUrl":"logo/photokit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PhotoKit 2100&tracker=100","tags":["plugin","film","print","professional"],"scrapedAt":"2026-04-27T12:38:17.518Z"}];
+    const CURRENT_CATEGORY = 'photography';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

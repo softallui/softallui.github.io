@@ -1,0 +1,1125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Business — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Business</h1>
+    <p><span class="highlight">84</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="microsoft-365-business.html" class="app-card" data-id="1777296919922" style="text-decoration:none;color:inherit">
+          <img src="logo/microsoft-365-business.png" alt="Microsoft 365 Business" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Microsoft 365 Business</h3>
+          <p class="app-description">Complete productivity suite with Word, Excel, PowerPoint, Teams, and cloud services for businesses.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">office</span><span class="app-tag">productivity</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="salesforce-crm.html" class="app-card" data-id="1777296919923" style="text-decoration:none;color:inherit">
+          <img src="logo/salesforce.png" alt="Salesforce CRM" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Salesforce CRM</h3>
+          <p class="app-description">World&#039;s #1 CRM platform for sales, service, marketing, and commerce automation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crm</span><span class="app-tag">sales</span><span class="app-tag">automation</span>
+            </div>
+          
+        </a>
+        <a href="hubspot-crm.html" class="app-card" data-id="1777296919924" style="text-decoration:none;color:inherit">
+          <img src="logo/hubspot.png" alt="HubSpot CRM" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HubSpot CRM</h3>
+          <p class="app-description">Free CRM platform with contact management, deal tracking, and marketing automation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crm</span><span class="app-tag">free</span><span class="app-tag">marketing</span>
+            </div>
+          
+        </a>
+        <a href="quickbooks-online.html" class="app-card" data-id="1777296919925" style="text-decoration:none;color:inherit">
+          <img src="logo/quickbooks.png" alt="QuickBooks Online" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">QuickBooks Online</h3>
+          <p class="app-description">Cloud-based accounting software for small businesses with invoicing and payroll.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">accounting</span><span class="app-tag">invoicing</span><span class="app-tag">payroll</span>
+            </div>
+          
+        </a>
+        <a href="xero.html" class="app-card" data-id="1777296919926" style="text-decoration:none;color:inherit">
+          <img src="logo/xero.png" alt="Xero" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Xero</h3>
+          <p class="app-description">Beautiful accounting software for small businesses with bank reconciliation and reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">accounting</span><span class="app-tag">banking</span><span class="app-tag">reporting</span>
+            </div>
+          
+        </a>
+        <a href="freshbooks.html" class="app-card" data-id="1777296919927" style="text-decoration:none;color:inherit">
+          <img src="logo/freshbooks.png" alt="FreshBooks" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FreshBooks</h3>
+          <p class="app-description">Simple invoicing and accounting software designed for freelancers and small businesses.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">invoicing</span><span class="app-tag">accounting</span><span class="app-tag">freelance</span>
+            </div>
+          
+        </a>
+        <a href="zoho-crm.html" class="app-card" data-id="1777296919928" style="text-decoration:none;color:inherit">
+          <img src="logo/zoho-crm.png" alt="Zoho CRM" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zoho CRM</h3>
+          <p class="app-description">Comprehensive CRM with sales automation, analytics, and AI-powered insights.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crm</span><span class="app-tag">automation</span><span class="app-tag">analytics</span>
+            </div>
+          
+        </a>
+        <a href="pipedrive.html" class="app-card" data-id="1777296919929" style="text-decoration:none;color:inherit">
+          <img src="logo/pipedrive.png" alt="Pipedrive" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pipedrive</h3>
+          <p class="app-description">Sales-focused CRM with visual pipeline management and activity-based selling.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sales</span><span class="app-tag">pipeline</span><span class="app-tag">crm</span>
+            </div>
+          
+        </a>
+        <a href="copper-crm.html" class="app-card" data-id="1777296919930" style="text-decoration:none;color:inherit">
+          <img src="logo/copper.png" alt="Copper CRM" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Copper CRM</h3>
+          <p class="app-description">CRM built for Google Workspace with seamless Gmail and Calendar integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crm</span><span class="app-tag">google</span><span class="app-tag">gmail</span>
+            </div>
+          
+        </a>
+        <a href="insightly.html" class="app-card" data-id="1777296919931" style="text-decoration:none;color:inherit">
+          <img src="logo/insightly.png" alt="Insightly" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Insightly</h3>
+          <p class="app-description">CRM and project management platform for small and mid-sized businesses.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crm</span><span class="app-tag">project-management</span><span class="app-tag">workflow</span>
+            </div>
+          
+        </a>
+        <a href="nimble-crm.html" class="app-card" data-id="1777296919932" style="text-decoration:none;color:inherit">
+          <img src="logo/nimble.png" alt="Nimble CRM" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nimble CRM</h3>
+          <p class="app-description">Simple CRM with social media integration and contact enrichment features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crm</span><span class="app-tag">social</span><span class="app-tag">contacts</span>
+            </div>
+          
+        </a>
+        <a href="capsule-crm.html" class="app-card" data-id="1777296919933" style="text-decoration:none;color:inherit">
+          <img src="logo/capsule.png" alt="Capsule CRM" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Capsule CRM</h3>
+          <p class="app-description">Easy-to-use CRM for managing contacts, sales pipelines, and customer interactions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crm</span><span class="app-tag">contacts</span><span class="app-tag">pipeline</span>
+            </div>
+          
+        </a>
+        <a href="agile-crm.html" class="app-card" data-id="1777296919934" style="text-decoration:none;color:inherit">
+          <img src="logo/agile-crm.png" alt="Agile CRM" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Agile CRM</h3>
+          <p class="app-description">All-in-one CRM with sales, marketing automation, and customer service tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crm</span><span class="app-tag">marketing</span><span class="app-tag">automation</span>
+            </div>
+          
+        </a>
+        <a href="bitrix24.html" class="app-card" data-id="1777296919935" style="text-decoration:none;color:inherit">
+          <img src="logo/bitrix24.png" alt="Bitrix24" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bitrix24</h3>
+          <p class="app-description">Free collaboration platform with CRM, project management, and communication tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crm</span><span class="app-tag">collaboration</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="zendesk.html" class="app-card" data-id="1777296919936" style="text-decoration:none;color:inherit">
+          <img src="logo/zendesk.png" alt="Zendesk" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zendesk</h3>
+          <p class="app-description">Customer service platform with ticketing, knowledge base, and live chat.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">support</span><span class="app-tag">ticketing</span><span class="app-tag">chat</span>
+            </div>
+          
+        </a>
+        <a href="freshdesk.html" class="app-card" data-id="1777296919937" style="text-decoration:none;color:inherit">
+          <img src="logo/freshdesk.png" alt="Freshdesk" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Freshdesk</h3>
+          <p class="app-description">Cloud-based help desk software with ticketing, automation, and reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">helpdesk</span><span class="app-tag">ticketing</span><span class="app-tag">automation</span>
+            </div>
+          
+        </a>
+        <a href="intercom.html" class="app-card" data-id="1777296919938" style="text-decoration:none;color:inherit">
+          <img src="logo/intercom.png" alt="Intercom" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Intercom</h3>
+          <p class="app-description">Conversational platform for customer messaging, support, and engagement.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">messaging</span><span class="app-tag">support</span><span class="app-tag">engagement</span>
+            </div>
+          
+        </a>
+        <a href="help-scout.html" class="app-card" data-id="1777296919939" style="text-decoration:none;color:inherit">
+          <img src="logo/helpscout.png" alt="Help Scout" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Help Scout</h3>
+          <p class="app-description">Customer service platform with shared inbox, knowledge base, and reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">support</span><span class="app-tag">inbox</span><span class="app-tag">knowledge-base</span>
+            </div>
+          
+        </a>
+        <a href="kayako.html" class="app-card" data-id="1777296919940" style="text-decoration:none;color:inherit">
+          <img src="logo/kayako.png" alt="Kayako" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kayako</h3>
+          <p class="app-description">Unified customer service platform with live chat, email, and social support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">support</span><span class="app-tag">unified</span><span class="app-tag">chat</span>
+            </div>
+          
+        </a>
+        <a href="groove.html" class="app-card" data-id="1777296919941" style="text-decoration:none;color:inherit">
+          <img src="logo/groove.png" alt="Groove" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Groove</h3>
+          <p class="app-description">Simple help desk software designed for small businesses and startups.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">helpdesk</span><span class="app-tag">simple</span><span class="app-tag">small-business</span>
+            </div>
+          
+        </a>
+        <a href="livechat.html" class="app-card" data-id="1777296919942" style="text-decoration:none;color:inherit">
+          <img src="logo/livechat.png" alt="LiveChat" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LiveChat</h3>
+          <p class="app-description">Customer service software with live chat, ticketing, and analytics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">chat</span><span class="app-tag">support</span><span class="app-tag">analytics</span>
+            </div>
+          
+        </a>
+        <a href="drift.html" class="app-card" data-id="1777296919943" style="text-decoration:none;color:inherit">
+          <img src="logo/drift.png" alt="Drift" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Drift</h3>
+          <p class="app-description">Conversational marketing and sales platform with chatbots and live chat.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">chatbot</span><span class="app-tag">marketing</span><span class="app-tag">sales</span>
+            </div>
+          
+        </a>
+        <a href="olark.html" class="app-card" data-id="1777296919944" style="text-decoration:none;color:inherit">
+          <img src="logo/olark.png" alt="Olark" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Olark</h3>
+          <p class="app-description">Live chat software for sales and support with visitor tracking and automation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">chat</span><span class="app-tag">sales</span><span class="app-tag">tracking</span>
+            </div>
+          
+        </a>
+        <a href="tawk-to.html" class="app-card" data-id="1777296919945" style="text-decoration:none;color:inherit">
+          <img src="logo/tawkto.png" alt="Tawk.to" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tawk.to</h3>
+          <p class="app-description">Free live chat software with mobile apps and customizable widgets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">chat</span><span class="app-tag">free</span><span class="app-tag">mobile</span>
+            </div>
+          
+        </a>
+        <a href="crisp.html" class="app-card" data-id="1777296919946" style="text-decoration:none;color:inherit">
+          <img src="logo/crisp.png" alt="Crisp" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Crisp</h3>
+          <p class="app-description">Customer messaging platform with live chat, email, and knowledge base.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">messaging</span><span class="app-tag">chat</span><span class="app-tag">email</span>
+            </div>
+          
+        </a>
+        <a href="acuity-scheduling.html" class="app-card" data-id="1777296919948" style="text-decoration:none;color:inherit">
+          <img src="logo/acuity.png" alt="Acuity Scheduling" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Acuity Scheduling</h3>
+          <p class="app-description">Online appointment scheduling with payment processing and client management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">scheduling</span><span class="app-tag">appointments</span><span class="app-tag">payments</span>
+            </div>
+          
+        </a>
+        <a href="doodle.html" class="app-card" data-id="1777296919949" style="text-decoration:none;color:inherit">
+          <img src="logo/doodle.png" alt="Doodle" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Doodle</h3>
+          <p class="app-description">Simple scheduling tool for finding the best time for group meetings.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">scheduling</span><span class="app-tag">polls</span><span class="app-tag">meetings</span>
+            </div>
+          
+        </a>
+        <a href="scheduleonce.html" class="app-card" data-id="1777296919950" style="text-decoration:none;color:inherit">
+          <img src="logo/scheduleonce.png" alt="ScheduleOnce" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ScheduleOnce</h3>
+          <p class="app-description">Enterprise scheduling platform with routing, automation, and CRM integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">scheduling</span><span class="app-tag">enterprise</span><span class="app-tag">routing</span>
+            </div>
+          
+        </a>
+        <a href="appointlet.html" class="app-card" data-id="1777296919951" style="text-decoration:none;color:inherit">
+          <img src="logo/appointlet.png" alt="Appointlet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Appointlet</h3>
+          <p class="app-description">Free online appointment scheduler with calendar sync and custom branding.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">scheduling</span><span class="app-tag">free</span><span class="app-tag">calendar</span>
+            </div>
+          
+        </a>
+        <a href="simplybook-me.html" class="app-card" data-id="1777296919952" style="text-decoration:none;color:inherit">
+          <img src="logo/simplybook.png" alt="SimplyBook.me" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SimplyBook.me</h3>
+          <p class="app-description">Customizable booking system for service businesses with payment and SMS.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">booking</span><span class="app-tag">services</span><span class="app-tag">payments</span>
+            </div>
+          
+        </a>
+        <a href="setmore.html" class="app-card" data-id="1777296919953" style="text-decoration:none;color:inherit">
+          <img src="logo/setmore.png" alt="Setmore" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Setmore</h3>
+          <p class="app-description">Free appointment scheduling with online booking, payments, and reminders.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">scheduling</span><span class="app-tag">free</span><span class="app-tag">booking</span>
+            </div>
+          
+        </a>
+        <a href="bookeo.html" class="app-card" data-id="1777296919954" style="text-decoration:none;color:inherit">
+          <img src="logo/bookeo.png" alt="Bookeo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bookeo</h3>
+          <p class="app-description">Online booking software for classes, appointments, and rentals with payments.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">booking</span><span class="app-tag">classes</span><span class="app-tag">rentals</span>
+            </div>
+          
+        </a>
+        <a href="square-appointments.html" class="app-card" data-id="1777296919955" style="text-decoration:none;color:inherit">
+          <img src="logo/square-appointments.png" alt="Square Appointments" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Square Appointments</h3>
+          <p class="app-description">Free scheduling software integrated with Square payments and POS system.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">scheduling</span><span class="app-tag">square</span><span class="app-tag">pos</span>
+            </div>
+          
+        </a>
+        <a href="docusign.html" class="app-card" data-id="1777296919956" style="text-decoration:none;color:inherit">
+          <img src="logo/docusign.png" alt="DocuSign" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DocuSign</h3>
+          <p class="app-description">Electronic signature platform for legally binding agreements and workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">esignature</span><span class="app-tag">legal</span><span class="app-tag">workflows</span>
+            </div>
+          
+        </a>
+        <a href="pandadoc.html" class="app-card" data-id="1777296919958" style="text-decoration:none;color:inherit">
+          <img src="logo/pandadoc.png" alt="PandaDoc" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PandaDoc</h3>
+          <p class="app-description">Document automation platform for proposals, contracts, and e-signatures.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">documents</span><span class="app-tag">automation</span><span class="app-tag">proposals</span>
+            </div>
+          
+        </a>
+        <a href="hellosign.html" class="app-card" data-id="1777296919959" style="text-decoration:none;color:inherit">
+          <img src="logo/hellosign.png" alt="HelloSign" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HelloSign</h3>
+          <p class="app-description">Simple e-signature software with API integration and team collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">esignature</span><span class="app-tag">api</span><span class="app-tag">simple</span>
+            </div>
+          
+        </a>
+        <a href="signnow.html" class="app-card" data-id="1777296919960" style="text-decoration:none;color:inherit">
+          <img src="logo/signnow.png" alt="SignNow" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SignNow</h3>
+          <p class="app-description">Electronic signature platform with templates, workflows, and mobile apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">esignature</span><span class="app-tag">templates</span><span class="app-tag">workflows</span>
+            </div>
+          
+        </a>
+        <a href="rightsignature.html" class="app-card" data-id="1777296919961" style="text-decoration:none;color:inherit">
+          <img src="logo/rightsignature.png" alt="RightSignature" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">RightSignature</h3>
+          <p class="app-description">E-signature solution with custom branding and advanced authentication.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">esignature</span><span class="app-tag">branding</span><span class="app-tag">authentication</span>
+            </div>
+          
+        </a>
+        <a href="signeasy.html" class="app-card" data-id="1777296919962" style="text-decoration:none;color:inherit">
+          <img src="logo/signeasy.png" alt="SignEasy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SignEasy</h3>
+          <p class="app-description">Mobile-first e-signature app for signing documents on the go.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">esignature</span><span class="app-tag">mobile</span><span class="app-tag">simple</span>
+            </div>
+          
+        </a>
+        <a href="esign-genie.html" class="app-card" data-id="1777296919963" style="text-decoration:none;color:inherit">
+          <img src="logo/esign-genie.png" alt="eSign Genie" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">eSign Genie</h3>
+          <p class="app-description">Affordable e-signature software with templates and bulk sending.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">esignature</span><span class="app-tag">affordable</span><span class="app-tag">templates</span>
+            </div>
+          
+        </a>
+        <a href="signrequest.html" class="app-card" data-id="1777296919964" style="text-decoration:none;color:inherit">
+          <img src="logo/signrequest.png" alt="SignRequest" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SignRequest</h3>
+          <p class="app-description">Simple e-signature tool with Google Drive integration and audit trails.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">esignature</span><span class="app-tag">google</span><span class="app-tag">audit</span>
+            </div>
+          
+        </a>
+        <a href="zoho-sign.html" class="app-card" data-id="1777296919965" style="text-decoration:none;color:inherit">
+          <img src="logo/zoho-sign.png" alt="Zoho Sign" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zoho Sign</h3>
+          <p class="app-description">E-signature solution integrated with Zoho suite and third-party apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">esignature</span><span class="app-tag">zoho</span><span class="app-tag">integration</span>
+            </div>
+          
+        </a>
+        <a href="canva-for-business.html" class="app-card" data-id="1777296919966" style="text-decoration:none;color:inherit">
+          <img src="logo/canva-business.png" alt="Canva for Business" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Canva for Business</h3>
+          <p class="app-description">Design platform for teams with brand kits, templates, and collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">design</span><span class="app-tag">teams</span><span class="app-tag">branding</span>
+            </div>
+          
+        </a>
+        <a href="figma-for-teams.html" class="app-card" data-id="1777296919967" style="text-decoration:none;color:inherit">
+          <img src="logo/figma-teams.png" alt="Figma for Teams" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Figma for Teams</h3>
+          <p class="app-description">Collaborative design tool with real-time editing and design systems.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">design</span><span class="app-tag">collaboration</span><span class="app-tag">real-time</span>
+            </div>
+          
+        </a>
+        <a href="miro.html" class="app-card" data-id="1777296919968" style="text-decoration:none;color:inherit">
+          <img src="logo/miro.png" alt="Miro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Miro</h3>
+          <p class="app-description">Online whiteboard for visual collaboration, brainstorming, and planning.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">whiteboard</span><span class="app-tag">collaboration</span><span class="app-tag">brainstorming</span>
+            </div>
+          
+        </a>
+        <a href="mural.html" class="app-card" data-id="1777296919969" style="text-decoration:none;color:inherit">
+          <img src="logo/mural.png" alt="Mural" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mural</h3>
+          <p class="app-description">Digital workspace for visual collaboration and design thinking workshops.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">workspace</span><span class="app-tag">collaboration</span><span class="app-tag">design-thinking</span>
+            </div>
+          
+        </a>
+        <a href="lucidchart.html" class="app-card" data-id="1777296919970" style="text-decoration:none;color:inherit">
+          <img src="logo/lucidchart.png" alt="Lucidchart" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Lucidchart</h3>
+          <p class="app-description">Diagramming and visualization tool for flowcharts, org charts, and wireframes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diagrams</span><span class="app-tag">flowcharts</span><span class="app-tag">wireframes</span>
+            </div>
+          
+        </a>
+        <a href="draw-io.html" class="app-card" data-id="1777296919971" style="text-decoration:none;color:inherit">
+          <img src="logo/draw-io.png" alt="Draw.io" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Draw.io</h3>
+          <p class="app-description">Free, open-source diagramming tool with offline support and integrations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diagrams</span><span class="app-tag">free</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="grammarly-business.html" class="app-card" data-id="1777296919975" style="text-decoration:none;color:inherit">
+          <img src="logo/grammarly-business.png" alt="Grammarly Business" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Grammarly Business</h3>
+          <p class="app-description">AI writing assistant for teams with brand voice and style guide enforcement.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">writing</span><span class="app-tag">ai</span><span class="app-tag">teams</span>
+            </div>
+          
+        </a>
+        <a href="hemingway-editor.html" class="app-card" data-id="1777296919976" style="text-decoration:none;color:inherit">
+          <img src="logo/hemingway.png" alt="Hemingway Editor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hemingway Editor</h3>
+          <p class="app-description">Writing tool that highlights complex sentences and improves readability.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">writing</span><span class="app-tag">readability</span><span class="app-tag">editing</span>
+            </div>
+          
+        </a>
+        <a href="prowritingaid.html" class="app-card" data-id="1777296919977" style="text-decoration:none;color:inherit">
+          <img src="logo/prowritingaid.png" alt="ProWritingAid" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ProWritingAid</h3>
+          <p class="app-description">Comprehensive writing tool with grammar checking, style suggestions, and reports.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">writing</span><span class="app-tag">grammar</span><span class="app-tag">style</span>
+            </div>
+          
+        </a>
+        <a href="writer.html" class="app-card" data-id="1777296919978" style="text-decoration:none;color:inherit">
+          <img src="logo/writer.png" alt="Writer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Writer</h3>
+          <p class="app-description">Enterprise content platform with style guides and compliance checking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">content</span><span class="app-tag">enterprise</span><span class="app-tag">compliance</span>
+            </div>
+          
+        </a>
+        <a href="clearscope.html" class="app-card" data-id="1777296919979" style="text-decoration:none;color:inherit">
+          <img src="logo/clearscope.png" alt="Clearscope" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Clearscope</h3>
+          <p class="app-description">Content optimization platform for SEO-driven writing and keyword research.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">seo</span><span class="app-tag">content</span><span class="app-tag">keywords</span>
+            </div>
+          
+        </a>
+        <a href="marketmuse.html" class="app-card" data-id="1777296919980" style="text-decoration:none;color:inherit">
+          <img src="logo/marketmuse.png" alt="MarketMuse" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MarketMuse</h3>
+          <p class="app-description">AI-powered content strategy platform for research, planning, and optimization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">content</span><span class="app-tag">strategy</span>
+            </div>
+          
+        </a>
+        <a href="surfer-seo.html" class="app-card" data-id="1777296919981" style="text-decoration:none;color:inherit">
+          <img src="logo/surfer-seo.png" alt="Surfer SEO" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Surfer SEO</h3>
+          <p class="app-description">On-page SEO tool with content editor, keyword research, and SERP analysis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">seo</span><span class="app-tag">content</span><span class="app-tag">keywords</span>
+            </div>
+          
+        </a>
+        <a href="ahrefs.html" class="app-card" data-id="1777296919982" style="text-decoration:none;color:inherit">
+          <img src="logo/ahrefs.png" alt="Ahrefs" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ahrefs</h3>
+          <p class="app-description">SEO toolkit for backlink analysis, keyword research, and competitor tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">seo</span><span class="app-tag">backlinks</span><span class="app-tag">keywords</span>
+            </div>
+          
+        </a>
+        <a href="semrush.html" class="app-card" data-id="1777296919983" style="text-decoration:none;color:inherit">
+          <img src="logo/semrush.png" alt="SEMrush" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SEMrush</h3>
+          <p class="app-description">All-in-one marketing toolkit for SEO, PPC, content, and social media.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">seo</span><span class="app-tag">ppc</span><span class="app-tag">marketing</span>
+            </div>
+          
+        </a>
+        <a href="moz-pro.html" class="app-card" data-id="1777296919984" style="text-decoration:none;color:inherit">
+          <img src="logo/moz.png" alt="Moz Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Moz Pro</h3>
+          <p class="app-description">SEO software with keyword research, link building, and site audits.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">seo</span><span class="app-tag">keywords</span><span class="app-tag">link-building</span>
+            </div>
+          
+        </a>
+        <a href="google-analytics.html" class="app-card" data-id="1777296919985" style="text-decoration:none;color:inherit">
+          <img src="logo/google-analytics.png" alt="Google Analytics" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Analytics</h3>
+          <p class="app-description">Web analytics platform for tracking traffic, conversions, and user behavior.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">analytics</span><span class="app-tag">tracking</span><span class="app-tag">web</span>
+            </div>
+          
+        </a>
+        <a href="google-search-console.html" class="app-card" data-id="1777296919986" style="text-decoration:none;color:inherit">
+          <img src="logo/google-search-console.png" alt="Google Search Console" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Search Console</h3>
+          <p class="app-description">Free tool for monitoring site performance in Google Search results.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">seo</span><span class="app-tag">search</span><span class="app-tag">google</span>
+            </div>
+          
+        </a>
+        <a href="hotjar.html" class="app-card" data-id="1777296919987" style="text-decoration:none;color:inherit">
+          <img src="logo/hotjar.png" alt="Hotjar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hotjar</h3>
+          <p class="app-description">Behavior analytics tool with heatmaps, session recordings, and surveys.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">analytics</span><span class="app-tag">heatmaps</span><span class="app-tag">recordings</span>
+            </div>
+          
+        </a>
+        <a href="crazy-egg.html" class="app-card" data-id="1777296919988" style="text-decoration:none;color:inherit">
+          <img src="logo/crazy-egg.png" alt="Crazy Egg" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Crazy Egg</h3>
+          <p class="app-description">Website optimization tool with heatmaps, scroll maps, and A/B testing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">optimization</span><span class="app-tag">heatmaps</span><span class="app-tag">ab-testing</span>
+            </div>
+          
+        </a>
+        <a href="mixpanel.html" class="app-card" data-id="1777296919989" style="text-decoration:none;color:inherit">
+          <img src="logo/mixpanel.png" alt="Mixpanel" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mixpanel</h3>
+          <p class="app-description">Product analytics platform for tracking user actions and retention.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">analytics</span><span class="app-tag">product</span><span class="app-tag">retention</span>
+            </div>
+          
+        </a>
+        <a href="amplitude.html" class="app-card" data-id="1777296919990" style="text-decoration:none;color:inherit">
+          <img src="logo/amplitude.png" alt="Amplitude" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Amplitude</h3>
+          <p class="app-description">Digital analytics platform for product intelligence and user journey mapping.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">analytics</span><span class="app-tag">product</span><span class="app-tag">journey</span>
+            </div>
+          
+        </a>
+        <a href="segment.html" class="app-card" data-id="1777296919991" style="text-decoration:none;color:inherit">
+          <img src="logo/segment.png" alt="Segment" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Segment</h3>
+          <p class="app-description">Customer data platform for collecting, cleaning, and activating user data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cdp</span><span class="app-tag">data</span><span class="app-tag">integration</span>
+            </div>
+          
+        </a>
+        <a href="heap-analytics.html" class="app-card" data-id="1777296919992" style="text-decoration:none;color:inherit">
+          <img src="logo/heap.png" alt="Heap Analytics" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Heap Analytics</h3>
+          <p class="app-description">Automated product analytics with retroactive data collection and insights.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">analytics</span><span class="app-tag">automated</span><span class="app-tag">retroactive</span>
+            </div>
+          
+        </a>
+        <a href="fullstory.html" class="app-card" data-id="1777296919993" style="text-decoration:none;color:inherit">
+          <img src="logo/fullstory.png" alt="FullStory" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FullStory</h3>
+          <p class="app-description">Digital experience analytics with session replay and frustration signals.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">analytics</span><span class="app-tag">session-replay</span><span class="app-tag">ux</span>
+            </div>
+          
+        </a>
+        <a href="logrocket.html" class="app-card" data-id="1777296919994" style="text-decoration:none;color:inherit">
+          <img src="logo/logrocket.png" alt="LogRocket" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LogRocket</h3>
+          <p class="app-description">Frontend monitoring with session replay, error tracking, and performance metrics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">monitoring</span><span class="app-tag">session-replay</span><span class="app-tag">errors</span>
+            </div>
+          
+        </a>
+        <a href="oracle-netsuite.html" class="app-card" data-id="1777296919995" style="text-decoration:none;color:inherit">
+          <img src="logo/netsuite.png" alt="Oracle NetSuite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Oracle NetSuite</h3>
+          <p class="app-description">Cloud ERP for financials, CRM, ecommerce, and professional services.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">erp</span><span class="app-tag">cloud</span><span class="app-tag">financials</span>
+            </div>
+          
+        </a>
+        <a href="microsoft-dynamics-365.html" class="app-card" data-id="1777296919996" style="text-decoration:none;color:inherit">
+          <img src="logo/dynamics-365.png" alt="Microsoft Dynamics 365" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Microsoft Dynamics 365</h3>
+          <p class="app-description">Integrated ERP and CRM applications for sales, service, and operations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">erp</span><span class="app-tag">crm</span><span class="app-tag">microsoft</span>
+            </div>
+          
+        </a>
+        <a href="sap-business-one.html" class="app-card" data-id="1777296919997" style="text-decoration:none;color:inherit">
+          <img src="logo/sap-business-one.png" alt="SAP Business One" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SAP Business One</h3>
+          <p class="app-description">ERP solution for small and midsize businesses with financials and operations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">erp</span><span class="app-tag">sap</span><span class="app-tag">financials</span>
+            </div>
+          
+        </a>
+        <a href="sage-intacct.html" class="app-card" data-id="1777296919998" style="text-decoration:none;color:inherit">
+          <img src="logo/sage-intacct.png" alt="Sage Intacct" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sage Intacct</h3>
+          <p class="app-description">Cloud financial management with core accounting, reporting, and automation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">accounting</span><span class="app-tag">cloud</span><span class="app-tag">reporting</span>
+            </div>
+          
+        </a>
+        <a href="wave-accounting.html" class="app-card" data-id="1777296919999" style="text-decoration:none;color:inherit">
+          <img src="logo/wave.png" alt="Wave Accounting" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wave Accounting</h3>
+          <p class="app-description">Free accounting software for small businesses with invoicing and receipts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">accounting</span><span class="app-tag">free</span><span class="app-tag">invoicing</span>
+            </div>
+          
+        </a>
+        <a href="bench.html" class="app-card" data-id="1777296920000" style="text-decoration:none;color:inherit">
+          <img src="logo/bench.png" alt="Bench" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bench</h3>
+          <p class="app-description">Bookkeeping service with dedicated bookkeepers and automated software.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">bookkeeping</span><span class="app-tag">service</span><span class="app-tag">automated</span>
+            </div>
+          
+        </a>
+        <a href="kashoo.html" class="app-card" data-id="1777296920001" style="text-decoration:none;color:inherit">
+          <img src="logo/kashoo.png" alt="Kashoo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kashoo</h3>
+          <p class="app-description">Simple cloud accounting for small businesses with bank sync and invoicing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">accounting</span><span class="app-tag">cloud</span><span class="app-tag">simple</span>
+            </div>
+          
+        </a>
+        <a href="zoho-books.html" class="app-card" data-id="1777296920002" style="text-decoration:none;color:inherit">
+          <img src="logo/zoho-books.png" alt="Zoho Books" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zoho Books</h3>
+          <p class="app-description">Online accounting software with invoicing, expenses, and tax compliance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">accounting</span><span class="app-tag">invoicing</span><span class="app-tag">tax</span>
+            </div>
+          
+        </a>
+        <a href="quickbooks-desktop.html" class="app-card" data-id="1777296920003" style="text-decoration:none;color:inherit">
+          <img src="logo/quickbooks-desktop.png" alt="QuickBooks Desktop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">QuickBooks Desktop</h3>
+          <p class="app-description">Desktop accounting software with advanced inventory and industry-specific features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">accounting</span><span class="app-tag">desktop</span><span class="app-tag">inventory</span>
+            </div>
+          
+        </a>
+        <a href="xero-accounting.html" class="app-card" data-id="1777296920004" style="text-decoration:none;color:inherit">
+          <img src="logo/xero-accounting.png" alt="Xero Accounting" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Xero Accounting</h3>
+          <p class="app-description">Cloud accounting with bank feeds, invoicing, and multi-currency support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">accounting</span><span class="app-tag">cloud</span><span class="app-tag">multi-currency</span>
+            </div>
+          
+        </a>
+        <a href="close-crm.html" class="app-card" data-id="1777296920005" style="text-decoration:none;color:inherit">
+          <img src="logo/close-crm.png" alt="Close CRM" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Close CRM</h3>
+          <p class="app-description">Sales CRM with built-in calling, email, and SMS for inside sales teams.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crm</span><span class="app-tag">sales</span><span class="app-tag">calling</span>
+            </div>
+          
+        </a>
+        <a href="less-annoying-crm.html" class="app-card" data-id="1777296920006" style="text-decoration:none;color:inherit">
+          <img src="logo/less-annoying.png" alt="Less Annoying CRM" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Less Annoying CRM</h3>
+          <p class="app-description">Simple, affordable CRM designed for small businesses with easy setup.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crm</span><span class="app-tag">simple</span><span class="app-tag">affordable</span>
+            </div>
+          
+        </a>
+        <a href="teamwork.html" class="app-card" data-id="1777296920007" style="text-decoration:none;color:inherit">
+          <img src="logo/teamwork.png" alt="Teamwork" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Teamwork</h3>
+          <p class="app-description">Project management platform for client work with time tracking and billing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">project-management</span><span class="app-tag">client-work</span><span class="app-tag">time-tracking</span>
+            </div>
+          
+        </a>
+        <a href="notion-for-teams.html" class="app-card" data-id="1777296920018" style="text-decoration:none;color:inherit">
+          <img src="logo/notion-teams.png" alt="Notion for Teams" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Notion for Teams</h3>
+          <p class="app-description">Collaborative workspace for docs, tasks, wikis, and databases.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">workspace</span><span class="app-tag">collaboration</span><span class="app-tag">docs</span>
+            </div>
+          
+        </a>
+        <a href="slack-for-business.html" class="app-card" data-id="1777296920019" style="text-decoration:none;color:inherit">
+          <img src="logo/slack-business.png" alt="Slack for Business" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Slack for Business</h3>
+          <p class="app-description">Team messaging platform with channels, integrations, and enterprise features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">messaging</span><span class="app-tag">team</span><span class="app-tag">channels</span>
+            </div>
+          
+        </a>
+        <a href="zoom-for-business.html" class="app-card" data-id="1777296920021" style="text-decoration:none;color:inherit">
+          <img src="logo/zoom-business.png" alt="Zoom for Business" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zoom for Business</h3>
+          <p class="app-description">Video conferencing with webinars, cloud recording, and admin controls.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">video</span><span class="app-tag">conferencing</span><span class="app-tag">webinars</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777296919922,"name":"Microsoft 365 Business","slug":"microsoft-365-business","version":"16.0.17328","description":"Complete productivity suite with Word, Excel, PowerPoint, Teams, and cloud services for businesses.","category":"business","logoUrl":"logo/microsoft-365-business.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Microsoft 365 Business1&tracker=1","tags":["office","productivity","cloud","collaboration"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919923,"name":"Salesforce CRM","slug":"salesforce-crm","version":"244.0.0","description":"World's #1 CRM platform for sales, service, marketing, and commerce automation.","category":"business","logoUrl":"logo/salesforce.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Salesforce CRM2&tracker=2","tags":["crm","sales","automation","enterprise"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919924,"name":"HubSpot CRM","slug":"hubspot-crm","version":"3.12.0","description":"Free CRM platform with contact management, deal tracking, and marketing automation.","category":"business","logoUrl":"logo/hubspot.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HubSpot CRM3&tracker=3","tags":["crm","free","marketing","sales"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919925,"name":"QuickBooks Online","slug":"quickbooks-online","version":"2024.1","description":"Cloud-based accounting software for small businesses with invoicing and payroll.","category":"business","logoUrl":"logo/quickbooks.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=QuickBooks Online4&tracker=4","tags":["accounting","invoicing","payroll","small-business"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919926,"name":"Xero","slug":"xero","version":"2024.2","description":"Beautiful accounting software for small businesses with bank reconciliation and reporting.","category":"business","logoUrl":"logo/xero.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Xero5&tracker=5","tags":["accounting","banking","reporting","cloud"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919927,"name":"FreshBooks","slug":"freshbooks","version":"12.5.0","description":"Simple invoicing and accounting software designed for freelancers and small businesses.","category":"business","logoUrl":"logo/freshbooks.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FreshBooks6&tracker=6","tags":["invoicing","accounting","freelance","time-tracking"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919928,"name":"Zoho CRM","slug":"zoho-crm","version":"24.01","description":"Comprehensive CRM with sales automation, analytics, and AI-powered insights.","category":"business","logoUrl":"logo/zoho-crm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zoho CRM7&tracker=7","tags":["crm","automation","analytics","ai"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919929,"name":"Pipedrive","slug":"pipedrive","version":"2024.1","description":"Sales-focused CRM with visual pipeline management and activity-based selling.","category":"business","logoUrl":"logo/pipedrive.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pipedrive8&tracker=8","tags":["sales","pipeline","crm","visual"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919930,"name":"Copper CRM","slug":"copper-crm","version":"4.2.0","description":"CRM built for Google Workspace with seamless Gmail and Calendar integration.","category":"business","logoUrl":"logo/copper.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Copper CRM9&tracker=9","tags":["crm","google","gmail","integration"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919931,"name":"Insightly","slug":"insightly","version":"5.0.0","description":"CRM and project management platform for small and mid-sized businesses.","category":"business","logoUrl":"logo/insightly.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Insightly10&tracker=10","tags":["crm","project-management","workflow","small-business"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919932,"name":"Nimble CRM","slug":"nimble-crm","version":"4.1.0","description":"Simple CRM with social media integration and contact enrichment features.","category":"business","logoUrl":"logo/nimble.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nimble CRM11&tracker=11","tags":["crm","social","contacts","simple"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919933,"name":"Capsule CRM","slug":"capsule-crm","version":"3.8.0","description":"Easy-to-use CRM for managing contacts, sales pipelines, and customer interactions.","category":"business","logoUrl":"logo/capsule.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Capsule CRM12&tracker=12","tags":["crm","contacts","pipeline","easy"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919934,"name":"Agile CRM","slug":"agile-crm","version":"5.0.0","description":"All-in-one CRM with sales, marketing automation, and customer service tools.","category":"business","logoUrl":"logo/agile-crm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Agile CRM13&tracker=13","tags":["crm","marketing","automation","all-in-one"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919935,"name":"Bitrix24","slug":"bitrix24","version":"24.100.0","description":"Free collaboration platform with CRM, project management, and communication tools.","category":"business","logoUrl":"logo/bitrix24.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bitrix2414&tracker=14","tags":["crm","collaboration","free","project-management"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919936,"name":"Zendesk","slug":"zendesk","version":"2024.1","description":"Customer service platform with ticketing, knowledge base, and live chat.","category":"business","logoUrl":"logo/zendesk.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zendesk15&tracker=15","tags":["support","ticketing","chat","customer-service"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919937,"name":"Freshdesk","slug":"freshdesk","version":"2024.1","description":"Cloud-based help desk software with ticketing, automation, and reporting.","category":"business","logoUrl":"logo/freshdesk.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Freshdesk16&tracker=16","tags":["helpdesk","ticketing","automation","cloud"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919938,"name":"Intercom","slug":"intercom","version":"2024.1","description":"Conversational platform for customer messaging, support, and engagement.","category":"business","logoUrl":"logo/intercom.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Intercom17&tracker=17","tags":["messaging","support","engagement","conversational"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919939,"name":"Help Scout","slug":"help-scout","version":"5.2.0","description":"Customer service platform with shared inbox, knowledge base, and reporting.","category":"business","logoUrl":"logo/helpscout.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Help Scout18&tracker=18","tags":["support","inbox","knowledge-base","reporting"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919940,"name":"Kayako","slug":"kayako","version":"2024.1","description":"Unified customer service platform with live chat, email, and social support.","category":"business","logoUrl":"logo/kayako.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kayako19&tracker=19","tags":["support","unified","chat","social"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919941,"name":"Groove","slug":"groove","version":"2024.1","description":"Simple help desk software designed for small businesses and startups.","category":"business","logoUrl":"logo/groove.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Groove20&tracker=20","tags":["helpdesk","simple","small-business","startup"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919942,"name":"LiveChat","slug":"livechat","version":"4.2.0","description":"Customer service software with live chat, ticketing, and analytics.","category":"business","logoUrl":"logo/livechat.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LiveChat21&tracker=21","tags":["chat","support","analytics","ticketing"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919943,"name":"Drift","slug":"drift","version":"2024.1","description":"Conversational marketing and sales platform with chatbots and live chat.","category":"business","logoUrl":"logo/drift.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Drift22&tracker=22","tags":["chatbot","marketing","sales","conversational"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919944,"name":"Olark","slug":"olark","version":"2024.1","description":"Live chat software for sales and support with visitor tracking and automation.","category":"business","logoUrl":"logo/olark.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Olark23&tracker=23","tags":["chat","sales","tracking","automation"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919945,"name":"Tawk.to","slug":"tawk-to","version":"2024.1","description":"Free live chat software with mobile apps and customizable widgets.","category":"business","logoUrl":"logo/tawkto.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tawk.to24&tracker=24","tags":["chat","free","mobile","widget"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919946,"name":"Crisp","slug":"crisp","version":"2024.1","description":"Customer messaging platform with live chat, email, and knowledge base.","category":"business","logoUrl":"logo/crisp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Crisp25&tracker=25","tags":["messaging","chat","email","knowledge-base"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919948,"name":"Acuity Scheduling","slug":"acuity-scheduling","version":"2024.1","description":"Online appointment scheduling with payment processing and client management.","category":"business","logoUrl":"logo/acuity.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Acuity Scheduling27&tracker=27","tags":["scheduling","appointments","payments","clients"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919949,"name":"Doodle","slug":"doodle","version":"2024.1","description":"Simple scheduling tool for finding the best time for group meetings.","category":"business","logoUrl":"logo/doodle.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Doodle28&tracker=28","tags":["scheduling","polls","meetings","group"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919950,"name":"ScheduleOnce","slug":"scheduleonce","version":"2024.1","description":"Enterprise scheduling platform with routing, automation, and CRM integration.","category":"business","logoUrl":"logo/scheduleonce.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ScheduleOnce29&tracker=29","tags":["scheduling","enterprise","routing","crm"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919951,"name":"Appointlet","slug":"appointlet","version":"2024.1","description":"Free online appointment scheduler with calendar sync and custom branding.","category":"business","logoUrl":"logo/appointlet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Appointlet30&tracker=30","tags":["scheduling","free","calendar","branding"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919952,"name":"SimplyBook.me","slug":"simplybook-me","version":"2024.1","description":"Customizable booking system for service businesses with payment and SMS.","category":"business","logoUrl":"logo/simplybook.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SimplyBook.me31&tracker=31","tags":["booking","services","payments","sms"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919953,"name":"Setmore","slug":"setmore","version":"2024.1","description":"Free appointment scheduling with online booking, payments, and reminders.","category":"business","logoUrl":"logo/setmore.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Setmore32&tracker=32","tags":["scheduling","free","booking","reminders"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919954,"name":"Bookeo","slug":"bookeo","version":"2024.1","description":"Online booking software for classes, appointments, and rentals with payments.","category":"business","logoUrl":"logo/bookeo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bookeo33&tracker=33","tags":["booking","classes","rentals","payments"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919955,"name":"Square Appointments","slug":"square-appointments","version":"2024.1","description":"Free scheduling software integrated with Square payments and POS system.","category":"business","logoUrl":"logo/square-appointments.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Square Appointments34&tracker=34","tags":["scheduling","square","pos","payments"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919956,"name":"DocuSign","slug":"docusign","version":"2024.1","description":"Electronic signature platform for legally binding agreements and workflows.","category":"business","logoUrl":"logo/docusign.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DocuSign35&tracker=35","tags":["esignature","legal","workflows","documents"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919958,"name":"PandaDoc","slug":"pandadoc","version":"2024.1","description":"Document automation platform for proposals, contracts, and e-signatures.","category":"business","logoUrl":"logo/pandadoc.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PandaDoc37&tracker=37","tags":["documents","automation","proposals","esignature"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919959,"name":"HelloSign","slug":"hellosign","version":"2024.1","description":"Simple e-signature software with API integration and team collaboration.","category":"business","logoUrl":"logo/hellosign.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HelloSign38&tracker=38","tags":["esignature","api","simple","collaboration"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919960,"name":"SignNow","slug":"signnow","version":"2024.1","description":"Electronic signature platform with templates, workflows, and mobile apps.","category":"business","logoUrl":"logo/signnow.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SignNow39&tracker=39","tags":["esignature","templates","workflows","mobile"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919961,"name":"RightSignature","slug":"rightsignature","version":"2024.1","description":"E-signature solution with custom branding and advanced authentication.","category":"business","logoUrl":"logo/rightsignature.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=RightSignature40&tracker=40","tags":["esignature","branding","authentication","custom"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919962,"name":"SignEasy","slug":"signeasy","version":"2024.1","description":"Mobile-first e-signature app for signing documents on the go.","category":"business","logoUrl":"logo/signeasy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SignEasy41&tracker=41","tags":["esignature","mobile","simple","on-the-go"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919963,"name":"eSign Genie","slug":"esign-genie","version":"2024.1","description":"Affordable e-signature software with templates and bulk sending.","category":"business","logoUrl":"logo/esign-genie.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=eSign Genie42&tracker=42","tags":["esignature","affordable","templates","bulk"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919964,"name":"SignRequest","slug":"signrequest","version":"2024.1","description":"Simple e-signature tool with Google Drive integration and audit trails.","category":"business","logoUrl":"logo/signrequest.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SignRequest43&tracker=43","tags":["esignature","google","audit","simple"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919965,"name":"Zoho Sign","slug":"zoho-sign","version":"2024.1","description":"E-signature solution integrated with Zoho suite and third-party apps.","category":"business","logoUrl":"logo/zoho-sign.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zoho Sign44&tracker=44","tags":["esignature","zoho","integration","workflow"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919966,"name":"Canva for Business","slug":"canva-for-business","version":"2024.1","description":"Design platform for teams with brand kits, templates, and collaboration.","category":"business","logoUrl":"logo/canva-business.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Canva for Business45&tracker=45","tags":["design","teams","branding","templates"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919967,"name":"Figma for Teams","slug":"figma-for-teams","version":"2024.1","description":"Collaborative design tool with real-time editing and design systems.","category":"business","logoUrl":"logo/figma-teams.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Figma for Teams46&tracker=46","tags":["design","collaboration","real-time","systems"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919968,"name":"Miro","slug":"miro","version":"2024.1","description":"Online whiteboard for visual collaboration, brainstorming, and planning.","category":"business","logoUrl":"logo/miro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Miro47&tracker=47","tags":["whiteboard","collaboration","brainstorming","visual"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919969,"name":"Mural","slug":"mural","version":"2024.1","description":"Digital workspace for visual collaboration and design thinking workshops.","category":"business","logoUrl":"logo/mural.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mural48&tracker=48","tags":["workspace","collaboration","design-thinking","workshops"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919970,"name":"Lucidchart","slug":"lucidchart","version":"2024.1","description":"Diagramming and visualization tool for flowcharts, org charts, and wireframes.","category":"business","logoUrl":"logo/lucidchart.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Lucidchart49&tracker=49","tags":["diagrams","flowcharts","wireframes","visualization"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919971,"name":"Draw.io","slug":"draw-io","version":"24.0.0","description":"Free, open-source diagramming tool with offline support and integrations.","category":"business","logoUrl":"logo/draw-io.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Draw.io50&tracker=50","tags":["diagrams","free","open-source","offline"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919975,"name":"Grammarly Business","slug":"grammarly-business","version":"2024.1","description":"AI writing assistant for teams with brand voice and style guide enforcement.","category":"business","logoUrl":"logo/grammarly-business.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Grammarly Business54&tracker=54","tags":["writing","ai","teams","brand-voice"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919976,"name":"Hemingway Editor","slug":"hemingway-editor","version":"3.5.0","description":"Writing tool that highlights complex sentences and improves readability.","category":"business","logoUrl":"logo/hemingway.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hemingway Editor55&tracker=55","tags":["writing","readability","editing","simple"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919977,"name":"ProWritingAid","slug":"prowritingaid","version":"3.2.0","description":"Comprehensive writing tool with grammar checking, style suggestions, and reports.","category":"business","logoUrl":"logo/prowritingaid.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ProWritingAid56&tracker=56","tags":["writing","grammar","style","reports"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919978,"name":"Writer","slug":"writer","version":"2024.1","description":"Enterprise content platform with style guides and compliance checking.","category":"business","logoUrl":"logo/writer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Writer57&tracker=57","tags":["content","enterprise","compliance","style-guide"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919979,"name":"Clearscope","slug":"clearscope","version":"2024.1","description":"Content optimization platform for SEO-driven writing and keyword research.","category":"business","logoUrl":"logo/clearscope.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Clearscope58&tracker=58","tags":["seo","content","keywords","optimization"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919980,"name":"MarketMuse","slug":"marketmuse","version":"2024.1","description":"AI-powered content strategy platform for research, planning, and optimization.","category":"business","logoUrl":"logo/marketmuse.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MarketMuse59&tracker=59","tags":["ai","content","strategy","research"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919981,"name":"Surfer SEO","slug":"surfer-seo","version":"2024.1","description":"On-page SEO tool with content editor, keyword research, and SERP analysis.","category":"business","logoUrl":"logo/surfer-seo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Surfer SEO60&tracker=60","tags":["seo","content","keywords","serp"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919982,"name":"Ahrefs","slug":"ahrefs","version":"2024.1","description":"SEO toolkit for backlink analysis, keyword research, and competitor tracking.","category":"business","logoUrl":"logo/ahrefs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ahrefs61&tracker=61","tags":["seo","backlinks","keywords","competitors"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919983,"name":"SEMrush","slug":"semrush","version":"2024.1","description":"All-in-one marketing toolkit for SEO, PPC, content, and social media.","category":"business","logoUrl":"logo/semrush.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SEMrush62&tracker=62","tags":["seo","ppc","marketing","analytics"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919984,"name":"Moz Pro","slug":"moz-pro","version":"2024.1","description":"SEO software with keyword research, link building, and site audits.","category":"business","logoUrl":"logo/moz.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Moz Pro63&tracker=63","tags":["seo","keywords","link-building","audits"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919985,"name":"Google Analytics","slug":"google-analytics","version":"GA4","description":"Web analytics platform for tracking traffic, conversions, and user behavior.","category":"business","logoUrl":"logo/google-analytics.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Analytics64&tracker=64","tags":["analytics","tracking","web","google"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919986,"name":"Google Search Console","slug":"google-search-console","version":"2024.1","description":"Free tool for monitoring site performance in Google Search results.","category":"business","logoUrl":"logo/google-search-console.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Search Console65&tracker=65","tags":["seo","search","google","free"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919987,"name":"Hotjar","slug":"hotjar","version":"2024.1","description":"Behavior analytics tool with heatmaps, session recordings, and surveys.","category":"business","logoUrl":"logo/hotjar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hotjar66&tracker=66","tags":["analytics","heatmaps","recordings","ux"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919988,"name":"Crazy Egg","slug":"crazy-egg","version":"2024.1","description":"Website optimization tool with heatmaps, scroll maps, and A/B testing.","category":"business","logoUrl":"logo/crazy-egg.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Crazy Egg67&tracker=67","tags":["optimization","heatmaps","ab-testing","conversion"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919989,"name":"Mixpanel","slug":"mixpanel","version":"2024.1","description":"Product analytics platform for tracking user actions and retention.","category":"business","logoUrl":"logo/mixpanel.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mixpanel68&tracker=68","tags":["analytics","product","retention","events"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919990,"name":"Amplitude","slug":"amplitude","version":"2024.1","description":"Digital analytics platform for product intelligence and user journey mapping.","category":"business","logoUrl":"logo/amplitude.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Amplitude69&tracker=69","tags":["analytics","product","journey","intelligence"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919991,"name":"Segment","slug":"segment","version":"2024.1","description":"Customer data platform for collecting, cleaning, and activating user data.","category":"business","logoUrl":"logo/segment.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Segment70&tracker=70","tags":["cdp","data","integration","activation"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919992,"name":"Heap Analytics","slug":"heap-analytics","version":"2024.1","description":"Automated product analytics with retroactive data collection and insights.","category":"business","logoUrl":"logo/heap.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Heap Analytics71&tracker=71","tags":["analytics","automated","retroactive","product"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919993,"name":"FullStory","slug":"fullstory","version":"2024.1","description":"Digital experience analytics with session replay and frustration signals.","category":"business","logoUrl":"logo/fullstory.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FullStory72&tracker=72","tags":["analytics","session-replay","ux","frustration"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919994,"name":"LogRocket","slug":"logrocket","version":"2024.1","description":"Frontend monitoring with session replay, error tracking, and performance metrics.","category":"business","logoUrl":"logo/logrocket.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LogRocket73&tracker=73","tags":["monitoring","session-replay","errors","performance"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919995,"name":"Oracle NetSuite","slug":"oracle-netsuite","version":"2024.1","description":"Cloud ERP for financials, CRM, ecommerce, and professional services.","category":"business","logoUrl":"logo/netsuite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Oracle NetSuite74&tracker=74","tags":["erp","cloud","financials","enterprise"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919996,"name":"Microsoft Dynamics 365","slug":"microsoft-dynamics-365","version":"2024.1","description":"Integrated ERP and CRM applications for sales, service, and operations.","category":"business","logoUrl":"logo/dynamics-365.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Microsoft Dynamics 36575&tracker=75","tags":["erp","crm","microsoft","enterprise"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919997,"name":"SAP Business One","slug":"sap-business-one","version":"10.0","description":"ERP solution for small and midsize businesses with financials and operations.","category":"business","logoUrl":"logo/sap-business-one.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SAP Business One76&tracker=76","tags":["erp","sap","financials","smb"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919998,"name":"Sage Intacct","slug":"sage-intacct","version":"2024.1","description":"Cloud financial management with core accounting, reporting, and automation.","category":"business","logoUrl":"logo/sage-intacct.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sage Intacct77&tracker=77","tags":["accounting","cloud","reporting","automation"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296919999,"name":"Wave Accounting","slug":"wave-accounting","version":"2024.1","description":"Free accounting software for small businesses with invoicing and receipts.","category":"business","logoUrl":"logo/wave.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wave Accounting78&tracker=78","tags":["accounting","free","invoicing","small-business"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296920000,"name":"Bench","slug":"bench","version":"2024.1","description":"Bookkeeping service with dedicated bookkeepers and automated software.","category":"business","logoUrl":"logo/bench.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bench79&tracker=79","tags":["bookkeeping","service","automated","accounting"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296920001,"name":"Kashoo","slug":"kashoo","version":"2024.1","description":"Simple cloud accounting for small businesses with bank sync and invoicing.","category":"business","logoUrl":"logo/kashoo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kashoo80&tracker=80","tags":["accounting","cloud","simple","bank-sync"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296920002,"name":"Zoho Books","slug":"zoho-books","version":"2024.1","description":"Online accounting software with invoicing, expenses, and tax compliance.","category":"business","logoUrl":"logo/zoho-books.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zoho Books81&tracker=81","tags":["accounting","invoicing","tax","zoho"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296920003,"name":"QuickBooks Desktop","slug":"quickbooks-desktop","version":"2024","description":"Desktop accounting software with advanced inventory and industry-specific features.","category":"business","logoUrl":"logo/quickbooks-desktop.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=QuickBooks Desktop82&tracker=82","tags":["accounting","desktop","inventory","advanced"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296920004,"name":"Xero Accounting","slug":"xero-accounting","version":"2024.2","description":"Cloud accounting with bank feeds, invoicing, and multi-currency support.","category":"business","logoUrl":"logo/xero-accounting.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Xero Accounting83&tracker=83","tags":["accounting","cloud","multi-currency","bank-feeds"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296920005,"name":"Close CRM","slug":"close-crm","version":"2024.1","description":"Sales CRM with built-in calling, email, and SMS for inside sales teams.","category":"business","logoUrl":"logo/close-crm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Close CRM84&tracker=84","tags":["crm","sales","calling","inside-sales"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296920006,"name":"Less Annoying CRM","slug":"less-annoying-crm","version":"2024.1","description":"Simple, affordable CRM designed for small businesses with easy setup.","category":"business","logoUrl":"logo/less-annoying.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Less Annoying CRM85&tracker=85","tags":["crm","simple","affordable","small-business"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296920007,"name":"Teamwork","slug":"teamwork","version":"2024.1","description":"Project management platform for client work with time tracking and billing.","category":"business","logoUrl":"logo/teamwork.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Teamwork86&tracker=86","tags":["project-management","client-work","time-tracking","billing"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296920018,"name":"Notion for Teams","slug":"notion-for-teams","version":"2024.1","description":"Collaborative workspace for docs, tasks, wikis, and databases.","category":"business","logoUrl":"logo/notion-teams.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Notion for Teams97&tracker=97","tags":["workspace","collaboration","docs","database"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296920019,"name":"Slack for Business","slug":"slack-for-business","version":"2024.1","description":"Team messaging platform with channels, integrations, and enterprise features.","category":"business","logoUrl":"logo/slack-business.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Slack for Business98&tracker=98","tags":["messaging","team","channels","enterprise"],"scrapedAt":"2026-04-27T13:35:19.922Z"},{"id":1777296920021,"name":"Zoom for Business","slug":"zoom-for-business","version":"2024.1","description":"Video conferencing with webinars, cloud recording, and admin controls.","category":"business","logoUrl":"logo/zoom-business.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zoom for Business100&tracker=100","tags":["video","conferencing","webinars","enterprise"],"scrapedAt":"2026-04-27T13:35:19.922Z"}];
+    const CURRENT_CATEGORY = 'business';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

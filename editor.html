@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editor — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Editor</h1>
+    <p><span class="highlight">98</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="textmate.html" class="app-card" data-id="1777299479536" style="text-decoration:none;color:inherit">
+          <img src="logo/textmate.png" alt="TextMate" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TextMate</h3>
+          <p class="app-description">Popular text editor for Mac with powerful project management and bundle system.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">text-editor</span><span class="app-tag">bundles</span>
+            </div>
+          
+        </a>
+        <a href="bbedit.html" class="app-card" data-id="1777299479537" style="text-decoration:none;color:inherit">
+          <img src="logo/bbedit.png" alt="BBEdit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">BBEdit</h3>
+          <p class="app-description">Professional text editor for Mac with robust search, replace, and scripting tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">text-editor</span><span class="app-tag">professional</span>
+            </div>
+          
+        </a>
+        <a href="ultraedit.html" class="app-card" data-id="1777299479538" style="text-decoration:none;color:inherit">
+          <img src="logo/ultraedit.png" alt="UltraEdit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">UltraEdit</h3>
+          <p class="app-description">Powerful text editor for Windows with large file support and advanced editing features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">windows</span><span class="app-tag">text-editor</span><span class="app-tag">large-files</span>
+            </div>
+          
+        </a>
+        <a href="editplus.html" class="app-card" data-id="1777299479539" style="text-decoration:none;color:inherit">
+          <img src="logo/editplus.png" alt="EditPlus" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">EditPlus</h3>
+          <p class="app-description">Lightweight text editor for Windows with built-in FTP, spell check, and code highlighting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">windows</span><span class="app-tag">lightweight</span><span class="app-tag">ftp</span>
+            </div>
+          
+        </a>
+        <a href="textpad.html" class="app-card" data-id="1777299479540" style="text-decoration:none;color:inherit">
+          <img src="logo/textpad.png" alt="TextPad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TextPad</h3>
+          <p class="app-description">Simple yet powerful text editor for Windows with multi-document interface.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">windows</span><span class="app-tag">text-editor</span><span class="app-tag">mdi</span>
+            </div>
+          
+        </a>
+        <a href="notepad2.html" class="app-card" data-id="1777299479541" style="text-decoration:none;color:inherit">
+          <img src="logo/notepad2.png" alt="Notepad2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Notepad2</h3>
+          <p class="app-description">Fast and light Notepad-like editor with syntax highlighting and code folding.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">windows</span><span class="app-tag">fast</span><span class="app-tag">syntax</span>
+            </div>
+          
+        </a>
+        <a href="notepad2-mod.html" class="app-card" data-id="1777299479542" style="text-decoration:none;color:inherit">
+          <img src="logo/notepad2-mod.png" alt="Notepad2-mod" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Notepad2-mod</h3>
+          <p class="app-description">Modified version of Notepad2 with additional features and language support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">windows</span><span class="app-tag">modified</span><span class="app-tag">languages</span>
+            </div>
+          
+        </a>
+        <a href="gedit.html" class="app-card" data-id="1777299479543" style="text-decoration:none;color:inherit">
+          <img src="logo/gedit.png" alt="gedit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">gedit</h3>
+          <p class="app-description">Official text editor for GNOME with plugins and syntax highlighting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">linux</span><span class="app-tag">gnome</span><span class="app-tag">plugins</span>
+            </div>
+          
+        </a>
+        <a href="kate.html" class="app-card" data-id="1777299479544" style="text-decoration:none;color:inherit">
+          <img src="logo/kate.png" alt="Kate" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kate</h3>
+          <p class="app-description">Advanced text editor for KDE with built-in terminal and project management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">linux</span><span class="app-tag">kde</span><span class="app-tag">terminal</span>
+            </div>
+          
+        </a>
+        <a href="kwrite.html" class="app-card" data-id="1777299479545" style="text-decoration:none;color:inherit">
+          <img src="logo/kwrite.png" alt="KWrite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">KWrite</h3>
+          <p class="app-description">Lightweight text editor for KDE with syntax highlighting and code folding.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">linux</span><span class="app-tag">kde</span><span class="app-tag">lightweight</span>
+            </div>
+          
+        </a>
+        <a href="bluefish.html" class="app-card" data-id="1777299479546" style="text-decoration:none;color:inherit">
+          <img src="logo/bluefish.png" alt="Bluefish" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bluefish</h3>
+          <p class="app-description">Powerful editor for web developers with support for many programming languages.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">web-dev</span><span class="app-tag">linux</span><span class="app-tag">multi-lang</span>
+            </div>
+          
+        </a>
+        <a href="geany.html" class="app-card" data-id="1777299479547" style="text-decoration:none;color:inherit">
+          <img src="logo/geany.png" alt="Geany" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Geany</h3>
+          <p class="app-description">Fast and lightweight IDE with built-in terminal and project management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ide</span><span class="app-tag">fast</span><span class="app-tag">lightweight</span>
+            </div>
+          
+        </a>
+        <a href="scite.html" class="app-card" data-id="1777299479548" style="text-decoration:none;color:inherit">
+          <img src="logo/scite.png" alt="SciTE" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SciTE</h3>
+          <p class="app-description">SCIntilla based Text Editor for Windows and Linux with syntax highlighting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">scintilla</span><span class="app-tag">windows</span><span class="app-tag">linux</span>
+            </div>
+          
+        </a>
+        <a href="akelpad.html" class="app-card" data-id="1777299479549" style="text-decoration:none;color:inherit">
+          <img src="logo/akelpad.png" alt="AkelPad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AkelPad</h3>
+          <p class="app-description">Open-source text editor for Windows with Unicode support and plugins.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">windows</span><span class="app-tag">open-source</span><span class="app-tag">unicode</span>
+            </div>
+          
+        </a>
+        <a href="programmers-notepad.html" class="app-card" data-id="1777299479550" style="text-decoration:none;color:inherit">
+          <img src="logo/prog-notepad.png" alt="Programmer&#039;s Notepad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Programmer&#039;s Notepad</h3>
+          <p class="app-description">Text editor for programmers with syntax highlighting and project support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">programmers</span><span class="app-tag">syntax</span><span class="app-tag">projects</span>
+            </div>
+          
+        </a>
+        <a href="pspad.html" class="app-card" data-id="1777299479551" style="text-decoration:none;color:inherit">
+          <img src="logo/pspad.png" alt="PSPad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PSPad</h3>
+          <p class="app-description">Freeware text editor for Windows with web development tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">freeware</span><span class="app-tag">web-dev</span><span class="app-tag">windows</span>
+            </div>
+          
+        </a>
+        <a href="synwrite.html" class="app-card" data-id="1777299479552" style="text-decoration:none;color:inherit">
+          <img src="logo/synwrite.png" alt="SynWrite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SynWrite</h3>
+          <p class="app-description">Advanced text editor for Windows with plugins and macro support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">advanced</span><span class="app-tag">plugins</span><span class="app-tag">macros</span>
+            </div>
+          
+        </a>
+        <a href="medit.html" class="app-card" data-id="1777299479553" style="text-decoration:none;color:inherit">
+          <img src="logo/medit.png" alt="Medit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Medit</h3>
+          <p class="app-description">Lightweight text editor for Linux and Windows with syntax highlighting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">lightweight</span><span class="app-tag">linux</span><span class="app-tag">windows</span>
+            </div>
+          
+        </a>
+        <a href="jedit.html" class="app-card" data-id="1777299479554" style="text-decoration:none;color:inherit">
+          <img src="logo/jedit.png" alt="JEdit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">JEdit</h3>
+          <p class="app-description">Mature text editor written in Java with hundreds of plugins.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">java</span><span class="app-tag">plugins</span><span class="app-tag">mature</span>
+            </div>
+          
+        </a>
+        <a href="komodo-edit.html" class="app-card" data-id="1777299479555" style="text-decoration:none;color:inherit">
+          <img src="logo/komodo-edit.png" alt="Komodo Edit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Komodo Edit</h3>
+          <p class="app-description">Free, open-source editor for dynamic web languages with code intelligence.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">web</span><span class="app-tag">open-source</span><span class="app-tag">code-intelligence</span>
+            </div>
+          
+        </a>
+        <a href="brackets.html" class="app-card" data-id="1777299479556" style="text-decoration:none;color:inherit">
+          <img src="logo/brackets.png" alt="Brackets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Brackets</h3>
+          <p class="app-description">Modern, open-source text editor for web design with live preview.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">web-design</span><span class="app-tag">open-source</span><span class="app-tag">live-preview</span>
+            </div>
+          
+        </a>
+        <a href="vscodium.html" class="app-card" data-id="1777299479557" style="text-decoration:none;color:inherit">
+          <img src="logo/vscodium.png" alt="VSCodium" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">VSCodium</h3>
+          <p class="app-description">Binary releases of VS Code without Microsoft branding or telemetry.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">open-source</span><span class="app-tag">privacy</span>
+            </div>
+          
+        </a>
+        <a href="cursor.html" class="app-card" data-id="1777299479558" style="text-decoration:none;color:inherit">
+          <img src="logo/cursor.png" alt="Cursor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Cursor</h3>
+          <p class="app-description">AI-first code editor built for speed and productivity with Copilot++.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">copilot</span><span class="app-tag">speed</span>
+            </div>
+          
+        </a>
+        <a href="zed.html" class="app-card" data-id="1777299479559" style="text-decoration:none;color:inherit">
+          <img src="logo/zed.png" alt="Zed" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zed</h3>
+          <p class="app-description">High-performance, multiplayer code editor from the creators of Atom.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">high-performance</span><span class="app-tag">multiplayer</span><span class="app-tag">rust</span>
+            </div>
+          
+        </a>
+        <a href="helix.html" class="app-card" data-id="1777299479560" style="text-decoration:none;color:inherit">
+          <img src="logo/helix.png" alt="Helix" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Helix</h3>
+          <p class="app-description">Post-modern modal text editor written in Rust with tree-sitter support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">modal</span><span class="app-tag">rust</span><span class="app-tag">tree-sitter</span>
+            </div>
+          
+        </a>
+        <a href="kakoune.html" class="app-card" data-id="1777299479561" style="text-decoration:none;color:inherit">
+          <img src="logo/kakoune.png" alt="Kakoune" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kakoune</h3>
+          <p class="app-description">Modal code editor inspired by Vim with multiple selections and interactive editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">modal</span><span class="app-tag">vim-like</span><span class="app-tag">selections</span>
+            </div>
+          
+        </a>
+        <a href="micro.html" class="app-card" data-id="1777299479562" style="text-decoration:none;color:inherit">
+          <img src="logo/micro.png" alt="Micro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Micro</h3>
+          <p class="app-description">Modern and intuitive terminal-based text editor with mouse support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">terminal</span><span class="app-tag">modern</span><span class="app-tag">mouse</span>
+            </div>
+          
+        </a>
+        <a href="nano.html" class="app-card" data-id="1777299479563" style="text-decoration:none;color:inherit">
+          <img src="logo/nano.png" alt="Nano" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nano</h3>
+          <p class="app-description">Simple and user-friendly terminal text editor for Unix-like systems.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">terminal</span><span class="app-tag">simple</span><span class="app-tag">unix</span>
+            </div>
+          
+        </a>
+        <a href="joe.html" class="app-card" data-id="1777299479564" style="text-decoration:none;color:inherit">
+          <img src="logo/joe.png" alt="Joe" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Joe</h3>
+          <p class="app-description">Terminal text editor with WordStar, Emacs, and CUA key bindings.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">terminal</span><span class="app-tag">key-bindings</span><span class="app-tag">unix</span>
+            </div>
+          
+        </a>
+        <a href="mg.html" class="app-card" data-id="1777299479565" style="text-decoration:none;color:inherit">
+          <img src="logo/mg.png" alt="mg" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">mg</h3>
+          <p class="app-description">Tiny Emacs-like editor for Unix systems, lightweight and fast.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emacs-like</span><span class="app-tag">tiny</span><span class="app-tag">unix</span>
+            </div>
+          
+        </a>
+        <a href="sam.html" class="app-card" data-id="1777299479566" style="text-decoration:none;color:inherit">
+          <img src="logo/sam.png" alt="Sam" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sam</h3>
+          <p class="app-description">Structural editor from Plan 9 with unique command language.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">plan9</span><span class="app-tag">structural</span><span class="app-tag">command-language</span>
+            </div>
+          
+        </a>
+        <a href="acme.html" class="app-card" data-id="1777299479567" style="text-decoration:none;color:inherit">
+          <img src="logo/acme.png" alt="Acme" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Acme</h3>
+          <p class="app-description">Text editor and shell interface from Plan 9 with mouse-driven workflow.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">plan9</span><span class="app-tag">mouse-driven</span><span class="app-tag">shell</span>
+            </div>
+          
+        </a>
+        <a href="ed.html" class="app-card" data-id="1777299479568" style="text-decoration:none;color:inherit">
+          <img src="logo/ed.png" alt="Ed" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ed</h3>
+          <p class="app-description">Standard Unix line editor, the original text editor for Unix systems.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">unix</span><span class="app-tag">line-editor</span><span class="app-tag">original</span>
+            </div>
+          
+        </a>
+        <a href="sed.html" class="app-card" data-id="1777299479569" style="text-decoration:none;color:inherit">
+          <img src="logo/sed.png" alt="Sed" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sed</h3>
+          <p class="app-description">Stream editor for filtering and transforming text from command line.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">stream</span><span class="app-tag">filtering</span><span class="app-tag">unix</span>
+            </div>
+          
+        </a>
+        <a href="vimr.html" class="app-card" data-id="1777299479570" style="text-decoration:none;color:inherit">
+          <img src="logo/vimr.png" alt="VimR" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">VimR</h3>
+          <p class="app-description">Refined Neovim experience for macOS with native GUI and performance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">neovim</span><span class="app-tag">mac</span><span class="app-tag">gui</span>
+            </div>
+          
+        </a>
+        <a href="neovim.html" class="app-card" data-id="1777299479571" style="text-decoration:none;color:inherit">
+          <img src="logo/neovim.png" alt="Neovim" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Neovim</h3>
+          <p class="app-description">Hyperextensible Vim-based text editor with modern features and Lua scripting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vim</span><span class="app-tag">lua</span><span class="app-tag">modern</span>
+            </div>
+          
+        </a>
+        <a href="onivim-2.html" class="app-card" data-id="1777299479572" style="text-decoration:none;color:inherit">
+          <img src="logo/onivim2.png" alt="Onivim 2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Onivim 2</h3>
+          <p class="app-description">Modal IDE built on Neovim with native UI and smooth rendering.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">modal</span><span class="app-tag">neovim</span><span class="app-tag">native</span>
+            </div>
+          
+        </a>
+        <a href="lapce.html" class="app-card" data-id="1777299479573" style="text-decoration:none;color:inherit">
+          <img src="logo/lapce.png" alt="Lapce" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Lapce</h3>
+          <p class="app-description">Lightning-fast code editor written in Rust with native GUI and plugins.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">rust</span><span class="app-tag">fast</span><span class="app-tag">native</span>
+            </div>
+          
+        </a>
+        <a href="lime-text.html" class="app-card" data-id="1777299479574" style="text-decoration:none;color:inherit">
+          <img src="logo/lime-text.png" alt="Lime Text" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Lime Text</h3>
+          <p class="app-description">Powerful and elegant text editor inspired by Sublime Text.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sublime-inspired</span><span class="app-tag">go</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="e-text-editor.html" class="app-card" data-id="1777299479575" style="text-decoration:none;color:inherit">
+          <img src="logo/e-text-editor.png" alt="E Text Editor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">E Text Editor</h3>
+          <p class="app-description">Advanced text editor for Windows with project management and snippets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">windows</span><span class="app-tag">advanced</span><span class="app-tag">snippets</span>
+            </div>
+          
+        </a>
+        <a href="textastic.html" class="app-card" data-id="1777299479576" style="text-decoration:none;color:inherit">
+          <img src="logo/textastic.png" alt="Textastic" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Textastic</h3>
+          <p class="app-description">Powerful code and text editor for iPad with syntax highlighting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ipad</span><span class="app-tag">code-editor</span><span class="app-tag">syntax</span>
+            </div>
+          
+        </a>
+        <a href="coderunner.html" class="app-card" data-id="1777299479577" style="text-decoration:none;color:inherit">
+          <img src="logo/coderunner.png" alt="CodeRunner" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CodeRunner</h3>
+          <p class="app-description">Code editor for Mac that runs code in 25+ languages instantly.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">multi-lang</span><span class="app-tag">run-code</span>
+            </div>
+          
+        </a>
+        <a href="winhex.html" class="app-card" data-id="1777299479578" style="text-decoration:none;color:inherit">
+          <img src="logo/winhex.png" alt="WinHex" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WinHex</h3>
+          <p class="app-description">Hexadecimal editor for computer forensics, data recovery, and IT security.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">forensics</span><span class="app-tag">security</span>
+            </div>
+          
+        </a>
+        <a href="hex-fiend.html" class="app-card" data-id="1777299479580" style="text-decoration:none;color:inherit">
+          <img src="logo/hex-fiend.png" alt="Hex Fiend" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hex Fiend</h3>
+          <p class="app-description">Fast and clever hex editor for Mac with large file support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">mac</span><span class="app-tag">fast</span>
+            </div>
+          
+        </a>
+        <a href="hexedit.html" class="app-card" data-id="1777299479581" style="text-decoration:none;color:inherit">
+          <img src="logo/hexedit.png" alt="HexEdit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HexEdit</h3>
+          <p class="app-description">Simple hex editor for Linux with search, replace, and undo capabilities.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">linux</span><span class="app-tag">simple</span>
+            </div>
+          
+        </a>
+        <a href="010-editor.html" class="app-card" data-id="1777299479582" style="text-decoration:none;color:inherit">
+          <img src="logo/010-editor.png" alt="010 Editor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+MDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">010 Editor</h3>
+          <p class="app-description">Professional hex editor with Binary Templates for parsing file formats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">templates</span><span class="app-tag">professional</span>
+            </div>
+          
+        </a>
+        <a href="hex-workshop.html" class="app-card" data-id="1777299479583" style="text-decoration:none;color:inherit">
+          <img src="logo/hex-workshop.png" alt="Hex Workshop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hex Workshop</h3>
+          <p class="app-description">Advanced hex editor for Windows with compare and checksum tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">compare</span><span class="app-tag">checksum</span>
+            </div>
+          
+        </a>
+        <a href="hexinator.html" class="app-card" data-id="1777299479584" style="text-decoration:none;color:inherit">
+          <img src="logo/hexinator.png" alt="Hexinator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hexinator</h3>
+          <p class="app-description">World&#039;s most powerful hex editor with grammar parsing and diff tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">grammar</span><span class="app-tag">diff</span>
+            </div>
+          
+        </a>
+        <a href="xvi32.html" class="app-card" data-id="1777299479585" style="text-decoration:none;color:inherit">
+          <img src="logo/xvi32.png" alt="XVI32" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">XVI32</h3>
+          <p class="app-description">Free hex editor for Windows with macros and checksum calculator.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">free</span><span class="app-tag">macros</span>
+            </div>
+          
+        </a>
+        <a href="bless-hex-editor.html" class="app-card" data-id="1777299479586" style="text-decoration:none;color:inherit">
+          <img src="logo/bless.png" alt="Bless Hex Editor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bless Hex Editor</h3>
+          <p class="app-description">Full-featured hex editor for GNOME with tags and bookmarks.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">gnome</span><span class="app-tag">tags</span>
+            </div>
+          
+        </a>
+        <a href="ghex.html" class="app-card" data-id="1777299479587" style="text-decoration:none;color:inherit">
+          <img src="logo/ghex.png" alt="GHex" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GHex</h3>
+          <p class="app-description">Simple hex editor for GNOME with search and replace functionality.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">gnome</span><span class="app-tag">simple</span>
+            </div>
+          
+        </a>
+        <a href="ox-hex-editor.html" class="app-card" data-id="1777299479588" style="text-decoration:none;color:inherit">
+          <img src="logo/ox.png" alt="Ox Hex Editor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ox Hex Editor</h3>
+          <p class="app-description">Cross-platform hex editor written in Rust with Vim keybindings.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">rust</span><span class="app-tag">vim-keys</span>
+            </div>
+          
+        </a>
+        <a href="hex-editor-neo.html" class="app-card" data-id="1777299479589" style="text-decoration:none;color:inherit">
+          <img src="logo/hex-editor-neo.png" alt="Hex Editor Neo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hex Editor Neo</h3>
+          <p class="app-description">Advanced hex editor with file comparison and data visualization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">comparison</span><span class="app-tag">visualization</span>
+            </div>
+          
+        </a>
+        <a href="imhex.html" class="app-card" data-id="1777299479590" style="text-decoration:none;color:inherit">
+          <img src="logo/imhex.png" alt="ImHex" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ImHex</h3>
+          <p class="app-description">Hex editor for reverse engineers and security researchers with pattern language.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">reverse-engineering</span><span class="app-tag">patterns</span>
+            </div>
+          
+        </a>
+        <a href="flexhex.html" class="app-card" data-id="1777299479591" style="text-decoration:none;color:inherit">
+          <img src="logo/flexhex.png" alt="FlexHEX" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FlexHEX</h3>
+          <p class="app-description">Hex editor for Windows with sparse file support and Unicode handling.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">sparse-files</span><span class="app-tag">unicode</span>
+            </div>
+          
+        </a>
+        <a href="madedit.html" class="app-card" data-id="1777299479592" style="text-decoration:none;color:inherit">
+          <img src="logo/madedit.png" alt="MadEdit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MadEdit</h3>
+          <p class="app-description">Cross-platform editor with hex mode and syntax highlighting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cross-platform</span><span class="app-tag">hex</span><span class="app-tag">syntax</span>
+            </div>
+          
+        </a>
+        <a href="ted.html" class="app-card" data-id="1777299479593" style="text-decoration:none;color:inherit">
+          <img src="logo/ted.png" alt="Ted" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ted</h3>
+          <p class="app-description">Simple word processor for Linux with WYSIWYG editing capabilities.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">word-processor</span><span class="app-tag">linux</span><span class="app-tag">wysiwyg</span>
+            </div>
+          
+        </a>
+        <a href="textedit.html" class="app-card" data-id="1777299479594" style="text-decoration:none;color:inherit">
+          <img src="logo/textedit.png" alt="TextEdit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TextEdit</h3>
+          <p class="app-description">Native rich text and plain text editor included with macOS.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">native</span><span class="app-tag">rich-text</span>
+            </div>
+          
+        </a>
+        <a href="wordpad.html" class="app-card" data-id="1777299479595" style="text-decoration:none;color:inherit">
+          <img src="logo/wordpad.png" alt="WordPad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WordPad</h3>
+          <p class="app-description">Basic word processor included with Windows for simple document editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">windows</span><span class="app-tag">basic</span><span class="app-tag">word-processor</span>
+            </div>
+          
+        </a>
+        <a href="notepad.html" class="app-card" data-id="1777299479596" style="text-decoration:none;color:inherit">
+          <img src="logo/notepad.png" alt="Notepad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Notepad</h3>
+          <p class="app-description">Simple text editor included with Windows for quick text editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">windows</span><span class="app-tag">simple</span><span class="app-tag">native</span>
+            </div>
+          
+        </a>
+        <a href="qedit.html" class="app-card" data-id="1777299479597" style="text-decoration:none;color:inherit">
+          <img src="logo/qedit.png" alt="QEdit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">QEdit</h3>
+          <p class="app-description">Fast text editor for DOS and Windows with syntax highlighting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dos</span><span class="app-tag">windows</span><span class="app-tag">fast</span>
+            </div>
+          
+        </a>
+        <a href="slickedit.html" class="app-card" data-id="1777299479598" style="text-decoration:none;color:inherit">
+          <img src="logo/slickedit.png" alt="SlickEdit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SlickEdit</h3>
+          <p class="app-description">Professional cross-platform editor with support for 60+ languages.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">professional</span><span class="app-tag">cross-platform</span><span class="app-tag">multi-lang</span>
+            </div>
+          
+        </a>
+        <a href="multi-edit.html" class="app-card" data-id="1777299479599" style="text-decoration:none;color:inherit">
+          <img src="logo/multi-edit.png" alt="Multi-Edit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Multi-Edit</h3>
+          <p class="app-description">Customizable editor for programmers with macro support and code folding.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">programmers</span><span class="app-tag">macros</span><span class="app-tag">code-folding</span>
+            </div>
+          
+        </a>
+        <a href="golded.html" class="app-card" data-id="1777299479600" style="text-decoration:none;color:inherit">
+          <img src="logo/golded.png" alt="GoldEd" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GoldEd</h3>
+          <p class="app-description">Text editor for Fidonet and BBS message bases with powerful features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">bbs</span><span class="app-tag">fidonet</span><span class="app-tag">dos</span>
+            </div>
+          
+        </a>
+        <a href="fte.html" class="app-card" data-id="1777299479601" style="text-decoration:none;color:inherit">
+          <img src="logo/fte.png" alt="FTE" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FTE</h3>
+          <p class="app-description">Fast Text Editor for Unix with syntax highlighting and multi-window support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">unix</span><span class="app-tag">fast</span><span class="app-tag">multi-window</span>
+            </div>
+          
+        </a>
+        <a href="nedit.html" class="app-card" data-id="1777299479602" style="text-decoration:none;color:inherit">
+          <img src="logo/nedit.png" alt="NEdit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NEdit</h3>
+          <p class="app-description">Motif-based text editor for Unix with CUA key bindings.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">unix</span><span class="app-tag">motif</span><span class="app-tag">cua-keys</span>
+            </div>
+          
+        </a>
+        <a href="xemacs.html" class="app-card" data-id="1777299479603" style="text-decoration:none;color:inherit">
+          <img src="logo/xemacs.png" alt="XEmacs" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">XEmacs</h3>
+          <p class="app-description">Branch of Emacs with advanced features and X11 support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emacs</span><span class="app-tag">x11</span><span class="app-tag">lisp</span>
+            </div>
+          
+        </a>
+        <a href="aquamacs.html" class="app-card" data-id="1777299479604" style="text-decoration:none;color:inherit">
+          <img src="logo/aquamacs.png" alt="Aquamacs" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Aquamacs</h3>
+          <p class="app-description">Mac-friendly distribution of GNU Emacs with native UI integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">emacs</span><span class="app-tag">gnu</span>
+            </div>
+          
+        </a>
+        <a href="macvim.html" class="app-card" data-id="1777299479605" style="text-decoration:none;color:inherit">
+          <img src="logo/macvim.png" alt="MacVim" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MacVim</h3>
+          <p class="app-description">GUI version of Vim for macOS with tabbed interface and native feel.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">vim</span><span class="app-tag">gui</span>
+            </div>
+          
+        </a>
+        <a href="neovim-qt.html" class="app-card" data-id="1777299479606" style="text-decoration:none;color:inherit">
+          <img src="logo/neovim-qt.png" alt="Neovim-qt" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Neovim-qt</h3>
+          <p class="app-description">Minimalistic GUI frontend for Neovim with improved rendering.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">neovim</span><span class="app-tag">gui</span><span class="app-tag">qt</span>
+            </div>
+          
+        </a>
+        <a href="goneovim.html" class="app-card" data-id="1777299479607" style="text-decoration:none;color:inherit">
+          <img src="logo/goneovim.png" alt="Goneovim" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Goneovim</h3>
+          <p class="app-description">Modern GUI frontend for Neovim written in Go with smooth animations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">neovim</span><span class="app-tag">go</span><span class="app-tag">gui</span>
+            </div>
+          
+        </a>
+        <a href="fv.html" class="app-card" data-id="1777299479608" style="text-decoration:none;color:inherit">
+          <img src="logo/fv.png" alt="FV" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FV</h3>
+          <p class="app-description">File Viewer and editor for Unix with hex and text modes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">unix</span><span class="app-tag">hex</span><span class="app-tag">file-viewer</span>
+            </div>
+          
+        </a>
+        <a href="vile.html" class="app-card" data-id="1777299479609" style="text-decoration:none;color:inherit">
+          <img src="logo/vile.png" alt="Vile" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Vile</h3>
+          <p class="app-description">VI Like Emacs editor for Unix with syntax highlighting and macros.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">unix</span><span class="app-tag">vim-like</span><span class="app-tag">emacs</span>
+            </div>
+          
+        </a>
+        <a href="elvis.html" class="app-card" data-id="1777299479610" style="text-decoration:none;color:inherit">
+          <img src="logo/elvis.png" alt="Elvis" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Elvis</h3>
+          <p class="app-description">Clone of vi with additional features like multiple windows and syntax highlighting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vi-clone</span><span class="app-tag">unix</span><span class="app-tag">windows</span>
+            </div>
+          
+        </a>
+        <a href="coda-2.html" class="app-card" data-id="1777299479611" style="text-decoration:none;color:inherit">
+          <img src="logo/coda-2.png" alt="Coda 2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Coda 2</h3>
+          <p class="app-description">Complete web development IDE for Mac with live preview and Git.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">web-dev</span><span class="app-tag">mac</span><span class="app-tag">ide</span>
+            </div>
+          
+        </a>
+        <a href="espresso.html" class="app-card" data-id="1777299479612" style="text-decoration:none;color:inherit">
+          <img src="logo/espresso.png" alt="Espresso" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Espresso</h3>
+          <p class="app-description">Web design editor for Mac with live preview and Sugar syntax.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">web-design</span><span class="app-tag">mac</span><span class="app-tag">live-preview</span>
+            </div>
+          
+        </a>
+        <a href="textwrangler.html" class="app-card" data-id="1777299479613" style="text-decoration:none;color:inherit">
+          <img src="logo/textwrangler.png" alt="TextWrangler" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TextWrangler</h3>
+          <p class="app-description">Free text editor for Mac from BBEdit developers with powerful features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">free</span><span class="app-tag">text-editor</span>
+            </div>
+          
+        </a>
+        <a href="coteditor.html" class="app-card" data-id="1777299479614" style="text-decoration:none;color:inherit">
+          <img src="logo/coteditor.png" alt="CotEditor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CotEditor</h3>
+          <p class="app-description">Lightweight plain-text editor for macOS with syntax highlighting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">lightweight</span><span class="app-tag">plain-text</span>
+            </div>
+          
+        </a>
+        <a href="codeedit.html" class="app-card" data-id="1777299479615" style="text-decoration:none;color:inherit">
+          <img src="logo/codeedit.png" alt="CodeEdit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CodeEdit</h3>
+          <p class="app-description">Modern native code editor for Mac built with Swift and SwiftUI.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">swift</span><span class="app-tag">native</span>
+            </div>
+          
+        </a>
+        <a href="typora.html" class="app-card" data-id="1777299479616" style="text-decoration:none;color:inherit">
+          <img src="logo/typora.png" alt="Typora" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Typora</h3>
+          <p class="app-description">Minimal Markdown editor with live preview and WYSIWYG experience.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">markdown</span><span class="app-tag">wysiwyg</span><span class="app-tag">minimal</span>
+            </div>
+          
+        </a>
+        <a href="ia-writer.html" class="app-card" data-id="1777299479617" style="text-decoration:none;color:inherit">
+          <img src="logo/ia-writer.png" alt="iA Writer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iA Writer</h3>
+          <p class="app-description">Distraction-free writing app with focus mode and Markdown support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">distraction-free</span><span class="app-tag">markdown</span><span class="app-tag">focus</span>
+            </div>
+          
+        </a>
+        <a href="ulysses.html" class="app-card" data-id="1777299479618" style="text-decoration:none;color:inherit">
+          <img src="logo/ulysses.png" alt="Ulysses" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ulysses</h3>
+          <p class="app-description">Advanced writing app for Mac and iOS with Markdown and publishing tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">writing</span><span class="app-tag">mac</span><span class="app-tag">ios</span>
+            </div>
+          
+        </a>
+        <a href="mark-text.html" class="app-card" data-id="1777299479619" style="text-decoration:none;color:inherit">
+          <img src="logo/mark-text.png" alt="Mark Text" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mark Text</h3>
+          <p class="app-description">Open-source Markdown editor with live preview and export options.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">markdown</span><span class="app-tag">open-source</span><span class="app-tag">live-preview</span>
+            </div>
+          
+        </a>
+        <a href="ghostwriter.html" class="app-card" data-id="1777299479620" style="text-decoration:none;color:inherit">
+          <img src="logo/ghostwriter.png" alt="Ghostwriter" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ghostwriter</h3>
+          <p class="app-description">Distraction-free Markdown editor with live preview and themes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">markdown</span><span class="app-tag">distraction-free</span><span class="app-tag">themes</span>
+            </div>
+          
+        </a>
+        <a href="haroopad.html" class="app-card" data-id="1777299479621" style="text-decoration:none;color:inherit">
+          <img src="logo/haroopad.png" alt="Haroopad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Haroopad</h3>
+          <p class="app-description">Markdown document editor with live preview and diagram support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">markdown</span><span class="app-tag">diagrams</span><span class="app-tag">live-preview</span>
+            </div>
+          
+        </a>
+        <a href="retext.html" class="app-card" data-id="1777299479622" style="text-decoration:none;color:inherit">
+          <img src="logo/retext.png" alt="ReText" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ReText</h3>
+          <p class="app-description">Simple text editor for Markdown and reStructuredText with live preview.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">markdown</span><span class="app-tag">rst</span><span class="app-tag">live-preview</span>
+            </div>
+          
+        </a>
+        <a href="abricotine.html" class="app-card" data-id="1777299479623" style="text-decoration:none;color:inherit">
+          <img src="logo/abricotine.png" alt="Abricotine" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Abricotine</h3>
+          <p class="app-description">Open-source Markdown editor with inline preview and export.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">markdown</span><span class="app-tag">inline</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="caret.html" class="app-card" data-id="1777299479624" style="text-decoration:none;color:inherit">
+          <img src="logo/caret.png" alt="Caret" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Caret</h3>
+          <p class="app-description">Markdown editor for Chrome OS and Windows with split view.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">markdown</span><span class="app-tag">chromeos</span><span class="app-tag">split-view</span>
+            </div>
+          
+        </a>
+        <a href="quiver.html" class="app-card" data-id="1777299479625" style="text-decoration:none;color:inherit">
+          <img src="logo/quiver.png" alt="Quiver" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Quiver</h3>
+          <p class="app-description">Notebook for programmers with Markdown, LaTeX, and code cells.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">notebook</span><span class="app-tag">programmers</span><span class="app-tag">latex</span>
+            </div>
+          
+        </a>
+        <a href="noteplan.html" class="app-card" data-id="1777299479626" style="text-decoration:none;color:inherit">
+          <img src="logo/noteplan.png" alt="NotePlan" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NotePlan</h3>
+          <p class="app-description">Calendar-based note-taking app with Markdown and task management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">calendar</span><span class="app-tag">notes</span><span class="app-tag">markdown</span>
+            </div>
+          
+        </a>
+        <a href="drafts.html" class="app-card" data-id="1777299479627" style="text-decoration:none;color:inherit">
+          <img src="logo/drafts.png" alt="Drafts" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Drafts</h3>
+          <p class="app-description">App for quickly capturing text and sending it anywhere with actions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">text-capture</span><span class="app-tag">actions</span><span class="app-tag">ios</span>
+            </div>
+          
+        </a>
+        <a href="byword.html" class="app-card" data-id="1777299479628" style="text-decoration:none;color:inherit">
+          <img src="logo/byword.png" alt="Byword" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Byword</h3>
+          <p class="app-description">Minimalist Markdown editor for Mac and iOS with publishing features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">markdown</span><span class="app-tag">minimalist</span><span class="app-tag">mac</span>
+            </div>
+          
+        </a>
+        <a href="subethaedit.html" class="app-card" data-id="1777299479629" style="text-decoration:none;color:inherit">
+          <img src="logo/subethaedit.png" alt="SubEthaEdit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SubEthaEdit</h3>
+          <p class="app-description">Collaborative text editor for Mac with real-time sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">collaborative</span><span class="app-tag">mac</span><span class="app-tag">real-time</span>
+            </div>
+          
+        </a>
+        <a href="textmate-2.html" class="app-card" data-id="1777299479630" style="text-decoration:none;color:inherit">
+          <img src="logo/textmate-2.png" alt="TextMate 2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TextMate 2</h3>
+          <p class="app-description">Next generation of TextMate with improved performance and features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">text-editor</span><span class="app-tag">bundles</span>
+            </div>
+          
+        </a>
+        <a href="spacevim.html" class="app-card" data-id="1777299479631" style="text-decoration:none;color:inherit">
+          <img src="logo/spacevim.png" alt="SpaceVim" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SpaceVim</h3>
+          <p class="app-description">Community-driven distribution of Vim with layers and plugins.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vim</span><span class="app-tag">distribution</span><span class="app-tag">plugins</span>
+            </div>
+          
+        </a>
+        <a href="xi-editor.html" class="app-card" data-id="1777299479632" style="text-decoration:none;color:inherit">
+          <img src="logo/xi-editor.png" alt="Xi Editor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Xi Editor</h3>
+          <p class="app-description">Modern editor core written in Rust with a focus on performance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">rust</span><span class="app-tag">core</span><span class="app-tag">performance</span>
+            </div>
+          
+        </a>
+        <a href="epsilon.html" class="app-card" data-id="1777299479633" style="text-decoration:none;color:inherit">
+          <img src="logo/epsilon.png" alt="Epsilon" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Epsilon</h3>
+          <p class="app-description">Professional programmable editor with Emacs and CUA modes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">programmable</span><span class="app-tag">emacs</span><span class="app-tag">cua</span>
+            </div>
+          
+        </a>
+        <a href="ted-notepad.html" class="app-card" data-id="1777299479634" style="text-decoration:none;color:inherit">
+          <img src="logo/ted-notepad.png" alt="TED Notepad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TED Notepad</h3>
+          <p class="app-description">Powerful text editor for Windows with syntax highlighting and macros.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">windows</span><span class="app-tag">syntax</span><span class="app-tag">macros</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777299479536,"name":"TextMate","slug":"textmate","version":"2.0","description":"Popular text editor for Mac with powerful project management and bundle system.","category":"editor","logoUrl":"logo/textmate.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TextMate2&tracker=2","tags":["mac","text-editor","bundles","open-source"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479537,"name":"BBEdit","slug":"bbedit","version":"14.5","description":"Professional text editor for Mac with robust search, replace, and scripting tools.","category":"editor","logoUrl":"logo/bbedit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=BBEdit3&tracker=3","tags":["mac","text-editor","professional","scripting"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479538,"name":"UltraEdit","slug":"ultraedit","version":"2024.0","description":"Powerful text editor for Windows with large file support and advanced editing features.","category":"editor","logoUrl":"logo/ultraedit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=UltraEdit4&tracker=4","tags":["windows","text-editor","large-files","professional"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479539,"name":"EditPlus","slug":"editplus","version":"5.5","description":"Lightweight text editor for Windows with built-in FTP, spell check, and code highlighting.","category":"editor","logoUrl":"logo/editplus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=EditPlus5&tracker=5","tags":["windows","lightweight","ftp","spell-check"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479540,"name":"TextPad","slug":"textpad","version":"8.17","description":"Simple yet powerful text editor for Windows with multi-document interface.","category":"editor","logoUrl":"logo/textpad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TextPad6&tracker=6","tags":["windows","text-editor","mdi","simple"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479541,"name":"Notepad2","slug":"notepad2","version":"4.23.11","description":"Fast and light Notepad-like editor with syntax highlighting and code folding.","category":"editor","logoUrl":"logo/notepad2.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Notepad27&tracker=7","tags":["windows","fast","syntax","notepad"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479542,"name":"Notepad2-mod","slug":"notepad2-mod","version":"4.2.25","description":"Modified version of Notepad2 with additional features and language support.","category":"editor","logoUrl":"logo/notepad2-mod.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Notepad2-mod8&tracker=8","tags":["windows","modified","languages","open-source"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479543,"name":"gedit","slug":"gedit","version":"44.2","description":"Official text editor for GNOME with plugins and syntax highlighting.","category":"editor","logoUrl":"logo/gedit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=gedit9&tracker=9","tags":["linux","gnome","plugins","open-source"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479544,"name":"Kate","slug":"kate","version":"23.08","description":"Advanced text editor for KDE with built-in terminal and project management.","category":"editor","logoUrl":"logo/kate.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kate10&tracker=10","tags":["linux","kde","terminal","advanced"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479545,"name":"KWrite","slug":"kwrite","version":"23.08","description":"Lightweight text editor for KDE with syntax highlighting and code folding.","category":"editor","logoUrl":"logo/kwrite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=KWrite11&tracker=11","tags":["linux","kde","lightweight","syntax"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479546,"name":"Bluefish","slug":"bluefish","version":"2.2.14","description":"Powerful editor for web developers with support for many programming languages.","category":"editor","logoUrl":"logo/bluefish.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bluefish12&tracker=12","tags":["web-dev","linux","multi-lang","open-source"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479547,"name":"Geany","slug":"geany","version":"1.38","description":"Fast and lightweight IDE with built-in terminal and project management.","category":"editor","logoUrl":"logo/geany.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Geany13&tracker=13","tags":["ide","fast","lightweight","linux"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479548,"name":"SciTE","slug":"scite","version":"5.5.0","description":"SCIntilla based Text Editor for Windows and Linux with syntax highlighting.","category":"editor","logoUrl":"logo/scite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SciTE14&tracker=14","tags":["scintilla","windows","linux","syntax"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479549,"name":"AkelPad","slug":"akelpad","version":"4.9.9","description":"Open-source text editor for Windows with Unicode support and plugins.","category":"editor","logoUrl":"logo/akelpad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AkelPad15&tracker=15","tags":["windows","open-source","unicode","plugins"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479550,"name":"Programmer's Notepad","slug":"programmers-notepad","version":"2.4.3","description":"Text editor for programmers with syntax highlighting and project support.","category":"editor","logoUrl":"logo/prog-notepad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Programmer's Notepad16&tracker=16","tags":["programmers","syntax","projects","windows"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479551,"name":"PSPad","slug":"pspad","version":"6.1.0","description":"Freeware text editor for Windows with web development tools.","category":"editor","logoUrl":"logo/pspad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PSPad17&tracker=17","tags":["freeware","web-dev","windows","editor"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479552,"name":"SynWrite","slug":"synwrite","version":"6.40","description":"Advanced text editor for Windows with plugins and macro support.","category":"editor","logoUrl":"logo/synwrite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SynWrite18&tracker=18","tags":["advanced","plugins","macros","windows"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479553,"name":"Medit","slug":"medit","version":"1.2.0","description":"Lightweight text editor for Linux and Windows with syntax highlighting.","category":"editor","logoUrl":"logo/medit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Medit19&tracker=19","tags":["lightweight","linux","windows","syntax"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479554,"name":"JEdit","slug":"jedit","version":"5.6.0","description":"Mature text editor written in Java with hundreds of plugins.","category":"editor","logoUrl":"logo/jedit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=JEdit20&tracker=20","tags":["java","plugins","mature","cross-platform"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479555,"name":"Komodo Edit","slug":"komodo-edit","version":"12.0","description":"Free, open-source editor for dynamic web languages with code intelligence.","category":"editor","logoUrl":"logo/komodo-edit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Komodo Edit21&tracker=21","tags":["web","open-source","code-intelligence","free"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479556,"name":"Brackets","slug":"brackets","version":"2.0","description":"Modern, open-source text editor for web design with live preview.","category":"editor","logoUrl":"logo/brackets.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Brackets22&tracker=22","tags":["web-design","open-source","live-preview","adobe"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479557,"name":"VSCodium","slug":"vscodium","version":"1.87.0","description":"Binary releases of VS Code without Microsoft branding or telemetry.","category":"editor","logoUrl":"logo/vscodium.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=VSCodium23&tracker=23","tags":["vscode","open-source","privacy","telemetry-free"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479558,"name":"Cursor","slug":"cursor","version":"0.15.0","description":"AI-first code editor built for speed and productivity with Copilot++.","category":"editor","logoUrl":"logo/cursor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Cursor24&tracker=24","tags":["ai","copilot","speed","productivity"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479559,"name":"Zed","slug":"zed","version":"0.120.0","description":"High-performance, multiplayer code editor from the creators of Atom.","category":"editor","logoUrl":"logo/zed.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zed25&tracker=25","tags":["high-performance","multiplayer","rust","mac"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479560,"name":"Helix","slug":"helix","version":"24.03","description":"Post-modern modal text editor written in Rust with tree-sitter support.","category":"editor","logoUrl":"logo/helix.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Helix26&tracker=26","tags":["modal","rust","tree-sitter","modern"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479561,"name":"Kakoune","slug":"kakoune","version":"2023.08","description":"Modal code editor inspired by Vim with multiple selections and interactive editing.","category":"editor","logoUrl":"logo/kakoune.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kakoune27&tracker=27","tags":["modal","vim-like","selections","cpp"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479562,"name":"Micro","slug":"micro","version":"2.0.14","description":"Modern and intuitive terminal-based text editor with mouse support.","category":"editor","logoUrl":"logo/micro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Micro28&tracker=28","tags":["terminal","modern","mouse","go"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479563,"name":"Nano","slug":"nano","version":"7.2","description":"Simple and user-friendly terminal text editor for Unix-like systems.","category":"editor","logoUrl":"logo/nano.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nano29&tracker=29","tags":["terminal","simple","unix","c"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479564,"name":"Joe","slug":"joe","version":"4.6","description":"Terminal text editor with WordStar, Emacs, and CUA key bindings.","category":"editor","logoUrl":"logo/joe.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Joe30&tracker=30","tags":["terminal","key-bindings","unix","c"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479565,"name":"mg","slug":"mg","version":"4.1","description":"Tiny Emacs-like editor for Unix systems, lightweight and fast.","category":"editor","logoUrl":"logo/mg.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=mg31&tracker=31","tags":["emacs-like","tiny","unix","c"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479566,"name":"Sam","slug":"sam","version":"1.0","description":"Structural editor from Plan 9 with unique command language.","category":"editor","logoUrl":"logo/sam.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sam32&tracker=32","tags":["plan9","structural","command-language","c"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479567,"name":"Acme","slug":"acme","version":"1.0","description":"Text editor and shell interface from Plan 9 with mouse-driven workflow.","category":"editor","logoUrl":"logo/acme.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Acme33&tracker=33","tags":["plan9","mouse-driven","shell","c"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479568,"name":"Ed","slug":"ed","version":"1.19","description":"Standard Unix line editor, the original text editor for Unix systems.","category":"editor","logoUrl":"logo/ed.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ed34&tracker=34","tags":["unix","line-editor","original","c"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479569,"name":"Sed","slug":"sed","version":"4.9","description":"Stream editor for filtering and transforming text from command line.","category":"editor","logoUrl":"logo/sed.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sed35&tracker=35","tags":["stream","filtering","unix","c"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479570,"name":"VimR","slug":"vimr","version":"0.47.0","description":"Refined Neovim experience for macOS with native GUI and performance.","category":"editor","logoUrl":"logo/vimr.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=VimR36&tracker=36","tags":["neovim","mac","gui","swift"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479571,"name":"Neovim","slug":"neovim","version":"0.10.0","description":"Hyperextensible Vim-based text editor with modern features and Lua scripting.","category":"editor","logoUrl":"logo/neovim.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Neovim37&tracker=37","tags":["vim","lua","modern","terminal"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479572,"name":"Onivim 2","slug":"onivim-2","version":"0.5.9","description":"Modal IDE built on Neovim with native UI and smooth rendering.","category":"editor","logoUrl":"logo/onivim2.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Onivim 238&tracker=38","tags":["modal","neovim","native","reascript"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479573,"name":"Lapce","slug":"lapce","version":"0.3.0","description":"Lightning-fast code editor written in Rust with native GUI and plugins.","category":"editor","logoUrl":"logo/lapce.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Lapce39&tracker=39","tags":["rust","fast","native","plugins"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479574,"name":"Lime Text","slug":"lime-text","version":"0.1.0","description":"Powerful and elegant text editor inspired by Sublime Text.","category":"editor","logoUrl":"logo/lime-text.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Lime Text40&tracker=40","tags":["sublime-inspired","go","open-source","linux"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479575,"name":"E Text Editor","slug":"e-text-editor","version":"2.0","description":"Advanced text editor for Windows with project management and snippets.","category":"editor","logoUrl":"logo/e-text-editor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=E Text Editor41&tracker=41","tags":["windows","advanced","snippets","projects"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479576,"name":"Textastic","slug":"textastic","version":"10.2","description":"Powerful code and text editor for iPad with syntax highlighting.","category":"editor","logoUrl":"logo/textastic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Textastic42&tracker=42","tags":["ipad","code-editor","syntax","mobile"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479577,"name":"CodeRunner","slug":"coderunner","version":"4.1","description":"Code editor for Mac that runs code in 25+ languages instantly.","category":"editor","logoUrl":"logo/coderunner.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CodeRunner43&tracker=43","tags":["mac","multi-lang","run-code","fast"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479578,"name":"WinHex","slug":"winhex","version":"21.0","description":"Hexadecimal editor for computer forensics, data recovery, and IT security.","category":"editor","logoUrl":"logo/winhex.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WinHex44&tracker=44","tags":["hex","forensics","security","recovery"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479580,"name":"Hex Fiend","slug":"hex-fiend","version":"1300","description":"Fast and clever hex editor for Mac with large file support.","category":"editor","logoUrl":"logo/hex-fiend.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hex Fiend46&tracker=46","tags":["hex","mac","fast","open-source"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479581,"name":"HexEdit","slug":"hexedit","version":"3.4.0","description":"Simple hex editor for Linux with search, replace, and undo capabilities.","category":"editor","logoUrl":"logo/hexedit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HexEdit47&tracker=47","tags":["hex","linux","simple","gtk"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479582,"name":"010 Editor","slug":"010-editor","version":"14.0","description":"Professional hex editor with Binary Templates for parsing file formats.","category":"editor","logoUrl":"logo/010-editor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=010 Editor48&tracker=48","tags":["hex","templates","professional","parsing"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479583,"name":"Hex Workshop","slug":"hex-workshop","version":"6.0","description":"Advanced hex editor for Windows with compare and checksum tools.","category":"editor","logoUrl":"logo/hex-workshop.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hex Workshop49&tracker=49","tags":["hex","compare","checksum","windows"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479584,"name":"Hexinator","slug":"hexinator","version":"2.4.0","description":"World's most powerful hex editor with grammar parsing and diff tools.","category":"editor","logoUrl":"logo/hexinator.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hexinator50&tracker=50","tags":["hex","grammar","diff","professional"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479585,"name":"XVI32","slug":"xvi32","version":"2.5.1","description":"Free hex editor for Windows with macros and checksum calculator.","category":"editor","logoUrl":"logo/xvi32.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=XVI3251&tracker=51","tags":["hex","free","macros","windows"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479586,"name":"Bless Hex Editor","slug":"bless-hex-editor","version":"0.6.1","description":"Full-featured hex editor for GNOME with tags and bookmarks.","category":"editor","logoUrl":"logo/bless.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bless Hex Editor52&tracker=52","tags":["hex","gnome","tags","linux"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479587,"name":"GHex","slug":"ghex","version":"44.0","description":"Simple hex editor for GNOME with search and replace functionality.","category":"editor","logoUrl":"logo/ghex.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GHex53&tracker=53","tags":["hex","gnome","simple","linux"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479588,"name":"Ox Hex Editor","slug":"ox-hex-editor","version":"0.3.0","description":"Cross-platform hex editor written in Rust with Vim keybindings.","category":"editor","logoUrl":"logo/ox.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ox Hex Editor54&tracker=54","tags":["hex","rust","vim-keys","cross-platform"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479589,"name":"Hex Editor Neo","slug":"hex-editor-neo","version":"7.0","description":"Advanced hex editor with file comparison and data visualization.","category":"editor","logoUrl":"logo/hex-editor-neo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hex Editor Neo55&tracker=55","tags":["hex","comparison","visualization","advanced"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479590,"name":"ImHex","slug":"imhex","version":"1.35.0","description":"Hex editor for reverse engineers and security researchers with pattern language.","category":"editor","logoUrl":"logo/imhex.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ImHex56&tracker=56","tags":["hex","reverse-engineering","patterns","open-source"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479591,"name":"FlexHEX","slug":"flexhex","version":"2.5","description":"Hex editor for Windows with sparse file support and Unicode handling.","category":"editor","logoUrl":"logo/flexhex.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FlexHEX57&tracker=57","tags":["hex","sparse-files","unicode","windows"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479592,"name":"MadEdit","slug":"madedit","version":"0.2.9","description":"Cross-platform editor with hex mode and syntax highlighting.","category":"editor","logoUrl":"logo/madedit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MadEdit58&tracker=58","tags":["cross-platform","hex","syntax","open-source"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479593,"name":"Ted","slug":"ted","version":"2.23","description":"Simple word processor for Linux with WYSIWYG editing capabilities.","category":"editor","logoUrl":"logo/ted.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ted59&tracker=59","tags":["word-processor","linux","wysiwyg","old-school"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479594,"name":"TextEdit","slug":"textedit","version":"1.17","description":"Native rich text and plain text editor included with macOS.","category":"editor","logoUrl":"logo/textedit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TextEdit60&tracker=60","tags":["mac","native","rich-text","simple"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479595,"name":"WordPad","slug":"wordpad","version":"10.0","description":"Basic word processor included with Windows for simple document editing.","category":"editor","logoUrl":"logo/wordpad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WordPad61&tracker=61","tags":["windows","basic","word-processor","native"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479596,"name":"Notepad","slug":"notepad","version":"11.0","description":"Simple text editor included with Windows for quick text editing.","category":"editor","logoUrl":"logo/notepad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Notepad62&tracker=62","tags":["windows","simple","native","basic"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479597,"name":"QEdit","slug":"qedit","version":"4.5","description":"Fast text editor for DOS and Windows with syntax highlighting.","category":"editor","logoUrl":"logo/qedit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=QEdit63&tracker=63","tags":["dos","windows","fast","retro"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479598,"name":"SlickEdit","slug":"slickedit","version":"27.0","description":"Professional cross-platform editor with support for 60+ languages.","category":"editor","logoUrl":"logo/slickedit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SlickEdit64&tracker=64","tags":["professional","cross-platform","multi-lang","fast"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479599,"name":"Multi-Edit","slug":"multi-edit","version":"15.0","description":"Customizable editor for programmers with macro support and code folding.","category":"editor","logoUrl":"logo/multi-edit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Multi-Edit65&tracker=65","tags":["programmers","macros","code-folding","windows"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479600,"name":"GoldEd","slug":"golded","version":"3.0.1","description":"Text editor for Fidonet and BBS message bases with powerful features.","category":"editor","logoUrl":"logo/golded.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GoldEd66&tracker=66","tags":["bbs","fidonet","dos","retro"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479601,"name":"FTE","slug":"fte","version":"0.50","description":"Fast Text Editor for Unix with syntax highlighting and multi-window support.","category":"editor","logoUrl":"logo/fte.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FTE67&tracker=67","tags":["unix","fast","multi-window","c"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479602,"name":"NEdit","slug":"nedit","version":"5.7","description":"Motif-based text editor for Unix with CUA key bindings.","category":"editor","logoUrl":"logo/nedit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NEdit68&tracker=68","tags":["unix","motif","cua-keys","old-school"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479603,"name":"XEmacs","slug":"xemacs","version":"21.5.34","description":"Branch of Emacs with advanced features and X11 support.","category":"editor","logoUrl":"logo/xemacs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=XEmacs69&tracker=69","tags":["emacs","x11","lisp","unix"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479604,"name":"Aquamacs","slug":"aquamacs","version":"4.0","description":"Mac-friendly distribution of GNU Emacs with native UI integration.","category":"editor","logoUrl":"logo/aquamacs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Aquamacs70&tracker=70","tags":["mac","emacs","gnu","lisp"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479605,"name":"MacVim","slug":"macvim","version":"9.0","description":"GUI version of Vim for macOS with tabbed interface and native feel.","category":"editor","logoUrl":"logo/macvim.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MacVim71&tracker=71","tags":["mac","vim","gui","tabs"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479606,"name":"Neovim-qt","slug":"neovim-qt","version":"0.2.16","description":"Minimalistic GUI frontend for Neovim with improved rendering.","category":"editor","logoUrl":"logo/neovim-qt.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Neovim-qt72&tracker=72","tags":["neovim","gui","qt","cross-platform"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479607,"name":"Goneovim","slug":"goneovim","version":"0.6.7","description":"Modern GUI frontend for Neovim written in Go with smooth animations.","category":"editor","logoUrl":"logo/goneovim.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Goneovim73&tracker=73","tags":["neovim","go","gui","smooth"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479608,"name":"FV","slug":"fv","version":"3.0","description":"File Viewer and editor for Unix with hex and text modes.","category":"editor","logoUrl":"logo/fv.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FV74&tracker=74","tags":["unix","hex","file-viewer","terminal"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479609,"name":"Vile","slug":"vile","version":"9.8","description":"VI Like Emacs editor for Unix with syntax highlighting and macros.","category":"editor","logoUrl":"logo/vile.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Vile75&tracker=75","tags":["unix","vim-like","emacs","syntax"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479610,"name":"Elvis","slug":"elvis","version":"2.2.0","description":"Clone of vi with additional features like multiple windows and syntax highlighting.","category":"editor","logoUrl":"logo/elvis.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Elvis76&tracker=76","tags":["vi-clone","unix","windows","syntax"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479611,"name":"Coda 2","slug":"coda-2","version":"2.7","description":"Complete web development IDE for Mac with live preview and Git.","category":"editor","logoUrl":"logo/coda-2.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Coda 277&tracker=77","tags":["web-dev","mac","ide","panic"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479612,"name":"Espresso","slug":"espresso","version":"3.0","description":"Web design editor for Mac with live preview and Sugar syntax.","category":"editor","logoUrl":"logo/espresso.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Espresso78&tracker=78","tags":["web-design","mac","live-preview","css"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479613,"name":"TextWrangler","slug":"textwrangler","version":"5.5","description":"Free text editor for Mac from BBEdit developers with powerful features.","category":"editor","logoUrl":"logo/textwrangler.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TextWrangler79&tracker=79","tags":["mac","free","text-editor","bbedit"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479614,"name":"CotEditor","slug":"coteditor","version":"4.7.0","description":"Lightweight plain-text editor for macOS with syntax highlighting.","category":"editor","logoUrl":"logo/coteditor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CotEditor80&tracker=80","tags":["mac","lightweight","plain-text","open-source"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479615,"name":"CodeEdit","slug":"codeedit","version":"1.0","description":"Modern native code editor for Mac built with Swift and SwiftUI.","category":"editor","logoUrl":"logo/codeedit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CodeEdit81&tracker=81","tags":["mac","swift","native","modern"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479616,"name":"Typora","slug":"typora","version":"1.7.0","description":"Minimal Markdown editor with live preview and WYSIWYG experience.","category":"editor","logoUrl":"logo/typora.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Typora82&tracker=82","tags":["markdown","wysiwyg","minimal","cross-platform"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479617,"name":"iA Writer","slug":"ia-writer","version":"5.2","description":"Distraction-free writing app with focus mode and Markdown support.","category":"editor","logoUrl":"logo/ia-writer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iA Writer83&tracker=83","tags":["distraction-free","markdown","focus","cross-platform"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479618,"name":"Ulysses","slug":"ulysses","version":"30","description":"Advanced writing app for Mac and iOS with Markdown and publishing tools.","category":"editor","logoUrl":"logo/ulysses.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ulysses84&tracker=84","tags":["writing","mac","ios","publishing"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479619,"name":"Mark Text","slug":"mark-text","version":"0.17.1","description":"Open-source Markdown editor with live preview and export options.","category":"editor","logoUrl":"logo/mark-text.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mark Text85&tracker=85","tags":["markdown","open-source","live-preview","cross-platform"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479620,"name":"Ghostwriter","slug":"ghostwriter","version":"2.0","description":"Distraction-free Markdown editor with live preview and themes.","category":"editor","logoUrl":"logo/ghostwriter.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ghostwriter86&tracker=86","tags":["markdown","distraction-free","themes","linux"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479621,"name":"Haroopad","slug":"haroopad","version":"0.13.1","description":"Markdown document editor with live preview and diagram support.","category":"editor","logoUrl":"logo/haroopad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Haroopad87&tracker=87","tags":["markdown","diagrams","live-preview","open-source"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479622,"name":"ReText","slug":"retext","version":"8.0.1","description":"Simple text editor for Markdown and reStructuredText with live preview.","category":"editor","logoUrl":"logo/retext.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ReText88&tracker=88","tags":["markdown","rst","live-preview","python"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479623,"name":"Abricotine","slug":"abricotine","version":"1.0","description":"Open-source Markdown editor with inline preview and export.","category":"editor","logoUrl":"logo/abricotine.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Abricotine89&tracker=89","tags":["markdown","inline","open-source","electron"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479624,"name":"Caret","slug":"caret","version":"2.0","description":"Markdown editor for Chrome OS and Windows with split view.","category":"editor","logoUrl":"logo/caret.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Caret90&tracker=90","tags":["markdown","chromeos","split-view","simple"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479625,"name":"Quiver","slug":"quiver","version":"3.0","description":"Notebook for programmers with Markdown, LaTeX, and code cells.","category":"editor","logoUrl":"logo/quiver.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Quiver91&tracker=91","tags":["notebook","programmers","latex","mac"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479626,"name":"NotePlan","slug":"noteplan","version":"3.10","description":"Calendar-based note-taking app with Markdown and task management.","category":"editor","logoUrl":"logo/noteplan.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NotePlan92&tracker=92","tags":["calendar","notes","markdown","tasks"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479627,"name":"Drafts","slug":"drafts","version":"31.0","description":"App for quickly capturing text and sending it anywhere with actions.","category":"editor","logoUrl":"logo/drafts.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Drafts93&tracker=93","tags":["text-capture","actions","ios","mac"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479628,"name":"Byword","slug":"byword","version":"2.8","description":"Minimalist Markdown editor for Mac and iOS with publishing features.","category":"editor","logoUrl":"logo/byword.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Byword94&tracker=94","tags":["markdown","minimalist","mac","publishing"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479629,"name":"SubEthaEdit","slug":"subethaedit","version":"5.10","description":"Collaborative text editor for Mac with real-time sync.","category":"editor","logoUrl":"logo/subethaedit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SubEthaEdit95&tracker=95","tags":["collaborative","mac","real-time","open-source"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479630,"name":"TextMate 2","slug":"textmate-2","version":"2.0","description":"Next generation of TextMate with improved performance and features.","category":"editor","logoUrl":"logo/textmate-2.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TextMate 296&tracker=96","tags":["mac","text-editor","bundles","open-source"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479631,"name":"SpaceVim","slug":"spacevim","version":"2.3.0","description":"Community-driven distribution of Vim with layers and plugins.","category":"editor","logoUrl":"logo/spacevim.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SpaceVim97&tracker=97","tags":["vim","distribution","plugins","layers"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479632,"name":"Xi Editor","slug":"xi-editor","version":"0.1.0","description":"Modern editor core written in Rust with a focus on performance.","category":"editor","logoUrl":"logo/xi-editor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Xi Editor98&tracker=98","tags":["rust","core","performance","modern"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479633,"name":"Epsilon","slug":"epsilon","version":"14.0","description":"Professional programmable editor with Emacs and CUA modes.","category":"editor","logoUrl":"logo/epsilon.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Epsilon99&tracker=99","tags":["programmable","emacs","cua","professional"],"scrapedAt":"2026-04-27T14:17:59.535Z"},{"id":1777299479634,"name":"TED Notepad","slug":"ted-notepad","version":"6.1.0","description":"Powerful text editor for Windows with syntax highlighting and macros.","category":"editor","logoUrl":"logo/ted-notepad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TED Notepad100&tracker=100","tags":["windows","syntax","macros","text-editor"],"scrapedAt":"2026-04-27T14:17:59.535Z"}];
+    const CURRENT_CATEGORY = 'editor';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

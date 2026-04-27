@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Plugins — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Plugins</h1>
+    <p><span class="highlight">44</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="adobe-photoshop-plugins-bundle.html" class="app-card" data-id="1777301800381" style="text-decoration:none;color:inherit">
+          <img src="logo/ps-plugins.png" alt="Adobe Photoshop Plugins Bundle" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Photoshop Plugins Bundle</h3>
+          <p class="app-description">Collection of essential plugins for Photoshop including filters, effects, and productivity tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">photoshop</span><span class="app-tag">filters</span><span class="app-tag">effects</span>
+            </div>
+          
+        </a>
+        <a href="sapphire-plugins.html" class="app-card" data-id="1777301800386" style="text-decoration:none;color:inherit">
+          <img src="logo/sapphire.png" alt="Sapphire Plugins" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sapphire Plugins</h3>
+          <p class="app-description">Premium visual effects plugins with advanced blurs, glows, and distortions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vfx</span><span class="app-tag">after-effects</span><span class="app-tag">premiere</span>
+            </div>
+          
+        </a>
+        <a href="mocha-pro-plugin.html" class="app-card" data-id="1777301800387" style="text-decoration:none;color:inherit">
+          <img src="logo/mocha-pro.png" alt="Mocha Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mocha Pro</h3>
+          <p class="app-description">Advanced planar tracking and rotoscoping plugin for VFX workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tracking</span><span class="app-tag">roto</span><span class="app-tag">vfx</span>
+            </div>
+          
+        </a>
+        <a href="topaz-video-ai-plugin.html" class="app-card" data-id="1777301800389" style="text-decoration:none;color:inherit">
+          <img src="logo/topaz-video-plugin.png" alt="Topaz Video AI Plugin" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Topaz Video AI Plugin</h3>
+          <p class="app-description">AI-powered video enhancement plugin for upscaling and stabilization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">upscaling</span><span class="app-tag">video</span>
+            </div>
+          
+        </a>
+        <a href="fxfactory.html" class="app-card" data-id="1777301800390" style="text-decoration:none;color:inherit">
+          <img src="logo/fxfactory.png" alt="FxFactory" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FxFactory</h3>
+          <p class="app-description">Plugin manager and marketplace for Final Cut Pro, Motion, and Adobe apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">plugin-manager</span><span class="app-tag">final-cut</span><span class="app-tag">motion</span>
+            </div>
+          
+        </a>
+        <a href="filmconvert-pro.html" class="app-card" data-id="1777301800392" style="text-decoration:none;color:inherit">
+          <img src="logo/filmconvert.png" alt="FilmConvert Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FilmConvert Pro</h3>
+          <p class="app-description">Film emulation plugin for authentic analog looks in digital video.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">film-emulation</span><span class="app-tag">color-grading</span><span class="app-tag">premiere</span>
+            </div>
+          
+        </a>
+        <a href="dehancer-pro-plugin.html" class="app-card" data-id="1777301800393" style="text-decoration:none;color:inherit">
+          <img src="logo/dehancer.png" alt="Dehancer Pro Plugin" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Dehancer Pro Plugin</h3>
+          <p class="app-description">Film grain, halation, and bloom plugin for cinematic video grading.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">film</span><span class="app-tag">grain</span><span class="app-tag">halation</span>
+            </div>
+          
+        </a>
+        <a href="magic-bullet-looks.html" class="app-card" data-id="1777301800394" style="text-decoration:none;color:inherit">
+          <img src="logo/magic-bullet.png" alt="Magic Bullet Looks" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Magic Bullet Looks</h3>
+          <p class="app-description">Color grading plugin with presets for cinematic looks and skin tones.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">color-grading</span><span class="app-tag">presets</span><span class="app-tag">premiere</span>
+            </div>
+          
+        </a>
+        <a href="universe-red-giant.html" class="app-card" data-id="1777301800395" style="text-decoration:none;color:inherit">
+          <img src="logo/universe.png" alt="Universe by Red Giant" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Universe by Red Giant</h3>
+          <p class="app-description">Unified plugin suite with transitions, effects, and stylizers for video editors.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">transitions</span><span class="app-tag">effects</span><span class="app-tag">premiere</span>
+            </div>
+          
+        </a>
+        <a href="auto-ease-figma.html" class="app-card" data-id="1777301800396" style="text-decoration:none;color:inherit">
+          <img src="logo/auto-ease.png" alt="Auto-Ease for Figma" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Auto-Ease for Figma</h3>
+          <p class="app-description">Animation easing plugin for Figma with preset curves and custom controls.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">figma</span><span class="app-tag">animation</span><span class="app-tag">easing</span>
+            </div>
+          
+        </a>
+        <a href="content-reel-figma.html" class="app-card" data-id="1777301800397" style="text-decoration:none;color:inherit">
+          <img src="logo/content-reel.png" alt="Content Reel for Figma" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Content Reel for Figma</h3>
+          <p class="app-description">Plugin for quickly inserting placeholder content into Figma designs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">figma</span><span class="app-tag">placeholder</span><span class="app-tag">content</span>
+            </div>
+          
+        </a>
+        <a href="unsplash-figma.html" class="app-card" data-id="1777301800398" style="text-decoration:none;color:inherit">
+          <img src="logo/unsplash-figma.png" alt="Unsplash for Figma" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Unsplash for Figma</h3>
+          <p class="app-description">Plugin for inserting high-quality free photos from Unsplash into designs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">figma</span><span class="app-tag">photos</span><span class="app-tag">unsplash</span>
+            </div>
+          
+        </a>
+        <a href="iconify-figma.html" class="app-card" data-id="1777301800399" style="text-decoration:none;color:inherit">
+          <img src="logo/iconify.png" alt="Iconify for Figma" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Iconify for Figma</h3>
+          <p class="app-description">Access 100,000+ icons from multiple icon sets directly in Figma.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">figma</span><span class="app-tag">icons</span><span class="app-tag">iconify</span>
+            </div>
+          
+        </a>
+        <a href="lorem-ipsum-figma.html" class="app-card" data-id="1777301800400" style="text-decoration:none;color:inherit">
+          <img src="logo/lorem-ipsum.png" alt="Lorem Ipsum for Figma" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Lorem Ipsum for Figma</h3>
+          <p class="app-description">Generate placeholder text in multiple languages for Figma designs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">figma</span><span class="app-tag">placeholder</span><span class="app-tag">text</span>
+            </div>
+          
+        </a>
+        <a href="autoflow-figma.html" class="app-card" data-id="1777301800401" style="text-decoration:none;color:inherit">
+          <img src="logo/autoflow.png" alt="Autoflow for Figma" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Autoflow for Figma</h3>
+          <p class="app-description">Create connection lines between frames automatically in Figma.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">figma</span><span class="app-tag">flow</span><span class="app-tag">connections</span>
+            </div>
+          
+        </a>
+        <a href="stark-figma.html" class="app-card" data-id="1777301800402" style="text-decoration:none;color:inherit">
+          <img src="logo/stark.png" alt="Stark for Figma" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Stark for Figma</h3>
+          <p class="app-description">Accessibility toolkit for checking contrast, simulating color blindness, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">figma</span><span class="app-tag">accessibility</span><span class="app-tag">contrast</span>
+            </div>
+          
+        </a>
+        <a href="blush-figma.html" class="app-card" data-id="1777301800403" style="text-decoration:none;color:inherit">
+          <img src="logo/blush.png" alt="Blush for Figma" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Blush for Figma</h3>
+          <p class="app-description">Customizable illustrations plugin for Figma with diverse characters and scenes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">figma</span><span class="app-tag">illustrations</span><span class="app-tag">customizable</span>
+            </div>
+          
+        </a>
+        <a href="remove-bg-figma.html" class="app-card" data-id="1777301800404" style="text-decoration:none;color:inherit">
+          <img src="logo/remove-bg.png" alt="Remove BG for Figma" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Remove BG for Figma</h3>
+          <p class="app-description">AI-powered background removal plugin for images in Figma.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">figma</span><span class="app-tag">ai</span><span class="app-tag">background-removal</span>
+            </div>
+          
+        </a>
+        <a href="charts-figma.html" class="app-card" data-id="1777301800405" style="text-decoration:none;color:inherit">
+          <img src="logo/charts-figma.png" alt="Charts for Figma" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Charts for Figma</h3>
+          <p class="app-description">Create customizable charts and graphs directly in Figma designs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">figma</span><span class="app-tag">charts</span><span class="app-tag">graphs</span>
+            </div>
+          
+        </a>
+        <a href="prettier-vscode.html" class="app-card" data-id="1777301800406" style="text-decoration:none;color:inherit">
+          <img src="logo/prettier-vscode.png" alt="Prettier for VS Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Prettier for VS Code</h3>
+          <p class="app-description">Opinionated code formatter plugin for Visual Studio Code.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">formatter</span><span class="app-tag">code-style</span>
+            </div>
+          
+        </a>
+        <a href="eslint-vscode.html" class="app-card" data-id="1777301800407" style="text-decoration:none;color:inherit">
+          <img src="logo/eslint-vscode.png" alt="ESLint for VS Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ESLint for VS Code</h3>
+          <p class="app-description">JavaScript linting plugin for finding and fixing code quality issues.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">linting</span><span class="app-tag">javascript</span>
+            </div>
+          
+        </a>
+        <a href="gitlens-vscode.html" class="app-card" data-id="1777301800408" style="text-decoration:none;color:inherit">
+          <img src="logo/gitlens.png" alt="GitLens for VS Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GitLens for VS Code</h3>
+          <p class="app-description">Git supercharged plugin with blame annotations and history exploration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">git</span><span class="app-tag">blame</span>
+            </div>
+          
+        </a>
+        <a href="live-server-vscode.html" class="app-card" data-id="1777301800409" style="text-decoration:none;color:inherit">
+          <img src="logo/live-server.png" alt="Live Server for VS Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Live Server for VS Code</h3>
+          <p class="app-description">Launch a local development server with live reload for web projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">web-dev</span><span class="app-tag">live-reload</span>
+            </div>
+          
+        </a>
+        <a href="path-intellisense-vscode.html" class="app-card" data-id="1777301800410" style="text-decoration:none;color:inherit">
+          <img src="logo/path-intellisense.png" alt="Path Intellisense for VS Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Path Intellisense for VS Code</h3>
+          <p class="app-description">Autocomplete plugin for file paths in Visual Studio Code.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">autocomplete</span><span class="app-tag">paths</span>
+            </div>
+          
+        </a>
+        <a href="thunder-client-vscode.html" class="app-card" data-id="1777301800411" style="text-decoration:none;color:inherit">
+          <img src="logo/thunder-client.png" alt="Thunder Client for VS Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Thunder Client for VS Code</h3>
+          <p class="app-description">Lightweight REST API client plugin for testing APIs in VS Code.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">api</span><span class="app-tag">rest</span>
+            </div>
+          
+        </a>
+        <a href="docker-vscode.html" class="app-card" data-id="1777301800412" style="text-decoration:none;color:inherit">
+          <img src="logo/docker-vscode.png" alt="Docker for VS Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Docker for VS Code</h3>
+          <p class="app-description">Docker extension for building, managing, and deploying containers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">docker</span><span class="app-tag">containers</span>
+            </div>
+          
+        </a>
+        <a href="remote-ssh-vscode.html" class="app-card" data-id="1777301800413" style="text-decoration:none;color:inherit">
+          <img src="logo/remote-ssh.png" alt="Remote - SSH for VS Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Remote - SSH for VS Code</h3>
+          <p class="app-description">Connect to remote machines via SSH for development in VS Code.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">ssh</span><span class="app-tag">remote</span>
+            </div>
+          
+        </a>
+        <a href="python-vscode.html" class="app-card" data-id="1777301800414" style="text-decoration:none;color:inherit">
+          <img src="logo/python-vscode.png" alt="Python for VS Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Python for VS Code</h3>
+          <p class="app-description">Python language support with IntelliSense, debugging, and linting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">python</span><span class="app-tag">intellisense</span>
+            </div>
+          
+        </a>
+        <a href="prettier-code-formatter.html" class="app-card" data-id="1777301800415" style="text-decoration:none;color:inherit">
+          <img src="logo/prettier-plugin.png" alt="Prettier - Code Formatter" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Prettier - Code Formatter</h3>
+          <p class="app-description">Universal code formatter supporting JavaScript, CSS, HTML, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">formatter</span><span class="app-tag">code-style</span><span class="app-tag">multi-lang</span>
+            </div>
+          
+        </a>
+        <a href="stylelint-vscode.html" class="app-card" data-id="1777301800416" style="text-decoration:none;color:inherit">
+          <img src="logo/stylelint-vscode.png" alt="Stylelint for VS Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Stylelint for VS Code</h3>
+          <p class="app-description">Modern CSS linter for catching errors and enforcing conventions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">css</span><span class="app-tag">linting</span>
+            </div>
+          
+        </a>
+        <a href="bracket-pair-colorizer.html" class="app-card" data-id="1777301800417" style="text-decoration:none;color:inherit">
+          <img src="logo/bracket-colorizer.png" alt="Bracket Pair Colorizer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bracket Pair Colorizer</h3>
+          <p class="app-description">Colorize matching brackets for improved code readability.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">brackets</span><span class="app-tag">readability</span>
+            </div>
+          
+        </a>
+        <a href="error-lens-vscode.html" class="app-card" data-id="1777301800418" style="text-decoration:none;color:inherit">
+          <img src="logo/error-lens.png" alt="Error Lens for VS Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Error Lens for VS Code</h3>
+          <p class="app-description">Highlight errors and warnings inline for faster debugging.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">errors</span><span class="app-tag">debugging</span>
+            </div>
+          
+        </a>
+        <a href="code-spell-checker.html" class="app-card" data-id="1777301800419" style="text-decoration:none;color:inherit">
+          <img src="logo/code-spell.png" alt="Code Spell Checker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Code Spell Checker</h3>
+          <p class="app-description">Spell checker for code and comments in multiple programming languages.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">spell-check</span><span class="app-tag">multilingual</span>
+            </div>
+          
+        </a>
+        <a href="rest-client-vscode.html" class="app-card" data-id="1777301800420" style="text-decoration:none;color:inherit">
+          <img src="logo/rest-client.png" alt="REST Client for VS Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">REST Client for VS Code</h3>
+          <p class="app-description">Send HTTP requests and view responses directly in VS Code.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">http</span><span class="app-tag">api</span>
+            </div>
+          
+        </a>
+        <a href="settings-sync-vscode.html" class="app-card" data-id="1777301800421" style="text-decoration:none;color:inherit">
+          <img src="logo/settings-sync.png" alt="Settings Sync for VS Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Settings Sync for VS Code</h3>
+          <p class="app-description">Synchronize VS Code settings across machines using GitHub Gist.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">sync</span><span class="app-tag">github</span>
+            </div>
+          
+        </a>
+        <a href="markdown-all-in-one.html" class="app-card" data-id="1777301800422" style="text-decoration:none;color:inherit">
+          <img src="logo/markdown-all-in-one.png" alt="Markdown All in One" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Markdown All in One</h3>
+          <p class="app-description">All-in-one Markdown support with shortcuts, table of contents, and preview.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">vscode</span><span class="app-tag">markdown</span><span class="app-tag">preview</span>
+            </div>
+          
+        </a>
+        <a href="path-autocomplete.html" class="app-card" data-id="1777301800423" style="text-decoration:none;color:inherit">
+          <img src="logo/path-autocomplete.png" alt="Path Autocomplete" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Path Autocomplete</h3>
+          <p class="app-description">Path completion plugin for various editors and IDEs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">autocomplete</span><span class="app-tag">paths</span><span class="app-tag">editor</span>
+            </div>
+          
+        </a>
+        <a href="prettier-sublime.html" class="app-card" data-id="1777301800424" style="text-decoration:none;color:inherit">
+          <img src="logo/prettier-sublime.png" alt="Prettier for Sublime Text" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Prettier for Sublime Text</h3>
+          <p class="app-description">Code formatting plugin for Sublime Text using Prettier.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sublime</span><span class="app-tag">formatter</span><span class="app-tag">prettier</span>
+            </div>
+          
+        </a>
+        <a href="emmet-sublime.html" class="app-card" data-id="1777301800425" style="text-decoration:none;color:inherit">
+          <img src="logo/emmet-sublime.png" alt="Emmet for Sublime Text" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Emmet for Sublime Text</h3>
+          <p class="app-description">Emmet abbreviation expansion for fast HTML and CSS coding.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sublime</span><span class="app-tag">emmet</span><span class="app-tag">html</span>
+            </div>
+          
+        </a>
+        <a href="package-control-sublime.html" class="app-card" data-id="1777301800426" style="text-decoration:none;color:inherit">
+          <img src="logo/package-control.png" alt="Package Control for Sublime" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Package Control for Sublime</h3>
+          <p class="app-description">Package manager for installing and managing Sublime Text plugins.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sublime</span><span class="app-tag">package-manager</span><span class="app-tag">plugins</span>
+            </div>
+          
+        </a>
+        <a href="terminus-sublime.html" class="app-card" data-id="1777301800427" style="text-decoration:none;color:inherit">
+          <img src="logo/terminus-sublime.png" alt="Terminus for Sublime" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Terminus for Sublime</h3>
+          <p class="app-description">Terminal emulator plugin for running commands inside Sublime Text.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sublime</span><span class="app-tag">terminal</span><span class="app-tag">commands</span>
+            </div>
+          
+        </a>
+        <a href="lsp-sublime.html" class="app-card" data-id="1777301800428" style="text-decoration:none;color:inherit">
+          <img src="logo/lsp-sublime.png" alt="LSP for Sublime Text" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LSP for Sublime Text</h3>
+          <p class="app-description">Language Server Protocol client for intelligent code completion.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sublime</span><span class="app-tag">lsp</span><span class="app-tag">completion</span>
+            </div>
+          
+        </a>
+        <a href="color-highlight-sublime.html" class="app-card" data-id="1777301800429" style="text-decoration:none;color:inherit">
+          <img src="logo/color-highlight.png" alt="Color Highlight for Sublime" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Color Highlight for Sublime</h3>
+          <p class="app-description">Highlight color codes in your code with actual color previews.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sublime</span><span class="app-tag">colors</span><span class="app-tag">preview</span>
+            </div>
+          
+        </a>
+        <a href="gitgutter-sublime.html" class="app-card" data-id="1777301800430" style="text-decoration:none;color:inherit">
+          <img src="logo/gitgutter.png" alt="GitGutter for Sublime" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GitGutter for Sublime</h3>
+          <p class="app-description">Show Git changes in the gutter for modified, added, or deleted lines.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sublime</span><span class="app-tag">git</span><span class="app-tag">gutter</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777301800381,"name":"Adobe Photoshop Plugins Bundle","slug":"adobe-photoshop-plugins-bundle","version":"2024.1","description":"Collection of essential plugins for Photoshop including filters, effects, and productivity tools.","category":"plugins","logoUrl":"logo/ps-plugins.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Photoshop Plugins Bundle1&tracker=1","tags":["photoshop","filters","effects","productivity"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800386,"name":"Sapphire Plugins","slug":"sapphire-plugins","version":"2024.1","description":"Premium visual effects plugins with advanced blurs, glows, and distortions.","category":"plugins","logoUrl":"logo/sapphire.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sapphire Plugins6&tracker=6","tags":["vfx","after-effects","premiere","premium"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800387,"name":"Mocha Pro","slug":"mocha-pro-plugin","version":"2024.0","description":"Advanced planar tracking and rotoscoping plugin for VFX workflows.","category":"plugins","logoUrl":"logo/mocha-pro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mocha Pro7&tracker=7","tags":["tracking","roto","vfx","after-effects"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800389,"name":"Topaz Video AI Plugin","slug":"topaz-video-ai-plugin","version":"5.1.0","description":"AI-powered video enhancement plugin for upscaling and stabilization.","category":"plugins","logoUrl":"logo/topaz-video-plugin.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Topaz Video AI Plugin9&tracker=9","tags":["ai","upscaling","video","enhancement"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800390,"name":"FxFactory","slug":"fxfactory","version":"8.0.0","description":"Plugin manager and marketplace for Final Cut Pro, Motion, and Adobe apps.","category":"plugins","logoUrl":"logo/fxfactory.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FxFactory10&tracker=10","tags":["plugin-manager","final-cut","motion","marketplace"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800392,"name":"FilmConvert Pro","slug":"filmconvert-pro","version":"2.20.0","description":"Film emulation plugin for authentic analog looks in digital video.","category":"plugins","logoUrl":"logo/filmconvert.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FilmConvert Pro12&tracker=12","tags":["film-emulation","color-grading","premiere","davinci"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800393,"name":"Dehancer Pro Plugin","slug":"dehancer-pro-plugin","version":"1.2.0","description":"Film grain, halation, and bloom plugin for cinematic video grading.","category":"plugins","logoUrl":"logo/dehancer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Dehancer Pro Plugin13&tracker=13","tags":["film","grain","halation","cinematic"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800394,"name":"Magic Bullet Looks","slug":"magic-bullet-looks","version":"4.0.0","description":"Color grading plugin with presets for cinematic looks and skin tones.","category":"plugins","logoUrl":"logo/magic-bullet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Magic Bullet Looks14&tracker=14","tags":["color-grading","presets","premiere","after-effects"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800395,"name":"Universe by Red Giant","slug":"universe-red-giant","version":"4.3.0","description":"Unified plugin suite with transitions, effects, and stylizers for video editors.","category":"plugins","logoUrl":"logo/universe.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Universe by Red Giant15&tracker=15","tags":["transitions","effects","premiere","final-cut"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800396,"name":"Auto-Ease for Figma","slug":"auto-ease-figma","version":"2.1.0","description":"Animation easing plugin for Figma with preset curves and custom controls.","category":"plugins","logoUrl":"logo/auto-ease.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Auto-Ease for Figma16&tracker=16","tags":["figma","animation","easing","prototyping"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800397,"name":"Content Reel for Figma","slug":"content-reel-figma","version":"3.0.0","description":"Plugin for quickly inserting placeholder content into Figma designs.","category":"plugins","logoUrl":"logo/content-reel.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Content Reel for Figma17&tracker=17","tags":["figma","placeholder","content","productivity"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800398,"name":"Unsplash for Figma","slug":"unsplash-figma","version":"2.5.0","description":"Plugin for inserting high-quality free photos from Unsplash into designs.","category":"plugins","logoUrl":"logo/unsplash-figma.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Unsplash for Figma18&tracker=18","tags":["figma","photos","unsplash","free"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800399,"name":"Iconify for Figma","slug":"iconify-figma","version":"3.2.0","description":"Access 100,000+ icons from multiple icon sets directly in Figma.","category":"plugins","logoUrl":"logo/iconify.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Iconify for Figma19&tracker=19","tags":["figma","icons","iconify","design"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800400,"name":"Lorem Ipsum for Figma","slug":"lorem-ipsum-figma","version":"2.0.0","description":"Generate placeholder text in multiple languages for Figma designs.","category":"plugins","logoUrl":"logo/lorem-ipsum.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Lorem Ipsum for Figma20&tracker=20","tags":["figma","placeholder","text","multilingual"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800401,"name":"Autoflow for Figma","slug":"autoflow-figma","version":"4.1.0","description":"Create connection lines between frames automatically in Figma.","category":"plugins","logoUrl":"logo/autoflow.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Autoflow for Figma21&tracker=21","tags":["figma","flow","connections","wireframes"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800402,"name":"Stark for Figma","slug":"stark-figma","version":"5.0.0","description":"Accessibility toolkit for checking contrast, simulating color blindness, and more.","category":"plugins","logoUrl":"logo/stark.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Stark for Figma22&tracker=22","tags":["figma","accessibility","contrast","a11y"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800403,"name":"Blush for Figma","slug":"blush-figma","version":"2.3.0","description":"Customizable illustrations plugin for Figma with diverse characters and scenes.","category":"plugins","logoUrl":"logo/blush.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Blush for Figma23&tracker=23","tags":["figma","illustrations","customizable","characters"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800404,"name":"Remove BG for Figma","slug":"remove-bg-figma","version":"1.5.0","description":"AI-powered background removal plugin for images in Figma.","category":"plugins","logoUrl":"logo/remove-bg.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Remove BG for Figma24&tracker=24","tags":["figma","ai","background-removal","images"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800405,"name":"Charts for Figma","slug":"charts-figma","version":"3.1.0","description":"Create customizable charts and graphs directly in Figma designs.","category":"plugins","logoUrl":"logo/charts-figma.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Charts for Figma25&tracker=25","tags":["figma","charts","graphs","data-viz"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800406,"name":"Prettier for VS Code","slug":"prettier-vscode","version":"10.2.0","description":"Opinionated code formatter plugin for Visual Studio Code.","category":"plugins","logoUrl":"logo/prettier-vscode.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Prettier for VS Code26&tracker=26","tags":["vscode","formatter","code-style","javascript"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800407,"name":"ESLint for VS Code","slug":"eslint-vscode","version":"8.57.0","description":"JavaScript linting plugin for finding and fixing code quality issues.","category":"plugins","logoUrl":"logo/eslint-vscode.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ESLint for VS Code27&tracker=27","tags":["vscode","linting","javascript","quality"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800408,"name":"GitLens for VS Code","slug":"gitlens-vscode","version":"14.6.0","description":"Git supercharged plugin with blame annotations and history exploration.","category":"plugins","logoUrl":"logo/gitlens.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GitLens for VS Code28&tracker=28","tags":["vscode","git","blame","history"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800409,"name":"Live Server for VS Code","slug":"live-server-vscode","version":"5.7.9","description":"Launch a local development server with live reload for web projects.","category":"plugins","logoUrl":"logo/live-server.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Live Server for VS Code29&tracker=29","tags":["vscode","web-dev","live-reload","server"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800410,"name":"Path Intellisense for VS Code","slug":"path-intellisense-vscode","version":"2.8.3","description":"Autocomplete plugin for file paths in Visual Studio Code.","category":"plugins","logoUrl":"logo/path-intellisense.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Path Intellisense for VS Code30&tracker=30","tags":["vscode","autocomplete","paths","productivity"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800411,"name":"Thunder Client for VS Code","slug":"thunder-client-vscode","version":"2.12.0","description":"Lightweight REST API client plugin for testing APIs in VS Code.","category":"plugins","logoUrl":"logo/thunder-client.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Thunder Client for VS Code31&tracker=31","tags":["vscode","api","rest","testing"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800412,"name":"Docker for VS Code","slug":"docker-vscode","version":"1.28.0","description":"Docker extension for building, managing, and deploying containers.","category":"plugins","logoUrl":"logo/docker-vscode.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Docker for VS Code32&tracker=32","tags":["vscode","docker","containers","devops"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800413,"name":"Remote - SSH for VS Code","slug":"remote-ssh-vscode","version":"0.107.0","description":"Connect to remote machines via SSH for development in VS Code.","category":"plugins","logoUrl":"logo/remote-ssh.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Remote - SSH for VS Code33&tracker=33","tags":["vscode","ssh","remote","development"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800414,"name":"Python for VS Code","slug":"python-vscode","version":"2024.4.0","description":"Python language support with IntelliSense, debugging, and linting.","category":"plugins","logoUrl":"logo/python-vscode.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Python for VS Code34&tracker=34","tags":["vscode","python","intellisense","debugging"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800415,"name":"Prettier - Code Formatter","slug":"prettier-code-formatter","version":"10.2.0","description":"Universal code formatter supporting JavaScript, CSS, HTML, and more.","category":"plugins","logoUrl":"logo/prettier-plugin.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Prettier - Code Formatter35&tracker=35","tags":["formatter","code-style","multi-lang","editor"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800416,"name":"Stylelint for VS Code","slug":"stylelint-vscode","version":"16.2.1","description":"Modern CSS linter for catching errors and enforcing conventions.","category":"plugins","logoUrl":"logo/stylelint-vscode.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Stylelint for VS Code36&tracker=36","tags":["vscode","css","linting","scss"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800417,"name":"Bracket Pair Colorizer","slug":"bracket-pair-colorizer","version":"1.0.61","description":"Colorize matching brackets for improved code readability.","category":"plugins","logoUrl":"logo/bracket-colorizer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bracket Pair Colorizer37&tracker=37","tags":["vscode","brackets","readability","productivity"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800418,"name":"Error Lens for VS Code","slug":"error-lens-vscode","version":"3.10.0","description":"Highlight errors and warnings inline for faster debugging.","category":"plugins","logoUrl":"logo/error-lens.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Error Lens for VS Code38&tracker=38","tags":["vscode","errors","debugging","inline"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800419,"name":"Code Spell Checker","slug":"code-spell-checker","version":"3.0.0","description":"Spell checker for code and comments in multiple programming languages.","category":"plugins","logoUrl":"logo/code-spell.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Code Spell Checker39&tracker=39","tags":["vscode","spell-check","multilingual","productivity"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800420,"name":"REST Client for VS Code","slug":"rest-client-vscode","version":"0.25.1","description":"Send HTTP requests and view responses directly in VS Code.","category":"plugins","logoUrl":"logo/rest-client.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=REST Client for VS Code40&tracker=40","tags":["vscode","http","api","testing"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800421,"name":"Settings Sync for VS Code","slug":"settings-sync-vscode","version":"3.4.3","description":"Synchronize VS Code settings across machines using GitHub Gist.","category":"plugins","logoUrl":"logo/settings-sync.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Settings Sync for VS Code41&tracker=41","tags":["vscode","sync","github","settings"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800422,"name":"Markdown All in One","slug":"markdown-all-in-one","version":"3.5.1","description":"All-in-one Markdown support with shortcuts, table of contents, and preview.","category":"plugins","logoUrl":"logo/markdown-all-in-one.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Markdown All in One42&tracker=42","tags":["vscode","markdown","preview","toc"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800423,"name":"Path Autocomplete","slug":"path-autocomplete","version":"1.18.0","description":"Path completion plugin for various editors and IDEs.","category":"plugins","logoUrl":"logo/path-autocomplete.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Path Autocomplete43&tracker=43","tags":["autocomplete","paths","editor","productivity"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800424,"name":"Prettier for Sublime Text","slug":"prettier-sublime","version":"2.0.0","description":"Code formatting plugin for Sublime Text using Prettier.","category":"plugins","logoUrl":"logo/prettier-sublime.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Prettier for Sublime Text44&tracker=44","tags":["sublime","formatter","prettier","code-style"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800425,"name":"Emmet for Sublime Text","slug":"emmet-sublime","version":"3.0.0","description":"Emmet abbreviation expansion for fast HTML and CSS coding.","category":"plugins","logoUrl":"logo/emmet-sublime.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Emmet for Sublime Text45&tracker=45","tags":["sublime","emmet","html","css"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800426,"name":"Package Control for Sublime","slug":"package-control-sublime","version":"4.0.0","description":"Package manager for installing and managing Sublime Text plugins.","category":"plugins","logoUrl":"logo/package-control.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Package Control for Sublime46&tracker=46","tags":["sublime","package-manager","plugins","installation"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800427,"name":"Terminus for Sublime","slug":"terminus-sublime","version":"1.0.0","description":"Terminal emulator plugin for running commands inside Sublime Text.","category":"plugins","logoUrl":"logo/terminus-sublime.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Terminus for Sublime47&tracker=47","tags":["sublime","terminal","commands","productivity"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800428,"name":"LSP for Sublime Text","slug":"lsp-sublime","version":"1.22.0","description":"Language Server Protocol client for intelligent code completion.","category":"plugins","logoUrl":"logo/lsp-sublime.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LSP for Sublime Text48&tracker=48","tags":["sublime","lsp","completion","intelligence"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800429,"name":"Color Highlight for Sublime","slug":"color-highlight-sublime","version":"5.2.0","description":"Highlight color codes in your code with actual color previews.","category":"plugins","logoUrl":"logo/color-highlight.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Color Highlight for Sublime49&tracker=49","tags":["sublime","colors","preview","css"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800430,"name":"GitGutter for Sublime","slug":"gitgutter-sublime","version":"1.10.0","description":"Show Git changes in the gutter for modified, added, or deleted lines.","category":"plugins","logoUrl":"logo/gitgutter.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GitGutter for Sublime50&tracker=50","tags":["sublime","git","gutter","version-control"],"scrapedAt":"2026-04-27T14:56:40.381Z"}];
+    const CURRENT_CATEGORY = 'plugins';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

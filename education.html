@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Education — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Education</h1>
+    <p><span class="highlight">100</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="khan-academy.html" class="app-card" data-id="1777299887710" style="text-decoration:none;color:inherit">
+          <img src="logo/khan-academy.png" alt="Khan Academy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Khan Academy</h3>
+          <p class="app-description">Free educational platform with lessons in math, science, history, and more for all ages.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">lessons</span><span class="app-tag">math</span>
+            </div>
+          
+        </a>
+        <a href="duolingo.html" class="app-card" data-id="1777299887711" style="text-decoration:none;color:inherit">
+          <img src="logo/duolingo.png" alt="Duolingo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Duolingo</h3>
+          <p class="app-description">Gamified language learning app with bite-sized lessons for 40+ languages.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">languages</span><span class="app-tag">gamified</span><span class="app-tag">lessons</span>
+            </div>
+          
+        </a>
+        <a href="coursera.html" class="app-card" data-id="1777299887712" style="text-decoration:none;color:inherit">
+          <img src="logo/coursera.png" alt="Coursera" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Coursera</h3>
+          <p class="app-description">Online learning platform with courses from top universities and companies.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">courses</span><span class="app-tag">universities</span><span class="app-tag">certificates</span>
+            </div>
+          
+        </a>
+        <a href="edx.html" class="app-card" data-id="1777299887713" style="text-decoration:none;color:inherit">
+          <img src="logo/edx.png" alt="edX" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">edX</h3>
+          <p class="app-description">MOOC platform offering university-level courses from Harvard, MIT, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mooc</span><span class="app-tag">harvard</span><span class="app-tag">mit</span>
+            </div>
+          
+        </a>
+        <a href="udemy.html" class="app-card" data-id="1777299887714" style="text-decoration:none;color:inherit">
+          <img src="logo/udemy.png" alt="Udemy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Udemy</h3>
+          <p class="app-description">Marketplace for online courses on programming, business, design, and personal development.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">marketplace</span><span class="app-tag">programming</span><span class="app-tag">business</span>
+            </div>
+          
+        </a>
+        <a href="linkedin-learning.html" class="app-card" data-id="1777299887715" style="text-decoration:none;color:inherit">
+          <img src="logo/linkedin-learning.png" alt="LinkedIn Learning" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LinkedIn Learning</h3>
+          <p class="app-description">Professional development courses in business, tech, and creative skills.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">professional</span><span class="app-tag">business</span><span class="app-tag">tech</span>
+            </div>
+          
+        </a>
+        <a href="skillshare.html" class="app-card" data-id="1777299887716" style="text-decoration:none;color:inherit">
+          <img src="logo/skillshare.png" alt="Skillshare" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Skillshare</h3>
+          <p class="app-description">Creative learning community with classes in design, illustration, and photography.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">creative</span><span class="app-tag">design</span><span class="app-tag">community</span>
+            </div>
+          
+        </a>
+        <a href="masterclass.html" class="app-card" data-id="1777299887717" style="text-decoration:none;color:inherit">
+          <img src="logo/masterclass.png" alt="MasterClass" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MasterClass</h3>
+          <p class="app-description">Learn from world-renowned experts in cooking, writing, filmmaking, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">experts</span><span class="app-tag">cooking</span><span class="app-tag">filmmaking</span>
+            </div>
+          
+        </a>
+        <a href="pluralsight.html" class="app-card" data-id="1777299887718" style="text-decoration:none;color:inherit">
+          <img src="logo/pluralsight.png" alt="Pluralsight" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pluralsight</h3>
+          <p class="app-description">Technology skills platform with courses in software development, IT, and data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tech</span><span class="app-tag">software</span><span class="app-tag">it</span>
+            </div>
+          
+        </a>
+        <a href="codecademy.html" class="app-card" data-id="1777299887719" style="text-decoration:none;color:inherit">
+          <img src="logo/codecademy.png" alt="Codecademy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Codecademy</h3>
+          <p class="app-description">Interactive platform for learning to code in Python, JavaScript, SQL, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">coding</span><span class="app-tag">interactive</span><span class="app-tag">python</span>
+            </div>
+          
+        </a>
+        <a href="freecodecamp.html" class="app-card" data-id="1777299887720" style="text-decoration:none;color:inherit">
+          <img src="logo/freecodecamp.png" alt="freeCodeCamp" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">freeCodeCamp</h3>
+          <p class="app-description">Free coding bootcamp with certifications in web development and data science.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">coding</span><span class="app-tag">bootcamp</span>
+            </div>
+          
+        </a>
+        <a href="the-odin-project.html" class="app-card" data-id="1777299887721" style="text-decoration:none;color:inherit">
+          <img src="logo/odin-project.png" alt="The Odin Project" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Odin Project</h3>
+          <p class="app-description">Open-source full-stack curriculum for learning web development.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">full-stack</span><span class="app-tag">web-dev</span>
+            </div>
+          
+        </a>
+        <a href="brilliant.html" class="app-card" data-id="1777299887722" style="text-decoration:none;color:inherit">
+          <img src="logo/brilliant.png" alt="Brilliant" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Brilliant</h3>
+          <p class="app-description">Interactive courses in math, science, and computer science for curious learners.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">math</span><span class="app-tag">science</span><span class="app-tag">interactive</span>
+            </div>
+          
+        </a>
+        <a href="quizlet.html" class="app-card" data-id="1777299887723" style="text-decoration:none;color:inherit">
+          <img src="logo/quizlet.png" alt="Quizlet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Quizlet</h3>
+          <p class="app-description">Study tool with flashcards, games, and practice tests for any subject.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">flashcards</span><span class="app-tag">study</span><span class="app-tag">games</span>
+            </div>
+          
+        </a>
+        <a href="anki.html" class="app-card" data-id="1777299887724" style="text-decoration:none;color:inherit">
+          <img src="logo/anki.png" alt="Anki" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Anki</h3>
+          <p class="app-description">Powerful spaced repetition flashcard program for efficient memorization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">flashcards</span><span class="app-tag">spaced-repetition</span><span class="app-tag">memorization</span>
+            </div>
+          
+        </a>
+        <a href="memrise.html" class="app-card" data-id="1777299887725" style="text-decoration:none;color:inherit">
+          <img src="logo/memrise.png" alt="Memrise" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Memrise</h3>
+          <p class="app-description">Language learning app with video clips from native speakers and spaced repetition.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">languages</span><span class="app-tag">native-speakers</span><span class="app-tag">spaced-repetition</span>
+            </div>
+          
+        </a>
+        <a href="babbel.html" class="app-card" data-id="1777299887726" style="text-decoration:none;color:inherit">
+          <img src="logo/babbel.png" alt="Babbel" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Babbel</h3>
+          <p class="app-description">Language learning app with practical conversations and speech recognition.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">languages</span><span class="app-tag">conversations</span><span class="app-tag">speech-recognition</span>
+            </div>
+          
+        </a>
+        <a href="rosetta-stone.html" class="app-card" data-id="1777299887727" style="text-decoration:none;color:inherit">
+          <img src="logo/rosetta-stone.png" alt="Rosetta Stone" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Rosetta Stone</h3>
+          <p class="app-description">Immersive language learning with speech recognition and live tutoring.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">languages</span><span class="app-tag">immersive</span><span class="app-tag">speech-recognition</span>
+            </div>
+          
+        </a>
+        <a href="busuu.html" class="app-card" data-id="1777299887728" style="text-decoration:none;color:inherit">
+          <img src="logo/busuu.png" alt="Busuu" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Busuu</h3>
+          <p class="app-description">Language learning with lessons created by experts and feedback from native speakers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">languages</span><span class="app-tag">experts</span><span class="app-tag">native-speakers</span>
+            </div>
+          
+        </a>
+        <a href="hellotalk.html" class="app-card" data-id="1777299887729" style="text-decoration:none;color:inherit">
+          <img src="logo/hellotalk.png" alt="HelloTalk" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HelloTalk</h3>
+          <p class="app-description">Language exchange app for practicing with native speakers worldwide.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">languages</span><span class="app-tag">exchange</span><span class="app-tag">native-speakers</span>
+            </div>
+          
+        </a>
+        <a href="tandem.html" class="app-card" data-id="1777299887730" style="text-decoration:none;color:inherit">
+          <img src="logo/tandem.png" alt="Tandem" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tandem</h3>
+          <p class="app-description">Language exchange community for practicing speaking with real people.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">languages</span><span class="app-tag">exchange</span><span class="app-tag">speaking</span>
+            </div>
+          
+        </a>
+        <a href="italki.html" class="app-card" data-id="1777299887731" style="text-decoration:none;color:inherit">
+          <img src="logo/italki.png" alt="iTalki" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iTalki</h3>
+          <p class="app-description">Platform for finding language tutors and practicing with native speakers online.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">languages</span><span class="app-tag">tutors</span><span class="app-tag">online</span>
+            </div>
+          
+        </a>
+        <a href="preply.html" class="app-card" data-id="1777299887732" style="text-decoration:none;color:inherit">
+          <img src="logo/preply.png" alt="Preply" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Preply</h3>
+          <p class="app-description">Online tutoring platform for languages, math, science, and test prep.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tutoring</span><span class="app-tag">languages</span><span class="app-tag">math</span>
+            </div>
+          
+        </a>
+        <a href="chegg.html" class="app-card" data-id="1777299887733" style="text-decoration:none;color:inherit">
+          <img src="logo/chegg.png" alt="Chegg" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Chegg</h3>
+          <p class="app-description">Study resource with textbook solutions, expert Q&amp;A, and tutoring services.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">textbooks</span><span class="app-tag">solutions</span><span class="app-tag">tutoring</span>
+            </div>
+          
+        </a>
+        <a href="khan-academy-kids.html" class="app-card" data-id="1777299887734" style="text-decoration:none;color:inherit">
+          <img src="logo/khan-kids.png" alt="Khan Academy Kids" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Khan Academy Kids</h3>
+          <p class="app-description">Free educational app for children ages 2-8 with reading, math, and social-emotional learning.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">kids</span><span class="app-tag">free</span><span class="app-tag">reading</span>
+            </div>
+          
+        </a>
+        <a href="abcmouse.html" class="app-card" data-id="1777299887735" style="text-decoration:none;color:inherit">
+          <img src="logo/abcmouse.png" alt="ABCmouse" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ABCmouse</h3>
+          <p class="app-description">Early learning academy for kids ages 2-8 with reading, math, and art activities.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">kids</span><span class="app-tag">early-learning</span><span class="app-tag">reading</span>
+            </div>
+          
+        </a>
+        <a href="epic.html" class="app-card" data-id="1777299887736" style="text-decoration:none;color:inherit">
+          <img src="logo/epic.png" alt="Epic!" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Epic!</h3>
+          <p class="app-description">Digital library for kids with 40,000+ books, audiobooks, and educational videos.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">kids</span><span class="app-tag">library</span><span class="app-tag">books</span>
+            </div>
+          
+        </a>
+        <a href="prodigy-math.html" class="app-card" data-id="1777299887737" style="text-decoration:none;color:inherit">
+          <img src="logo/prodigy.png" alt="Prodigy Math" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Prodigy Math</h3>
+          <p class="app-description">Game-based math learning platform aligned with curriculum for grades 1-8.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">math</span><span class="app-tag">game-based</span><span class="app-tag">curriculum</span>
+            </div>
+          
+        </a>
+        <a href="scratch.html" class="app-card" data-id="1777299887738" style="text-decoration:none;color:inherit">
+          <img src="logo/scratch.png" alt="Scratch" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Scratch</h3>
+          <p class="app-description">Visual programming language for kids to create stories, games, and animations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">coding</span><span class="app-tag">kids</span><span class="app-tag">visual</span>
+            </div>
+          
+        </a>
+        <a href="tynker.html" class="app-card" data-id="1777299887739" style="text-decoration:none;color:inherit">
+          <img src="logo/tynker.png" alt="Tynker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tynker</h3>
+          <p class="app-description">Coding platform for kids with games, puzzles, and creative projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">coding</span><span class="app-tag">kids</span><span class="app-tag">games</span>
+            </div>
+          
+        </a>
+        <a href="code-org.html" class="app-card" data-id="1777299887740" style="text-decoration:none;color:inherit">
+          <img src="logo/code-org.png" alt="Code.org" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Code.org</h3>
+          <p class="app-description">Free coding curriculum for K-12 with Hour of Code activities and courses.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">coding</span><span class="app-tag">free</span><span class="app-tag">k-12</span>
+            </div>
+          
+        </a>
+        <a href="kodable.html" class="app-card" data-id="1777299887741" style="text-decoration:none;color:inherit">
+          <img src="logo/kodable.png" alt="Kodable" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kodable</h3>
+          <p class="app-description">Coding curriculum for elementary students with game-based lessons.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">coding</span><span class="app-tag">elementary</span><span class="app-tag">game-based</span>
+            </div>
+          
+        </a>
+        <a href="minecraft-education.html" class="app-card" data-id="1777299887742" style="text-decoration:none;color:inherit">
+          <img src="logo/minecraft-edu.png" alt="Minecraft: Education Edition" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Minecraft: Education Edition</h3>
+          <p class="app-description">Game-based learning platform that promotes creativity and collaboration in classrooms.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">minecraft</span><span class="app-tag">game-based</span><span class="app-tag">classroom</span>
+            </div>
+          
+        </a>
+        <a href="google-classroom.html" class="app-card" data-id="1777299887743" style="text-decoration:none;color:inherit">
+          <img src="logo/google-classroom.png" alt="Google Classroom" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Classroom</h3>
+          <p class="app-description">Learning management system for assigning, collecting, and grading student work.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">lms</span><span class="app-tag">google</span><span class="app-tag">assignments</span>
+            </div>
+          
+        </a>
+        <a href="canvas.html" class="app-card" data-id="1777299887744" style="text-decoration:none;color:inherit">
+          <img src="logo/canvas.png" alt="Canvas" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Canvas</h3>
+          <p class="app-description">Cloud-based learning management system for schools and universities.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">lms</span><span class="app-tag">cloud</span><span class="app-tag">university</span>
+            </div>
+          
+        </a>
+        <a href="blackboard.html" class="app-card" data-id="1777299887745" style="text-decoration:none;color:inherit">
+          <img src="logo/blackboard.png" alt="Blackboard" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Blackboard</h3>
+          <p class="app-description">Enterprise learning management system for higher education institutions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">lms</span><span class="app-tag">enterprise</span><span class="app-tag">higher-ed</span>
+            </div>
+          
+        </a>
+        <a href="moodle.html" class="app-card" data-id="1777299887746" style="text-decoration:none;color:inherit">
+          <img src="logo/moodle.png" alt="Moodle" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Moodle</h3>
+          <p class="app-description">Open-source learning platform for creating online courses and managing classrooms.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">lms</span><span class="app-tag">courses</span>
+            </div>
+          
+        </a>
+        <a href="schoology.html" class="app-card" data-id="1777299887747" style="text-decoration:none;color:inherit">
+          <img src="logo/schoology.png" alt="Schoology" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Schoology</h3>
+          <p class="app-description">Learning management system with collaboration tools for K-12 education.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">lms</span><span class="app-tag">k-12</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="seesaw.html" class="app-card" data-id="1777299887748" style="text-decoration:none;color:inherit">
+          <img src="logo/seesaw.png" alt="Seesaw" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Seesaw</h3>
+          <p class="app-description">Student-driven digital portfolio and communication platform for elementary schools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">portfolio</span><span class="app-tag">elementary</span><span class="app-tag">communication</span>
+            </div>
+          
+        </a>
+        <a href="classdojo.html" class="app-card" data-id="1777299887749" style="text-decoration:none;color:inherit">
+          <img src="logo/classdojo.png" alt="ClassDojo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ClassDojo</h3>
+          <p class="app-description">Classroom management app for connecting teachers, students, and families.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">classroom</span><span class="app-tag">management</span><span class="app-tag">families</span>
+            </div>
+          
+        </a>
+        <a href="remind.html" class="app-card" data-id="1777299887750" style="text-decoration:none;color:inherit">
+          <img src="logo/remind.png" alt="Remind" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Remind</h3>
+          <p class="app-description">Safe messaging app for teachers to communicate with students and parents.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">messaging</span><span class="app-tag">teachers</span><span class="app-tag">parents</span>
+            </div>
+          
+        </a>
+        <a href="edmodo.html" class="app-card" data-id="1777299887751" style="text-decoration:none;color:inherit">
+          <img src="logo/edmodo.png" alt="Edmodo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Edmodo</h3>
+          <p class="app-description">Social learning platform for teachers to share resources and connect with students.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">social</span><span class="app-tag">teachers</span><span class="app-tag">resources</span>
+            </div>
+          
+        </a>
+        <a href="nearpod.html" class="app-card" data-id="1777299887752" style="text-decoration:none;color:inherit">
+          <img src="logo/nearpod.png" alt="Nearpod" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nearpod</h3>
+          <p class="app-description">Interactive lesson platform with quizzes, polls, and virtual field trips.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">interactive</span><span class="app-tag">lessons</span><span class="app-tag">quizzes</span>
+            </div>
+          
+        </a>
+        <a href="kahoot.html" class="app-card" data-id="1777299887753" style="text-decoration:none;color:inherit">
+          <img src="logo/kahoot.png" alt="Kahoot!" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kahoot!</h3>
+          <p class="app-description">Game-based learning platform for creating and playing educational quizzes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">game-based</span><span class="app-tag">quizzes</span><span class="app-tag">interactive</span>
+            </div>
+          
+        </a>
+        <a href="quizizz.html" class="app-card" data-id="1777299887754" style="text-decoration:none;color:inherit">
+          <img src="logo/quizizz.png" alt="Quizizz" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Quizizz</h3>
+          <p class="app-description">Engaging quiz platform with memes, leaderboards, and self-paced learning.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">quizzes</span><span class="app-tag">memes</span><span class="app-tag">leaderboards</span>
+            </div>
+          
+        </a>
+        <a href="blooket.html" class="app-card" data-id="1777299887755" style="text-decoration:none;color:inherit">
+          <img src="logo/blooket.png" alt="Blooket" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Blooket</h3>
+          <p class="app-description">Game-based review platform with unique game modes for classroom engagement.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">game-based</span><span class="app-tag">review</span><span class="app-tag">classroom</span>
+            </div>
+          
+        </a>
+        <a href="gimkit.html" class="app-card" data-id="1777299887756" style="text-decoration:none;color:inherit">
+          <img src="logo/gimkit.png" alt="Gimkit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Gimkit</h3>
+          <p class="app-description">Live learning game show where students earn virtual currency for correct answers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">game-show</span><span class="app-tag">live</span><span class="app-tag">currency</span>
+            </div>
+          
+        </a>
+        <a href="edpuzzle.html" class="app-card" data-id="1777299887757" style="text-decoration:none;color:inherit">
+          <img src="logo/edpuzzle.png" alt="Edpuzzle" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Edpuzzle</h3>
+          <p class="app-description">Interactive video platform for adding questions and notes to educational content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">video</span><span class="app-tag">interactive</span><span class="app-tag">questions</span>
+            </div>
+          
+        </a>
+        <a href="flipgrid.html" class="app-card" data-id="1777299887758" style="text-decoration:none;color:inherit">
+          <img src="logo/flipgrid.png" alt="Flipgrid" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Flipgrid</h3>
+          <p class="app-description">Video discussion platform for student voice and collaborative learning.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">video</span><span class="app-tag">discussion</span><span class="app-tag">student-voice</span>
+            </div>
+          
+        </a>
+        <a href="padlet.html" class="app-card" data-id="1777299887759" style="text-decoration:none;color:inherit">
+          <img src="logo/padlet.png" alt="Padlet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Padlet</h3>
+          <p class="app-description">Digital bulletin board for collaborative brainstorming and content sharing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">bulletin-board</span><span class="app-tag">collaborative</span><span class="app-tag">brainstorming</span>
+            </div>
+          
+        </a>
+        <a href="jamboard.html" class="app-card" data-id="1777299887760" style="text-decoration:none;color:inherit">
+          <img src="logo/jamboard.png" alt="Jamboard" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Jamboard</h3>
+          <p class="app-description">Digital whiteboard from Google for real-time collaboration and visual learning.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">whiteboard</span><span class="app-tag">google</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="miro-education.html" class="app-card" data-id="1777299887761" style="text-decoration:none;color:inherit">
+          <img src="logo/miro-edu.png" alt="Miro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Miro</h3>
+          <p class="app-description">Visual collaboration platform for online whiteboarding and team learning.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">whiteboard</span><span class="app-tag">visual</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="explain-everything.html" class="app-card" data-id="1777299887762" style="text-decoration:none;color:inherit">
+          <img src="logo/explain-everything.png" alt="Explain Everything" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Explain Everything</h3>
+          <p class="app-description">Interactive whiteboard for creating lessons, tutorials, and presentations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">whiteboard</span><span class="app-tag">lessons</span><span class="app-tag">tutorials</span>
+            </div>
+          
+        </a>
+        <a href="screencastify.html" class="app-card" data-id="1777299887763" style="text-decoration:none;color:inherit">
+          <img src="logo/screencastify.png" alt="Screencastify" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Screencastify</h3>
+          <p class="app-description">Screen recording tool for creating educational videos and tutorials.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">screen-recording</span><span class="app-tag">videos</span><span class="app-tag">tutorials</span>
+            </div>
+          
+        </a>
+        <a href="loom.html" class="app-card" data-id="1777299887764" style="text-decoration:none;color:inherit">
+          <img src="logo/loom.png" alt="Loom" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Loom</h3>
+          <p class="app-description">Video messaging tool for recording and sharing quick educational content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">video</span><span class="app-tag">messaging</span><span class="app-tag">recording</span>
+            </div>
+          
+        </a>
+        <a href="kami.html" class="app-card" data-id="1777299887765" style="text-decoration:none;color:inherit">
+          <img src="logo/kami.png" alt="Kami" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kami</h3>
+          <p class="app-description">Digital annotation tool for marking up PDFs and documents in classrooms.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">annotation</span><span class="app-tag">pdf</span><span class="app-tag">documents</span>
+            </div>
+          
+        </a>
+        <a href="goguardian.html" class="app-card" data-id="1777299887766" style="text-decoration:none;color:inherit">
+          <img src="logo/goguardian.png" alt="GoGuardian" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GoGuardian</h3>
+          <p class="app-description">Classroom management and student safety platform for Chromebook schools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">classroom-management</span><span class="app-tag">safety</span><span class="app-tag">chromebook</span>
+            </div>
+          
+        </a>
+        <a href="hapara.html" class="app-card" data-id="1777299887767" style="text-decoration:none;color:inherit">
+          <img src="logo/hapara.png" alt="Hapara" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hapara</h3>
+          <p class="app-description">Digital learning platform for managing student devices and workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">digital-learning</span><span class="app-tag">device-management</span><span class="app-tag">workflows</span>
+            </div>
+          
+        </a>
+        <a href="pear-deck.html" class="app-card" data-id="1777299887768" style="text-decoration:none;color:inherit">
+          <img src="logo/pear-deck.png" alt="Pear Deck" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pear Deck</h3>
+          <p class="app-description">Interactive presentation tool for engaging students during lessons.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presentations</span><span class="app-tag">interactive</span><span class="app-tag">engagement</span>
+            </div>
+          
+        </a>
+        <a href="nearpod-lessons.html" class="app-card" data-id="1777299887769" style="text-decoration:none;color:inherit">
+          <img src="logo/nearpod-lessons.png" alt="Nearpod" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nearpod</h3>
+          <p class="app-description">Ready-made interactive lessons aligned with standards for all subjects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">lessons</span><span class="app-tag">standards</span><span class="app-tag">interactive</span>
+            </div>
+          
+        </a>
+        <a href="newsela.html" class="app-card" data-id="1777299887770" style="text-decoration:none;color:inherit">
+          <img src="logo/newsela.png" alt="Newsela" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Newsela</h3>
+          <p class="app-description">Current events content at multiple reading levels for differentiated instruction.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">current-events</span><span class="app-tag">reading-levels</span><span class="app-tag">differentiated</span>
+            </div>
+          
+        </a>
+        <a href="commonlit.html" class="app-card" data-id="1777299887771" style="text-decoration:none;color:inherit">
+          <img src="logo/commonlit.png" alt="CommonLit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CommonLit</h3>
+          <p class="app-description">Free library of reading passages with assessments and lesson plans.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">reading</span><span class="app-tag">free</span><span class="app-tag">assessments</span>
+            </div>
+          
+        </a>
+        <a href="readworks.html" class="app-card" data-id="1777299887772" style="text-decoration:none;color:inherit">
+          <img src="logo/readworks.png" alt="ReadWorks" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ReadWorks</h3>
+          <p class="app-description">Free reading comprehension resource with articles and question sets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">reading</span><span class="app-tag">comprehension</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="epic-educators.html" class="app-card" data-id="1777299887773" style="text-decoration:none;color:inherit">
+          <img src="logo/epic-educators.png" alt="Epic! for Educators" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Epic! for Educators</h3>
+          <p class="app-description">Digital library platform for educators with reading assignments and tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">library</span><span class="app-tag">educators</span><span class="app-tag">assignments</span>
+            </div>
+          
+        </a>
+        <a href="raz-kids.html" class="app-card" data-id="1777299887774" style="text-decoration:none;color:inherit">
+          <img src="logo/raz-kids.png" alt="Raz-Kids" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Raz-Kids</h3>
+          <p class="app-description">Leveled reading program with ebooks, quizzes, and progress monitoring.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">reading</span><span class="app-tag">leveled</span><span class="app-tag">quizzes</span>
+            </div>
+          
+        </a>
+        <a href="ixl-learning.html" class="app-card" data-id="1777299887775" style="text-decoration:none;color:inherit">
+          <img src="logo/ixl.png" alt="IXL Learning" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">IXL Learning</h3>
+          <p class="app-description">Comprehensive K-12 practice platform with adaptive questions and analytics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">practice</span><span class="app-tag">k-12</span><span class="app-tag">adaptive</span>
+            </div>
+          
+        </a>
+        <a href="khan-teachers.html" class="app-card" data-id="1777299887776" style="text-decoration:none;color:inherit">
+          <img src="logo/khan-teachers.png" alt="Khan Academy for Teachers" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Khan Academy for Teachers</h3>
+          <p class="app-description">Teacher dashboard for assigning Khan Academy content and tracking progress.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">teachers</span><span class="app-tag">dashboard</span><span class="app-tag">assignments</span>
+            </div>
+          
+        </a>
+        <a href="desmos.html" class="app-card" data-id="1777299887777" style="text-decoration:none;color:inherit">
+          <img src="logo/desmos.png" alt="Desmos" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Desmos</h3>
+          <p class="app-description">Free online graphing calculator and math activities for classroom use.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">math</span><span class="app-tag">graphing</span><span class="app-tag">calculator</span>
+            </div>
+          
+        </a>
+        <a href="geogebra.html" class="app-card" data-id="1777299887778" style="text-decoration:none;color:inherit">
+          <img src="logo/geogebra.png" alt="GeoGebra" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GeoGebra</h3>
+          <p class="app-description">Dynamic math software for geometry, algebra, calculus, and statistics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">math</span><span class="app-tag">geometry</span><span class="app-tag">algebra</span>
+            </div>
+          
+        </a>
+        <a href="phet-simulations.html" class="app-card" data-id="1777299887779" style="text-decoration:none;color:inherit">
+          <img src="logo/phet.png" alt="PhET Simulations" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PhET Simulations</h3>
+          <p class="app-description">Free interactive science and math simulations from University of Colorado.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">science</span><span class="app-tag">simulations</span><span class="app-tag">interactive</span>
+            </div>
+          
+        </a>
+        <a href="labxchange.html" class="app-card" data-id="1777299887780" style="text-decoration:none;color:inherit">
+          <img src="logo/labxchange.png" alt="LabXchange" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LabXchange</h3>
+          <p class="app-description">Free digital science learning platform with virtual labs and pathways.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">science</span><span class="app-tag">virtual-labs</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="labster.html" class="app-card" data-id="1777299887781" style="text-decoration:none;color:inherit">
+          <img src="logo/labster.png" alt="Labster" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Labster</h3>
+          <p class="app-description">Virtual lab simulations for science education with immersive 3D environments.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">science</span><span class="app-tag">virtual-labs</span><span class="app-tag">3d</span>
+            </div>
+          
+        </a>
+        <a href="ck-12.html" class="app-card" data-id="1777299887782" style="text-decoration:none;color:inherit">
+          <img src="logo/ck12.png" alt="CK-12" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CK-12</h3>
+          <p class="app-description">Free adaptive learning platform with textbooks, simulations, and practice.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">adaptive</span><span class="app-tag">textbooks</span>
+            </div>
+          
+        </a>
+        <a href="openstax.html" class="app-card" data-id="1777299887783" style="text-decoration:none;color:inherit">
+          <img src="logo/openstax.png" alt="OpenStax" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OpenStax</h3>
+          <p class="app-description">Free, peer-reviewed textbooks for college and high school courses.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">textbooks</span><span class="app-tag">free</span><span class="app-tag">peer-reviewed</span>
+            </div>
+          
+        </a>
+        <a href="libretexts.html" class="app-card" data-id="1777299887784" style="text-decoration:none;color:inherit">
+          <img src="logo/libretexts.png" alt="LibreTexts" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LibreTexts</h3>
+          <p class="app-description">Open educational resource platform with customizable textbooks and courses.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">oer</span><span class="app-tag">textbooks</span><span class="app-tag">customizable</span>
+            </div>
+          
+        </a>
+        <a href="oer-commons.html" class="app-card" data-id="1777299887785" style="text-decoration:none;color:inherit">
+          <img src="logo/oer-commons.png" alt="OER Commons" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OER Commons</h3>
+          <p class="app-description">Digital library of open educational resources for teachers and learners.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">oer</span><span class="app-tag">library</span><span class="app-tag">teachers</span>
+            </div>
+          
+        </a>
+        <a href="merlot.html" class="app-card" data-id="1777299887786" style="text-decoration:none;color:inherit">
+          <img src="logo/merlot.png" alt="Merlot" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Merlot</h3>
+          <p class="app-description">Curated collection of free online learning materials for higher education.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">oer</span><span class="app-tag">higher-ed</span><span class="app-tag">curated</span>
+            </div>
+          
+        </a>
+        <a href="khan-sat-prep.html" class="app-card" data-id="1777299887787" style="text-decoration:none;color:inherit">
+          <img src="logo/khan-sat.png" alt="Khan Academy SAT Prep" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Khan Academy SAT Prep</h3>
+          <p class="app-description">Official SAT practice with personalized study plans from College Board.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sat</span><span class="app-tag">test-prep</span><span class="app-tag">official</span>
+            </div>
+          
+        </a>
+        <a href="magoosh.html" class="app-card" data-id="1777299887788" style="text-decoration:none;color:inherit">
+          <img src="logo/magoosh.png" alt="Magoosh" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Magoosh</h3>
+          <p class="app-description">Test prep platform for SAT, ACT, GRE, GMAT with video lessons and practice.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">test-prep</span><span class="app-tag">sat</span><span class="app-tag">gre</span>
+            </div>
+          
+        </a>
+        <a href="kaplan-test-prep.html" class="app-card" data-id="1777299887789" style="text-decoration:none;color:inherit">
+          <img src="logo/kaplan.png" alt="Kaplan Test Prep" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kaplan Test Prep</h3>
+          <p class="app-description">Comprehensive test preparation for standardized exams with expert instruction.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">test-prep</span><span class="app-tag">standardized</span><span class="app-tag">expert</span>
+            </div>
+          
+        </a>
+        <a href="princeton-review.html" class="app-card" data-id="1777299887790" style="text-decoration:none;color:inherit">
+          <img src="logo/princeton-review.png" alt="Princeton Review" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Princeton Review</h3>
+          <p class="app-description">Test prep and tutoring services for college admissions and standardized tests.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">test-prep</span><span class="app-tag">tutoring</span><span class="app-tag">admissions</span>
+            </div>
+          
+        </a>
+        <a href="varsity-tutors.html" class="app-card" data-id="1777299887791" style="text-decoration:none;color:inherit">
+          <img src="logo/varsity-tutors.png" alt="Varsity Tutors" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Varsity Tutors</h3>
+          <p class="app-description">Online tutoring platform with live instruction and practice resources.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tutoring</span><span class="app-tag">online</span><span class="app-tag">live</span>
+            </div>
+          
+        </a>
+        <a href="wyzant.html" class="app-card" data-id="1777299887792" style="text-decoration:none;color:inherit">
+          <img src="logo/wyzant.png" alt="Wyzant" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wyzant</h3>
+          <p class="app-description">Marketplace for finding private tutors in academic subjects and test prep.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tutors</span><span class="app-tag">marketplace</span><span class="app-tag">private</span>
+            </div>
+          
+        </a>
+        <a href="tutor-com.html" class="app-card" data-id="1777299887793" style="text-decoration:none;color:inherit">
+          <img src="logo/tutor-com.png" alt="Tutor.com" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tutor.com</h3>
+          <p class="app-description">On-demand online tutoring with certified teachers for K-12 and college.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tutoring</span><span class="app-tag">on-demand</span><span class="app-tag">certified</span>
+            </div>
+          
+        </a>
+        <a href="brainly.html" class="app-card" data-id="1777299887794" style="text-decoration:none;color:inherit">
+          <img src="logo/brainly.png" alt="Brainly" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Brainly</h3>
+          <p class="app-description">Peer-to-peer learning community where students help each other with homework.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">peer-learning</span><span class="app-tag">homework</span><span class="app-tag">community</span>
+            </div>
+          
+        </a>
+        <a href="slader.html" class="app-card" data-id="1777299887795" style="text-decoration:none;color:inherit">
+          <img src="logo/slader.png" alt="Slader" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Slader</h3>
+          <p class="app-description">Textbook solutions and step-by-step explanations for homework help.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">textbook</span><span class="app-tag">solutions</span><span class="app-tag">homework</span>
+            </div>
+          
+        </a>
+        <a href="photomath.html" class="app-card" data-id="1777299887796" style="text-decoration:none;color:inherit">
+          <img src="logo/photomath.png" alt="Photomath" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Photomath</h3>
+          <p class="app-description">Math problem solver that scans equations and provides step-by-step solutions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">math</span><span class="app-tag">solver</span><span class="app-tag">step-by-step</span>
+            </div>
+          
+        </a>
+        <a href="wolfram-alpha.html" class="app-card" data-id="1777299887797" style="text-decoration:none;color:inherit">
+          <img src="logo/wolfram-alpha.png" alt="Wolfram Alpha" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wolfram Alpha</h3>
+          <p class="app-description">Computational knowledge engine for answering factual queries and solving problems.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">computational</span><span class="app-tag">knowledge</span><span class="app-tag">queries</span>
+            </div>
+          
+        </a>
+        <a href="symbolab.html" class="app-card" data-id="1777299887798" style="text-decoration:none;color:inherit">
+          <img src="logo/symbolab.png" alt="Symbolab" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Symbolab</h3>
+          <p class="app-description">Math solver with step-by-step solutions for algebra, calculus, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">math</span><span class="app-tag">solver</span><span class="app-tag">algebra</span>
+            </div>
+          
+        </a>
+        <a href="mathway.html" class="app-card" data-id="1777299887799" style="text-decoration:none;color:inherit">
+          <img src="logo/mathway.png" alt="Mathway" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mathway</h3>
+          <p class="app-description">Math problem solver covering basic math to calculus with instant answers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">math</span><span class="app-tag">solver</span><span class="app-tag">instant</span>
+            </div>
+          
+        </a>
+        <a href="khan-academy-sat.html" class="app-card" data-id="1777299887800" style="text-decoration:none;color:inherit">
+          <img src="logo/khan-sat-official.png" alt="Khan Academy SAT" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Khan Academy SAT</h3>
+          <p class="app-description">Official SAT practice with personalized recommendations and full-length tests.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sat</span><span class="app-tag">official</span><span class="app-tag">practice</span>
+            </div>
+          
+        </a>
+        <a href="college-board.html" class="app-card" data-id="1777299887801" style="text-decoration:none;color:inherit">
+          <img src="logo/college-board.png" alt="College Board" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">College Board</h3>
+          <p class="app-description">Platform for SAT, AP exams, college applications, and scholarship searches.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sat</span><span class="app-tag">ap</span><span class="app-tag">college</span>
+            </div>
+          
+        </a>
+        <a href="common-app.html" class="app-card" data-id="1777299887802" style="text-decoration:none;color:inherit">
+          <img src="logo/common-app.png" alt="Common App" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Common App</h3>
+          <p class="app-description">Unified college application platform accepted by over 1,000 institutions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">college</span><span class="app-tag">applications</span><span class="app-tag">unified</span>
+            </div>
+          
+        </a>
+        <a href="naviance.html" class="app-card" data-id="1777299887803" style="text-decoration:none;color:inherit">
+          <img src="logo/naviance.png" alt="Naviance" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Naviance</h3>
+          <p class="app-description">College and career readiness platform for high school students and counselors.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">college-readiness</span><span class="app-tag">career</span><span class="app-tag">counseling</span>
+            </div>
+          
+        </a>
+        <a href="scoir.html" class="app-card" data-id="1777299887804" style="text-decoration:none;color:inherit">
+          <img src="logo/scoir.png" alt="Scoir" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Scoir</h3>
+          <p class="app-description">College planning platform with personalized recommendations and application tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">college-planning</span><span class="app-tag">recommendations</span><span class="app-tag">applications</span>
+            </div>
+          
+        </a>
+        <a href="cialfo.html" class="app-card" data-id="1777299887805" style="text-decoration:none;color:inherit">
+          <img src="logo/cialfo.png" alt="Cialfo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Cialfo</h3>
+          <p class="app-description">College counseling platform for international students with university matching.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">college</span><span class="app-tag">counseling</span><span class="app-tag">international</span>
+            </div>
+          
+        </a>
+        <a href="unigo.html" class="app-card" data-id="1777299887806" style="text-decoration:none;color:inherit">
+          <img src="logo/unigo.png" alt="Unigo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Unigo</h3>
+          <p class="app-description">College search platform with reviews, scholarships, and application guidance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">college-search</span><span class="app-tag">reviews</span><span class="app-tag">scholarships</span>
+            </div>
+          
+        </a>
+        <a href="niche.html" class="app-card" data-id="1777299887808" style="text-decoration:none;color:inherit">
+          <img src="logo/niche.png" alt="Niche" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Niche</h3>
+          <p class="app-description">College rankings and reviews with data on academics, diversity, and student life.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">rankings</span><span class="app-tag">reviews</span><span class="app-tag">college</span>
+            </div>
+          
+        </a>
+        <a href="college-navigator.html" class="app-card" data-id="1777299887809" style="text-decoration:none;color:inherit">
+          <img src="logo/college-navigator.png" alt="College Navigator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">College Navigator</h3>
+          <p class="app-description">Free college search tool from the U.S. Department of Education with official data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">college-search</span><span class="app-tag">free</span><span class="app-tag">government</span>
+            </div>
+          
+        </a>
+        <a href="fafsa.html" class="app-card" data-id="1777299887810" style="text-decoration:none;color:inherit">
+          <img src="logo/fafsa.png" alt="FAFSA" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FAFSA</h3>
+          <p class="app-description">Official application for federal student aid including grants, loans, and work-study.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">financial-aid</span><span class="app-tag">federal</span><span class="app-tag">grants</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777299887710,"name":"Khan Academy","slug":"khan-academy","version":"8.2.0","description":"Free educational platform with lessons in math, science, history, and more for all ages.","category":"education","logoUrl":"logo/khan-academy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Khan Academy1&tracker=1","tags":["free","lessons","math","science"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887711,"name":"Duolingo","slug":"duolingo","version":"5.128.0","description":"Gamified language learning app with bite-sized lessons for 40+ languages.","category":"education","logoUrl":"logo/duolingo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Duolingo2&tracker=2","tags":["languages","gamified","lessons","mobile"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887712,"name":"Coursera","slug":"coursera","version":"4.45.0","description":"Online learning platform with courses from top universities and companies.","category":"education","logoUrl":"logo/coursera.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Coursera3&tracker=3","tags":["courses","universities","certificates","online"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887713,"name":"edX","slug":"edx","version":"3.12.0","description":"MOOC platform offering university-level courses from Harvard, MIT, and more.","category":"education","logoUrl":"logo/edx.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=edX4&tracker=4","tags":["mooc","harvard","mit","university"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887714,"name":"Udemy","slug":"udemy","version":"8.15.0","description":"Marketplace for online courses on programming, business, design, and personal development.","category":"education","logoUrl":"logo/udemy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Udemy5&tracker=5","tags":["marketplace","programming","business","design"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887715,"name":"LinkedIn Learning","slug":"linkedin-learning","version":"4.8.0","description":"Professional development courses in business, tech, and creative skills.","category":"education","logoUrl":"logo/linkedin-learning.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LinkedIn Learning6&tracker=6","tags":["professional","business","tech","creative"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887716,"name":"Skillshare","slug":"skillshare","version":"6.25.0","description":"Creative learning community with classes in design, illustration, and photography.","category":"education","logoUrl":"logo/skillshare.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Skillshare7&tracker=7","tags":["creative","design","community","classes"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887717,"name":"MasterClass","slug":"masterclass","version":"3.5.0","description":"Learn from world-renowned experts in cooking, writing, filmmaking, and more.","category":"education","logoUrl":"logo/masterclass.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MasterClass8&tracker=8","tags":["experts","cooking","filmmaking","premium"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887718,"name":"Pluralsight","slug":"pluralsight","version":"2024.1","description":"Technology skills platform with courses in software development, IT, and data.","category":"education","logoUrl":"logo/pluralsight.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pluralsight9&tracker=9","tags":["tech","software","it","data"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887719,"name":"Codecademy","slug":"codecademy","version":"2024.1","description":"Interactive platform for learning to code in Python, JavaScript, SQL, and more.","category":"education","logoUrl":"logo/codecademy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Codecademy10&tracker=10","tags":["coding","interactive","python","javascript"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887720,"name":"freeCodeCamp","slug":"freecodecamp","version":"2024.1","description":"Free coding bootcamp with certifications in web development and data science.","category":"education","logoUrl":"logo/freecodecamp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=freeCodeCamp11&tracker=11","tags":["free","coding","bootcamp","certifications"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887721,"name":"The Odin Project","slug":"the-odin-project","version":"2024.1","description":"Open-source full-stack curriculum for learning web development.","category":"education","logoUrl":"logo/odin-project.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Odin Project12&tracker=12","tags":["open-source","full-stack","web-dev","curriculum"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887722,"name":"Brilliant","slug":"brilliant","version":"4.2.0","description":"Interactive courses in math, science, and computer science for curious learners.","category":"education","logoUrl":"logo/brilliant.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Brilliant13&tracker=13","tags":["math","science","interactive","computer-science"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887723,"name":"Quizlet","slug":"quizlet","version":"8.15.0","description":"Study tool with flashcards, games, and practice tests for any subject.","category":"education","logoUrl":"logo/quizlet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Quizlet14&tracker=14","tags":["flashcards","study","games","practice"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887724,"name":"Anki","slug":"anki","version":"23.12.1","description":"Powerful spaced repetition flashcard program for efficient memorization.","category":"education","logoUrl":"logo/anki.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Anki15&tracker=15","tags":["flashcards","spaced-repetition","memorization","open-source"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887725,"name":"Memrise","slug":"memrise","version":"2024.1","description":"Language learning app with video clips from native speakers and spaced repetition.","category":"education","logoUrl":"logo/memrise.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Memrise16&tracker=16","tags":["languages","native-speakers","spaced-repetition","video"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887726,"name":"Babbel","slug":"babbel","version":"21.45.0","description":"Language learning app with practical conversations and speech recognition.","category":"education","logoUrl":"logo/babbel.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Babbel17&tracker=17","tags":["languages","conversations","speech-recognition","practical"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887727,"name":"Rosetta Stone","slug":"rosetta-stone","version":"8.15.0","description":"Immersive language learning with speech recognition and live tutoring.","category":"education","logoUrl":"logo/rosetta-stone.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Rosetta Stone18&tracker=18","tags":["languages","immersive","speech-recognition","tutoring"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887728,"name":"Busuu","slug":"busuu","version":"28.5.0","description":"Language learning with lessons created by experts and feedback from native speakers.","category":"education","logoUrl":"logo/busuu.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Busuu19&tracker=19","tags":["languages","experts","native-speakers","feedback"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887729,"name":"HelloTalk","slug":"hellotalk","version":"5.8.0","description":"Language exchange app for practicing with native speakers worldwide.","category":"education","logoUrl":"logo/hellotalk.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HelloTalk20&tracker=20","tags":["languages","exchange","native-speakers","social"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887730,"name":"Tandem","slug":"tandem","version":"5.12.0","description":"Language exchange community for practicing speaking with real people.","category":"education","logoUrl":"logo/tandem.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tandem21&tracker=21","tags":["languages","exchange","speaking","community"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887731,"name":"iTalki","slug":"italki","version":"2024.1","description":"Platform for finding language tutors and practicing with native speakers online.","category":"education","logoUrl":"logo/italki.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iTalki22&tracker=22","tags":["languages","tutors","online","native-speakers"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887732,"name":"Preply","slug":"preply","version":"2024.1","description":"Online tutoring platform for languages, math, science, and test prep.","category":"education","logoUrl":"logo/preply.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Preply23&tracker=23","tags":["tutoring","languages","math","test-prep"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887733,"name":"Chegg","slug":"chegg","version":"2024.1","description":"Study resource with textbook solutions, expert Q&A, and tutoring services.","category":"education","logoUrl":"logo/chegg.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Chegg24&tracker=24","tags":["textbooks","solutions","tutoring","q-and-a"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887734,"name":"Khan Academy Kids","slug":"khan-academy-kids","version":"6.2.0","description":"Free educational app for children ages 2-8 with reading, math, and social-emotional learning.","category":"education","logoUrl":"logo/khan-kids.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Khan Academy Kids25&tracker=25","tags":["kids","free","reading","math"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887735,"name":"ABCmouse","slug":"abcmouse","version":"12.5.0","description":"Early learning academy for kids ages 2-8 with reading, math, and art activities.","category":"education","logoUrl":"logo/abcmouse.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ABCmouse26&tracker=26","tags":["kids","early-learning","reading","activities"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887736,"name":"Epic!","slug":"epic","version":"3.25.0","description":"Digital library for kids with 40,000+ books, audiobooks, and educational videos.","category":"education","logoUrl":"logo/epic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Epic!27&tracker=27","tags":["kids","library","books","audiobooks"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887737,"name":"Prodigy Math","slug":"prodigy-math","version":"3.15.0","description":"Game-based math learning platform aligned with curriculum for grades 1-8.","category":"education","logoUrl":"logo/prodigy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Prodigy Math28&tracker=28","tags":["math","game-based","curriculum","kids"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887738,"name":"Scratch","slug":"scratch","version":"3.29.0","description":"Visual programming language for kids to create stories, games, and animations.","category":"education","logoUrl":"logo/scratch.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Scratch29&tracker=29","tags":["coding","kids","visual","creative"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887739,"name":"Tynker","slug":"tynker","version":"5.2.0","description":"Coding platform for kids with games, puzzles, and creative projects.","category":"education","logoUrl":"logo/tynker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tynker30&tracker=30","tags":["coding","kids","games","puzzles"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887740,"name":"Code.org","slug":"code-org","version":"2024.1","description":"Free coding curriculum for K-12 with Hour of Code activities and courses.","category":"education","logoUrl":"logo/code-org.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Code.org31&tracker=31","tags":["coding","free","k-12","hour-of-code"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887741,"name":"Kodable","slug":"kodable","version":"5.8.0","description":"Coding curriculum for elementary students with game-based lessons.","category":"education","logoUrl":"logo/kodable.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kodable32&tracker=32","tags":["coding","elementary","game-based","curriculum"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887742,"name":"Minecraft: Education Edition","slug":"minecraft-education","version":"1.20.50","description":"Game-based learning platform that promotes creativity and collaboration in classrooms.","category":"education","logoUrl":"logo/minecraft-edu.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Minecraft: Education Edition33&tracker=33","tags":["minecraft","game-based","classroom","collaboration"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887743,"name":"Google Classroom","slug":"google-classroom","version":"8.25.0","description":"Learning management system for assigning, collecting, and grading student work.","category":"education","logoUrl":"logo/google-classroom.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Classroom34&tracker=34","tags":["lms","google","assignments","grading"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887744,"name":"Canvas","slug":"canvas","version":"2024.1","description":"Cloud-based learning management system for schools and universities.","category":"education","logoUrl":"logo/canvas.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Canvas35&tracker=35","tags":["lms","cloud","university","schools"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887745,"name":"Blackboard","slug":"blackboard","version":"2024.1","description":"Enterprise learning management system for higher education institutions.","category":"education","logoUrl":"logo/blackboard.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Blackboard36&tracker=36","tags":["lms","enterprise","higher-ed","institutional"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887746,"name":"Moodle","slug":"moodle","version":"4.4.0","description":"Open-source learning platform for creating online courses and managing classrooms.","category":"education","logoUrl":"logo/moodle.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Moodle37&tracker=37","tags":["open-source","lms","courses","classroom"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887747,"name":"Schoology","slug":"schoology","version":"2024.1","description":"Learning management system with collaboration tools for K-12 education.","category":"education","logoUrl":"logo/schoology.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Schoology38&tracker=38","tags":["lms","k-12","collaboration","tools"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887748,"name":"Seesaw","slug":"seesaw","version":"2024.1","description":"Student-driven digital portfolio and communication platform for elementary schools.","category":"education","logoUrl":"logo/seesaw.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Seesaw39&tracker=39","tags":["portfolio","elementary","communication","student-driven"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887749,"name":"ClassDojo","slug":"classdojo","version":"6.25.0","description":"Classroom management app for connecting teachers, students, and families.","category":"education","logoUrl":"logo/classdojo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ClassDojo40&tracker=40","tags":["classroom","management","families","communication"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887750,"name":"Remind","slug":"remind","version":"12.8.0","description":"Safe messaging app for teachers to communicate with students and parents.","category":"education","logoUrl":"logo/remind.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Remind41&tracker=41","tags":["messaging","teachers","parents","safe"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887751,"name":"Edmodo","slug":"edmodo","version":"2024.1","description":"Social learning platform for teachers to share resources and connect with students.","category":"education","logoUrl":"logo/edmodo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Edmodo42&tracker=42","tags":["social","teachers","resources","students"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887752,"name":"Nearpod","slug":"nearpod","version":"2024.1","description":"Interactive lesson platform with quizzes, polls, and virtual field trips.","category":"education","logoUrl":"logo/nearpod.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nearpod43&tracker=43","tags":["interactive","lessons","quizzes","virtual-trips"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887753,"name":"Kahoot!","slug":"kahoot","version":"6.2.0","description":"Game-based learning platform for creating and playing educational quizzes.","category":"education","logoUrl":"logo/kahoot.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kahoot!44&tracker=44","tags":["game-based","quizzes","interactive","fun"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887754,"name":"Quizizz","slug":"quizizz","version":"2024.1","description":"Engaging quiz platform with memes, leaderboards, and self-paced learning.","category":"education","logoUrl":"logo/quizizz.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Quizizz45&tracker=45","tags":["quizzes","memes","leaderboards","self-paced"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887755,"name":"Blooket","slug":"blooket","version":"2024.1","description":"Game-based review platform with unique game modes for classroom engagement.","category":"education","logoUrl":"logo/blooket.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Blooket46&tracker=46","tags":["game-based","review","classroom","engagement"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887756,"name":"Gimkit","slug":"gimkit","version":"2024.1","description":"Live learning game show where students earn virtual currency for correct answers.","category":"education","logoUrl":"logo/gimkit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Gimkit47&tracker=47","tags":["game-show","live","currency","engagement"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887757,"name":"Edpuzzle","slug":"edpuzzle","version":"2024.1","description":"Interactive video platform for adding questions and notes to educational content.","category":"education","logoUrl":"logo/edpuzzle.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Edpuzzle48&tracker=48","tags":["video","interactive","questions","content"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887758,"name":"Flipgrid","slug":"flipgrid","version":"2024.1","description":"Video discussion platform for student voice and collaborative learning.","category":"education","logoUrl":"logo/flipgrid.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Flipgrid49&tracker=49","tags":["video","discussion","student-voice","collaboration"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887759,"name":"Padlet","slug":"padlet","version":"2024.1","description":"Digital bulletin board for collaborative brainstorming and content sharing.","category":"education","logoUrl":"logo/padlet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Padlet50&tracker=50","tags":["bulletin-board","collaborative","brainstorming","sharing"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887760,"name":"Jamboard","slug":"jamboard","version":"2024.1","description":"Digital whiteboard from Google for real-time collaboration and visual learning.","category":"education","logoUrl":"logo/jamboard.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Jamboard51&tracker=51","tags":["whiteboard","google","collaboration","visual"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887761,"name":"Miro","slug":"miro-education","version":"2024.1","description":"Visual collaboration platform for online whiteboarding and team learning.","category":"education","logoUrl":"logo/miro-edu.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Miro52&tracker=52","tags":["whiteboard","visual","collaboration","online"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887762,"name":"Explain Everything","slug":"explain-everything","version":"6.8.0","description":"Interactive whiteboard for creating lessons, tutorials, and presentations.","category":"education","logoUrl":"logo/explain-everything.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Explain Everything53&tracker=53","tags":["whiteboard","lessons","tutorials","presentations"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887763,"name":"Screencastify","slug":"screencastify","version":"3.12.0","description":"Screen recording tool for creating educational videos and tutorials.","category":"education","logoUrl":"logo/screencastify.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Screencastify54&tracker=54","tags":["screen-recording","videos","tutorials","education"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887764,"name":"Loom","slug":"loom","version":"2024.1","description":"Video messaging tool for recording and sharing quick educational content.","category":"education","logoUrl":"logo/loom.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Loom55&tracker=55","tags":["video","messaging","recording","sharing"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887765,"name":"Kami","slug":"kami","version":"2024.1","description":"Digital annotation tool for marking up PDFs and documents in classrooms.","category":"education","logoUrl":"logo/kami.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kami56&tracker=56","tags":["annotation","pdf","documents","classroom"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887766,"name":"GoGuardian","slug":"goguardian","version":"2024.1","description":"Classroom management and student safety platform for Chromebook schools.","category":"education","logoUrl":"logo/goguardian.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GoGuardian57&tracker=57","tags":["classroom-management","safety","chromebook","monitoring"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887767,"name":"Hapara","slug":"hapara","version":"2024.1","description":"Digital learning platform for managing student devices and workflows.","category":"education","logoUrl":"logo/hapara.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hapara58&tracker=58","tags":["digital-learning","device-management","workflows","schools"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887768,"name":"Pear Deck","slug":"pear-deck","version":"2024.1","description":"Interactive presentation tool for engaging students during lessons.","category":"education","logoUrl":"logo/pear-deck.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pear Deck59&tracker=59","tags":["presentations","interactive","engagement","lessons"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887769,"name":"Nearpod","slug":"nearpod-lessons","version":"2024.1","description":"Ready-made interactive lessons aligned with standards for all subjects.","category":"education","logoUrl":"logo/nearpod-lessons.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nearpod Lessons60&tracker=60","tags":["lessons","standards","interactive","subjects"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887770,"name":"Newsela","slug":"newsela","version":"2024.1","description":"Current events content at multiple reading levels for differentiated instruction.","category":"education","logoUrl":"logo/newsela.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Newsela61&tracker=61","tags":["current-events","reading-levels","differentiated","literacy"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887771,"name":"CommonLit","slug":"commonlit","version":"2024.1","description":"Free library of reading passages with assessments and lesson plans.","category":"education","logoUrl":"logo/commonlit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CommonLit62&tracker=62","tags":["reading","free","assessments","lesson-plans"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887772,"name":"ReadWorks","slug":"readworks","version":"2024.1","description":"Free reading comprehension resource with articles and question sets.","category":"education","logoUrl":"logo/readworks.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ReadWorks63&tracker=63","tags":["reading","comprehension","free","articles"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887773,"name":"Epic! for Educators","slug":"epic-educators","version":"2024.1","description":"Digital library platform for educators with reading assignments and tracking.","category":"education","logoUrl":"logo/epic-educators.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Epic! for Educators64&tracker=64","tags":["library","educators","assignments","tracking"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887774,"name":"Raz-Kids","slug":"raz-kids","version":"2024.1","description":"Leveled reading program with ebooks, quizzes, and progress monitoring.","category":"education","logoUrl":"logo/raz-kids.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Raz-Kids65&tracker=65","tags":["reading","leveled","quizzes","progress"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887775,"name":"IXL Learning","slug":"ixl-learning","version":"2024.1","description":"Comprehensive K-12 practice platform with adaptive questions and analytics.","category":"education","logoUrl":"logo/ixl.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=IXL Learning66&tracker=66","tags":["practice","k-12","adaptive","analytics"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887776,"name":"Khan Academy for Teachers","slug":"khan-teachers","version":"2024.1","description":"Teacher dashboard for assigning Khan Academy content and tracking progress.","category":"education","logoUrl":"logo/khan-teachers.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Khan Academy for Teachers67&tracker=67","tags":["teachers","dashboard","assignments","progress"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887777,"name":"Desmos","slug":"desmos","version":"2024.1","description":"Free online graphing calculator and math activities for classroom use.","category":"education","logoUrl":"logo/desmos.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Desmos68&tracker=68","tags":["math","graphing","calculator","free"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887778,"name":"GeoGebra","slug":"geogebra","version":"6.0.800","description":"Dynamic math software for geometry, algebra, calculus, and statistics.","category":"education","logoUrl":"logo/geogebra.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GeoGebra69&tracker=69","tags":["math","geometry","algebra","dynamic"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887779,"name":"PhET Simulations","slug":"phet-simulations","version":"2024.1","description":"Free interactive science and math simulations from University of Colorado.","category":"education","logoUrl":"logo/phet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PhET Simulations70&tracker=70","tags":["science","simulations","interactive","free"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887780,"name":"LabXchange","slug":"labxchange","version":"2024.1","description":"Free digital science learning platform with virtual labs and pathways.","category":"education","logoUrl":"logo/labxchange.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LabXchange71&tracker=71","tags":["science","virtual-labs","free","pathways"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887781,"name":"Labster","slug":"labster","version":"2024.1","description":"Virtual lab simulations for science education with immersive 3D environments.","category":"education","logoUrl":"logo/labster.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Labster72&tracker=72","tags":["science","virtual-labs","3d","immersive"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887782,"name":"CK-12","slug":"ck-12","version":"2024.1","description":"Free adaptive learning platform with textbooks, simulations, and practice.","category":"education","logoUrl":"logo/ck12.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CK-1273&tracker=73","tags":["free","adaptive","textbooks","simulations"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887783,"name":"OpenStax","slug":"openstax","version":"2024.1","description":"Free, peer-reviewed textbooks for college and high school courses.","category":"education","logoUrl":"logo/openstax.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OpenStax74&tracker=74","tags":["textbooks","free","peer-reviewed","college"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887784,"name":"LibreTexts","slug":"libretexts","version":"2024.1","description":"Open educational resource platform with customizable textbooks and courses.","category":"education","logoUrl":"logo/libretexts.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LibreTexts75&tracker=75","tags":["oer","textbooks","customizable","open"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887785,"name":"OER Commons","slug":"oer-commons","version":"2024.1","description":"Digital library of open educational resources for teachers and learners.","category":"education","logoUrl":"logo/oer-commons.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OER Commons76&tracker=76","tags":["oer","library","teachers","resources"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887786,"name":"Merlot","slug":"merlot","version":"2024.1","description":"Curated collection of free online learning materials for higher education.","category":"education","logoUrl":"logo/merlot.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Merlot77&tracker=77","tags":["oer","higher-ed","curated","materials"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887787,"name":"Khan Academy SAT Prep","slug":"khan-sat-prep","version":"2024.1","description":"Official SAT practice with personalized study plans from College Board.","category":"education","logoUrl":"logo/khan-sat.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Khan Academy SAT Prep78&tracker=78","tags":["sat","test-prep","official","personalized"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887788,"name":"Magoosh","slug":"magoosh","version":"2024.1","description":"Test prep platform for SAT, ACT, GRE, GMAT with video lessons and practice.","category":"education","logoUrl":"logo/magoosh.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Magoosh79&tracker=79","tags":["test-prep","sat","gre","videos"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887789,"name":"Kaplan Test Prep","slug":"kaplan-test-prep","version":"2024.1","description":"Comprehensive test preparation for standardized exams with expert instruction.","category":"education","logoUrl":"logo/kaplan.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kaplan Test Prep80&tracker=80","tags":["test-prep","standardized","expert","instruction"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887790,"name":"Princeton Review","slug":"princeton-review","version":"2024.1","description":"Test prep and tutoring services for college admissions and standardized tests.","category":"education","logoUrl":"logo/princeton-review.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Princeton Review81&tracker=81","tags":["test-prep","tutoring","admissions","college"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887791,"name":"Varsity Tutors","slug":"varsity-tutors","version":"2024.1","description":"Online tutoring platform with live instruction and practice resources.","category":"education","logoUrl":"logo/varsity-tutors.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Varsity Tutors82&tracker=82","tags":["tutoring","online","live","practice"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887792,"name":"Wyzant","slug":"wyzant","version":"2024.1","description":"Marketplace for finding private tutors in academic subjects and test prep.","category":"education","logoUrl":"logo/wyzant.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wyzant83&tracker=83","tags":["tutors","marketplace","private","academic"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887793,"name":"Tutor.com","slug":"tutor-com","version":"2024.1","description":"On-demand online tutoring with certified teachers for K-12 and college.","category":"education","logoUrl":"logo/tutor-com.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tutor.com84&tracker=84","tags":["tutoring","on-demand","certified","k-12"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887794,"name":"Brainly","slug":"brainly","version":"5.128.0","description":"Peer-to-peer learning community where students help each other with homework.","category":"education","logoUrl":"logo/brainly.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Brainly85&tracker=85","tags":["peer-learning","homework","community","help"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887795,"name":"Slader","slug":"slader","version":"2024.1","description":"Textbook solutions and step-by-step explanations for homework help.","category":"education","logoUrl":"logo/slader.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Slader86&tracker=86","tags":["textbook","solutions","homework","explanations"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887796,"name":"Photomath","slug":"photomath","version":"8.25.0","description":"Math problem solver that scans equations and provides step-by-step solutions.","category":"education","logoUrl":"logo/photomath.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Photomath87&tracker=87","tags":["math","solver","step-by-step","scanning"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887797,"name":"Wolfram Alpha","slug":"wolfram-alpha","version":"2024.1","description":"Computational knowledge engine for answering factual queries and solving problems.","category":"education","logoUrl":"logo/wolfram-alpha.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wolfram Alpha88&tracker=88","tags":["computational","knowledge","queries","problem-solving"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887798,"name":"Symbolab","slug":"symbolab","version":"2024.1","description":"Math solver with step-by-step solutions for algebra, calculus, and more.","category":"education","logoUrl":"logo/symbolab.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Symbolab89&tracker=89","tags":["math","solver","algebra","calculus"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887799,"name":"Mathway","slug":"mathway","version":"2024.1","description":"Math problem solver covering basic math to calculus with instant answers.","category":"education","logoUrl":"logo/mathway.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mathway90&tracker=90","tags":["math","solver","instant","calculus"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887800,"name":"Khan Academy SAT","slug":"khan-academy-sat","version":"2024.1","description":"Official SAT practice with personalized recommendations and full-length tests.","category":"education","logoUrl":"logo/khan-sat-official.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Khan Academy SAT91&tracker=91","tags":["sat","official","practice","personalized"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887801,"name":"College Board","slug":"college-board","version":"2024.1","description":"Platform for SAT, AP exams, college applications, and scholarship searches.","category":"education","logoUrl":"logo/college-board.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=College Board92&tracker=92","tags":["sat","ap","college","applications"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887802,"name":"Common App","slug":"common-app","version":"2024.1","description":"Unified college application platform accepted by over 1,000 institutions.","category":"education","logoUrl":"logo/common-app.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Common App93&tracker=93","tags":["college","applications","unified","admissions"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887803,"name":"Naviance","slug":"naviance","version":"2024.1","description":"College and career readiness platform for high school students and counselors.","category":"education","logoUrl":"logo/naviance.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Naviance94&tracker=94","tags":["college-readiness","career","counseling","high-school"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887804,"name":"Scoir","slug":"scoir","version":"2024.1","description":"College planning platform with personalized recommendations and application tools.","category":"education","logoUrl":"logo/scoir.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Scoir95&tracker=95","tags":["college-planning","recommendations","applications","personalized"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887805,"name":"Cialfo","slug":"cialfo","version":"2024.1","description":"College counseling platform for international students with university matching.","category":"education","logoUrl":"logo/cialfo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Cialfo96&tracker=96","tags":["college","counseling","international","matching"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887806,"name":"Unigo","slug":"unigo","version":"2024.1","description":"College search platform with reviews, scholarships, and application guidance.","category":"education","logoUrl":"logo/unigo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Unigo97&tracker=97","tags":["college-search","reviews","scholarships","guidance"],"scrapedAt":"2026-04-27T14:24:47.710Z"},{"id":1777299887808,"name":"Niche","slug":"niche","version":"2024.1","description":"College rankings and reviews with data on academics, diversity, and student life.","category":"education","logoUrl":"logo/niche.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Niche98&tracker=98","tags":["rankings","reviews","college","data"],"scrapedAt":"2026-04-27T14:24:47.711Z"},{"id":1777299887809,"name":"College Navigator","slug":"college-navigator","version":"2024.1","description":"Free college search tool from the U.S. Department of Education with official data.","category":"education","logoUrl":"logo/college-navigator.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=College Navigator99&tracker=99","tags":["college-search","free","government","official-data"],"scrapedAt":"2026-04-27T14:24:47.711Z"},{"id":1777299887810,"name":"FAFSA","slug":"fafsa","version":"2024.1","description":"Official application for federal student aid including grants, loans, and work-study.","category":"education","logoUrl":"logo/fafsa.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FAFSA100&tracker=100","tags":["financial-aid","federal","grants","loans"],"scrapedAt":"2026-04-27T14:24:47.711Z"}];
+    const CURRENT_CATEGORY = 'education';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

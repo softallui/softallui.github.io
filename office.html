@@ -1,0 +1,784 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Office — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Office</h1>
+    <p><span class="highlight">53</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="microsoft-word.html" class="app-card" data-id="1777298771947" style="text-decoration:none;color:inherit">
+          <img src="logo/microsoft-word.png" alt="Microsoft Word" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Microsoft Word</h3>
+          <p class="app-description">Industry-standard word processor for creating documents, reports, and professional content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">word-processor</span><span class="app-tag">documents</span><span class="app-tag">microsoft</span>
+            </div>
+          
+        </a>
+        <a href="microsoft-excel.html" class="app-card" data-id="1777298771948" style="text-decoration:none;color:inherit">
+          <img src="logo/microsoft-excel.png" alt="Microsoft Excel" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Microsoft Excel</h3>
+          <p class="app-description">Powerful spreadsheet application for data analysis, calculations, and visualization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">spreadsheet</span><span class="app-tag">data-analysis</span><span class="app-tag">microsoft</span>
+            </div>
+          
+        </a>
+        <a href="microsoft-powerpoint.html" class="app-card" data-id="1777298771949" style="text-decoration:none;color:inherit">
+          <img src="logo/microsoft-powerpoint.png" alt="Microsoft PowerPoint" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Microsoft PowerPoint</h3>
+          <p class="app-description">Presentation software for creating slideshows, animations, and professional presentations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presentations</span><span class="app-tag">slides</span><span class="app-tag">microsoft</span>
+            </div>
+          
+        </a>
+        <a href="microsoft-outlook.html" class="app-card" data-id="1777298771950" style="text-decoration:none;color:inherit">
+          <img src="logo/microsoft-outlook.png" alt="Microsoft Outlook" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Microsoft Outlook</h3>
+          <p class="app-description">Email client and personal information manager with calendar and task management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">calendar</span><span class="app-tag">microsoft</span>
+            </div>
+          
+        </a>
+        <a href="microsoft-onenote.html" class="app-card" data-id="1777298771951" style="text-decoration:none;color:inherit">
+          <img src="logo/microsoft-onenote.png" alt="Microsoft OneNote" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Microsoft OneNote</h3>
+          <p class="app-description">Digital notebook for note-taking, organization, and collaboration across devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">notes</span><span class="app-tag">organization</span><span class="app-tag">microsoft</span>
+            </div>
+          
+        </a>
+        <a href="microsoft-access.html" class="app-card" data-id="1777298771952" style="text-decoration:none;color:inherit">
+          <img src="logo/microsoft-access.png" alt="Microsoft Access" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Microsoft Access</h3>
+          <p class="app-description">Database management system for creating and managing relational databases.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">database</span><span class="app-tag">microsoft</span><span class="app-tag">management</span>
+            </div>
+          
+        </a>
+        <a href="libreoffice-writer.html" class="app-card" data-id="1777298771954" style="text-decoration:none;color:inherit">
+          <img src="logo/libreoffice-writer.png" alt="LibreOffice Writer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LibreOffice Writer</h3>
+          <p class="app-description">Free, open-source word processor compatible with Microsoft Word formats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">word-processor</span><span class="app-tag">open-source</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="libreoffice-calc.html" class="app-card" data-id="1777298771955" style="text-decoration:none;color:inherit">
+          <img src="logo/libreoffice-calc.png" alt="LibreOffice Calc" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LibreOffice Calc</h3>
+          <p class="app-description">Free spreadsheet application with advanced functions and chart creation tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">spreadsheet</span><span class="app-tag">open-source</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="libreoffice-impress.html" class="app-card" data-id="1777298771956" style="text-decoration:none;color:inherit">
+          <img src="logo/libreoffice-impress.png" alt="LibreOffice Impress" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LibreOffice Impress</h3>
+          <p class="app-description">Free presentation software for creating slideshows and multimedia presentations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presentations</span><span class="app-tag">open-source</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="google-forms.html" class="app-card" data-id="1777298771960" style="text-decoration:none;color:inherit">
+          <img src="logo/google-forms.png" alt="Google Forms" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Forms</h3>
+          <p class="app-description">Survey and form builder with automatic response collection and analysis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">forms</span><span class="app-tag">surveys</span><span class="app-tag">google</span>
+            </div>
+          
+        </a>
+        <a href="wps-office-writer.html" class="app-card" data-id="1777298771961" style="text-decoration:none;color:inherit">
+          <img src="logo/wps-writer.png" alt="WPS Office Writer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WPS Office Writer</h3>
+          <p class="app-description">Lightweight word processor with high Microsoft Office compatibility.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">word-processor</span><span class="app-tag">lightweight</span><span class="app-tag">compatible</span>
+            </div>
+          
+        </a>
+        <a href="wps-office-spreadsheets.html" class="app-card" data-id="1777298771962" style="text-decoration:none;color:inherit">
+          <img src="logo/wps-spreadsheets.png" alt="WPS Office Spreadsheets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WPS Office Spreadsheets</h3>
+          <p class="app-description">Feature-rich spreadsheet application with pivot tables and advanced formulas.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">spreadsheet</span><span class="app-tag">pivot-tables</span><span class="app-tag">formulas</span>
+            </div>
+          
+        </a>
+        <a href="wps-office-presentation.html" class="app-card" data-id="1777298771963" style="text-decoration:none;color:inherit">
+          <img src="logo/wps-presentation.png" alt="WPS Office Presentation" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WPS Office Presentation</h3>
+          <p class="app-description">Presentation software with animations, transitions, and template library.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presentations</span><span class="app-tag">animations</span><span class="app-tag">templates</span>
+            </div>
+          
+        </a>
+        <a href="onlyoffice-docs.html" class="app-card" data-id="1777298771967" style="text-decoration:none;color:inherit">
+          <img src="logo/onlyoffice-docs.png" alt="OnlyOffice Docs" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OnlyOffice Docs</h3>
+          <p class="app-description">Open-source office suite with real-time collaboration and cloud integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">collaboration</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="onlyoffice-spreadsheet.html" class="app-card" data-id="1777298771968" style="text-decoration:none;color:inherit">
+          <img src="logo/onlyoffice-spreadsheet.png" alt="OnlyOffice Spreadsheet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OnlyOffice Spreadsheet</h3>
+          <p class="app-description">Advanced spreadsheet editor with formulas, charts, and pivot tables.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">spreadsheet</span><span class="app-tag">formulas</span><span class="app-tag">pivot</span>
+            </div>
+          
+        </a>
+        <a href="onlyoffice-presentation.html" class="app-card" data-id="1777298771969" style="text-decoration:none;color:inherit">
+          <img src="logo/onlyoffice-presentation.png" alt="OnlyOffice Presentation" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OnlyOffice Presentation</h3>
+          <p class="app-description">Presentation editor with multimedia support and collaborative editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presentations</span><span class="app-tag">multimedia</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="apple-pages.html" class="app-card" data-id="1777298771970" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-pages.png" alt="Apple Pages" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Pages</h3>
+          <p class="app-description">Beautiful word processor for Mac and iOS with templates and iCloud sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">word-processor</span><span class="app-tag">apple</span><span class="app-tag">templates</span>
+            </div>
+          
+        </a>
+        <a href="apple-numbers.html" class="app-card" data-id="1777298771971" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-numbers.png" alt="Apple Numbers" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Numbers</h3>
+          <p class="app-description">Spreadsheet app with interactive charts and flexible canvas layout.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">spreadsheet</span><span class="app-tag">apple</span><span class="app-tag">charts</span>
+            </div>
+          
+        </a>
+        <a href="apple-keynote.html" class="app-card" data-id="1777298771972" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-keynote.png" alt="Apple Keynote" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Keynote</h3>
+          <p class="app-description">Presentation software with cinematic transitions and professional themes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presentations</span><span class="app-tag">apple</span><span class="app-tag">transitions</span>
+            </div>
+          
+        </a>
+        <a href="softmaker-freeoffice.html" class="app-card" data-id="1777298771973" style="text-decoration:none;color:inherit">
+          <img src="logo/freeoffice.png" alt="SoftMaker FreeOffice" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SoftMaker FreeOffice</h3>
+          <p class="app-description">Free office suite with word processor, spreadsheet, and presentation apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">suite</span><span class="app-tag">compatible</span>
+            </div>
+          
+        </a>
+        <a href="freeoffice-textmaker.html" class="app-card" data-id="1777298771974" style="text-decoration:none;color:inherit">
+          <img src="logo/textmaker.png" alt="FreeOffice TextMaker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FreeOffice TextMaker</h3>
+          <p class="app-description">Word processor with full Microsoft Word compatibility and advanced formatting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">word-processor</span><span class="app-tag">compatible</span><span class="app-tag">formatting</span>
+            </div>
+          
+        </a>
+        <a href="freeoffice-planmaker.html" class="app-card" data-id="1777298771975" style="text-decoration:none;color:inherit">
+          <img src="logo/planmaker.png" alt="FreeOffice PlanMaker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FreeOffice PlanMaker</h3>
+          <p class="app-description">Spreadsheet application with pivot tables, charts, and Excel compatibility.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">spreadsheet</span><span class="app-tag">pivot</span><span class="app-tag">excel-compatible</span>
+            </div>
+          
+        </a>
+        <a href="freeoffice-presentations.html" class="app-card" data-id="1777298771976" style="text-decoration:none;color:inherit">
+          <img src="logo/freeoffice-presentations.png" alt="FreeOffice Presentations" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FreeOffice Presentations</h3>
+          <p class="app-description">Presentation software with animations, transitions, and PowerPoint compatibility.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">presentations</span><span class="app-tag">animations</span><span class="app-tag">powerpoint</span>
+            </div>
+          
+        </a>
+        <a href="polaris-office.html" class="app-card" data-id="1777298771977" style="text-decoration:none;color:inherit">
+          <img src="logo/polaris-office.png" alt="Polaris Office" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Polaris Office</h3>
+          <p class="app-description">Mobile-first office suite with cloud sync and Microsoft Office compatibility.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile</span><span class="app-tag">cloud</span><span class="app-tag">compatible</span>
+            </div>
+          
+        </a>
+        <a href="officesuite.html" class="app-card" data-id="1777298771978" style="text-decoration:none;color:inherit">
+          <img src="logo/officesuite.png" alt="OfficeSuite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OfficeSuite</h3>
+          <p class="app-description">Complete office suite with document, spreadsheet, and presentation editors.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">suite</span><span class="app-tag">documents</span><span class="app-tag">mobile</span>
+            </div>
+          
+        </a>
+        <a href="collabora-office.html" class="app-card" data-id="1777298771979" style="text-decoration:none;color:inherit">
+          <img src="logo/collabora.png" alt="Collabora Office" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Collabora Office</h3>
+          <p class="app-description">Enterprise-ready LibreOffice-based suite with online collaboration features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">enterprise</span><span class="app-tag">libreoffice</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="calligra-words.html" class="app-card" data-id="1777298771980" style="text-decoration:none;color:inherit">
+          <img src="logo/calligra-words.png" alt="Calligra Words" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Calligra Words</h3>
+          <p class="app-description">Open-source word processor with framing, tables, and advanced formatting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">word-processor</span><span class="app-tag">formatting</span>
+            </div>
+          
+        </a>
+        <a href="calligra-sheets.html" class="app-card" data-id="1777298771981" style="text-decoration:none;color:inherit">
+          <img src="logo/calligra-sheets.png" alt="Calligra Sheets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Calligra Sheets</h3>
+          <p class="app-description">Open-source spreadsheet with formulas, charts, and database integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">spreadsheet</span><span class="app-tag">formulas</span>
+            </div>
+          
+        </a>
+        <a href="calligra-stage.html" class="app-card" data-id="1777298771982" style="text-decoration:none;color:inherit">
+          <img src="logo/calligra-stage.png" alt="Calligra Stage" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Calligra Stage</h3>
+          <p class="app-description">Open-source presentation software with multimedia and animation support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">presentations</span><span class="app-tag">multimedia</span>
+            </div>
+          
+        </a>
+        <a href="abiword.html" class="app-card" data-id="1777298771983" style="text-decoration:none;color:inherit">
+          <img src="logo/abiword.png" alt="AbiWord" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AbiWord</h3>
+          <p class="app-description">Lightweight, free word processor with plugin support and cross-platform compatibility.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">lightweight</span><span class="app-tag">free</span><span class="app-tag">word-processor</span>
+            </div>
+          
+        </a>
+        <a href="gnumeric.html" class="app-card" data-id="1777298771984" style="text-decoration:none;color:inherit">
+          <img src="logo/gnumeric.png" alt="Gnumeric" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Gnumeric</h3>
+          <p class="app-description">Fast, accurate spreadsheet application with advanced statistical functions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">spreadsheet</span><span class="app-tag">fast</span><span class="app-tag">statistics</span>
+            </div>
+          
+        </a>
+        <a href="etherpad.html" class="app-card" data-id="1777298771985" style="text-decoration:none;color:inherit">
+          <img src="logo/etherpad.png" alt="Etherpad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Etherpad</h3>
+          <p class="app-description">Open-source collaborative text editor with real-time editing and version control.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">collaborative</span><span class="app-tag">real-time</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="cryptpad.html" class="app-card" data-id="1777298771986" style="text-decoration:none;color:inherit">
+          <img src="logo/cryptpad.png" alt="CryptPad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CryptPad</h3>
+          <p class="app-description">End-to-end encrypted office suite with documents, spreadsheets, and presentations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">encrypted</span><span class="app-tag">privacy</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="cryptpad-docs.html" class="app-card" data-id="1777298771987" style="text-decoration:none;color:inherit">
+          <img src="logo/cryptpad-docs.png" alt="CryptPad Docs" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CryptPad Docs</h3>
+          <p class="app-description">Encrypted collaborative document editor with rich text formatting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">encrypted</span><span class="app-tag">documents</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="cryptpad-sheets.html" class="app-card" data-id="1777298771988" style="text-decoration:none;color:inherit">
+          <img src="logo/cryptpad-sheets.png" alt="CryptPad Sheets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CryptPad Sheets</h3>
+          <p class="app-description">Encrypted spreadsheet with formulas, charts, and team collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">encrypted</span><span class="app-tag">spreadsheet</span><span class="app-tag">formulas</span>
+            </div>
+          
+        </a>
+        <a href="cryptpad-slides.html" class="app-card" data-id="1777298771989" style="text-decoration:none;color:inherit">
+          <img src="logo/cryptpad-slides.png" alt="CryptPad Slides" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CryptPad Slides</h3>
+          <p class="app-description">Encrypted presentation editor with multimedia and collaborative features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">encrypted</span><span class="app-tag">presentations</span><span class="app-tag">multimedia</span>
+            </div>
+          
+        </a>
+        <a href="zim-wiki.html" class="app-card" data-id="1777298771990" style="text-decoration:none;color:inherit">
+          <img src="logo/zim.png" alt="Zim Wiki" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zim Wiki</h3>
+          <p class="app-description">Desktop wiki for note-taking, task management, and knowledge organization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">wiki</span><span class="app-tag">notes</span><span class="app-tag">organization</span>
+            </div>
+          
+        </a>
+        <a href="cherrytree.html" class="app-card" data-id="1777298771991" style="text-decoration:none;color:inherit">
+          <img src="logo/cherrytree.png" alt="CherryTree" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CherryTree</h3>
+          <p class="app-description">Hierarchical note-taking application with rich text and code highlighting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">notes</span><span class="app-tag">hierarchical</span><span class="app-tag">rich-text</span>
+            </div>
+          
+        </a>
+        <a href="rednotebook.html" class="app-card" data-id="1777298771992" style="text-decoration:none;color:inherit">
+          <img src="logo/rednotebook.png" alt="RedNotebook" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">RedNotebook</h3>
+          <p class="app-description">Personal diary and journal application with calendar and tag support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">journal</span><span class="app-tag">diary</span><span class="app-tag">calendar</span>
+            </div>
+          
+        </a>
+        <a href="outlook-calendar.html" class="app-card" data-id="1777298772020" style="text-decoration:none;color:inherit">
+          <img src="logo/outlook-calendar.png" alt="Outlook Calendar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Outlook Calendar</h3>
+          <p class="app-description">Integrated calendar with Microsoft 365 for scheduling and meeting management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">calendar</span><span class="app-tag">microsoft</span><span class="app-tag">meetings</span>
+            </div>
+          
+        </a>
+        <a href="apple-calendar.html" class="app-card" data-id="1777298772021" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-calendar.png" alt="Apple Calendar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Calendar</h3>
+          <p class="app-description">Native calendar app for Mac and iOS with iCloud sync and Siri integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">calendar</span><span class="app-tag">apple</span><span class="app-tag">icloud</span>
+            </div>
+          
+        </a>
+        <a href="mailbird.html" class="app-card" data-id="1777298772030" style="text-decoration:none;color:inherit">
+          <img src="logo/mailbird.png" alt="Mailbird" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mailbird</h3>
+          <p class="app-description">Windows email client with app integrations, unified inbox, and productivity tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">windows</span><span class="app-tag">integrations</span>
+            </div>
+          
+        </a>
+        <a href="postbox.html" class="app-card" data-id="1777298772031" style="text-decoration:none;color:inherit">
+          <img src="logo/postbox.png" alt="Postbox" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Postbox</h3>
+          <p class="app-description">Professional email client with powerful organization and collaboration features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">professional</span><span class="app-tag">organization</span>
+            </div>
+          
+        </a>
+        <a href="canary-mail.html" class="app-card" data-id="1777298772032" style="text-decoration:none;color:inherit">
+          <img src="logo/canary-mail.png" alt="Canary Mail" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Canary Mail</h3>
+          <p class="app-description">Secure email client with PGP encryption, AI assistant, and smart notifications.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">secure</span><span class="app-tag">pgp</span>
+            </div>
+          
+        </a>
+        <a href="edison-mail.html" class="app-card" data-id="1777298772033" style="text-decoration:none;color:inherit">
+          <img src="logo/edison-mail.png" alt="Edison Mail" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Edison Mail</h3>
+          <p class="app-description">Smart email app with assistant features, unsubscribe, and package tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">smart</span><span class="app-tag">assistant</span>
+            </div>
+          
+        </a>
+        <a href="newton-mail.html" class="app-card" data-id="1777298772034" style="text-decoration:none;color:inherit">
+          <img src="logo/newton-mail.png" alt="Newton Mail" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Newton Mail</h3>
+          <p class="app-description">Premium email client with read receipts, send later, and cloud sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">premium</span><span class="app-tag">read-receipts</span>
+            </div>
+          
+        </a>
+        <a href="protonmail-bridge.html" class="app-card" data-id="1777298772035" style="text-decoration:none;color:inherit">
+          <img src="logo/protonmail-bridge.png" alt="ProtonMail Bridge" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ProtonMail Bridge</h3>
+          <p class="app-description">Desktop bridge for using ProtonMail with desktop email clients via IMAP/SMTP.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">encrypted</span><span class="app-tag">bridge</span>
+            </div>
+          
+        </a>
+        <a href="mailvelope.html" class="app-card" data-id="1777298772036" style="text-decoration:none;color:inherit">
+          <img src="logo/mailvelope.png" alt="Mailvelope" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mailvelope</h3>
+          <p class="app-description">Browser extension for end-to-end encrypted email with OpenPGP support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">encrypted</span><span class="app-tag">openpgp</span>
+            </div>
+          
+        </a>
+        <a href="flowcrypt.html" class="app-card" data-id="1777298772037" style="text-decoration:none;color:inherit">
+          <img src="logo/flowcrypt.png" alt="FlowCrypt" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FlowCrypt</h3>
+          <p class="app-description">Gmail encryption extension for secure email with PGP and easy setup.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">email</span><span class="app-tag">gmail</span><span class="app-tag">pgp</span>
+            </div>
+          
+        </a>
+        <a href="gpg4win.html" class="app-card" data-id="1777298772038" style="text-decoration:none;color:inherit">
+          <img src="logo/gpg4win.png" alt="Gpg4win" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Gpg4win</h3>
+          <p class="app-description">Open-source encryption software for email and file security on Windows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">encryption</span><span class="app-tag">openpgp</span><span class="app-tag">windows</span>
+            </div>
+          
+        </a>
+        <a href="gnupg.html" class="app-card" data-id="1777298772039" style="text-decoration:none;color:inherit">
+          <img src="logo/gnupg.png" alt="GnuPG" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GnuPG</h3>
+          <p class="app-description">Complete and free implementation of the OpenPGP standard for encryption.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">encryption</span><span class="app-tag">openpgp</span><span class="app-tag">cli</span>
+            </div>
+          
+        </a>
+        <a href="kleopatra.html" class="app-card" data-id="1777298772040" style="text-decoration:none;color:inherit">
+          <img src="logo/kleopatra.png" alt="Kleopatra" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kleopatra</h3>
+          <p class="app-description">Certificate manager and GUI for GnuPG with key management features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">encryption</span><span class="app-tag">gui</span><span class="app-tag">gnupg</span>
+            </div>
+          
+        </a>
+        <a href="seahorse.html" class="app-card" data-id="1777298772041" style="text-decoration:none;color:inherit">
+          <img src="logo/seahorse.png" alt="Seahorse" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Seahorse</h3>
+          <p class="app-description">GNOME frontend for managing encryption keys and passwords.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">encryption</span><span class="app-tag">gnome</span><span class="app-tag">keys</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777298771947,"name":"Microsoft Word","slug":"microsoft-word","version":"16.0.17328","description":"Industry-standard word processor for creating documents, reports, and professional content.","category":"office","logoUrl":"logo/microsoft-word.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Microsoft Word1&tracker=1","tags":["word-processor","documents","microsoft","office-365"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771948,"name":"Microsoft Excel","slug":"microsoft-excel","version":"16.0.17328","description":"Powerful spreadsheet application for data analysis, calculations, and visualization.","category":"office","logoUrl":"logo/microsoft-excel.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Microsoft Excel2&tracker=2","tags":["spreadsheet","data-analysis","microsoft","charts"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771949,"name":"Microsoft PowerPoint","slug":"microsoft-powerpoint","version":"16.0.17328","description":"Presentation software for creating slideshows, animations, and professional presentations.","category":"office","logoUrl":"logo/microsoft-powerpoint.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Microsoft PowerPoint3&tracker=3","tags":["presentations","slides","microsoft","animations"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771950,"name":"Microsoft Outlook","slug":"microsoft-outlook","version":"16.0.17328","description":"Email client and personal information manager with calendar and task management.","category":"office","logoUrl":"logo/microsoft-outlook.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Microsoft Outlook4&tracker=4","tags":["email","calendar","microsoft","tasks"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771951,"name":"Microsoft OneNote","slug":"microsoft-onenote","version":"16.0.17328","description":"Digital notebook for note-taking, organization, and collaboration across devices.","category":"office","logoUrl":"logo/microsoft-onenote.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Microsoft OneNote5&tracker=5","tags":["notes","organization","microsoft","collaboration"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771952,"name":"Microsoft Access","slug":"microsoft-access","version":"16.0.17328","description":"Database management system for creating and managing relational databases.","category":"office","logoUrl":"logo/microsoft-access.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Microsoft Access6&tracker=6","tags":["database","microsoft","management","queries"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771954,"name":"LibreOffice Writer","slug":"libreoffice-writer","version":"7.6.5","description":"Free, open-source word processor compatible with Microsoft Word formats.","category":"office","logoUrl":"logo/libreoffice-writer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LibreOffice Writer8&tracker=8","tags":["word-processor","open-source","free","compatible"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771955,"name":"LibreOffice Calc","slug":"libreoffice-calc","version":"7.6.5","description":"Free spreadsheet application with advanced functions and chart creation tools.","category":"office","logoUrl":"logo/libreoffice-calc.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LibreOffice Calc9&tracker=9","tags":["spreadsheet","open-source","free","charts"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771956,"name":"LibreOffice Impress","slug":"libreoffice-impress","version":"7.6.5","description":"Free presentation software for creating slideshows and multimedia presentations.","category":"office","logoUrl":"logo/libreoffice-impress.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LibreOffice Impress10&tracker=10","tags":["presentations","open-source","free","multimedia"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771960,"name":"Google Forms","slug":"google-forms","version":"2024.03","description":"Survey and form builder with automatic response collection and analysis.","category":"office","logoUrl":"logo/google-forms.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Forms14&tracker=14","tags":["forms","surveys","google","data-collection"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771961,"name":"WPS Office Writer","slug":"wps-office-writer","version":"11.2.0","description":"Lightweight word processor with high Microsoft Office compatibility.","category":"office","logoUrl":"logo/wps-writer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WPS Office Writer15&tracker=15","tags":["word-processor","lightweight","compatible","wps"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771962,"name":"WPS Office Spreadsheets","slug":"wps-office-spreadsheets","version":"11.2.0","description":"Feature-rich spreadsheet application with pivot tables and advanced formulas.","category":"office","logoUrl":"logo/wps-spreadsheets.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WPS Office Spreadsheets16&tracker=16","tags":["spreadsheet","pivot-tables","formulas","wps"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771963,"name":"WPS Office Presentation","slug":"wps-office-presentation","version":"11.2.0","description":"Presentation software with animations, transitions, and template library.","category":"office","logoUrl":"logo/wps-presentation.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WPS Office Presentation17&tracker=17","tags":["presentations","animations","templates","wps"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771967,"name":"OnlyOffice Docs","slug":"onlyoffice-docs","version":"8.0.0","description":"Open-source office suite with real-time collaboration and cloud integration.","category":"office","logoUrl":"logo/onlyoffice-docs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OnlyOffice Docs21&tracker=21","tags":["open-source","collaboration","cloud","suite"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771968,"name":"OnlyOffice Spreadsheet","slug":"onlyoffice-spreadsheet","version":"8.0.0","description":"Advanced spreadsheet editor with formulas, charts, and pivot tables.","category":"office","logoUrl":"logo/onlyoffice-spreadsheet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OnlyOffice Spreadsheet22&tracker=22","tags":["spreadsheet","formulas","pivot","charts"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771969,"name":"OnlyOffice Presentation","slug":"onlyoffice-presentation","version":"8.0.0","description":"Presentation editor with multimedia support and collaborative editing.","category":"office","logoUrl":"logo/onlyoffice-presentation.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OnlyOffice Presentation23&tracker=23","tags":["presentations","multimedia","collaboration","editor"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771970,"name":"Apple Pages","slug":"apple-pages","version":"13.2","description":"Beautiful word processor for Mac and iOS with templates and iCloud sync.","category":"office","logoUrl":"logo/apple-pages.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Pages24&tracker=24","tags":["word-processor","apple","templates","icloud"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771971,"name":"Apple Numbers","slug":"apple-numbers","version":"13.2","description":"Spreadsheet app with interactive charts and flexible canvas layout.","category":"office","logoUrl":"logo/apple-numbers.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Numbers25&tracker=25","tags":["spreadsheet","apple","charts","canvas"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771972,"name":"Apple Keynote","slug":"apple-keynote","version":"13.2","description":"Presentation software with cinematic transitions and professional themes.","category":"office","logoUrl":"logo/apple-keynote.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Keynote26&tracker=26","tags":["presentations","apple","transitions","themes"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771973,"name":"SoftMaker FreeOffice","slug":"softmaker-freeoffice","version":"2024","description":"Free office suite with word processor, spreadsheet, and presentation apps.","category":"office","logoUrl":"logo/freeoffice.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SoftMaker FreeOffice27&tracker=27","tags":["free","suite","compatible","lightweight"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771974,"name":"FreeOffice TextMaker","slug":"freeoffice-textmaker","version":"2024","description":"Word processor with full Microsoft Word compatibility and advanced formatting.","category":"office","logoUrl":"logo/textmaker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FreeOffice TextMaker28&tracker=28","tags":["word-processor","compatible","formatting","free"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771975,"name":"FreeOffice PlanMaker","slug":"freeoffice-planmaker","version":"2024","description":"Spreadsheet application with pivot tables, charts, and Excel compatibility.","category":"office","logoUrl":"logo/planmaker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FreeOffice PlanMaker29&tracker=29","tags":["spreadsheet","pivot","excel-compatible","free"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771976,"name":"FreeOffice Presentations","slug":"freeoffice-presentations","version":"2024","description":"Presentation software with animations, transitions, and PowerPoint compatibility.","category":"office","logoUrl":"logo/freeoffice-presentations.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FreeOffice Presentations30&tracker=30","tags":["presentations","animations","powerpoint","free"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771977,"name":"Polaris Office","slug":"polaris-office","version":"12.5.0","description":"Mobile-first office suite with cloud sync and Microsoft Office compatibility.","category":"office","logoUrl":"logo/polaris-office.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Polaris Office31&tracker=31","tags":["mobile","cloud","compatible","suite"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771978,"name":"OfficeSuite","slug":"officesuite","version":"12.8.0","description":"Complete office suite with document, spreadsheet, and presentation editors.","category":"office","logoUrl":"logo/officesuite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OfficeSuite32&tracker=32","tags":["suite","documents","mobile","cloud"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771979,"name":"Collabora Office","slug":"collabora-office","version":"24.04","description":"Enterprise-ready LibreOffice-based suite with online collaboration features.","category":"office","logoUrl":"logo/collabora.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Collabora Office33&tracker=33","tags":["enterprise","libreoffice","collaboration","online"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771980,"name":"Calligra Words","slug":"calligra-words","version":"3.2.1","description":"Open-source word processor with framing, tables, and advanced formatting.","category":"office","logoUrl":"logo/calligra-words.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Calligra Words34&tracker=34","tags":["open-source","word-processor","formatting","kde"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771981,"name":"Calligra Sheets","slug":"calligra-sheets","version":"3.2.1","description":"Open-source spreadsheet with formulas, charts, and database integration.","category":"office","logoUrl":"logo/calligra-sheets.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Calligra Sheets35&tracker=35","tags":["open-source","spreadsheet","formulas","kde"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771982,"name":"Calligra Stage","slug":"calligra-stage","version":"3.2.1","description":"Open-source presentation software with multimedia and animation support.","category":"office","logoUrl":"logo/calligra-stage.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Calligra Stage36&tracker=36","tags":["open-source","presentations","multimedia","kde"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771983,"name":"AbiWord","slug":"abiword","version":"3.0.5","description":"Lightweight, free word processor with plugin support and cross-platform compatibility.","category":"office","logoUrl":"logo/abiword.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AbiWord37&tracker=37","tags":["lightweight","free","word-processor","plugins"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771984,"name":"Gnumeric","slug":"gnumeric","version":"1.12.57","description":"Fast, accurate spreadsheet application with advanced statistical functions.","category":"office","logoUrl":"logo/gnumeric.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Gnumeric38&tracker=38","tags":["spreadsheet","fast","statistics","accurate"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771985,"name":"Etherpad","slug":"etherpad","version":"1.9.0","description":"Open-source collaborative text editor with real-time editing and version control.","category":"office","logoUrl":"logo/etherpad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Etherpad39&tracker=39","tags":["collaborative","real-time","open-source","text-editor"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771986,"name":"CryptPad","slug":"cryptpad","version":"2024.03","description":"End-to-end encrypted office suite with documents, spreadsheets, and presentations.","category":"office","logoUrl":"logo/cryptpad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CryptPad40&tracker=40","tags":["encrypted","privacy","collaboration","suite"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771987,"name":"CryptPad Docs","slug":"cryptpad-docs","version":"2024.03","description":"Encrypted collaborative document editor with rich text formatting.","category":"office","logoUrl":"logo/cryptpad-docs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CryptPad Docs41&tracker=41","tags":["encrypted","documents","collaboration","rich-text"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771988,"name":"CryptPad Sheets","slug":"cryptpad-sheets","version":"2024.03","description":"Encrypted spreadsheet with formulas, charts, and team collaboration.","category":"office","logoUrl":"logo/cryptpad-sheets.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CryptPad Sheets42&tracker=42","tags":["encrypted","spreadsheet","formulas","collaboration"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771989,"name":"CryptPad Slides","slug":"cryptpad-slides","version":"2024.03","description":"Encrypted presentation editor with multimedia and collaborative features.","category":"office","logoUrl":"logo/cryptpad-slides.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CryptPad Slides43&tracker=43","tags":["encrypted","presentations","multimedia","collaboration"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771990,"name":"Zim Wiki","slug":"zim-wiki","version":"0.75.0","description":"Desktop wiki for note-taking, task management, and knowledge organization.","category":"office","logoUrl":"logo/zim.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zim Wiki44&tracker=44","tags":["wiki","notes","organization","desktop"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771991,"name":"CherryTree","slug":"cherrytree","version":"1.1.0","description":"Hierarchical note-taking application with rich text and code highlighting.","category":"office","logoUrl":"logo/cherrytree.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CherryTree45&tracker=45","tags":["notes","hierarchical","rich-text","code"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298771992,"name":"RedNotebook","slug":"rednotebook","version":"2.32","description":"Personal diary and journal application with calendar and tag support.","category":"office","logoUrl":"logo/rednotebook.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=RedNotebook46&tracker=46","tags":["journal","diary","calendar","tags"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772020,"name":"Outlook Calendar","slug":"outlook-calendar","version":"16.0.17328","description":"Integrated calendar with Microsoft 365 for scheduling and meeting management.","category":"office","logoUrl":"logo/outlook-calendar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Outlook Calendar74&tracker=74","tags":["calendar","microsoft","meetings","scheduling"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772021,"name":"Apple Calendar","slug":"apple-calendar","version":"14.0","description":"Native calendar app for Mac and iOS with iCloud sync and Siri integration.","category":"office","logoUrl":"logo/apple-calendar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Calendar75&tracker=75","tags":["calendar","apple","icloud","siri"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772030,"name":"Mailbird","slug":"mailbird","version":"2.12.0","description":"Windows email client with app integrations, unified inbox, and productivity tools.","category":"office","logoUrl":"logo/mailbird.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mailbird84&tracker=84","tags":["email","windows","integrations","unified"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772031,"name":"Postbox","slug":"postbox","version":"7.0.18","description":"Professional email client with powerful organization and collaboration features.","category":"office","logoUrl":"logo/postbox.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Postbox85&tracker=85","tags":["email","professional","organization","collaboration"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772032,"name":"Canary Mail","slug":"canary-mail","version":"5.8.0","description":"Secure email client with PGP encryption, AI assistant, and smart notifications.","category":"office","logoUrl":"logo/canary-mail.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Canary Mail86&tracker=86","tags":["email","secure","pgp","ai"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772033,"name":"Edison Mail","slug":"edison-mail","version":"1.15.0","description":"Smart email app with assistant features, unsubscribe, and package tracking.","category":"office","logoUrl":"logo/edison-mail.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Edison Mail87&tracker=87","tags":["email","smart","assistant","tracking"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772034,"name":"Newton Mail","slug":"newton-mail","version":"3.5.0","description":"Premium email client with read receipts, send later, and cloud sync.","category":"office","logoUrl":"logo/newton-mail.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Newton Mail88&tracker=88","tags":["email","premium","read-receipts","cloud"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772035,"name":"ProtonMail Bridge","slug":"protonmail-bridge","version":"3.11.0","description":"Desktop bridge for using ProtonMail with desktop email clients via IMAP/SMTP.","category":"office","logoUrl":"logo/protonmail-bridge.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ProtonMail Bridge89&tracker=89","tags":["email","encrypted","bridge","imap"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772036,"name":"Mailvelope","slug":"mailvelope","version":"4.2.0","description":"Browser extension for end-to-end encrypted email with OpenPGP support.","category":"office","logoUrl":"logo/mailvelope.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mailvelope90&tracker=90","tags":["email","encrypted","openpgp","browser"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772037,"name":"FlowCrypt","slug":"flowcrypt","version":"1.15.0","description":"Gmail encryption extension for secure email with PGP and easy setup.","category":"office","logoUrl":"logo/flowcrypt.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FlowCrypt91&tracker=91","tags":["email","gmail","pgp","encryption"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772038,"name":"Gpg4win","slug":"gpg4win","version":"4.2.0","description":"Open-source encryption software for email and file security on Windows.","category":"office","logoUrl":"logo/gpg4win.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Gpg4win92&tracker=92","tags":["encryption","openpgp","windows","security"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772039,"name":"GnuPG","slug":"gnupg","version":"2.4.4","description":"Complete and free implementation of the OpenPGP standard for encryption.","category":"office","logoUrl":"logo/gnupg.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GnuPG93&tracker=93","tags":["encryption","openpgp","cli","cross-platform"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772040,"name":"Kleopatra","slug":"kleopatra","version":"24.02.0","description":"Certificate manager and GUI for GnuPG with key management features.","category":"office","logoUrl":"logo/kleopatra.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kleopatra94&tracker=94","tags":["encryption","gui","gnupg","certificates"],"scrapedAt":"2026-04-27T14:06:11.947Z"},{"id":1777298772041,"name":"Seahorse","slug":"seahorse","version":"45.0","description":"GNOME frontend for managing encryption keys and passwords.","category":"office","logoUrl":"logo/seahorse.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Seahorse95&tracker=95","tags":["encryption","gnome","keys","passwords"],"scrapedAt":"2026-04-27T14:06:11.947Z"}];
+    const CURRENT_CATEGORY = 'office';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

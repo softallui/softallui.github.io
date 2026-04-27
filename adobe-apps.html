@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Adobe — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Adobe</h1>
+    <p><span class="highlight">82</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="adobe-acrobat-reader.html" class="app-card" data-id="1777296221077" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-acrobat-reader.png" alt="Adobe Acrobat Reader" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Acrobat Reader</h3>
+          <p class="app-description">Free PDF viewer with annotation, commenting, and cloud document access features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pdf</span><span class="app-tag">viewer</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="adobe-premiere-rush.html" class="app-card" data-id="1777296221083" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-premiere-rush.png" alt="Adobe Premiere Rush" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Premiere Rush</h3>
+          <p class="app-description">All-in-one video editing app for creating and sharing content across devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">video</span><span class="app-tag">mobile</span><span class="app-tag">social</span>
+            </div>
+          
+        </a>
+        <a href="adobe-substance-3d-painter.html" class="app-card" data-id="1777296221086" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-substance-3d-painter.png" alt="Adobe Substance 3D Painter" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Substance 3D Painter</h3>
+          <p class="app-description">Industry-standard 3D texturing and painting software for games, film, and design.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">3d</span><span class="app-tag">texturing</span><span class="app-tag">painting</span>
+            </div>
+          
+        </a>
+        <a href="adobe-substance-3d-designer.html" class="app-card" data-id="1777296221087" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-substance-3d-designer.png" alt="Adobe Substance 3D Designer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Substance 3D Designer</h3>
+          <p class="app-description">Node-based software for creating procedural materials and textures for 3D workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">procedural</span><span class="app-tag">materials</span><span class="app-tag">nodes</span>
+            </div>
+          
+        </a>
+        <a href="adobe-substance-3d-sampler.html" class="app-card" data-id="1777296221088" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-substance-3d-sampler.png" alt="Adobe Substance 3D Sampler" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Substance 3D Sampler</h3>
+          <p class="app-description">AI-powered material creation tool for generating textures from real-world images.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">materials</span><span class="app-tag">textures</span>
+            </div>
+          
+        </a>
+        <a href="adobe-substance-3d-modeler.html" class="app-card" data-id="1777296221089" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-substance-3d-modeler.png" alt="Adobe Substance 3D Modeler" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Substance 3D Modeler</h3>
+          <p class="app-description">Cross-platform 3D sculpting tool for VR and desktop workflows with intuitive controls.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sculpting</span><span class="app-tag">vr</span><span class="app-tag">3d</span>
+            </div>
+          
+        </a>
+        <a href="adobe-substance-3d-stager.html" class="app-card" data-id="1777296221090" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-substance-3d-stager.png" alt="Adobe Substance 3D Stager" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Substance 3D Stager</h3>
+          <p class="app-description">Scene composition and rendering tool for photorealistic product and brand visuals.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">composition</span><span class="app-tag">rendering</span><span class="app-tag">product</span>
+            </div>
+          
+        </a>
+        <a href="adobe-bridge.html" class="app-card" data-id="1777296221091" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-bridge.png" alt="Adobe Bridge" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Bridge</h3>
+          <p class="app-description">Creative asset manager for organizing, browsing, and managing Adobe Creative Cloud files.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">asset-management</span><span class="app-tag">organizing</span><span class="app-tag">creative-cloud</span>
+            </div>
+          
+        </a>
+        <a href="adobe-media-encoder.html" class="app-card" data-id="1777296221092" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-media-encoder.png" alt="Adobe Media Encoder" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Media Encoder</h3>
+          <p class="app-description">Video and audio encoding software for exporting to multiple formats and platforms.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">encoding</span><span class="app-tag">video</span><span class="app-tag">audio</span>
+            </div>
+          
+        </a>
+        <a href="adobe-prelude.html" class="app-card" data-id="1777296221093" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-prelude.png" alt="Adobe Prelude" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Prelude</h3>
+          <p class="app-description">Ingest and logging tool for organizing and preparing video footage for editing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ingest</span><span class="app-tag">logging</span><span class="app-tag">video</span>
+            </div>
+          
+        </a>
+        <a href="adobe-premiere-elements.html" class="app-card" data-id="1777296221095" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-premiere-elements.png" alt="Adobe Premiere Elements" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Premiere Elements</h3>
+          <p class="app-description">User-friendly video editor with automated edits, effects, and sharing options.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">video-editing</span><span class="app-tag">consumer</span><span class="app-tag">automated</span>
+            </div>
+          
+        </a>
+        <a href="adobe-aero.html" class="app-card" data-id="1777296221098" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-aero.png" alt="Adobe Aero" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Aero</h3>
+          <p class="app-description">AR authoring tool for creating immersive augmented reality experiences without coding.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ar</span><span class="app-tag">immersive</span><span class="app-tag">no-code</span>
+            </div>
+          
+        </a>
+        <a href="adobe-creative-cloud-express.html" class="app-card" data-id="1777296221099" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-creative-cloud-express.png" alt="Adobe Creative Cloud Express" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Creative Cloud Express</h3>
+          <p class="app-description">Quick design tool for social media graphics, videos, and web pages with templates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">templates</span><span class="app-tag">social-media</span><span class="app-tag">quick-design</span>
+            </div>
+          
+        </a>
+        <a href="adobe-portfolio.html" class="app-card" data-id="1777296221100" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-portfolio.png" alt="Adobe Portfolio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Portfolio</h3>
+          <p class="app-description">Website builder for showcasing creative work with custom domains and Adobe integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">portfolio</span><span class="app-tag">website</span><span class="app-tag">showcase</span>
+            </div>
+          
+        </a>
+        <a href="adobe-behance.html" class="app-card" data-id="1777296221101" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-behance.png" alt="Adobe Behance" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Behance</h3>
+          <p class="app-description">Creative network platform for discovering, sharing, and promoting creative work.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">portfolio</span><span class="app-tag">network</span><span class="app-tag">creative</span>
+            </div>
+          
+        </a>
+        <a href="adobe-fonts.html" class="app-card" data-id="1777296221102" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-fonts.png" alt="Adobe Fonts" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Fonts</h3>
+          <p class="app-description">Cloud-based font library with thousands of licensed typefaces for Creative Cloud.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">typography</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="adobe-stock.html" class="app-card" data-id="1777296221103" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-stock.png" alt="Adobe Stock" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Stock</h3>
+          <p class="app-description">Premium stock photo, video, and template marketplace integrated with Creative Cloud.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">stock</span><span class="app-tag">assets</span><span class="app-tag">marketplace</span>
+            </div>
+          
+        </a>
+        <a href="adobe-capture.html" class="app-card" data-id="1777296221104" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-capture.png" alt="Adobe Capture" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Capture</h3>
+          <p class="app-description">Mobile app for turning photos into vectors, patterns, brushes, and color themes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile</span><span class="app-tag">vector</span><span class="app-tag">patterns</span>
+            </div>
+          
+        </a>
+        <a href="adobe-comp.html" class="app-card" data-id="1777296221105" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-comp.png" alt="Adobe Comp" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Comp</h3>
+          <p class="app-description">Layout design app for quickly creating wireframes and mockups on mobile devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">layout</span><span class="app-tag">wireframe</span><span class="app-tag">mobile</span>
+            </div>
+          
+        </a>
+        <a href="adobe-color.html" class="app-card" data-id="1777296221106" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-color.png" alt="Adobe Color" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Color</h3>
+          <p class="app-description">Web-based color theme creator with extraction, harmony rules, and accessibility tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">color</span><span class="app-tag">themes</span><span class="app-tag">accessibility</span>
+            </div>
+          
+        </a>
+        <a href="adobe-photoshop-camera.html" class="app-card" data-id="1777296221107" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-photoshop-camera.png" alt="Adobe Photoshop Camera" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Photoshop Camera</h3>
+          <p class="app-description">Mobile camera app with real-time lenses, filters, and AI-powered photo enhancements.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">camera</span><span class="app-tag">mobile</span><span class="app-tag">ai</span>
+            </div>
+          
+        </a>
+        <a href="adobe-frame-io.html" class="app-card" data-id="1777296221108" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-frame-io.png" alt="Adobe Frame.io" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Frame.io</h3>
+          <p class="app-description">Cloud-based video review and collaboration platform integrated with Creative Cloud.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">collaboration</span><span class="app-tag">video-review</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="adobe-workfront.html" class="app-card" data-id="1777296221109" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-workfront.png" alt="Adobe Workfront" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Workfront</h3>
+          <p class="app-description">Enterprise work management platform for planning, tracking, and delivering creative work.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">work-management</span><span class="app-tag">enterprise</span><span class="app-tag">planning</span>
+            </div>
+          
+        </a>
+        <a href="adobe-experience-manager.html" class="app-card" data-id="1777296221110" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-experience-manager.png" alt="Adobe Experience Manager" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Experience Manager</h3>
+          <p class="app-description">Enterprise content management system for building websites, mobile apps, and forms.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cms</span><span class="app-tag">enterprise</span><span class="app-tag">web</span>
+            </div>
+          
+        </a>
+        <a href="adobe-analytics.html" class="app-card" data-id="1777296221111" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-analytics.png" alt="Adobe Analytics" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Analytics</h3>
+          <p class="app-description">Advanced analytics platform for measuring customer journeys and optimizing experiences.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">analytics</span><span class="app-tag">data</span><span class="app-tag">customer-journey</span>
+            </div>
+          
+        </a>
+        <a href="adobe-target.html" class="app-card" data-id="1777296221112" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-target.png" alt="Adobe Target" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Target</h3>
+          <p class="app-description">Personalization and testing platform for optimizing digital experiences at scale.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">personalization</span><span class="app-tag">ab-testing</span><span class="app-tag">optimization</span>
+            </div>
+          
+        </a>
+        <a href="adobe-campaign.html" class="app-card" data-id="1777296221113" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-campaign.png" alt="Adobe Campaign" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Campaign</h3>
+          <p class="app-description">Cross-channel marketing platform for orchestrating personalized customer journeys.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">marketing</span><span class="app-tag">automation</span><span class="app-tag">cross-channel</span>
+            </div>
+          
+        </a>
+        <a href="adobe-marketo-engage.html" class="app-card" data-id="1777296221114" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-marketo-engage.png" alt="Adobe Marketo Engage" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Marketo Engage</h3>
+          <p class="app-description">Marketing automation platform for lead management, email campaigns, and analytics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">marketing-automation</span><span class="app-tag">leads</span><span class="app-tag">email</span>
+            </div>
+          
+        </a>
+        <a href="adobe-commerce.html" class="app-card" data-id="1777296221115" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-commerce.png" alt="Adobe Commerce" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Commerce</h3>
+          <p class="app-description">Enterprise e-commerce platform (formerly Magento) for building scalable online stores.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ecommerce</span><span class="app-tag">enterprise</span><span class="app-tag">magento</span>
+            </div>
+          
+        </a>
+        <a href="adobe-experience-cloud.html" class="app-card" data-id="1777296221116" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-experience-cloud.png" alt="Adobe Experience Cloud" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Experience Cloud</h3>
+          <p class="app-description">Integrated suite of marketing, analytics, advertising, and commerce solutions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">suite</span><span class="app-tag">marketing</span><span class="app-tag">analytics</span>
+            </div>
+          
+        </a>
+        <a href="adobe-experience-platform.html" class="app-card" data-id="1777296221117" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-experience-platform.png" alt="Adobe Experience Platform" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Experience Platform</h3>
+          <p class="app-description">Real-time customer data platform for unifying profiles and powering experiences.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cdp</span><span class="app-tag">real-time</span><span class="app-tag">data</span>
+            </div>
+          
+        </a>
+        <a href="adobe-real-time-cdp.html" class="app-card" data-id="1777296221118" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-real-time-cdp.png" alt="Adobe Real-Time CDP" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Real-Time CDP</h3>
+          <p class="app-description">Customer data platform for creating unified profiles and activating audiences instantly.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cdp</span><span class="app-tag">audiences</span><span class="app-tag">real-time</span>
+            </div>
+          
+        </a>
+        <a href="adobe-journey-optimizer.html" class="app-card" data-id="1777296221119" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-journey-optimizer.png" alt="Adobe Journey Optimizer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Journey Optimizer</h3>
+          <p class="app-description">Cross-channel journey orchestration platform for personalized customer interactions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">journey</span><span class="app-tag">orchestration</span><span class="app-tag">personalization</span>
+            </div>
+          
+        </a>
+        <a href="adobe-customer-journey-analytics.html" class="app-card" data-id="1777296221120" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-customer-journey-analytics.png" alt="Adobe Customer Journey Analytics" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Customer Journey Analytics</h3>
+          <p class="app-description">Advanced analytics for understanding cross-channel customer behavior and attribution.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">analytics</span><span class="app-tag">cross-channel</span><span class="app-tag">attribution</span>
+            </div>
+          
+        </a>
+        <a href="adobe-advertising-cloud.html" class="app-card" data-id="1777296221121" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-advertising-cloud.png" alt="Adobe Advertising Cloud" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Advertising Cloud</h3>
+          <p class="app-description">Programmatic advertising platform for managing search, display, video, and social ads.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">advertising</span><span class="app-tag">programmatic</span><span class="app-tag">search</span>
+            </div>
+          
+        </a>
+        <a href="adobe-document-cloud.html" class="app-card" data-id="1777296221122" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-document-cloud.png" alt="Adobe Document Cloud" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Document Cloud</h3>
+          <p class="app-description">Cloud-based PDF and e-signature services for secure document workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pdf</span><span class="app-tag">esignature</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="adobe-sign.html" class="app-card" data-id="1777296221123" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-sign.png" alt="Adobe Sign" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Sign</h3>
+          <p class="app-description">Enterprise e-signature solution for legally binding digital agreements and workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">esignature</span><span class="app-tag">legal</span><span class="app-tag">workflows</span>
+            </div>
+          
+        </a>
+        <a href="adobe-acrobat-services-api.html" class="app-card" data-id="1777296221124" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-acrobat-services-api.png" alt="Adobe Acrobat Services API" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Acrobat Services API</h3>
+          <p class="app-description">REST APIs for PDF creation, manipulation, and e-signature integration in apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">api</span><span class="app-tag">pdf</span><span class="app-tag">integration</span>
+            </div>
+          
+        </a>
+        <a href="adobe-pdf-services-api.html" class="app-card" data-id="1777296221125" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-pdf-services-api.png" alt="Adobe PDF Services API" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe PDF Services API</h3>
+          <p class="app-description">Cloud APIs for creating, converting, and manipulating PDF documents programmatically.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">api</span><span class="app-tag">pdf</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="adobe-coldfusion.html" class="app-card" data-id="1777296221126" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-coldfusion.png" alt="Adobe ColdFusion" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe ColdFusion</h3>
+          <p class="app-description">Rapid web application development platform with CFML scripting language.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">web-dev</span><span class="app-tag">cfml</span><span class="app-tag">server</span>
+            </div>
+          
+        </a>
+        <a href="adobe-coldfusion-builder.html" class="app-card" data-id="1777296221127" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-coldfusion-builder.png" alt="Adobe ColdFusion Builder" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe ColdFusion Builder</h3>
+          <p class="app-description">IDE for ColdFusion development with code completion, debugging, and server integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ide</span><span class="app-tag">coldfusion</span><span class="app-tag">development</span>
+            </div>
+          
+        </a>
+        <a href="adobe-robohelp.html" class="app-card" data-id="1777296221128" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-robohelp.png" alt="Adobe RoboHelp" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe RoboHelp</h3>
+          <p class="app-description">Technical communication tool for creating help systems, knowledge bases, and documentation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">documentation</span><span class="app-tag">help</span><span class="app-tag">technical-writing</span>
+            </div>
+          
+        </a>
+        <a href="adobe-framemaker.html" class="app-card" data-id="1777296221129" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-framemaker.png" alt="Adobe FrameMaker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe FrameMaker</h3>
+          <p class="app-description">Professional authoring tool for structured content, technical docs, and long-form publishing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">authoring</span><span class="app-tag">structured</span><span class="app-tag">technical</span>
+            </div>
+          
+        </a>
+        <a href="adobe-technical-communication-suite.html" class="app-card" data-id="1777296221130" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-technical-communication-suite.png" alt="Adobe Technical Communication Suite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Technical Communication Suite</h3>
+          <p class="app-description">Integrated suite for creating, managing, and publishing technical documentation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">suite</span><span class="app-tag">technical</span><span class="app-tag">documentation</span>
+            </div>
+          
+        </a>
+        <a href="adobe-captivate.html" class="app-card" data-id="1777296221131" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-captivate.png" alt="Adobe Captivate" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Captivate</h3>
+          <p class="app-description">E-learning authoring tool for creating interactive courses, simulations, and VR content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">elearning</span><span class="app-tag">authoring</span><span class="app-tag">vr</span>
+            </div>
+          
+        </a>
+        <a href="adobe-presenter.html" class="app-card" data-id="1777296221132" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-presenter.png" alt="Adobe Presenter" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Presenter</h3>
+          <p class="app-description">PowerPoint add-in for creating interactive e-learning presentations and quizzes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">elearning</span><span class="app-tag">powerpoint</span><span class="app-tag">presentations</span>
+            </div>
+          
+        </a>
+        <a href="adobe-connect.html" class="app-card" data-id="1777296221133" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-connect.png" alt="Adobe Connect" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Connect</h3>
+          <p class="app-description">Web conferencing platform for virtual meetings, webinars, and e-learning sessions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">webinar</span><span class="app-tag">conferencing</span><span class="app-tag">elearning</span>
+            </div>
+          
+        </a>
+        <a href="adobe-experience-manager-forms.html" class="app-card" data-id="1777296221134" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-experience-manager-forms.png" alt="Adobe Experience Manager Forms" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Experience Manager Forms</h3>
+          <p class="app-description">Enterprise forms solution for creating, managing, and automating digital forms.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">forms</span><span class="app-tag">automation</span><span class="app-tag">enterprise</span>
+            </div>
+          
+        </a>
+        <a href="adobe-experience-manager-sites.html" class="app-card" data-id="1777296221135" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-experience-manager-sites.png" alt="Adobe Experience Manager Sites" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Experience Manager Sites</h3>
+          <p class="app-description">Enterprise web content management for building personalized, omnichannel experiences.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cms</span><span class="app-tag">web</span><span class="app-tag">personalization</span>
+            </div>
+          
+        </a>
+        <a href="adobe-experience-manager-assets.html" class="app-card" data-id="1777296221136" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-experience-manager-assets.png" alt="Adobe Experience Manager Assets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Experience Manager Assets</h3>
+          <p class="app-description">Digital asset management for organizing, sharing, and activating brand content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dam</span><span class="app-tag">assets</span><span class="app-tag">brand</span>
+            </div>
+          
+        </a>
+        <a href="adobe-experience-manager-screens.html" class="app-card" data-id="1777296221137" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-experience-manager-screens.png" alt="Adobe Experience Manager Screens" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Experience Manager Screens</h3>
+          <p class="app-description">Digital signage solution for managing content on public displays and kiosks.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">digital-signage</span><span class="app-tag">kiosks</span><span class="app-tag">content</span>
+            </div>
+          
+        </a>
+        <a href="adobe-experience-manager-guides.html" class="app-card" data-id="1777296221138" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-experience-manager-guides.png" alt="Adobe Experience Manager Guides" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Experience Manager Guides</h3>
+          <p class="app-description">XML-based authoring for structured technical documentation and DITA workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">xml</span><span class="app-tag">dita</span><span class="app-tag">structured</span>
+            </div>
+          
+        </a>
+        <a href="adobe-experience-manager-cloud-manager.html" class="app-card" data-id="1777296221139" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-experience-manager-cloud-manager.png" alt="Adobe Experience Manager Cloud Manager" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Experience Manager Cloud Manager</h3>
+          <p class="app-description">DevOps tool for managing AEM deployments, pipelines, and cloud infrastructure.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">devops</span><span class="app-tag">deployment</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="adobe-experience-manager-cloud-service.html" class="app-card" data-id="1777296221140" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-experience-manager-cloud-service.png" alt="Adobe Experience Manager as a Cloud Service" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Experience Manager as a Cloud Service</h3>
+          <p class="app-description">Fully managed, auto-scaling AEM platform on Adobe&#039;s cloud infrastructure.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">saas</span><span class="app-tag">managed</span><span class="app-tag">auto-scaling</span>
+            </div>
+          
+        </a>
+        <a href="adobe-creative-cloud-desktop.html" class="app-card" data-id="1777296221141" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-creative-cloud-desktop.png" alt="Adobe Creative Cloud Desktop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Creative Cloud Desktop</h3>
+          <p class="app-description">Central hub for installing, updating, and managing Creative Cloud applications.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">manager</span><span class="app-tag">updates</span><span class="app-tag">creative-cloud</span>
+            </div>
+          
+        </a>
+        <a href="adobe-creative-cloud-libraries.html" class="app-card" data-id="1777296221142" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-creative-cloud-libraries.png" alt="Adobe Creative Cloud Libraries" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Creative Cloud Libraries</h3>
+          <p class="app-description">Shared asset libraries for syncing colors, graphics, and styles across Creative Cloud apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">libraries</span><span class="app-tag">sync</span><span class="app-tag">assets</span>
+            </div>
+          
+        </a>
+        <a href="adobe-creative-cloud-sync.html" class="app-card" data-id="1777296221143" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-creative-cloud-sync.png" alt="Adobe Creative Cloud Sync" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Creative Cloud Sync</h3>
+          <p class="app-description">Cloud sync service for preferences, presets, and settings across Creative Cloud apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sync</span><span class="app-tag">preferences</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="adobe-typekit-desktop.html" class="app-card" data-id="1777296221144" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-typekit-desktop.png" alt="Adobe Typekit Desktop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Typekit Desktop</h3>
+          <p class="app-description">Font syncing utility for activating Adobe Fonts in desktop applications.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">sync</span><span class="app-tag">typekit</span>
+            </div>
+          
+        </a>
+        <a href="adobe-creative-cloud-packager.html" class="app-card" data-id="1777296221145" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-creative-cloud-packager.png" alt="Adobe Creative Cloud Packager" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Creative Cloud Packager</h3>
+          <p class="app-description">Enterprise tool for creating customized Creative Cloud deployment packages.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">enterprise</span><span class="app-tag">deployment</span><span class="app-tag">packaging</span>
+            </div>
+          
+        </a>
+        <a href="adobe-admin-console.html" class="app-card" data-id="1777296221146" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-admin-console.png" alt="Adobe Admin Console" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Admin Console</h3>
+          <p class="app-description">Web-based portal for managing users, licenses, and products across Adobe services.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">admin</span><span class="app-tag">enterprise</span><span class="app-tag">licenses</span>
+            </div>
+          
+        </a>
+        <a href="adobe-creative-cloud-for-teams.html" class="app-card" data-id="1777296221147" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-creative-cloud-for-teams.png" alt="Adobe Creative Cloud for Teams" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Creative Cloud for Teams</h3>
+          <p class="app-description">Collaborative Creative Cloud plan with shared libraries and admin controls.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">teams</span><span class="app-tag">collaboration</span><span class="app-tag">enterprise</span>
+            </div>
+          
+        </a>
+        <a href="adobe-creative-cloud-for-enterprise.html" class="app-card" data-id="1777296221148" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-creative-cloud-for-enterprise.png" alt="Adobe Creative Cloud for Enterprise" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Creative Cloud for Enterprise</h3>
+          <p class="app-description">Enterprise-grade Creative Cloud with advanced security, compliance, and deployment.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">enterprise</span><span class="app-tag">security</span><span class="app-tag">compliance</span>
+            </div>
+          
+        </a>
+        <a href="adobe-creative-cloud-for-education.html" class="app-card" data-id="1777296221149" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-creative-cloud-for-education.png" alt="Adobe Creative Cloud for Education" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Creative Cloud for Education</h3>
+          <p class="app-description">Discounted Creative Cloud plan for students, teachers, and educational institutions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">education</span><span class="app-tag">discount</span><span class="app-tag">students</span>
+            </div>
+          
+        </a>
+        <a href="adobe-creative-cloud-all-apps.html" class="app-card" data-id="1777296221150" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-creative-cloud-all-apps.png" alt="Adobe Creative Cloud All Apps" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Creative Cloud All Apps</h3>
+          <p class="app-description">Complete subscription with access to all Creative Cloud desktop and mobile apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">subscription</span><span class="app-tag">all-apps</span><span class="app-tag">creative-cloud</span>
+            </div>
+          
+        </a>
+        <a href="adobe-photoshop-for-ipad.html" class="app-card" data-id="1777296221151" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-photoshop-ipad.png" alt="Adobe Photoshop for iPad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Photoshop for iPad</h3>
+          <p class="app-description">Full-featured Photoshop experience optimized for iPad with cloud document sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ipad</span><span class="app-tag">mobile</span><span class="app-tag">photo-editing</span>
+            </div>
+          
+        </a>
+        <a href="adobe-illustrator-for-ipad.html" class="app-card" data-id="1777296221152" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-illustrator-ipad.png" alt="Adobe Illustrator for iPad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Illustrator for iPad</h3>
+          <p class="app-description">Vector design app for iPad with Apple Pencil support and cloud document sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ipad</span><span class="app-tag">vector</span><span class="app-tag">apple-pencil</span>
+            </div>
+          
+        </a>
+        <a href="adobe-premiere-pro-for-ipad.html" class="app-card" data-id="1777296221153" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-premiere-pro-ipad.png" alt="Adobe Premiere Pro for iPad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Premiere Pro for iPad</h3>
+          <p class="app-description">Mobile video editing with timeline, effects, and cloud project sync for iPad.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ipad</span><span class="app-tag">video-editing</span><span class="app-tag">mobile</span>
+            </div>
+          
+        </a>
+        <a href="adobe-after-effects-for-ipad.html" class="app-card" data-id="1777296221154" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-after-effects-ipad.png" alt="Adobe After Effects for iPad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe After Effects for iPad</h3>
+          <p class="app-description">Motion graphics and compositing tools optimized for iPad with touch gestures.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ipad</span><span class="app-tag">motion-graphics</span><span class="app-tag">mobile</span>
+            </div>
+          
+        </a>
+        <a href="adobe-indesign-for-ipad.html" class="app-card" data-id="1777296221155" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-indesign-ipad.png" alt="Adobe InDesign for iPad" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe InDesign for iPad</h3>
+          <p class="app-description">Layout design app for iPad with publishing tools and cloud document sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ipad</span><span class="app-tag">layout</span><span class="app-tag">publishing</span>
+            </div>
+          
+        </a>
+        <a href="adobe-photoshop-for-web.html" class="app-card" data-id="1777296221156" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-photoshop-web.png" alt="Adobe Photoshop for Web" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Photoshop for Web</h3>
+          <p class="app-description">Browser-based Photoshop with essential editing tools and cloud document access.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">web</span><span class="app-tag">browser</span><span class="app-tag">photo-editing</span>
+            </div>
+          
+        </a>
+        <a href="adobe-illustrator-for-web.html" class="app-card" data-id="1777296221157" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-illustrator-web.png" alt="Adobe Illustrator for Web" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Illustrator for Web</h3>
+          <p class="app-description">Web-based vector design tool with essential Illustrator features in the browser.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">web</span><span class="app-tag">browser</span><span class="app-tag">vector</span>
+            </div>
+          
+        </a>
+        <a href="adobe-express-for-web.html" class="app-card" data-id="1777296221158" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-express-web.png" alt="Adobe Express for Web" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Express for Web</h3>
+          <p class="app-description">Browser-based design tool for quick graphics, videos, and social content creation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">web</span><span class="app-tag">browser</span><span class="app-tag">quick-design</span>
+            </div>
+          
+        </a>
+        <a href="adobe-firefly.html" class="app-card" data-id="1777296221159" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-firefly.png" alt="Adobe Firefly" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Firefly</h3>
+          <p class="app-description">Generative AI model for creating images, text effects, and vector graphics from prompts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">generative</span><span class="app-tag">image-generation</span>
+            </div>
+          
+        </a>
+        <a href="adobe-firefly-for-photoshop.html" class="app-card" data-id="1777296221160" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-firefly-photoshop.png" alt="Adobe Firefly for Photoshop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Firefly for Photoshop</h3>
+          <p class="app-description">Generative Fill and Generative Expand AI features integrated into Photoshop.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">generative-fill</span><span class="app-tag">photoshop</span>
+            </div>
+          
+        </a>
+        <a href="adobe-firefly-for-illustrator.html" class="app-card" data-id="1777296221161" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-firefly-illustrator.png" alt="Adobe Firefly for Illustrator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Firefly for Illustrator</h3>
+          <p class="app-description">Text to Vector and Recolor AI features for generating and editing vector graphics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">vector-generation</span><span class="app-tag">illustrator</span>
+            </div>
+          
+        </a>
+        <a href="adobe-sensei.html" class="app-card" data-id="1777296221162" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-sensei.png" alt="Adobe Sensei" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Sensei</h3>
+          <p class="app-description">Adobe&#039;s AI and machine learning framework powering intelligent features across products.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ai</span><span class="app-tag">machine-learning</span><span class="app-tag">framework</span>
+            </div>
+          
+        </a>
+        <a href="adobe-content-authenticity-initiative.html" class="app-card" data-id="1777296221163" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-cai.png" alt="Adobe Content Authenticity Initiative" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Content Authenticity Initiative</h3>
+          <p class="app-description">Open standard for attributing and tracking the history of digital content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">authenticity</span><span class="app-tag">attribution</span><span class="app-tag">open-standard</span>
+            </div>
+          
+        </a>
+        <a href="adobe-content-credentials.html" class="app-card" data-id="1777296221164" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-content-credentials.png" alt="Adobe Content Credentials" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Content Credentials</h3>
+          <p class="app-description">Tamper-evident metadata for verifying the origin and edit history of digital content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">metadata</span><span class="app-tag">verification</span><span class="app-tag">tamper-evident</span>
+            </div>
+          
+        </a>
+        <a href="adobe-creative-cloud-feedback.html" class="app-card" data-id="1777296221165" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-creative-cloud-feedback.png" alt="Adobe Creative Cloud Feedback" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Creative Cloud Feedback</h3>
+          <p class="app-description">In-app feedback tool for reporting issues and suggesting features for Adobe apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">feedback</span><span class="app-tag">support</span><span class="app-tag">reporting</span>
+            </div>
+          
+        </a>
+        <a href="adobe-creative-cloud-updates.html" class="app-card" data-id="1777296221166" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-creative-cloud-updates.png" alt="Adobe Creative Cloud Updates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Creative Cloud Updates</h3>
+          <p class="app-description">Automatic update service for keeping Creative Cloud apps current with latest features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">updates</span><span class="app-tag">automatic</span><span class="app-tag">maintenance</span>
+            </div>
+          
+        </a>
+        <a href="adobe-creative-cloud-support.html" class="app-card" data-id="1777296221167" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-creative-cloud-support.png" alt="Adobe Creative Cloud Support" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Creative Cloud Support</h3>
+          <p class="app-description">Integrated help and support system for troubleshooting and learning Adobe products.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">support</span><span class="app-tag">help</span><span class="app-tag">troubleshooting</span>
+            </div>
+          
+        </a>
+        <a href="adobe-creative-cloud-learning.html" class="app-card" data-id="1777296221168" style="text-decoration:none;color:inherit">
+          <img src="logo/adobe-creative-cloud-learning.png" alt="Adobe Creative Cloud Learning" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Adobe Creative Cloud Learning</h3>
+          <p class="app-description">In-app tutorials, tips, and guided projects for mastering Adobe Creative Cloud apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">learning</span><span class="app-tag">tutorials</span><span class="app-tag">education</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777296221077,"name":"Adobe Acrobat Reader","slug":"adobe-acrobat-reader","version":"2024.001.20643","description":"Free PDF viewer with annotation, commenting, and cloud document access features.","category":"adobe-apps","logoUrl":"logo/adobe-acrobat-reader.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Acrobat Reader9&tracker=9","tags":["pdf","viewer","free","document-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221083,"name":"Adobe Premiere Rush","slug":"adobe-premiere-rush","version":"2.8.0","description":"All-in-one video editing app for creating and sharing content across devices.","category":"adobe-apps","logoUrl":"logo/adobe-premiere-rush.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Premiere Rush15&tracker=15","tags":["video","mobile","social","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221086,"name":"Adobe Substance 3D Painter","slug":"adobe-substance-3d-painter","version":"9.2.0","description":"Industry-standard 3D texturing and painting software for games, film, and design.","category":"adobe-apps","logoUrl":"logo/adobe-substance-3d-painter.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Substance 3D Painter18&tracker=18","tags":["3d","texturing","painting","substance"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221087,"name":"Adobe Substance 3D Designer","slug":"adobe-substance-3d-designer","version":"14.1.0","description":"Node-based software for creating procedural materials and textures for 3D workflows.","category":"adobe-apps","logoUrl":"logo/adobe-substance-3d-designer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Substance 3D Designer19&tracker=19","tags":["procedural","materials","nodes","substance"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221088,"name":"Adobe Substance 3D Sampler","slug":"adobe-substance-3d-sampler","version":"9.2.0","description":"AI-powered material creation tool for generating textures from real-world images.","category":"adobe-apps","logoUrl":"logo/adobe-substance-3d-sampler.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Substance 3D Sampler20&tracker=20","tags":["ai","materials","textures","substance"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221089,"name":"Adobe Substance 3D Modeler","slug":"adobe-substance-3d-modeler","version":"2.3.0","description":"Cross-platform 3D sculpting tool for VR and desktop workflows with intuitive controls.","category":"adobe-apps","logoUrl":"logo/adobe-substance-3d-modeler.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Substance 3D Modeler21&tracker=21","tags":["sculpting","vr","3d","substance"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221090,"name":"Adobe Substance 3D Stager","slug":"adobe-substance-3d-stager","version":"3.1.0","description":"Scene composition and rendering tool for photorealistic product and brand visuals.","category":"adobe-apps","logoUrl":"logo/adobe-substance-3d-stager.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Substance 3D Stager22&tracker=22","tags":["composition","rendering","product","substance"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221091,"name":"Adobe Bridge","slug":"adobe-bridge","version":"14.0.1","description":"Creative asset manager for organizing, browsing, and managing Adobe Creative Cloud files.","category":"adobe-apps","logoUrl":"logo/adobe-bridge.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Bridge23&tracker=23","tags":["asset-management","organizing","creative-cloud","metadata"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221092,"name":"Adobe Media Encoder","slug":"adobe-media-encoder","version":"24.3.0","description":"Video and audio encoding software for exporting to multiple formats and platforms.","category":"adobe-apps","logoUrl":"logo/adobe-media-encoder.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Media Encoder24&tracker=24","tags":["encoding","video","audio","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221093,"name":"Adobe Prelude","slug":"adobe-prelude","version":"12.0","description":"Ingest and logging tool for organizing and preparing video footage for editing.","category":"adobe-apps","logoUrl":"logo/adobe-prelude.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Prelude25&tracker=25","tags":["ingest","logging","video","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221095,"name":"Adobe Premiere Elements","slug":"adobe-premiere-elements","version":"2024","description":"User-friendly video editor with automated edits, effects, and sharing options.","category":"adobe-apps","logoUrl":"logo/adobe-premiere-elements.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Premiere Elements27&tracker=27","tags":["video-editing","consumer","automated","sharing"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221098,"name":"Adobe Aero","slug":"adobe-aero","version":"2.4.0","description":"AR authoring tool for creating immersive augmented reality experiences without coding.","category":"adobe-apps","logoUrl":"logo/adobe-aero.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Aero30&tracker=30","tags":["ar","immersive","no-code","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221099,"name":"Adobe Creative Cloud Express","slug":"adobe-creative-cloud-express","version":"2024.1.0","description":"Quick design tool for social media graphics, videos, and web pages with templates.","category":"adobe-apps","logoUrl":"logo/adobe-creative-cloud-express.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Creative Cloud Express31&tracker=31","tags":["templates","social-media","quick-design","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221100,"name":"Adobe Portfolio","slug":"adobe-portfolio","version":"2024.0","description":"Website builder for showcasing creative work with custom domains and Adobe integration.","category":"adobe-apps","logoUrl":"logo/adobe-portfolio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Portfolio32&tracker=32","tags":["portfolio","website","showcase","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221101,"name":"Adobe Behance","slug":"adobe-behance","version":"2024.0","description":"Creative network platform for discovering, sharing, and promoting creative work.","category":"adobe-apps","logoUrl":"logo/adobe-behance.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Behance33&tracker=33","tags":["portfolio","network","creative","community"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221102,"name":"Adobe Fonts","slug":"adobe-fonts","version":"2024.0","description":"Cloud-based font library with thousands of licensed typefaces for Creative Cloud.","category":"adobe-apps","logoUrl":"logo/adobe-fonts.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Fonts34&tracker=34","tags":["fonts","typography","cloud","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221103,"name":"Adobe Stock","slug":"adobe-stock","version":"2024.0","description":"Premium stock photo, video, and template marketplace integrated with Creative Cloud.","category":"adobe-apps","logoUrl":"logo/adobe-stock.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Stock35&tracker=35","tags":["stock","assets","marketplace","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221104,"name":"Adobe Capture","slug":"adobe-capture","version":"5.4.0","description":"Mobile app for turning photos into vectors, patterns, brushes, and color themes.","category":"adobe-apps","logoUrl":"logo/adobe-capture.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Capture36&tracker=36","tags":["mobile","vector","patterns","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221105,"name":"Adobe Comp","slug":"adobe-comp","version":"2.5.0","description":"Layout design app for quickly creating wireframes and mockups on mobile devices.","category":"adobe-apps","logoUrl":"logo/adobe-comp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Comp37&tracker=37","tags":["layout","wireframe","mobile","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221106,"name":"Adobe Color","slug":"adobe-color","version":"2024.0","description":"Web-based color theme creator with extraction, harmony rules, and accessibility tools.","category":"adobe-apps","logoUrl":"logo/adobe-color.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Color38&tracker=38","tags":["color","themes","accessibility","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221107,"name":"Adobe Photoshop Camera","slug":"adobe-photoshop-camera","version":"3.2.0","description":"Mobile camera app with real-time lenses, filters, and AI-powered photo enhancements.","category":"adobe-apps","logoUrl":"logo/adobe-photoshop-camera.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Photoshop Camera39&tracker=39","tags":["camera","mobile","ai","filters"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221108,"name":"Adobe Frame.io","slug":"adobe-frame-io","version":"4.2.0","description":"Cloud-based video review and collaboration platform integrated with Creative Cloud.","category":"adobe-apps","logoUrl":"logo/adobe-frame-io.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Frame.io40&tracker=40","tags":["collaboration","video-review","cloud","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221109,"name":"Adobe Workfront","slug":"adobe-workfront","version":"24.1.0","description":"Enterprise work management platform for planning, tracking, and delivering creative work.","category":"adobe-apps","logoUrl":"logo/adobe-workfront.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Workfront41&tracker=41","tags":["work-management","enterprise","planning","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221110,"name":"Adobe Experience Manager","slug":"adobe-experience-manager","version":"2024.1.0","description":"Enterprise content management system for building websites, mobile apps, and forms.","category":"adobe-apps","logoUrl":"logo/adobe-experience-manager.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Experience Manager42&tracker=42","tags":["cms","enterprise","web","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221111,"name":"Adobe Analytics","slug":"adobe-analytics","version":"2024.1.0","description":"Advanced analytics platform for measuring customer journeys and optimizing experiences.","category":"adobe-apps","logoUrl":"logo/adobe-analytics.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Analytics43&tracker=43","tags":["analytics","data","customer-journey","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221112,"name":"Adobe Target","slug":"adobe-target","version":"2024.1.0","description":"Personalization and testing platform for optimizing digital experiences at scale.","category":"adobe-apps","logoUrl":"logo/adobe-target.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Target44&tracker=44","tags":["personalization","ab-testing","optimization","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221113,"name":"Adobe Campaign","slug":"adobe-campaign","version":"2024.1.0","description":"Cross-channel marketing platform for orchestrating personalized customer journeys.","category":"adobe-apps","logoUrl":"logo/adobe-campaign.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Campaign45&tracker=45","tags":["marketing","automation","cross-channel","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221114,"name":"Adobe Marketo Engage","slug":"adobe-marketo-engage","version":"2024.1.0","description":"Marketing automation platform for lead management, email campaigns, and analytics.","category":"adobe-apps","logoUrl":"logo/adobe-marketo-engage.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Marketo Engage46&tracker=46","tags":["marketing-automation","leads","email","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221115,"name":"Adobe Commerce","slug":"adobe-commerce","version":"2.4.7","description":"Enterprise e-commerce platform (formerly Magento) for building scalable online stores.","category":"adobe-apps","logoUrl":"logo/adobe-commerce.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Commerce47&tracker=47","tags":["ecommerce","enterprise","magento","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221116,"name":"Adobe Experience Cloud","slug":"adobe-experience-cloud","version":"2024.1.0","description":"Integrated suite of marketing, analytics, advertising, and commerce solutions.","category":"adobe-apps","logoUrl":"logo/adobe-experience-cloud.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Experience Cloud48&tracker=48","tags":["suite","marketing","analytics","enterprise"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221117,"name":"Adobe Experience Platform","slug":"adobe-experience-platform","version":"2024.1.0","description":"Real-time customer data platform for unifying profiles and powering experiences.","category":"adobe-apps","logoUrl":"logo/adobe-experience-platform.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Experience Platform49&tracker=49","tags":["cdp","real-time","data","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221118,"name":"Adobe Real-Time CDP","slug":"adobe-real-time-cdp","version":"2024.1.0","description":"Customer data platform for creating unified profiles and activating audiences instantly.","category":"adobe-apps","logoUrl":"logo/adobe-real-time-cdp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Real-Time CDP50&tracker=50","tags":["cdp","audiences","real-time","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221119,"name":"Adobe Journey Optimizer","slug":"adobe-journey-optimizer","version":"2024.1.0","description":"Cross-channel journey orchestration platform for personalized customer interactions.","category":"adobe-apps","logoUrl":"logo/adobe-journey-optimizer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Journey Optimizer51&tracker=51","tags":["journey","orchestration","personalization","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221120,"name":"Adobe Customer Journey Analytics","slug":"adobe-customer-journey-analytics","version":"2024.1.0","description":"Advanced analytics for understanding cross-channel customer behavior and attribution.","category":"adobe-apps","logoUrl":"logo/adobe-customer-journey-analytics.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Customer Journey Analytics52&tracker=52","tags":["analytics","cross-channel","attribution","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221121,"name":"Adobe Advertising Cloud","slug":"adobe-advertising-cloud","version":"2024.1.0","description":"Programmatic advertising platform for managing search, display, video, and social ads.","category":"adobe-apps","logoUrl":"logo/adobe-advertising-cloud.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Advertising Cloud53&tracker=53","tags":["advertising","programmatic","search","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221122,"name":"Adobe Document Cloud","slug":"adobe-document-cloud","version":"2024.1.0","description":"Cloud-based PDF and e-signature services for secure document workflows.","category":"adobe-apps","logoUrl":"logo/adobe-document-cloud.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Document Cloud54&tracker=54","tags":["pdf","esignature","cloud","document-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221123,"name":"Adobe Sign","slug":"adobe-sign","version":"2024.1.0","description":"Enterprise e-signature solution for legally binding digital agreements and workflows.","category":"adobe-apps","logoUrl":"logo/adobe-sign.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Sign55&tracker=55","tags":["esignature","legal","workflows","document-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221124,"name":"Adobe Acrobat Services API","slug":"adobe-acrobat-services-api","version":"2024.1.0","description":"REST APIs for PDF creation, manipulation, and e-signature integration in apps.","category":"adobe-apps","logoUrl":"logo/adobe-acrobat-services-api.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Acrobat Services API56&tracker=56","tags":["api","pdf","integration","document-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221125,"name":"Adobe PDF Services API","slug":"adobe-pdf-services-api","version":"2024.1.0","description":"Cloud APIs for creating, converting, and manipulating PDF documents programmatically.","category":"adobe-apps","logoUrl":"logo/adobe-pdf-services-api.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe PDF Services API57&tracker=57","tags":["api","pdf","cloud","document-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221126,"name":"Adobe ColdFusion","slug":"adobe-coldfusion","version":"2023.0.0","description":"Rapid web application development platform with CFML scripting language.","category":"adobe-apps","logoUrl":"logo/adobe-coldfusion.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe ColdFusion58&tracker=58","tags":["web-dev","cfml","server","enterprise"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221127,"name":"Adobe ColdFusion Builder","slug":"adobe-coldfusion-builder","version":"2023.0.0","description":"IDE for ColdFusion development with code completion, debugging, and server integration.","category":"adobe-apps","logoUrl":"logo/adobe-coldfusion-builder.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe ColdFusion Builder59&tracker=59","tags":["ide","coldfusion","development","debugging"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221128,"name":"Adobe RoboHelp","slug":"adobe-robohelp","version":"2022.0.5","description":"Technical communication tool for creating help systems, knowledge bases, and documentation.","category":"adobe-apps","logoUrl":"logo/adobe-robohelp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe RoboHelp60&tracker=60","tags":["documentation","help","technical-writing","publishing"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221129,"name":"Adobe FrameMaker","slug":"adobe-framemaker","version":"2022.0.4","description":"Professional authoring tool for structured content, technical docs, and long-form publishing.","category":"adobe-apps","logoUrl":"logo/adobe-framemaker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe FrameMaker61&tracker=61","tags":["authoring","structured","technical","publishing"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221130,"name":"Adobe Technical Communication Suite","slug":"adobe-technical-communication-suite","version":"2022.0","description":"Integrated suite for creating, managing, and publishing technical documentation.","category":"adobe-apps","logoUrl":"logo/adobe-technical-communication-suite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Technical Communication Suite62&tracker=62","tags":["suite","technical","documentation","publishing"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221131,"name":"Adobe Captivate","slug":"adobe-captivate","version":"2022.0.5","description":"E-learning authoring tool for creating interactive courses, simulations, and VR content.","category":"adobe-apps","logoUrl":"logo/adobe-captivate.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Captivate63&tracker=63","tags":["elearning","authoring","vr","education"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221132,"name":"Adobe Presenter","slug":"adobe-presenter","version":"12.0","description":"PowerPoint add-in for creating interactive e-learning presentations and quizzes.","category":"adobe-apps","logoUrl":"logo/adobe-presenter.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Presenter64&tracker=64","tags":["elearning","powerpoint","presentations","education"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221133,"name":"Adobe Connect","slug":"adobe-connect","version":"12.5.0","description":"Web conferencing platform for virtual meetings, webinars, and e-learning sessions.","category":"adobe-apps","logoUrl":"logo/adobe-connect.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Connect65&tracker=65","tags":["webinar","conferencing","elearning","virtual"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221134,"name":"Adobe Experience Manager Forms","slug":"adobe-experience-manager-forms","version":"2024.1.0","description":"Enterprise forms solution for creating, managing, and automating digital forms.","category":"adobe-apps","logoUrl":"logo/adobe-experience-manager-forms.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Experience Manager Forms66&tracker=66","tags":["forms","automation","enterprise","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221135,"name":"Adobe Experience Manager Sites","slug":"adobe-experience-manager-sites","version":"2024.1.0","description":"Enterprise web content management for building personalized, omnichannel experiences.","category":"adobe-apps","logoUrl":"logo/adobe-experience-manager-sites.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Experience Manager Sites67&tracker=67","tags":["cms","web","personalization","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221136,"name":"Adobe Experience Manager Assets","slug":"adobe-experience-manager-assets","version":"2024.1.0","description":"Digital asset management for organizing, sharing, and activating brand content.","category":"adobe-apps","logoUrl":"logo/adobe-experience-manager-assets.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Experience Manager Assets68&tracker=68","tags":["dam","assets","brand","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221137,"name":"Adobe Experience Manager Screens","slug":"adobe-experience-manager-screens","version":"2024.1.0","description":"Digital signage solution for managing content on public displays and kiosks.","category":"adobe-apps","logoUrl":"logo/adobe-experience-manager-screens.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Experience Manager Screens69&tracker=69","tags":["digital-signage","kiosks","content","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221138,"name":"Adobe Experience Manager Guides","slug":"adobe-experience-manager-guides","version":"2024.1.0","description":"XML-based authoring for structured technical documentation and DITA workflows.","category":"adobe-apps","logoUrl":"logo/adobe-experience-manager-guides.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Experience Manager Guides70&tracker=70","tags":["xml","dita","structured","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221139,"name":"Adobe Experience Manager Cloud Manager","slug":"adobe-experience-manager-cloud-manager","version":"2024.1.0","description":"DevOps tool for managing AEM deployments, pipelines, and cloud infrastructure.","category":"adobe-apps","logoUrl":"logo/adobe-experience-manager-cloud-manager.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Experience Manager Cloud Manager71&tracker=71","tags":["devops","deployment","cloud","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221140,"name":"Adobe Experience Manager as a Cloud Service","slug":"adobe-experience-manager-cloud-service","version":"2024.1.0","description":"Fully managed, auto-scaling AEM platform on Adobe's cloud infrastructure.","category":"adobe-apps","logoUrl":"logo/adobe-experience-manager-cloud-service.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Experience Manager as a Cloud Service72&tracker=72","tags":["saas","managed","auto-scaling","experience-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221141,"name":"Adobe Creative Cloud Desktop","slug":"adobe-creative-cloud-desktop","version":"6.0.0","description":"Central hub for installing, updating, and managing Creative Cloud applications.","category":"adobe-apps","logoUrl":"logo/adobe-creative-cloud-desktop.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Creative Cloud Desktop73&tracker=73","tags":["manager","updates","creative-cloud","desktop"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221142,"name":"Adobe Creative Cloud Libraries","slug":"adobe-creative-cloud-libraries","version":"2024.0","description":"Shared asset libraries for syncing colors, graphics, and styles across Creative Cloud apps.","category":"adobe-apps","logoUrl":"logo/adobe-creative-cloud-libraries.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Creative Cloud Libraries74&tracker=74","tags":["libraries","sync","assets","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221143,"name":"Adobe Creative Cloud Sync","slug":"adobe-creative-cloud-sync","version":"2024.0","description":"Cloud sync service for preferences, presets, and settings across Creative Cloud apps.","category":"adobe-apps","logoUrl":"logo/adobe-creative-cloud-sync.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Creative Cloud Sync75&tracker=75","tags":["sync","preferences","cloud","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221144,"name":"Adobe Typekit Desktop","slug":"adobe-typekit-desktop","version":"2024.0","description":"Font syncing utility for activating Adobe Fonts in desktop applications.","category":"adobe-apps","logoUrl":"logo/adobe-typekit-desktop.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Typekit Desktop76&tracker=76","tags":["fonts","sync","typekit","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221145,"name":"Adobe Creative Cloud Packager","slug":"adobe-creative-cloud-packager","version":"2024.0","description":"Enterprise tool for creating customized Creative Cloud deployment packages.","category":"adobe-apps","logoUrl":"logo/adobe-creative-cloud-packager.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Creative Cloud Packager77&tracker=77","tags":["enterprise","deployment","packaging","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221146,"name":"Adobe Admin Console","slug":"adobe-admin-console","version":"2024.0","description":"Web-based portal for managing users, licenses, and products across Adobe services.","category":"adobe-apps","logoUrl":"logo/adobe-admin-console.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Admin Console78&tracker=78","tags":["admin","enterprise","licenses","management"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221147,"name":"Adobe Creative Cloud for Teams","slug":"adobe-creative-cloud-for-teams","version":"2024.0","description":"Collaborative Creative Cloud plan with shared libraries and admin controls.","category":"adobe-apps","logoUrl":"logo/adobe-creative-cloud-for-teams.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Creative Cloud for Teams79&tracker=79","tags":["teams","collaboration","enterprise","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221148,"name":"Adobe Creative Cloud for Enterprise","slug":"adobe-creative-cloud-for-enterprise","version":"2024.0","description":"Enterprise-grade Creative Cloud with advanced security, compliance, and deployment.","category":"adobe-apps","logoUrl":"logo/adobe-creative-cloud-for-enterprise.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Creative Cloud for Enterprise80&tracker=80","tags":["enterprise","security","compliance","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221149,"name":"Adobe Creative Cloud for Education","slug":"adobe-creative-cloud-for-education","version":"2024.0","description":"Discounted Creative Cloud plan for students, teachers, and educational institutions.","category":"adobe-apps","logoUrl":"logo/adobe-creative-cloud-for-education.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Creative Cloud for Education81&tracker=81","tags":["education","discount","students","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221150,"name":"Adobe Creative Cloud All Apps","slug":"adobe-creative-cloud-all-apps","version":"2024.0","description":"Complete subscription with access to all Creative Cloud desktop and mobile apps.","category":"adobe-apps","logoUrl":"logo/adobe-creative-cloud-all-apps.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Creative Cloud All Apps82&tracker=82","tags":["subscription","all-apps","creative-cloud","complete"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221151,"name":"Adobe Photoshop for iPad","slug":"adobe-photoshop-for-ipad","version":"5.2.0","description":"Full-featured Photoshop experience optimized for iPad with cloud document sync.","category":"adobe-apps","logoUrl":"logo/adobe-photoshop-ipad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Photoshop for iPad83&tracker=83","tags":["ipad","mobile","photo-editing","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221152,"name":"Adobe Illustrator for iPad","slug":"adobe-illustrator-for-ipad","version":"2.3.0","description":"Vector design app for iPad with Apple Pencil support and cloud document sync.","category":"adobe-apps","logoUrl":"logo/adobe-illustrator-ipad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Illustrator for iPad84&tracker=84","tags":["ipad","vector","apple-pencil","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221153,"name":"Adobe Premiere Pro for iPad","slug":"adobe-premiere-pro-for-ipad","version":"1.2.0","description":"Mobile video editing with timeline, effects, and cloud project sync for iPad.","category":"adobe-apps","logoUrl":"logo/adobe-premiere-pro-ipad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Premiere Pro for iPad85&tracker=85","tags":["ipad","video-editing","mobile","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221154,"name":"Adobe After Effects for iPad","slug":"adobe-after-effects-for-ipad","version":"1.0.0","description":"Motion graphics and compositing tools optimized for iPad with touch gestures.","category":"adobe-apps","logoUrl":"logo/adobe-after-effects-ipad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe After Effects for iPad86&tracker=86","tags":["ipad","motion-graphics","mobile","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221155,"name":"Adobe InDesign for iPad","slug":"adobe-indesign-for-ipad","version":"1.1.0","description":"Layout design app for iPad with publishing tools and cloud document sync.","category":"adobe-apps","logoUrl":"logo/adobe-indesign-ipad.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe InDesign for iPad87&tracker=87","tags":["ipad","layout","publishing","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221156,"name":"Adobe Photoshop for Web","slug":"adobe-photoshop-for-web","version":"2024.0","description":"Browser-based Photoshop with essential editing tools and cloud document access.","category":"adobe-apps","logoUrl":"logo/adobe-photoshop-web.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Photoshop for Web88&tracker=88","tags":["web","browser","photo-editing","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221157,"name":"Adobe Illustrator for Web","slug":"adobe-illustrator-for-web","version":"2024.0","description":"Web-based vector design tool with essential Illustrator features in the browser.","category":"adobe-apps","logoUrl":"logo/adobe-illustrator-web.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Illustrator for Web89&tracker=89","tags":["web","browser","vector","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221158,"name":"Adobe Express for Web","slug":"adobe-express-for-web","version":"2024.0","description":"Browser-based design tool for quick graphics, videos, and social content creation.","category":"adobe-apps","logoUrl":"logo/adobe-express-web.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Express for Web90&tracker=90","tags":["web","browser","quick-design","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221159,"name":"Adobe Firefly","slug":"adobe-firefly","version":"2024.1.0","description":"Generative AI model for creating images, text effects, and vector graphics from prompts.","category":"adobe-apps","logoUrl":"logo/adobe-firefly.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Firefly91&tracker=91","tags":["ai","generative","image-generation","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221160,"name":"Adobe Firefly for Photoshop","slug":"adobe-firefly-for-photoshop","version":"2024.1.0","description":"Generative Fill and Generative Expand AI features integrated into Photoshop.","category":"adobe-apps","logoUrl":"logo/adobe-firefly-photoshop.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Firefly for Photoshop92&tracker=92","tags":["ai","generative-fill","photoshop","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221161,"name":"Adobe Firefly for Illustrator","slug":"adobe-firefly-for-illustrator","version":"2024.1.0","description":"Text to Vector and Recolor AI features for generating and editing vector graphics.","category":"adobe-apps","logoUrl":"logo/adobe-firefly-illustrator.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Firefly for Illustrator93&tracker=93","tags":["ai","vector-generation","illustrator","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221162,"name":"Adobe Sensei","slug":"adobe-sensei","version":"2024.0","description":"Adobe's AI and machine learning framework powering intelligent features across products.","category":"adobe-apps","logoUrl":"logo/adobe-sensei.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Sensei94&tracker=94","tags":["ai","machine-learning","framework","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221163,"name":"Adobe Content Authenticity Initiative","slug":"adobe-content-authenticity-initiative","version":"2024.0","description":"Open standard for attributing and tracking the history of digital content.","category":"adobe-apps","logoUrl":"logo/adobe-cai.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Content Authenticity Initiative95&tracker=95","tags":["authenticity","attribution","open-standard","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221164,"name":"Adobe Content Credentials","slug":"adobe-content-credentials","version":"2024.0","description":"Tamper-evident metadata for verifying the origin and edit history of digital content.","category":"adobe-apps","logoUrl":"logo/adobe-content-credentials.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Content Credentials96&tracker=96","tags":["metadata","verification","tamper-evident","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221165,"name":"Adobe Creative Cloud Feedback","slug":"adobe-creative-cloud-feedback","version":"2024.0","description":"In-app feedback tool for reporting issues and suggesting features for Adobe apps.","category":"adobe-apps","logoUrl":"logo/adobe-creative-cloud-feedback.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Creative Cloud Feedback97&tracker=97","tags":["feedback","support","reporting","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221166,"name":"Adobe Creative Cloud Updates","slug":"adobe-creative-cloud-updates","version":"2024.0","description":"Automatic update service for keeping Creative Cloud apps current with latest features.","category":"adobe-apps","logoUrl":"logo/adobe-creative-cloud-updates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Creative Cloud Updates98&tracker=98","tags":["updates","automatic","maintenance","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221167,"name":"Adobe Creative Cloud Support","slug":"adobe-creative-cloud-support","version":"2024.0","description":"Integrated help and support system for troubleshooting and learning Adobe products.","category":"adobe-apps","logoUrl":"logo/adobe-creative-cloud-support.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Creative Cloud Support99&tracker=99","tags":["support","help","troubleshooting","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"},{"id":1777296221168,"name":"Adobe Creative Cloud Learning","slug":"adobe-creative-cloud-learning","version":"2024.0","description":"In-app tutorials, tips, and guided projects for mastering Adobe Creative Cloud apps.","category":"adobe-apps","logoUrl":"logo/adobe-creative-cloud-learning.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Adobe Creative Cloud Learning100&tracker=100","tags":["learning","tutorials","education","creative-cloud"],"scrapedAt":"2026-04-27T13:23:41.069Z"}];
+    const CURRENT_CATEGORY = 'adobe-apps';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

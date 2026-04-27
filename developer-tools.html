@@ -1,0 +1,1224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Developer Tools — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Developer Tools</h1>
+    <p><span class="highlight">93</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="visual-studio-code.html" class="app-card" data-id="1777295471282" style="text-decoration:none;color:inherit">
+          <img src="logo/visual-studio-code.png" alt="Visual Studio Code" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Visual Studio Code</h3>
+          <p class="app-description">Lightweight but powerful source code editor with IntelliSense, debugging, and Git integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">editor</span><span class="app-tag">microsoft</span><span class="app-tag">intellisense</span>
+            </div>
+          
+        </a>
+        <a href="intellij-idea.html" class="app-card" data-id="1777295471283" style="text-decoration:none;color:inherit">
+          <img src="logo/intellij-idea.png" alt="IntelliJ IDEA" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">IntelliJ IDEA</h3>
+          <p class="app-description">Leading Java and Kotlin IDE with advanced refactoring, code analysis, and framework support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">java</span><span class="app-tag">kotlin</span><span class="app-tag">ide</span>
+            </div>
+          
+        </a>
+        <a href="pycharm.html" class="app-card" data-id="1777295471284" style="text-decoration:none;color:inherit">
+          <img src="logo/pycharm.png" alt="PyCharm" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PyCharm</h3>
+          <p class="app-description">Professional Python IDE with scientific tools, web development support, and intelligent coding.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">python</span><span class="app-tag">ide</span><span class="app-tag">data-science</span>
+            </div>
+          
+        </a>
+        <a href="webstorm.html" class="app-card" data-id="1777295471285" style="text-decoration:none;color:inherit">
+          <img src="logo/webstorm.png" alt="WebStorm" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WebStorm</h3>
+          <p class="app-description">Smart IDE for modern JavaScript development with framework support and advanced debugging.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">javascript</span><span class="app-tag">typescript</span><span class="app-tag">ide</span>
+            </div>
+          
+        </a>
+        <a href="phpstorm.html" class="app-card" data-id="1777295471286" style="text-decoration:none;color:inherit">
+          <img src="logo/phpstorm.png" alt="PhpStorm" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PhpStorm</h3>
+          <p class="app-description">Premium PHP IDE with Laravel, Symfony, and WordPress integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">php</span><span class="app-tag">ide</span><span class="app-tag">laravel</span>
+            </div>
+          
+        </a>
+        <a href="clion.html" class="app-card" data-id="1777295471287" style="text-decoration:none;color:inherit">
+          <img src="logo/clion.png" alt="CLion" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CLion</h3>
+          <p class="app-description">Cross-platform C and C++ IDE with CMake, GDB, and advanced code navigation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">c</span><span class="app-tag">cpp</span><span class="app-tag">cmake</span>
+            </div>
+          
+        </a>
+        <a href="goland.html" class="app-card" data-id="1777295471288" style="text-decoration:none;color:inherit">
+          <img src="logo/goland.png" alt="GoLand" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GoLand</h3>
+          <p class="app-description">Dedicated IDE for Go development with smart completion and debugging tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">go</span><span class="app-tag">golang</span><span class="app-tag">ide</span>
+            </div>
+          
+        </a>
+        <a href="rubymine.html" class="app-card" data-id="1777295471289" style="text-decoration:none;color:inherit">
+          <img src="logo/rubymine.png" alt="RubyMine" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">RubyMine</h3>
+          <p class="app-description">Powerful IDE for Ruby and Rails development with advanced testing and refactoring.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ruby</span><span class="app-tag">rails</span><span class="app-tag">ide</span>
+            </div>
+          
+        </a>
+        <a href="datagrip.html" class="app-card" data-id="1777295471290" style="text-decoration:none;color:inherit">
+          <img src="logo/datagrip.png" alt="DataGrip" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DataGrip</h3>
+          <p class="app-description">Multi-engine database IDE supporting SQL, PostgreSQL, MySQL, Oracle, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">database</span><span class="app-tag">sql</span><span class="app-tag">ide</span>
+            </div>
+          
+        </a>
+        <a href="android-studio.html" class="app-card" data-id="1777295471291" style="text-decoration:none;color:inherit">
+          <img src="logo/android-studio.png" alt="Android Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Android Studio</h3>
+          <p class="app-description">Official IDE for Android app development with Kotlin support and emulator.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">android</span><span class="app-tag">kotlin</span><span class="app-tag">mobile</span>
+            </div>
+          
+        </a>
+        <a href="xcode.html" class="app-card" data-id="1777295471292" style="text-decoration:none;color:inherit">
+          <img src="logo/xcode.png" alt="Xcode" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Xcode</h3>
+          <p class="app-description">Apple&#039;s official IDE for building iOS, macOS, watchOS, and tvOS applications.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">swift</span><span class="app-tag">macos</span>
+            </div>
+          
+        </a>
+        <a href="visual-studio.html" class="app-card" data-id="1777295471293" style="text-decoration:none;color:inherit">
+          <img src="logo/visual-studio.png" alt="Visual Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Visual Studio</h3>
+          <p class="app-description">Full-featured IDE for .NET, C++, and web development with advanced debugging.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">microsoft</span><span class="app-tag">net</span><span class="app-tag">csharp</span>
+            </div>
+          
+        </a>
+        <a href="eclipse-ide.html" class="app-card" data-id="1777295471294" style="text-decoration:none;color:inherit">
+          <img src="logo/eclipse.png" alt="Eclipse IDE" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Eclipse IDE</h3>
+          <p class="app-description">Extensible open-source IDE for Java, C++, PHP, and many other languages.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">java</span><span class="app-tag">open-source</span><span class="app-tag">plugins</span>
+            </div>
+          
+        </a>
+        <a href="netbeans.html" class="app-card" data-id="1777295471295" style="text-decoration:none;color:inherit">
+          <img src="logo/netbeans.png" alt="NetBeans" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NetBeans</h3>
+          <p class="app-description">Open-source IDE with excellent Java, PHP, and HTML5 support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">java</span><span class="app-tag">open-source</span><span class="app-tag">apache</span>
+            </div>
+          
+        </a>
+        <a href="sublime-text.html" class="app-card" data-id="1777295471296" style="text-decoration:none;color:inherit">
+          <img src="logo/sublime-text.png" alt="Sublime Text" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sublime Text</h3>
+          <p class="app-description">Sophisticated text editor with lightning-fast performance and powerful plugins.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">editor</span><span class="app-tag">fast</span><span class="app-tag">plugins</span>
+            </div>
+          
+        </a>
+        <a href="vim.html" class="app-card" data-id="1777295471297" style="text-decoration:none;color:inherit">
+          <img src="logo/vim.png" alt="Vim" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Vim</h3>
+          <p class="app-description">Highly configurable, modal text editor optimized for keyboard-driven workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">editor</span><span class="app-tag">modal</span><span class="app-tag">cli</span>
+            </div>
+          
+        </a>
+        <a href="emacs.html" class="app-card" data-id="1777295471298" style="text-decoration:none;color:inherit">
+          <img src="logo/emacs.png" alt="Emacs" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Emacs</h3>
+          <p class="app-description">Extensible, customizable text editor with built-in programming environments.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">editor</span><span class="app-tag">lisp</span><span class="app-tag">extensible</span>
+            </div>
+          
+        </a>
+        <a href="atom.html" class="app-card" data-id="1777295471300" style="text-decoration:none;color:inherit">
+          <img src="logo/atom.png" alt="Atom" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Atom</h3>
+          <p class="app-description">Hackable text editor for the 21st century with built-in package manager.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">editor</span><span class="app-tag">github</span><span class="app-tag">packages</span>
+            </div>
+          
+        </a>
+        <a href="nova.html" class="app-card" data-id="1777295471301" style="text-decoration:none;color:inherit">
+          <img src="logo/nova.png" alt="Nova" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nova</h3>
+          <p class="app-description">Beautiful, native code editor for Mac with integrated terminal and Git.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">native</span><span class="app-tag">editor</span>
+            </div>
+          
+        </a>
+        <a href="code-blocks.html" class="app-card" data-id="1777295471302" style="text-decoration:none;color:inherit">
+          <img src="logo/code-blocks.png" alt="Code::Blocks" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Code::Blocks</h3>
+          <p class="app-description">Free, open-source IDE for C, C++, and Fortran with cross-compilation support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">c</span><span class="app-tag">cpp</span><span class="app-tag">ide</span>
+            </div>
+          
+        </a>
+        <a href="qt-creator.html" class="app-card" data-id="1777295471303" style="text-decoration:none;color:inherit">
+          <img src="logo/qt-creator.png" alt="Qt Creator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Qt Creator</h3>
+          <p class="app-description">Cross-platform IDE for C++ and QML with Qt framework integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cpp</span><span class="app-tag">qml</span><span class="app-tag">ui</span>
+            </div>
+          
+        </a>
+        <a href="rider.html" class="app-card" data-id="1777295471304" style="text-decoration:none;color:inherit">
+          <img src="logo/rider.png" alt="Rider" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Rider</h3>
+          <p class="app-description">Fast, cross-platform .NET IDE with ReSharper features and Unity support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dotnet</span><span class="app-tag">csharp</span><span class="app-tag">unity</span>
+            </div>
+          
+        </a>
+        <a href="spyder.html" class="app-card" data-id="1777295471305" style="text-decoration:none;color:inherit">
+          <img src="logo/spyder.png" alt="Spyder" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Spyder</h3>
+          <p class="app-description">Scientific Python IDE with interactive console, variable explorer, and plots.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">python</span><span class="app-tag">data-science</span><span class="app-tag">ide</span>
+            </div>
+          
+        </a>
+        <a href="jupyter-notebook.html" class="app-card" data-id="1777295471306" style="text-decoration:none;color:inherit">
+          <img src="logo/jupyter-notebook.png" alt="Jupyter Notebook" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Jupyter Notebook</h3>
+          <p class="app-description">Web-based interactive computing environment for Python, R, and Julia.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">python</span><span class="app-tag">notebook</span><span class="app-tag">data</span>
+            </div>
+          
+        </a>
+        <a href="windows-terminal.html" class="app-card" data-id="1777295471307" style="text-decoration:none;color:inherit">
+          <img src="logo/windows-terminal.png" alt="Windows Terminal" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Windows Terminal</h3>
+          <p class="app-description">Modern terminal app for command-line users with tabs, panes, and GPU rendering.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">terminal</span><span class="app-tag">windows</span><span class="app-tag">tabs</span>
+            </div>
+          
+        </a>
+        <a href="iterm2.html" class="app-card" data-id="1777295471308" style="text-decoration:none;color:inherit">
+          <img src="logo/iterm2.png" alt="iTerm2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iTerm2</h3>
+          <p class="app-description">Replacement for Terminal with extensive customization and split panes for Mac.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">terminal</span><span class="app-tag">mac</span><span class="app-tag">customizable</span>
+            </div>
+          
+        </a>
+        <a href="hyper.html" class="app-card" data-id="1777295471309" style="text-decoration:none;color:inherit">
+          <img src="logo/hyper.png" alt="Hyper" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hyper</h3>
+          <p class="app-description">Terminal built on web technologies with extensible plugin ecosystem.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">terminal</span><span class="app-tag">electron</span><span class="app-tag">web-tech</span>
+            </div>
+          
+        </a>
+        <a href="alacritty.html" class="app-card" data-id="1777295471310" style="text-decoration:none;color:inherit">
+          <img src="logo/alacritty.png" alt="Alacritty" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Alacritty</h3>
+          <p class="app-description">GPU-accelerated terminal emulator focused on performance and simplicity.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">terminal</span><span class="app-tag">gpu</span><span class="app-tag">fast</span>
+            </div>
+          
+        </a>
+        <a href="kitty.html" class="app-card" data-id="1777295471311" style="text-decoration:none;color:inherit">
+          <img src="logo/kitty.png" alt="Kitty" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kitty</h3>
+          <p class="app-description">Fast, feature-rich, GPU-based terminal emulator with ligature support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">terminal</span><span class="app-tag">gpu</span><span class="app-tag">ligatures</span>
+            </div>
+          
+        </a>
+        <a href="oh-my-zsh.html" class="app-card" data-id="1777295471312" style="text-decoration:none;color:inherit">
+          <img src="logo/oh-my-zsh.png" alt="Oh My Zsh" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Oh My Zsh</h3>
+          <p class="app-description">Open-source framework for managing Zsh configuration with themes and plugins.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">zsh</span><span class="app-tag">shell</span><span class="app-tag">themes</span>
+            </div>
+          
+        </a>
+        <a href="starship.html" class="app-card" data-id="1777295471313" style="text-decoration:none;color:inherit">
+          <img src="logo/starship.png" alt="Starship" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Starship</h3>
+          <p class="app-description">Minimal, blazing-fast, and infinitely customizable prompt for any shell.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">prompt</span><span class="app-tag">shell</span><span class="app-tag">cross-platform</span>
+            </div>
+          
+        </a>
+        <a href="powerlevel10k.html" class="app-card" data-id="1777295471314" style="text-decoration:none;color:inherit">
+          <img src="logo/powerlevel10k.png" alt="Powerlevel10k" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Powerlevel10k</h3>
+          <p class="app-description">Fast Zsh theme with extensive configuration and instant prompt support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">zsh</span><span class="app-tag">theme</span><span class="app-tag">fast</span>
+            </div>
+          
+        </a>
+        <a href="tmux.html" class="app-card" data-id="1777295471315" style="text-decoration:none;color:inherit">
+          <img src="logo/tmux.png" alt="Tmux" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tmux</h3>
+          <p class="app-description">Terminal multiplexer for managing multiple sessions and panes in one window.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">terminal</span><span class="app-tag">multiplexer</span><span class="app-tag">sessions</span>
+            </div>
+          
+        </a>
+        <a href="cmder.html" class="app-card" data-id="1777295471316" style="text-decoration:none;color:inherit">
+          <img src="logo/cmder.png" alt="Cmder" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Cmder</h3>
+          <p class="app-description">Portable console emulator for Windows with Git integration and ConEmu backend.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">terminal</span><span class="app-tag">windows</span><span class="app-tag">portable</span>
+            </div>
+          
+        </a>
+        <a href="conemu.html" class="app-card" data-id="1777295471317" style="text-decoration:none;color:inherit">
+          <img src="logo/conemu.png" alt="ConEmu" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ConEmu</h3>
+          <p class="app-description">Advanced Windows console emulator with tabs, panes, and transparency.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">terminal</span><span class="app-tag">windows</span><span class="app-tag">tabs</span>
+            </div>
+          
+        </a>
+        <a href="mobaXterm.html" class="app-card" data-id="1777295471318" style="text-decoration:none;color:inherit">
+          <img src="logo/mobaXterm.png" alt="MobaXterm" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MobaXterm</h3>
+          <p class="app-description">Enhanced terminal for Windows with X11 server, tabbed SSH, and network tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">terminal</span><span class="app-tag">ssh</span><span class="app-tag">x11</span>
+            </div>
+          
+        </a>
+        <a href="termius.html" class="app-card" data-id="1777295471320" style="text-decoration:none;color:inherit">
+          <img src="logo/termius.png" alt="Termius" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Termius</h3>
+          <p class="app-description">Cross-platform SSH client with sync, snippets, and secure credential management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ssh</span><span class="app-tag">sync</span><span class="app-tag">secure</span>
+            </div>
+          
+        </a>
+        <a href="warp.html" class="app-card" data-id="1777295471321" style="text-decoration:none;color:inherit">
+          <img src="logo/warp.png" alt="Warp" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Warp</h3>
+          <p class="app-description">Rust-based terminal with AI command suggestions and block-based UI.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">terminal</span><span class="app-tag">ai</span><span class="app-tag">rust</span>
+            </div>
+          
+        </a>
+        <a href="git.html" class="app-card" data-id="1777295471322" style="text-decoration:none;color:inherit">
+          <img src="logo/git.png" alt="Git" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Git</h3>
+          <p class="app-description">Distributed version control system for tracking code changes and collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">version-control</span><span class="app-tag">cli</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="github-desktop.html" class="app-card" data-id="1777295471323" style="text-decoration:none;color:inherit">
+          <img src="logo/github-desktop.png" alt="GitHub Desktop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GitHub Desktop</h3>
+          <p class="app-description">GUI application for GitHub and GitHub Enterprise with simple workflow.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gui</span><span class="app-tag">git</span><span class="app-tag">github</span>
+            </div>
+          
+        </a>
+        <a href="gitkraken.html" class="app-card" data-id="1777295471324" style="text-decoration:none;color:inherit">
+          <img src="logo/gitkraken.png" alt="GitKraken" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GitKraken</h3>
+          <p class="app-description">Beautiful Git GUI with visual history, drag-and-drop workflows, and merge tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">git</span><span class="app-tag">gui</span><span class="app-tag">visual</span>
+            </div>
+          
+        </a>
+        <a href="sourcetree.html" class="app-card" data-id="1777295471325" style="text-decoration:none;color:inherit">
+          <img src="logo/sourcetree.png" alt="Sourcetree" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sourcetree</h3>
+          <p class="app-description">Free Git and Mercurial client for Mac and Windows with visual branch management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">git</span><span class="app-tag">mercurial</span><span class="app-tag">gui</span>
+            </div>
+          
+        </a>
+        <a href="fork.html" class="app-card" data-id="1777295471326" style="text-decoration:none;color:inherit">
+          <img src="logo/fork.png" alt="Fork" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fork</h3>
+          <p class="app-description">Fast and friendly Git client with interactive rebase and commit graph.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">git</span><span class="app-tag">fast</span><span class="app-tag">gui</span>
+            </div>
+          
+        </a>
+        <a href="tower.html" class="app-card" data-id="1777295471327" style="text-decoration:none;color:inherit">
+          <img src="logo/tower.png" alt="Tower" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tower</h3>
+          <p class="app-description">Professional Git client with powerful workflows and seamless GitHub integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">git</span><span class="app-tag">professional</span><span class="app-tag">mac</span>
+            </div>
+          
+        </a>
+        <a href="lazygit.html" class="app-card" data-id="1777295471328" style="text-decoration:none;color:inherit">
+          <img src="logo/lazygit.png" alt="Lazygit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Lazygit</h3>
+          <p class="app-description">Simple terminal UI for git commands with keyboard-driven workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">git</span><span class="app-tag">cli</span><span class="app-tag">terminal</span>
+            </div>
+          
+        </a>
+        <a href="tortoisegit.html" class="app-card" data-id="1777295471329" style="text-decoration:none;color:inherit">
+          <img src="logo/tortoisegit.png" alt="TortoiseGit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TortoiseGit</h3>
+          <p class="app-description">Windows Git client with shell integration and context menu extensions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">git</span><span class="app-tag">windows</span><span class="app-tag">shell-integration</span>
+            </div>
+          
+        </a>
+        <a href="subversion.html" class="app-card" data-id="1777295471330" style="text-decoration:none;color:inherit">
+          <img src="logo/subversion.png" alt="Subversion" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Subversion</h3>
+          <p class="app-description">Centralized version control system for managing files and directories.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">version-control</span><span class="app-tag">centralized</span><span class="app-tag">svn</span>
+            </div>
+          
+        </a>
+        <a href="mercurial.html" class="app-card" data-id="1777295471331" style="text-decoration:none;color:inherit">
+          <img src="logo/mercurial.png" alt="Mercurial" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mercurial</h3>
+          <p class="app-description">Distributed version control system with scalable branching and merging.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">version-control</span><span class="app-tag">distributed</span><span class="app-tag">python</span>
+            </div>
+          
+        </a>
+        <a href="perforce-helix-core.html" class="app-card" data-id="1777295471332" style="text-decoration:none;color:inherit">
+          <img src="logo/perforce.png" alt="Perforce Helix Core" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Perforce Helix Core</h3>
+          <p class="app-description">Enterprise version control for large binaries and collaborative development.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">version-control</span><span class="app-tag">enterprise</span><span class="app-tag">large-files</span>
+            </div>
+          
+        </a>
+        <a href="plastic-scm.html" class="app-card" data-id="1777295471333" style="text-decoration:none;color:inherit">
+          <img src="logo/plastic-scm.png" alt="Plastic SCM" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Plastic SCM</h3>
+          <p class="app-description">Modern version control with powerful branching, merging, and code review.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">version-control</span><span class="app-tag">branching</span><span class="app-tag">unity</span>
+            </div>
+          
+        </a>
+        <a href="fossil.html" class="app-card" data-id="1777295471334" style="text-decoration:none;color:inherit">
+          <img src="logo/fossil.png" alt="Fossil" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fossil</h3>
+          <p class="app-description">Distributed version control with bug tracking, wiki, and forum built-in.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">version-control</span><span class="app-tag">integrated</span><span class="app-tag">lightweight</span>
+            </div>
+          
+        </a>
+        <a href="darcs.html" class="app-card" data-id="1777295471335" style="text-decoration:none;color:inherit">
+          <img src="logo/darcs.png" alt="Darcs" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Darcs</h3>
+          <p class="app-description">Patch-based distributed version control system with intuitive workflow.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">version-control</span><span class="app-tag">patch-based</span><span class="app-tag">haskell</span>
+            </div>
+          
+        </a>
+        <a href="nvm.html" class="app-card" data-id="1777295471339" style="text-decoration:none;color:inherit">
+          <img src="logo/nvm.png" alt="NVM" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NVM</h3>
+          <p class="app-description">Node Version Manager for installing and switching between multiple Node.js versions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">nodejs</span><span class="app-tag">version-manager</span><span class="app-tag">cli</span>
+            </div>
+          
+        </a>
+        <a href="sdkman.html" class="app-card" data-id="1777295471340" style="text-decoration:none;color:inherit">
+          <img src="logo/sdkman.png" alt="SDKMAN!" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SDKMAN!</h3>
+          <p class="app-description">Tool for managing parallel versions of multiple SDKs on Unix-based systems.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">java</span><span class="app-tag">sdk</span><span class="app-tag">version-manager</span>
+            </div>
+          
+        </a>
+        <a href="pyenv.html" class="app-card" data-id="1777295471341" style="text-decoration:none;color:inherit">
+          <img src="logo/pyenv.png" alt="Pyenv" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pyenv</h3>
+          <p class="app-description">Simple Python version management for switching and installing multiple interpreters.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">python</span><span class="app-tag">version-manager</span><span class="app-tag">cli</span>
+            </div>
+          
+        </a>
+        <a href="rvm.html" class="app-card" data-id="1777295471342" style="text-decoration:none;color:inherit">
+          <img src="logo/rvm.png" alt="RVM" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">RVM</h3>
+          <p class="app-description">Ruby Version Manager for installing and managing multiple Ruby environments.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ruby</span><span class="app-tag">version-manager</span><span class="app-tag">cli</span>
+            </div>
+          
+        </a>
+        <a href="conda.html" class="app-card" data-id="1777295471343" style="text-decoration:none;color:inherit">
+          <img src="logo/conda.png" alt="Conda" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Conda</h3>
+          <p class="app-description">Open-source package and environment management system for data science.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">package-manager</span><span class="app-tag">python</span><span class="app-tag">data-science</span>
+            </div>
+          
+        </a>
+        <a href="poetry.html" class="app-card" data-id="1777295471344" style="text-decoration:none;color:inherit">
+          <img src="logo/poetry.png" alt="Poetry" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Poetry</h3>
+          <p class="app-description">Python dependency management and packaging tool with deterministic builds.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">python</span><span class="app-tag">dependencies</span><span class="app-tag">packaging</span>
+            </div>
+          
+        </a>
+        <a href="pipenv.html" class="app-card" data-id="1777295471345" style="text-decoration:none;color:inherit">
+          <img src="logo/pipenv.png" alt="Pipenv" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pipenv</h3>
+          <p class="app-description">Python workflow manager combining Pip, Virtualenv, and Pipfile.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">python</span><span class="app-tag">virtualenv</span><span class="app-tag">pipfile</span>
+            </div>
+          
+        </a>
+        <a href="virtualenv.html" class="app-card" data-id="1777295471346" style="text-decoration:none;color:inherit">
+          <img src="logo/virtualenv.png" alt="Virtualenv" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Virtualenv</h3>
+          <p class="app-description">Tool to create isolated Python environments with specific dependencies.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">python</span><span class="app-tag">isolation</span><span class="app-tag">environments</span>
+            </div>
+          
+        </a>
+        <a href="yarn.html" class="app-card" data-id="1777295471347" style="text-decoration:none;color:inherit">
+          <img src="logo/yarn.png" alt="Yarn" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Yarn</h3>
+          <p class="app-description">Fast, reliable, and secure dependency manager for JavaScript projects.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">javascript</span><span class="app-tag">dependencies</span><span class="app-tag">fast</span>
+            </div>
+          
+        </a>
+        <a href="pnpm.html" class="app-card" data-id="1777295471348" style="text-decoration:none;color:inherit">
+          <img src="logo/pnpm.png" alt="PNPM" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PNPM</h3>
+          <p class="app-description">Fast, disk space efficient package manager with strict dependency resolution.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">javascript</span><span class="app-tag">fast</span><span class="app-tag">efficient</span>
+            </div>
+          
+        </a>
+        <a href="webpack.html" class="app-card" data-id="1777295471349" style="text-decoration:none;color:inherit">
+          <img src="logo/webpack.png" alt="Webpack" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Webpack</h3>
+          <p class="app-description">Static module bundler for JavaScript applications with code splitting and loaders.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">bundler</span><span class="app-tag">javascript</span><span class="app-tag">modules</span>
+            </div>
+          
+        </a>
+        <a href="vite.html" class="app-card" data-id="1777295471350" style="text-decoration:none;color:inherit">
+          <img src="logo/vite.png" alt="Vite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Vite</h3>
+          <p class="app-description">Next-generation frontend tooling with lightning-fast HMR and native ES modules.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">bundler</span><span class="app-tag">hmr</span><span class="app-tag">fast</span>
+            </div>
+          
+        </a>
+        <a href="eslint.html" class="app-card" data-id="1777295471351" style="text-decoration:none;color:inherit">
+          <img src="logo/eslint.png" alt="ESLint" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ESLint</h3>
+          <p class="app-description">Pluggable JavaScript linter for finding and fixing code quality issues.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">linter</span><span class="app-tag">javascript</span><span class="app-tag">quality</span>
+            </div>
+          
+        </a>
+        <a href="prettier.html" class="app-card" data-id="1777295471352" style="text-decoration:none;color:inherit">
+          <img src="logo/prettier.png" alt="Prettier" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Prettier</h3>
+          <p class="app-description">Opinionated code formatter supporting JavaScript, CSS, HTML, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">formatter</span><span class="app-tag">code-style</span><span class="app-tag">javascript</span>
+            </div>
+          
+        </a>
+        <a href="stylelint.html" class="app-card" data-id="1777295471353" style="text-decoration:none;color:inherit">
+          <img src="logo/stylelint.png" alt="Stylelint" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Stylelint</h3>
+          <p class="app-description">Modern linter for catching errors and enforcing conventions in stylesheets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">linter</span><span class="app-tag">css</span><span class="app-tag">scss</span>
+            </div>
+          
+        </a>
+        <a href="jshint.html" class="app-card" data-id="1777295471354" style="text-decoration:none;color:inherit">
+          <img src="logo/jshint.png" alt="JSHint" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">JSHint</h3>
+          <p class="app-description">Static code analysis tool for detecting errors and potential problems in JS.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">linter</span><span class="app-tag">javascript</span><span class="app-tag">static</span>
+            </div>
+          
+        </a>
+        <a href="sonarqube.html" class="app-card" data-id="1777295471355" style="text-decoration:none;color:inherit">
+          <img src="logo/sonarqube.png" alt="SonarQube" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SonarQube</h3>
+          <p class="app-description">Continuous inspection platform for detecting bugs, vulnerabilities, and code smells.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">quality</span><span class="app-tag">security</span><span class="app-tag">ci</span>
+            </div>
+          
+        </a>
+        <a href="codeclimate.html" class="app-card" data-id="1777295471356" style="text-decoration:none;color:inherit">
+          <img src="logo/codeclimate.png" alt="CodeClimate" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CodeClimate</h3>
+          <p class="app-description">Automated code review service tracking test coverage and complexity.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">review</span><span class="app-tag">coverage</span><span class="app-tag">automation</span>
+            </div>
+          
+        </a>
+        <a href="jest.html" class="app-card" data-id="1777295471357" style="text-decoration:none;color:inherit">
+          <img src="logo/jest.png" alt="Jest" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Jest</h3>
+          <p class="app-description">Delightful JavaScript testing framework with focus on simplicity and snapshots.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">testing</span><span class="app-tag">javascript</span><span class="app-tag">snapshots</span>
+            </div>
+          
+        </a>
+        <a href="mocha.html" class="app-card" data-id="1777295471358" style="text-decoration:none;color:inherit">
+          <img src="logo/mocha.png" alt="Mocha" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mocha</h3>
+          <p class="app-description">Feature-rich JavaScript test framework running on Node.js and browsers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">testing</span><span class="app-tag">javascript</span><span class="app-tag">async</span>
+            </div>
+          
+        </a>
+        <a href="cypress.html" class="app-card" data-id="1777295471359" style="text-decoration:none;color:inherit">
+          <img src="logo/cypress.png" alt="Cypress" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Cypress</h3>
+          <p class="app-description">Fast, easy, and reliable end-to-end testing for modern web applications.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">testing</span><span class="app-tag">e2e</span><span class="app-tag">web</span>
+            </div>
+          
+        </a>
+        <a href="playwright.html" class="app-card" data-id="1777295471360" style="text-decoration:none;color:inherit">
+          <img src="logo/playwright.png" alt="Playwright" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Playwright</h3>
+          <p class="app-description">Reliable end-to-end testing for modern web apps with cross-browser support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">testing</span><span class="app-tag">e2e</span><span class="app-tag">cross-browser</span>
+            </div>
+          
+        </a>
+        <a href="selenium-webdriver.html" class="app-card" data-id="1777295471361" style="text-decoration:none;color:inherit">
+          <img src="logo/selenium.png" alt="Selenium WebDriver" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Selenium WebDriver</h3>
+          <p class="app-description">Browser automation framework for testing web applications across multiple browsers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">automation</span><span class="app-tag">testing</span><span class="app-tag">browser</span>
+            </div>
+          
+        </a>
+        <a href="puppeteer.html" class="app-card" data-id="1777295471362" style="text-decoration:none;color:inherit">
+          <img src="logo/puppeteer.png" alt="Puppeteer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Puppeteer</h3>
+          <p class="app-description">Node.js library for controlling headless Chrome or Chromium via DevTools protocol.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">browser</span><span class="app-tag">automation</span><span class="app-tag">nodejs</span>
+            </div>
+          
+        </a>
+        <a href="appium.html" class="app-card" data-id="1777295471363" style="text-decoration:none;color:inherit">
+          <img src="logo/appium.png" alt="Appium" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Appium</h3>
+          <p class="app-description">Open-source framework for automating native, mobile web, and hybrid apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile</span><span class="app-tag">testing</span><span class="app-tag">automation</span>
+            </div>
+          
+        </a>
+        <a href="postman.html" class="app-card" data-id="1777295471364" style="text-decoration:none;color:inherit">
+          <img src="logo/postman.png" alt="Postman" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Postman</h3>
+          <p class="app-description">Collaborative API development environment for testing, documenting, and sharing APIs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">api</span><span class="app-tag">testing</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="insomnia.html" class="app-card" data-id="1777295471365" style="text-decoration:none;color:inherit">
+          <img src="logo/insomnia.png" alt="Insomnia" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Insomnia</h3>
+          <p class="app-description">Open-source REST and GraphQL client with environment variables and plugins.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">api</span><span class="app-tag">rest</span><span class="app-tag">graphql</span>
+            </div>
+          
+        </a>
+        <a href="httpie.html" class="app-card" data-id="1777295471366" style="text-decoration:none;color:inherit">
+          <img src="logo/httpie.png" alt="HTTPie" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HTTPie</h3>
+          <p class="app-description">User-friendly command-line HTTP client with JSON support and syntax highlighting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">http</span><span class="app-tag">cli</span><span class="app-tag">api</span>
+            </div>
+          
+        </a>
+        <a href="curl.html" class="app-card" data-id="1777295471367" style="text-decoration:none;color:inherit">
+          <img src="logo/curl.png" alt="cURL" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">cURL</h3>
+          <p class="app-description">Command-line tool for transferring data with URL syntax supporting many protocols.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cli</span><span class="app-tag">transfer</span><span class="app-tag">http</span>
+            </div>
+          
+        </a>
+        <a href="fiddler-classic.html" class="app-card" data-id="1777295471369" style="text-decoration:none;color:inherit">
+          <img src="logo/fiddler.png" alt="Fiddler Classic" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fiddler Classic</h3>
+          <p class="app-description">Web debugging proxy for monitoring, modifying, and troubleshooting HTTP traffic.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">proxy</span><span class="app-tag">debugging</span><span class="app-tag">http</span>
+            </div>
+          
+        </a>
+        <a href="charles-proxy.html" class="app-card" data-id="1777295471370" style="text-decoration:none;color:inherit">
+          <img src="logo/charles-proxy.png" alt="Charles Proxy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Charles Proxy</h3>
+          <p class="app-description">HTTP proxy and monitor for viewing and manipulating network traffic.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">proxy</span><span class="app-tag">network</span><span class="app-tag">debugging</span>
+            </div>
+          
+        </a>
+        <a href="ngrok.html" class="app-card" data-id="1777295471371" style="text-decoration:none;color:inherit">
+          <img src="logo/ngrok.png" alt="ngrok" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ngrok</h3>
+          <p class="app-description">Secure tunneling service exposing local servers to the public internet.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tunnel</span><span class="app-tag">localhost</span><span class="app-tag">public</span>
+            </div>
+          
+        </a>
+        <a href="docker-desktop.html" class="app-card" data-id="1777295471372" style="text-decoration:none;color:inherit">
+          <img src="logo/docker-desktop.png" alt="Docker Desktop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Docker Desktop</h3>
+          <p class="app-description">Application for building, sharing, and running containerized apps locally.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">containers</span><span class="app-tag">devops</span><span class="app-tag">linux</span>
+            </div>
+          
+        </a>
+        <a href="kubernetes-cli.html" class="app-card" data-id="1777295471373" style="text-decoration:none;color:inherit">
+          <img src="logo/kubectl.png" alt="Kubernetes CLI" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kubernetes CLI</h3>
+          <p class="app-description">Command-line interface for managing containerized applications in Kubernetes clusters.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">kubernetes</span><span class="app-tag">orchestration</span><span class="app-tag">cli</span>
+            </div>
+          
+        </a>
+        <a href="terraform.html" class="app-card" data-id="1777295471375" style="text-decoration:none;color:inherit">
+          <img src="logo/terraform.png" alt="Terraform" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Terraform</h3>
+          <p class="app-description">Infrastructure as code tool for building, changing, and versioning cloud resources.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">iac</span><span class="app-tag">cloud</span><span class="app-tag">provisioning</span>
+            </div>
+          
+        </a>
+        <a href="ansible.html" class="app-card" data-id="1777295471376" style="text-decoration:none;color:inherit">
+          <img src="logo/ansible.png" alt="Ansible" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ansible</h3>
+          <p class="app-description">Open-source automation engine for configuration management and app deployment.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">automation</span><span class="app-tag">config</span><span class="app-tag">devops</span>
+            </div>
+          
+        </a>
+        <a href="vagrant.html" class="app-card" data-id="1777295471377" style="text-decoration:none;color:inherit">
+          <img src="logo/vagrant.png" alt="Vagrant" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Vagrant</h3>
+          <p class="app-description">Tool for building and managing virtualized development environments.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">virtualization</span><span class="app-tag">dev-env</span><span class="app-tag">provisioning</span>
+            </div>
+          
+        </a>
+        <a href="dbeaver.html" class="app-card" data-id="1777295471378" style="text-decoration:none;color:inherit">
+          <img src="logo/dbeaver.png" alt="DBeaver" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DBeaver</h3>
+          <p class="app-description">Universal database tool supporting SQL, NoSQL, and cloud databases with GUI.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">database</span><span class="app-tag">sql</span><span class="app-tag">gui</span>
+            </div>
+          
+        </a>
+        <a href="mysql-workbench.html" class="app-card" data-id="1777295471379" style="text-decoration:none;color:inherit">
+          <img src="logo/mysql-workbench.png" alt="MySQL Workbench" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MySQL Workbench</h3>
+          <p class="app-description">Official visual tool for database designers, developers, and DBAs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mysql</span><span class="app-tag">database</span><span class="app-tag">visual</span>
+            </div>
+          
+        </a>
+        <a href="pgadmin.html" class="app-card" data-id="1777295471380" style="text-decoration:none;color:inherit">
+          <img src="logo/pgadmin.png" alt="pgAdmin" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">pgAdmin</h3>
+          <p class="app-description">Open-source administration and development platform for PostgreSQL.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">postgresql</span><span class="app-tag">database</span><span class="app-tag">admin</span>
+            </div>
+          
+        </a>
+        <a href="redisinsight.html" class="app-card" data-id="1777295471381" style="text-decoration:none;color:inherit">
+          <img src="logo/redisinsight.png" alt="RedisInsight" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">RedisInsight</h3>
+          <p class="app-description">Visual management tool for Redis with CLI, profiler, and memory analysis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">redis</span><span class="app-tag">database</span><span class="app-tag">visual</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777295471282,"name":"Visual Studio Code","slug":"visual-studio-code","version":"1.89.0","description":"Lightweight but powerful source code editor with IntelliSense, debugging, and Git integration.","category":"developer-tools","logoUrl":"logo/visual-studio-code.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Visual Studio Code1&tracker=1","tags":["editor","microsoft","intellisense","git"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471283,"name":"IntelliJ IDEA","slug":"intellij-idea","version":"2024.1","description":"Leading Java and Kotlin IDE with advanced refactoring, code analysis, and framework support.","category":"developer-tools","logoUrl":"logo/intellij-idea.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=IntelliJ IDEA2&tracker=2","tags":["java","kotlin","ide","jetbrains"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471284,"name":"PyCharm","slug":"pycharm","version":"2024.1","description":"Professional Python IDE with scientific tools, web development support, and intelligent coding.","category":"developer-tools","logoUrl":"logo/pycharm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PyCharm3&tracker=3","tags":["python","ide","data-science","web"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471285,"name":"WebStorm","slug":"webstorm","version":"2024.1","description":"Smart IDE for modern JavaScript development with framework support and advanced debugging.","category":"developer-tools","logoUrl":"logo/webstorm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WebStorm4&tracker=4","tags":["javascript","typescript","ide","frontend"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471286,"name":"PhpStorm","slug":"phpstorm","version":"2024.1","description":"Premium PHP IDE with Laravel, Symfony, and WordPress integration.","category":"developer-tools","logoUrl":"logo/phpstorm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PhpStorm5&tracker=5","tags":["php","ide","laravel","wordpress"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471287,"name":"CLion","slug":"clion","version":"2024.1","description":"Cross-platform C and C++ IDE with CMake, GDB, and advanced code navigation.","category":"developer-tools","logoUrl":"logo/clion.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CLion6&tracker=6","tags":["c","cpp","cmake","ide"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471288,"name":"GoLand","slug":"goland","version":"2024.1","description":"Dedicated IDE for Go development with smart completion and debugging tools.","category":"developer-tools","logoUrl":"logo/goland.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GoLand7&tracker=7","tags":["go","golang","ide","jetbrains"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471289,"name":"RubyMine","slug":"rubymine","version":"2024.1","description":"Powerful IDE for Ruby and Rails development with advanced testing and refactoring.","category":"developer-tools","logoUrl":"logo/rubymine.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=RubyMine8&tracker=8","tags":["ruby","rails","ide","jetbrains"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471290,"name":"DataGrip","slug":"datagrip","version":"2024.1","description":"Multi-engine database IDE supporting SQL, PostgreSQL, MySQL, Oracle, and more.","category":"developer-tools","logoUrl":"logo/datagrip.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DataGrip9&tracker=9","tags":["database","sql","ide","multi-engine"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471291,"name":"Android Studio","slug":"android-studio","version":"2023.3.1","description":"Official IDE for Android app development with Kotlin support and emulator.","category":"developer-tools","logoUrl":"logo/android-studio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Android Studio10&tracker=10","tags":["android","kotlin","mobile","google"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471292,"name":"Xcode","slug":"xcode","version":"15.3","description":"Apple's official IDE for building iOS, macOS, watchOS, and tvOS applications.","category":"developer-tools","logoUrl":"logo/xcode.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Xcode11&tracker=11","tags":["apple","swift","macos","ios"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471293,"name":"Visual Studio","slug":"visual-studio","version":"17.9","description":"Full-featured IDE for .NET, C++, and web development with advanced debugging.","category":"developer-tools","logoUrl":"logo/visual-studio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Visual Studio12&tracker=12","tags":["microsoft","net","csharp","enterprise"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471294,"name":"Eclipse IDE","slug":"eclipse-ide","version":"2024-03","description":"Extensible open-source IDE for Java, C++, PHP, and many other languages.","category":"developer-tools","logoUrl":"logo/eclipse.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Eclipse IDE13&tracker=13","tags":["java","open-source","plugins","ide"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471295,"name":"NetBeans","slug":"netbeans","version":"21","description":"Open-source IDE with excellent Java, PHP, and HTML5 support.","category":"developer-tools","logoUrl":"logo/netbeans.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NetBeans14&tracker=14","tags":["java","open-source","apache","ide"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471296,"name":"Sublime Text","slug":"sublime-text","version":"4159","description":"Sophisticated text editor with lightning-fast performance and powerful plugins.","category":"developer-tools","logoUrl":"logo/sublime-text.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sublime Text15&tracker=15","tags":["editor","fast","plugins","cross-platform"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471297,"name":"Vim","slug":"vim","version":"9.1","description":"Highly configurable, modal text editor optimized for keyboard-driven workflows.","category":"developer-tools","logoUrl":"logo/vim.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Vim16&tracker=16","tags":["editor","modal","cli","linux"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471298,"name":"Emacs","slug":"emacs","version":"29.2","description":"Extensible, customizable text editor with built-in programming environments.","category":"developer-tools","logoUrl":"logo/emacs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Emacs17&tracker=17","tags":["editor","lisp","extensible","cli"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471300,"name":"Atom","slug":"atom","version":"1.60","description":"Hackable text editor for the 21st century with built-in package manager.","category":"developer-tools","logoUrl":"logo/atom.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Atom19&tracker=19","tags":["editor","github","packages","cross-platform"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471301,"name":"Nova","slug":"nova","version":"12","description":"Beautiful, native code editor for Mac with integrated terminal and Git.","category":"developer-tools","logoUrl":"logo/nova.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nova20&tracker=20","tags":["mac","native","editor","php"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471302,"name":"Code::Blocks","slug":"code-blocks","version":"20.03","description":"Free, open-source IDE for C, C++, and Fortran with cross-compilation support.","category":"developer-tools","logoUrl":"logo/code-blocks.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Code::Blocks21&tracker=21","tags":["c","cpp","ide","open-source"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471303,"name":"Qt Creator","slug":"qt-creator","version":"13.0","description":"Cross-platform IDE for C++ and QML with Qt framework integration.","category":"developer-tools","logoUrl":"logo/qt-creator.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Qt Creator22&tracker=22","tags":["cpp","qml","ui","cross-platform"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471304,"name":"Rider","slug":"rider","version":"2024.1","description":"Fast, cross-platform .NET IDE with ReSharper features and Unity support.","category":"developer-tools","logoUrl":"logo/rider.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Rider23&tracker=23","tags":["dotnet","csharp","unity","jetbrains"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471305,"name":"Spyder","slug":"spyder","version":"5.5.0","description":"Scientific Python IDE with interactive console, variable explorer, and plots.","category":"developer-tools","logoUrl":"logo/spyder.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Spyder24&tracker=24","tags":["python","data-science","ide","scientific"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471306,"name":"Jupyter Notebook","slug":"jupyter-notebook","version":"7.1.0","description":"Web-based interactive computing environment for Python, R, and Julia.","category":"developer-tools","logoUrl":"logo/jupyter-notebook.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Jupyter Notebook25&tracker=25","tags":["python","notebook","data","interactive"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471307,"name":"Windows Terminal","slug":"windows-terminal","version":"1.19.10","description":"Modern terminal app for command-line users with tabs, panes, and GPU rendering.","category":"developer-tools","logoUrl":"logo/windows-terminal.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Windows Terminal26&tracker=26","tags":["terminal","windows","tabs","modern"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471308,"name":"iTerm2","slug":"iterm2","version":"3.5.0","description":"Replacement for Terminal with extensive customization and split panes for Mac.","category":"developer-tools","logoUrl":"logo/iterm2.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iTerm227&tracker=27","tags":["terminal","mac","customizable","panes"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471309,"name":"Hyper","slug":"hyper","version":"3.3.0","description":"Terminal built on web technologies with extensible plugin ecosystem.","category":"developer-tools","logoUrl":"logo/hyper.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hyper28&tracker=28","tags":["terminal","electron","web-tech","plugins"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471310,"name":"Alacritty","slug":"alacritty","version":"0.13.2","description":"GPU-accelerated terminal emulator focused on performance and simplicity.","category":"developer-tools","logoUrl":"logo/alacritty.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Alacritty29&tracker=29","tags":["terminal","gpu","fast","rust"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471311,"name":"Kitty","slug":"kitty","version":"0.32.0","description":"Fast, feature-rich, GPU-based terminal emulator with ligature support.","category":"developer-tools","logoUrl":"logo/kitty.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kitty30&tracker=30","tags":["terminal","gpu","ligatures","fast"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471312,"name":"Oh My Zsh","slug":"oh-my-zsh","version":"2024.03","description":"Open-source framework for managing Zsh configuration with themes and plugins.","category":"developer-tools","logoUrl":"logo/oh-my-zsh.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Oh My Zsh31&tracker=31","tags":["zsh","shell","themes","framework"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471313,"name":"Starship","slug":"starship","version":"1.19.0","description":"Minimal, blazing-fast, and infinitely customizable prompt for any shell.","category":"developer-tools","logoUrl":"logo/starship.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Starship32&tracker=32","tags":["prompt","shell","cross-platform","rust"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471314,"name":"Powerlevel10k","slug":"powerlevel10k","version":"1.19.0","description":"Fast Zsh theme with extensive configuration and instant prompt support.","category":"developer-tools","logoUrl":"logo/powerlevel10k.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Powerlevel10k33&tracker=33","tags":["zsh","theme","fast","configurable"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471315,"name":"Tmux","slug":"tmux","version":"3.4","description":"Terminal multiplexer for managing multiple sessions and panes in one window.","category":"developer-tools","logoUrl":"logo/tmux.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tmux34&tracker=34","tags":["terminal","multiplexer","sessions","linux"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471316,"name":"Cmder","slug":"cmder","version":"1.3.25","description":"Portable console emulator for Windows with Git integration and ConEmu backend.","category":"developer-tools","logoUrl":"logo/cmder.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Cmder35&tracker=35","tags":["terminal","windows","portable","git"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471317,"name":"ConEmu","slug":"conemu","version":"23.07.24","description":"Advanced Windows console emulator with tabs, panes, and transparency.","category":"developer-tools","logoUrl":"logo/conemu.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ConEmu36&tracker=36","tags":["terminal","windows","tabs","emulator"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471318,"name":"MobaXterm","slug":"mobaXterm","version":"23.6","description":"Enhanced terminal for Windows with X11 server, tabbed SSH, and network tools.","category":"developer-tools","logoUrl":"logo/mobaXterm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MobaXterm37&tracker=37","tags":["terminal","ssh","x11","network"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471320,"name":"Termius","slug":"termius","version":"8.10.0","description":"Cross-platform SSH client with sync, snippets, and secure credential management.","category":"developer-tools","logoUrl":"logo/termius.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Termius39&tracker=39","tags":["ssh","sync","secure","cross-platform"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471321,"name":"Warp","slug":"warp","version":"2024.03","description":"Rust-based terminal with AI command suggestions and block-based UI.","category":"developer-tools","logoUrl":"logo/warp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Warp40&tracker=40","tags":["terminal","ai","rust","modern"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471322,"name":"Git","slug":"git","version":"2.44.0","description":"Distributed version control system for tracking code changes and collaboration.","category":"developer-tools","logoUrl":"logo/git.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Git41&tracker=41","tags":["version-control","cli","collaboration","distributed"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471323,"name":"GitHub Desktop","slug":"github-desktop","version":"3.3.8","description":"GUI application for GitHub and GitHub Enterprise with simple workflow.","category":"developer-tools","logoUrl":"logo/github-desktop.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GitHub Desktop42&tracker=42","tags":["gui","git","github","collaboration"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471324,"name":"GitKraken","slug":"gitkraken","version":"9.10.0","description":"Beautiful Git GUI with visual history, drag-and-drop workflows, and merge tools.","category":"developer-tools","logoUrl":"logo/gitkraken.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GitKraken43&tracker=43","tags":["git","gui","visual","workflow"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471325,"name":"Sourcetree","slug":"sourcetree","version":"4.2.5","description":"Free Git and Mercurial client for Mac and Windows with visual branch management.","category":"developer-tools","logoUrl":"logo/sourcetree.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sourcetree44&tracker=44","tags":["git","mercurial","gui","free"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471326,"name":"Fork","slug":"fork","version":"2.40.0","description":"Fast and friendly Git client with interactive rebase and commit graph.","category":"developer-tools","logoUrl":"logo/fork.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fork45&tracker=45","tags":["git","fast","gui","mac"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471327,"name":"Tower","slug":"tower","version":"9.2.0","description":"Professional Git client with powerful workflows and seamless GitHub integration.","category":"developer-tools","logoUrl":"logo/tower.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tower46&tracker=46","tags":["git","professional","mac","windows"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471328,"name":"Lazygit","slug":"lazygit","version":"0.42.0","description":"Simple terminal UI for git commands with keyboard-driven workflows.","category":"developer-tools","logoUrl":"logo/lazygit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Lazygit47&tracker=47","tags":["git","cli","terminal","fast"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471329,"name":"TortoiseGit","slug":"tortoisegit","version":"2.15.0","description":"Windows Git client with shell integration and context menu extensions.","category":"developer-tools","logoUrl":"logo/tortoisegit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TortoiseGit48&tracker=48","tags":["git","windows","shell-integration","gui"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471330,"name":"Subversion","slug":"subversion","version":"1.14.3","description":"Centralized version control system for managing files and directories.","category":"developer-tools","logoUrl":"logo/subversion.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Subversion49&tracker=49","tags":["version-control","centralized","svn","enterprise"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471331,"name":"Mercurial","slug":"mercurial","version":"6.7.1","description":"Distributed version control system with scalable branching and merging.","category":"developer-tools","logoUrl":"logo/mercurial.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mercurial50&tracker=50","tags":["version-control","distributed","python","scalable"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471332,"name":"Perforce Helix Core","slug":"perforce-helix-core","version":"2023.2","description":"Enterprise version control for large binaries and collaborative development.","category":"developer-tools","logoUrl":"logo/perforce.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Perforce Helix Core51&tracker=51","tags":["version-control","enterprise","large-files","game-dev"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471333,"name":"Plastic SCM","slug":"plastic-scm","version":"11.0.16","description":"Modern version control with powerful branching, merging, and code review.","category":"developer-tools","logoUrl":"logo/plastic-scm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Plastic SCM52&tracker=52","tags":["version-control","branching","unity","gui"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471334,"name":"Fossil","slug":"fossil","version":"2.24","description":"Distributed version control with bug tracking, wiki, and forum built-in.","category":"developer-tools","logoUrl":"logo/fossil.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fossil53&tracker=53","tags":["version-control","integrated","lightweight","c"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471335,"name":"Darcs","slug":"darcs","version":"2.18.3","description":"Patch-based distributed version control system with intuitive workflow.","category":"developer-tools","logoUrl":"logo/darcs.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Darcs54&tracker=54","tags":["version-control","patch-based","haskell","distributed"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471339,"name":"NVM","slug":"nvm","version":"0.40.0","description":"Node Version Manager for installing and switching between multiple Node.js versions.","category":"developer-tools","logoUrl":"logo/nvm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NVM58&tracker=58","tags":["nodejs","version-manager","cli","bash"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471340,"name":"SDKMAN!","slug":"sdkman","version":"5.18.2","description":"Tool for managing parallel versions of multiple SDKs on Unix-based systems.","category":"developer-tools","logoUrl":"logo/sdkman.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SDKMAN!59&tracker=59","tags":["java","sdk","version-manager","linux"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471341,"name":"Pyenv","slug":"pyenv","version":"2.3.36","description":"Simple Python version management for switching and installing multiple interpreters.","category":"developer-tools","logoUrl":"logo/pyenv.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pyenv60&tracker=60","tags":["python","version-manager","cli","cross-platform"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471342,"name":"RVM","slug":"rvm","version":"1.29.12","description":"Ruby Version Manager for installing and managing multiple Ruby environments.","category":"developer-tools","logoUrl":"logo/rvm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=RVM61&tracker=61","tags":["ruby","version-manager","cli","linux"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471343,"name":"Conda","slug":"conda","version":"24.3.0","description":"Open-source package and environment management system for data science.","category":"developer-tools","logoUrl":"logo/conda.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Conda62&tracker=62","tags":["package-manager","python","data-science","environments"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471344,"name":"Poetry","slug":"poetry","version":"1.8.2","description":"Python dependency management and packaging tool with deterministic builds.","category":"developer-tools","logoUrl":"logo/poetry.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Poetry63&tracker=63","tags":["python","dependencies","packaging","cli"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471345,"name":"Pipenv","slug":"pipenv","version":"2023.12.1","description":"Python workflow manager combining Pip, Virtualenv, and Pipfile.","category":"developer-tools","logoUrl":"logo/pipenv.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pipenv64&tracker=64","tags":["python","virtualenv","pipfile","workflow"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471346,"name":"Virtualenv","slug":"virtualenv","version":"20.25.1","description":"Tool to create isolated Python environments with specific dependencies.","category":"developer-tools","logoUrl":"logo/virtualenv.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Virtualenv65&tracker=65","tags":["python","isolation","environments","cli"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471347,"name":"Yarn","slug":"yarn","version":"1.22.22","description":"Fast, reliable, and secure dependency manager for JavaScript projects.","category":"developer-tools","logoUrl":"logo/yarn.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Yarn66&tracker=66","tags":["javascript","dependencies","fast","secure"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471348,"name":"PNPM","slug":"pnpm","version":"8.15.0","description":"Fast, disk space efficient package manager with strict dependency resolution.","category":"developer-tools","logoUrl":"logo/pnpm.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PNPM67&tracker=67","tags":["javascript","fast","efficient","strict"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471349,"name":"Webpack","slug":"webpack","version":"5.90.3","description":"Static module bundler for JavaScript applications with code splitting and loaders.","category":"developer-tools","logoUrl":"logo/webpack.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Webpack68&tracker=68","tags":["bundler","javascript","modules","frontend"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471350,"name":"Vite","slug":"vite","version":"5.2.0","description":"Next-generation frontend tooling with lightning-fast HMR and native ES modules.","category":"developer-tools","logoUrl":"logo/vite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Vite69&tracker=69","tags":["bundler","hmr","fast","frontend"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471351,"name":"ESLint","slug":"eslint","version":"8.57.0","description":"Pluggable JavaScript linter for finding and fixing code quality issues.","category":"developer-tools","logoUrl":"logo/eslint.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ESLint70&tracker=70","tags":["linter","javascript","quality","pluggable"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471352,"name":"Prettier","slug":"prettier","version":"3.2.5","description":"Opinionated code formatter supporting JavaScript, CSS, HTML, and more.","category":"developer-tools","logoUrl":"logo/prettier.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Prettier71&tracker=71","tags":["formatter","code-style","javascript","multi-lang"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471353,"name":"Stylelint","slug":"stylelint","version":"16.2.1","description":"Modern linter for catching errors and enforcing conventions in stylesheets.","category":"developer-tools","logoUrl":"logo/stylelint.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Stylelint72&tracker=72","tags":["linter","css","scss","conventions"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471354,"name":"JSHint","slug":"jshint","version":"2.13.6","description":"Static code analysis tool for detecting errors and potential problems in JS.","category":"developer-tools","logoUrl":"logo/jshint.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=JSHint73&tracker=73","tags":["linter","javascript","static","analysis"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471355,"name":"SonarQube","slug":"sonarqube","version":"10.4.0","description":"Continuous inspection platform for detecting bugs, vulnerabilities, and code smells.","category":"developer-tools","logoUrl":"logo/sonarqube.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SonarQube74&tracker=74","tags":["quality","security","ci","multi-lang"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471356,"name":"CodeClimate","slug":"codeclimate","version":"0.95.0","description":"Automated code review service tracking test coverage and complexity.","category":"developer-tools","logoUrl":"logo/codeclimate.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CodeClimate75&tracker=75","tags":["review","coverage","automation","cloud"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471357,"name":"Jest","slug":"jest","version":"29.7.0","description":"Delightful JavaScript testing framework with focus on simplicity and snapshots.","category":"developer-tools","logoUrl":"logo/jest.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Jest76&tracker=76","tags":["testing","javascript","snapshots","facebook"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471358,"name":"Mocha","slug":"mocha","version":"10.3.0","description":"Feature-rich JavaScript test framework running on Node.js and browsers.","category":"developer-tools","logoUrl":"logo/mocha.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mocha77&tracker=77","tags":["testing","javascript","async","flexible"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471359,"name":"Cypress","slug":"cypress","version":"13.6.0","description":"Fast, easy, and reliable end-to-end testing for modern web applications.","category":"developer-tools","logoUrl":"logo/cypress.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Cypress78&tracker=78","tags":["testing","e2e","web","javascript"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471360,"name":"Playwright","slug":"playwright","version":"1.42.0","description":"Reliable end-to-end testing for modern web apps with cross-browser support.","category":"developer-tools","logoUrl":"logo/playwright.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Playwright79&tracker=79","tags":["testing","e2e","cross-browser","microsoft"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471361,"name":"Selenium WebDriver","slug":"selenium-webdriver","version":"4.18.1","description":"Browser automation framework for testing web applications across multiple browsers.","category":"developer-tools","logoUrl":"logo/selenium.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Selenium WebDriver80&tracker=80","tags":["automation","testing","browser","multi-lang"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471362,"name":"Puppeteer","slug":"puppeteer","version":"22.3.0","description":"Node.js library for controlling headless Chrome or Chromium via DevTools protocol.","category":"developer-tools","logoUrl":"logo/puppeteer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Puppeteer81&tracker=81","tags":["browser","automation","nodejs","headless"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471363,"name":"Appium","slug":"appium","version":"2.4.0","description":"Open-source framework for automating native, mobile web, and hybrid apps.","category":"developer-tools","logoUrl":"logo/appium.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Appium82&tracker=82","tags":["mobile","testing","automation","cross-platform"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471364,"name":"Postman","slug":"postman","version":"10.23.0","description":"Collaborative API development environment for testing, documenting, and sharing APIs.","category":"developer-tools","logoUrl":"logo/postman.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Postman83&tracker=83","tags":["api","testing","collaboration","rest"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471365,"name":"Insomnia","slug":"insomnia","version":"8.6.1","description":"Open-source REST and GraphQL client with environment variables and plugins.","category":"developer-tools","logoUrl":"logo/insomnia.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Insomnia84&tracker=84","tags":["api","rest","graphql","open-source"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471366,"name":"HTTPie","slug":"httpie","version":"3.2.2","description":"User-friendly command-line HTTP client with JSON support and syntax highlighting.","category":"developer-tools","logoUrl":"logo/httpie.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HTTPie85&tracker=85","tags":["http","cli","api","json"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471367,"name":"cURL","slug":"curl","version":"8.6.0","description":"Command-line tool for transferring data with URL syntax supporting many protocols.","category":"developer-tools","logoUrl":"logo/curl.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=cURL86&tracker=86","tags":["cli","transfer","http","protocols"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471369,"name":"Fiddler Classic","slug":"fiddler-classic","version":"5.0.20232.31","description":"Web debugging proxy for monitoring, modifying, and troubleshooting HTTP traffic.","category":"developer-tools","logoUrl":"logo/fiddler.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fiddler Classic88&tracker=88","tags":["proxy","debugging","http","windows"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471370,"name":"Charles Proxy","slug":"charles-proxy","version":"4.6.2","description":"HTTP proxy and monitor for viewing and manipulating network traffic.","category":"developer-tools","logoUrl":"logo/charles-proxy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Charles Proxy89&tracker=89","tags":["proxy","network","debugging","cross-platform"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471371,"name":"ngrok","slug":"ngrok","version":"3.5.0","description":"Secure tunneling service exposing local servers to the public internet.","category":"developer-tools","logoUrl":"logo/ngrok.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ngrok90&tracker=90","tags":["tunnel","localhost","public","dev"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471372,"name":"Docker Desktop","slug":"docker-desktop","version":"4.28.0","description":"Application for building, sharing, and running containerized apps locally.","category":"developer-tools","logoUrl":"logo/docker-desktop.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Docker Desktop91&tracker=91","tags":["containers","devops","linux","virtualization"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471373,"name":"Kubernetes CLI","slug":"kubernetes-cli","version":"1.29.0","description":"Command-line interface for managing containerized applications in Kubernetes clusters.","category":"developer-tools","logoUrl":"logo/kubectl.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kubernetes CLI92&tracker=92","tags":["kubernetes","orchestration","cli","devops"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471375,"name":"Terraform","slug":"terraform","version":"1.7.4","description":"Infrastructure as code tool for building, changing, and versioning cloud resources.","category":"developer-tools","logoUrl":"logo/terraform.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Terraform94&tracker=94","tags":["iac","cloud","provisioning","devops"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471376,"name":"Ansible","slug":"ansible","version":"9.3.0","description":"Open-source automation engine for configuration management and app deployment.","category":"developer-tools","logoUrl":"logo/ansible.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ansible95&tracker=95","tags":["automation","config","devops","agentless"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471377,"name":"Vagrant","slug":"vagrant","version":"2.4.0","description":"Tool for building and managing virtualized development environments.","category":"developer-tools","logoUrl":"logo/vagrant.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Vagrant96&tracker=96","tags":["virtualization","dev-env","provisioning","cross-platform"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471378,"name":"DBeaver","slug":"dbeaver","version":"24.0.0","description":"Universal database tool supporting SQL, NoSQL, and cloud databases with GUI.","category":"developer-tools","logoUrl":"logo/dbeaver.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DBeaver97&tracker=97","tags":["database","sql","gui","universal"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471379,"name":"MySQL Workbench","slug":"mysql-workbench","version":"8.0.36","description":"Official visual tool for database designers, developers, and DBAs.","category":"developer-tools","logoUrl":"logo/mysql-workbench.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MySQL Workbench98&tracker=98","tags":["mysql","database","visual","oracle"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471380,"name":"pgAdmin","slug":"pgadmin","version":"8.4","description":"Open-source administration and development platform for PostgreSQL.","category":"developer-tools","logoUrl":"logo/pgadmin.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=pgAdmin99&tracker=99","tags":["postgresql","database","admin","open-source"],"scrapedAt":"2026-04-27T13:11:11.282Z"},{"id":1777295471381,"name":"RedisInsight","slug":"redisinsight","version":"1.14.0","description":"Visual management tool for Redis with CLI, profiler, and memory analysis.","category":"developer-tools","logoUrl":"logo/redisinsight.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=RedisInsight100&tracker=100","tags":["redis","database","visual","analytics"],"scrapedAt":"2026-04-27T13:11:11.282Z"}];
+    const CURRENT_CATEGORY = 'developer-tools';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

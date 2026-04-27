@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Finance — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Finance</h1>
+    <p><span class="highlight">100</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="quickbooks.html" class="app-card" data-id="1777297347511" style="text-decoration:none;color:inherit">
+          <img src="logo/quickbooks.png" alt="QuickBooks" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">QuickBooks</h3>
+          <p class="app-description">Leading accounting software for small businesses with invoicing, payroll, and tax preparation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">accounting</span><span class="app-tag">invoicing</span><span class="app-tag">payroll</span>
+            </div>
+          
+        </a>
+        <a href="mint.html" class="app-card" data-id="1777297347512" style="text-decoration:none;color:inherit">
+          <img src="logo/mint.png" alt="Mint" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mint</h3>
+          <p class="app-description">Free personal finance app for budgeting, bill tracking, and credit score monitoring.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">budgeting</span><span class="app-tag">free</span><span class="app-tag">credit-score</span>
+            </div>
+          
+        </a>
+        <a href="ynab.html" class="app-card" data-id="1777297347513" style="text-decoration:none;color:inherit">
+          <img src="logo/ynab.png" alt="YNAB (You Need A Budget)" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">YNAB (You Need A Budget)</h3>
+          <p class="app-description">Proactive budgeting app that helps you give every dollar a job and break the paycheck-to-paycheck cycle.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">budgeting</span><span class="app-tag">proactive</span><span class="app-tag">savings</span>
+            </div>
+          
+        </a>
+        <a href="personal-capital.html" class="app-card" data-id="1777297347514" style="text-decoration:none;color:inherit">
+          <img src="logo/personal-capital.png" alt="Personal Capital" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Personal Capital</h3>
+          <p class="app-description">Wealth management platform with investment tracking, retirement planning, and financial advisory.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">wealth-management</span><span class="app-tag">investing</span><span class="app-tag">retirement</span>
+            </div>
+          
+        </a>
+        <a href="robinhood.html" class="app-card" data-id="1777297347515" style="text-decoration:none;color:inherit">
+          <img src="logo/robinhood.png" alt="Robinhood" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Robinhood</h3>
+          <p class="app-description">Commission-free stock trading app with cryptocurrency and options trading capabilities.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">trading</span><span class="app-tag">stocks</span><span class="app-tag">crypto</span>
+            </div>
+          
+        </a>
+        <a href="acorns.html" class="app-card" data-id="1777297347516" style="text-decoration:none;color:inherit">
+          <img src="logo/acorns.png" alt="Acorns" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Acorns</h3>
+          <p class="app-description">Micro-investing app that rounds up purchases and invests the spare change automatically.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">micro-investing</span><span class="app-tag">round-ups</span><span class="app-tag">automated</span>
+            </div>
+          
+        </a>
+        <a href="wealthfront.html" class="app-card" data-id="1777297347517" style="text-decoration:none;color:inherit">
+          <img src="logo/wealthfront.png" alt="Wealthfront" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wealthfront</h3>
+          <p class="app-description">Robo-advisor providing automated investing with tax-loss harvesting and financial planning.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">robo-advisor</span><span class="app-tag">automated</span><span class="app-tag">tax-loss</span>
+            </div>
+          
+        </a>
+        <a href="betterment.html" class="app-card" data-id="1777297347518" style="text-decoration:none;color:inherit">
+          <img src="logo/betterment.png" alt="Betterment" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Betterment</h3>
+          <p class="app-description">Automated investing platform with goal-based portfolios and tax-efficient strategies.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">robo-advisor</span><span class="app-tag">goals</span><span class="app-tag">tax-efficient</span>
+            </div>
+          
+        </a>
+        <a href="coinbase.html" class="app-card" data-id="1777297347519" style="text-decoration:none;color:inherit">
+          <img src="logo/coinbase.png" alt="Coinbase" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Coinbase</h3>
+          <p class="app-description">Leading cryptocurrency exchange for buying, selling, and storing Bitcoin, Ethereum, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crypto</span><span class="app-tag">exchange</span><span class="app-tag">bitcoin</span>
+            </div>
+          
+        </a>
+        <a href="binance.html" class="app-card" data-id="1777297347520" style="text-decoration:none;color:inherit">
+          <img src="logo/binance.png" alt="Binance" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Binance</h3>
+          <p class="app-description">Global cryptocurrency exchange with advanced trading features and low fees.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crypto</span><span class="app-tag">exchange</span><span class="app-tag">trading</span>
+            </div>
+          
+        </a>
+        <a href="kraken.html" class="app-card" data-id="1777297347521" style="text-decoration:none;color:inherit">
+          <img src="logo/kraken.png" alt="Kraken" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kraken</h3>
+          <p class="app-description">Secure cryptocurrency exchange with advanced trading tools and staking options.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crypto</span><span class="app-tag">secure</span><span class="app-tag">staking</span>
+            </div>
+          
+        </a>
+        <a href="metamask.html" class="app-card" data-id="1777297347522" style="text-decoration:none;color:inherit">
+          <img src="logo/metamask.png" alt="MetaMask" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MetaMask</h3>
+          <p class="app-description">Cryptocurrency wallet and gateway to blockchain apps for Ethereum and EVM chains.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">wallet</span><span class="app-tag">ethereum</span><span class="app-tag">defi</span>
+            </div>
+          
+        </a>
+        <a href="trust-wallet.html" class="app-card" data-id="1777297347523" style="text-decoration:none;color:inherit">
+          <img src="logo/trust-wallet.png" alt="Trust Wallet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Trust Wallet</h3>
+          <p class="app-description">Multi-cryptocurrency wallet with built-in DApp browser and staking support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">wallet</span><span class="app-tag">multi-crypto</span><span class="app-tag">dapp</span>
+            </div>
+          
+        </a>
+        <a href="ledger-live.html" class="app-card" data-id="1777297347524" style="text-decoration:none;color:inherit">
+          <img src="logo/ledger-live.png" alt="Ledger Live" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ledger Live</h3>
+          <p class="app-description">Hardware wallet companion app for securely managing cryptocurrency assets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hardware-wallet</span><span class="app-tag">secure</span><span class="app-tag">crypto</span>
+            </div>
+          
+        </a>
+        <a href="trezor-suite.html" class="app-card" data-id="1777297347525" style="text-decoration:none;color:inherit">
+          <img src="logo/trezor-suite.png" alt="Trezor Suite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Trezor Suite</h3>
+          <p class="app-description">Desktop app for managing Trezor hardware wallet with portfolio tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hardware-wallet</span><span class="app-tag">portfolio</span><span class="app-tag">crypto</span>
+            </div>
+          
+        </a>
+        <a href="paypal.html" class="app-card" data-id="1777297347526" style="text-decoration:none;color:inherit">
+          <img src="logo/paypal.png" alt="PayPal" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PayPal</h3>
+          <p class="app-description">Digital payment platform for sending money, shopping online, and business transactions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">payments</span><span class="app-tag">online</span><span class="app-tag">business</span>
+            </div>
+          
+        </a>
+        <a href="venmo.html" class="app-card" data-id="1777297347527" style="text-decoration:none;color:inherit">
+          <img src="logo/venmo.png" alt="Venmo" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Venmo</h3>
+          <p class="app-description">Social payment app for splitting bills, sending money to friends, and making purchases.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">payments</span><span class="app-tag">social</span><span class="app-tag">p2p</span>
+            </div>
+          
+        </a>
+        <a href="cash-app.html" class="app-card" data-id="1777297347528" style="text-decoration:none;color:inherit">
+          <img src="logo/cash-app.png" alt="Cash App" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Cash App</h3>
+          <p class="app-description">All-in-one finance app for payments, investing, banking, and Bitcoin trading.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">payments</span><span class="app-tag">investing</span><span class="app-tag">banking</span>
+            </div>
+          
+        </a>
+        <a href="zelle.html" class="app-card" data-id="1777297347529" style="text-decoration:none;color:inherit">
+          <img src="logo/zelle.png" alt="Zelle" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zelle</h3>
+          <p class="app-description">Fast, safe way to send and receive money directly between US bank accounts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">payments</span><span class="app-tag">bank-transfer</span><span class="app-tag">fast</span>
+            </div>
+          
+        </a>
+        <a href="stripe.html" class="app-card" data-id="1777297347530" style="text-decoration:none;color:inherit">
+          <img src="logo/stripe.png" alt="Stripe" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Stripe</h3>
+          <p class="app-description">Payment processing platform for online businesses with APIs and developer tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">payments</span><span class="app-tag">api</span><span class="app-tag">business</span>
+            </div>
+          
+        </a>
+        <a href="square.html" class="app-card" data-id="1777297347531" style="text-decoration:none;color:inherit">
+          <img src="logo/square.png" alt="Square" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Square</h3>
+          <p class="app-description">Point of sale and payment processing system for small businesses and merchants.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pos</span><span class="app-tag">payments</span><span class="app-tag">small-business</span>
+            </div>
+          
+        </a>
+        <a href="shopify-payments.html" class="app-card" data-id="1777297347532" style="text-decoration:none;color:inherit">
+          <img src="logo/shopify-payments.png" alt="Shopify Payments" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Shopify Payments</h3>
+          <p class="app-description">Integrated payment processing for Shopify e-commerce stores with fraud protection.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ecommerce</span><span class="app-tag">payments</span><span class="app-tag">fraud-protection</span>
+            </div>
+          
+        </a>
+        <a href="turbotax.html" class="app-card" data-id="1777297347533" style="text-decoration:none;color:inherit">
+          <img src="logo/turbotax.png" alt="TurboTax" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TurboTax</h3>
+          <p class="app-description">Popular tax preparation software with guided interviews and maximum refund guarantee.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">taxes</span><span class="app-tag">preparation</span><span class="app-tag">guided</span>
+            </div>
+          
+        </a>
+        <a href="hr-block.html" class="app-card" data-id="1777297347534" style="text-decoration:none;color:inherit">
+          <img src="logo/hr-block.png" alt="H&amp;R Block" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">H&amp;R Block</h3>
+          <p class="app-description">Tax filing software with expert review options and audit defense coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">taxes</span><span class="app-tag">filing</span><span class="app-tag">expert-review</span>
+            </div>
+          
+        </a>
+        <a href="taxact.html" class="app-card" data-id="1777297347535" style="text-decoration:none;color:inherit">
+          <img src="logo/taxact.png" alt="TaxAct" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TaxAct</h3>
+          <p class="app-description">Affordable tax preparation software with step-by-step guidance and import features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">taxes</span><span class="app-tag">affordable</span><span class="app-tag">guidance</span>
+            </div>
+          
+        </a>
+        <a href="credit-karma.html" class="app-card" data-id="1777297347536" style="text-decoration:none;color:inherit">
+          <img src="logo/credit-karma.png" alt="Credit Karma" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Credit Karma</h3>
+          <p class="app-description">Free credit monitoring with credit scores, reports, and personalized financial recommendations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">credit-score</span><span class="app-tag">monitoring</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="experian.html" class="app-card" data-id="1777297347537" style="text-decoration:none;color:inherit">
+          <img src="logo/experian.png" alt="Experian" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Experian</h3>
+          <p class="app-description">Credit bureau app with credit reports, scores, identity theft protection, and monitoring.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">credit-bureau</span><span class="app-tag">reports</span><span class="app-tag">identity-protection</span>
+            </div>
+          
+        </a>
+        <a href="equifax.html" class="app-card" data-id="1777297347538" style="text-decoration:none;color:inherit">
+          <img src="logo/equifax.png" alt="Equifax" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Equifax</h3>
+          <p class="app-description">Credit monitoring service with credit reports, scores, and fraud alerts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">credit</span><span class="app-tag">monitoring</span><span class="app-tag">fraud-alerts</span>
+            </div>
+          
+        </a>
+        <a href="transunion.html" class="app-card" data-id="1777297347539" style="text-decoration:none;color:inherit">
+          <img src="logo/transunion.png" alt="TransUnion" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TransUnion</h3>
+          <p class="app-description">Credit monitoring and identity protection with credit reports and score tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">credit</span><span class="app-tag">identity-protection</span><span class="app-tag">reports</span>
+            </div>
+          
+        </a>
+        <a href="nerdwallet.html" class="app-card" data-id="1777297347540" style="text-decoration:none;color:inherit">
+          <img src="logo/nerdwallet.png" alt="NerdWallet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NerdWallet</h3>
+          <p class="app-description">Financial comparison platform for credit cards, loans, insurance, and investing advice.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">comparison</span><span class="app-tag">credit-cards</span><span class="app-tag">loans</span>
+            </div>
+          
+        </a>
+        <a href="bankrate.html" class="app-card" data-id="1777297347541" style="text-decoration:none;color:inherit">
+          <img src="logo/bankrate.png" alt="Bankrate" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bankrate</h3>
+          <p class="app-description">Financial rates comparison for mortgages, loans, CDs, and credit cards with calculators.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">rates</span><span class="app-tag">mortgages</span><span class="app-tag">calculators</span>
+            </div>
+          
+        </a>
+        <a href="lendingtree.html" class="app-card" data-id="1777297347542" style="text-decoration:none;color:inherit">
+          <img src="logo/lendingtree.png" alt="LendingTree" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LendingTree</h3>
+          <p class="app-description">Loan marketplace connecting borrowers with lenders for mortgages, personal loans, and more.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">loans</span><span class="app-tag">marketplace</span><span class="app-tag">mortgages</span>
+            </div>
+          
+        </a>
+        <a href="sofi.html" class="app-card" data-id="1777297347543" style="text-decoration:none;color:inherit">
+          <img src="logo/sofi.png" alt="SoFi" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SoFi</h3>
+          <p class="app-description">All-in-one finance app for loans, investing, banking, and career coaching.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">loans</span><span class="app-tag">investing</span><span class="app-tag">banking</span>
+            </div>
+          
+        </a>
+        <a href="marcus-goldman-sachs.html" class="app-card" data-id="1777297347544" style="text-decoration:none;color:inherit">
+          <img src="logo/marcus.png" alt="Marcus by Goldman Sachs" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Marcus by Goldman Sachs</h3>
+          <p class="app-description">High-yield savings accounts and personal loans with no fees from Goldman Sachs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">savings</span><span class="app-tag">loans</span><span class="app-tag">no-fees</span>
+            </div>
+          
+        </a>
+        <a href="ally-bank.html" class="app-card" data-id="1777297347545" style="text-decoration:none;color:inherit">
+          <img src="logo/ally.png" alt="Ally Bank" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ally Bank</h3>
+          <p class="app-description">Online bank with competitive savings rates, checking accounts, and investment services.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">online-bank</span><span class="app-tag">savings</span><span class="app-tag">checking</span>
+            </div>
+          
+        </a>
+        <a href="chime.html" class="app-card" data-id="1777297347546" style="text-decoration:none;color:inherit">
+          <img src="logo/chime.png" alt="Chime" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Chime</h3>
+          <p class="app-description">Mobile banking app with no fees, early direct deposit, and automatic savings features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile-banking</span><span class="app-tag">no-fees</span><span class="app-tag">early-deposit</span>
+            </div>
+          
+        </a>
+        <a href="current.html" class="app-card" data-id="1777297347547" style="text-decoration:none;color:inherit">
+          <img src="logo/current.png" alt="Current" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Current</h3>
+          <p class="app-description">Mobile banking with instant notifications, savings pods, and fee-free overdraft.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile-banking</span><span class="app-tag">notifications</span><span class="app-tag">savings</span>
+            </div>
+          
+        </a>
+        <a href="varo-bank.html" class="app-card" data-id="1777297347548" style="text-decoration:none;color:inherit">
+          <img src="logo/varo.png" alt="Varo Bank" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Varo Bank</h3>
+          <p class="app-description">Mobile-first bank with no fees, high-yield savings, and credit builder tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile-bank</span><span class="app-tag">no-fees</span><span class="app-tag">high-yield</span>
+            </div>
+          
+        </a>
+        <a href="simple.html" class="app-card" data-id="1777297347549" style="text-decoration:none;color:inherit">
+          <img src="logo/simple.png" alt="Simple" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Simple</h3>
+          <p class="app-description">Mobile banking with smart budgeting tools, savings goals, and fee-free accounts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mobile-banking</span><span class="app-tag">budgeting</span><span class="app-tag">goals</span>
+            </div>
+          
+        </a>
+        <a href="digit.html" class="app-card" data-id="1777297347550" style="text-decoration:none;color:inherit">
+          <img src="logo/digit.png" alt="Digit" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Digit</h3>
+          <p class="app-description">Automated savings app that analyzes spending and transfers small amounts to savings.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">automated-savings</span><span class="app-tag">spending-analysis</span><span class="app-tag">transfers</span>
+            </div>
+          
+        </a>
+        <a href="qapital.html" class="app-card" data-id="1777297347551" style="text-decoration:none;color:inherit">
+          <img src="logo/qapital.png" alt="Qapital" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Qapital</h3>
+          <p class="app-description">Goal-based savings app with rules-based automation and investment options.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">goal-based</span><span class="app-tag">automation</span><span class="app-tag">rules</span>
+            </div>
+          
+        </a>
+        <a href="stash.html" class="app-card" data-id="1777297347552" style="text-decoration:none;color:inherit">
+          <img src="logo/stash.png" alt="Stash" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Stash</h3>
+          <p class="app-description">Investing app for beginners with fractional shares, banking, and retirement accounts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">investing</span><span class="app-tag">beginner</span><span class="app-tag">fractional</span>
+            </div>
+          
+        </a>
+        <a href="m1-finance.html" class="app-card" data-id="1777297347553" style="text-decoration:none;color:inherit">
+          <img src="logo/m1-finance.png" alt="M1 Finance" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">M1 Finance</h3>
+          <p class="app-description">Automated investing platform with custom portfolios, banking, and borrowing features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">automated</span><span class="app-tag">custom-portfolios</span><span class="app-tag">banking</span>
+            </div>
+          
+        </a>
+        <a href="fidelity-investments.html" class="app-card" data-id="1777297347554" style="text-decoration:none;color:inherit">
+          <img src="logo/fidelity.png" alt="Fidelity Investments" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fidelity Investments</h3>
+          <p class="app-description">Full-service brokerage with investing, retirement planning, and banking services.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">brokerage</span><span class="app-tag">investing</span><span class="app-tag">retirement</span>
+            </div>
+          
+        </a>
+        <a href="charles-schwab.html" class="app-card" data-id="1777297347555" style="text-decoration:none;color:inherit">
+          <img src="logo/schwab.png" alt="Charles Schwab" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Charles Schwab</h3>
+          <p class="app-description">Investment and banking services with research tools, trading, and financial planning.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">brokerage</span><span class="app-tag">research</span><span class="app-tag">trading</span>
+            </div>
+          
+        </a>
+        <a href="vanguard.html" class="app-card" data-id="1777297347556" style="text-decoration:none;color:inherit">
+          <img src="logo/vanguard.png" alt="Vanguard" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Vanguard</h3>
+          <p class="app-description">Low-cost index fund investing with retirement accounts and financial advisory services.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">index-funds</span><span class="app-tag">low-cost</span><span class="app-tag">retirement</span>
+            </div>
+          
+        </a>
+        <a href="etrade.html" class="app-card" data-id="1777297347557" style="text-decoration:none;color:inherit">
+          <img src="logo/etrade.png" alt="E*TRADE" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">E*TRADE</h3>
+          <p class="app-description">Online brokerage with advanced trading tools, research, and retirement planning.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">brokerage</span><span class="app-tag">trading-tools</span><span class="app-tag">research</span>
+            </div>
+          
+        </a>
+        <a href="td-ameritrade.html" class="app-card" data-id="1777297347558" style="text-decoration:none;color:inherit">
+          <img src="logo/td-ameritrade.png" alt="TD Ameritrade" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TD Ameritrade</h3>
+          <p class="app-description">Commission-free trading platform with thinkorswim tools and educational resources.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">commission-free</span><span class="app-tag">thinkorswim</span><span class="app-tag">education</span>
+            </div>
+          
+        </a>
+        <a href="webull.html" class="app-card" data-id="1777297347559" style="text-decoration:none;color:inherit">
+          <img src="logo/webull.png" alt="Webull" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Webull</h3>
+          <p class="app-description">Commission-free trading app with advanced charts, options, and cryptocurrency trading.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">commission-free</span><span class="app-tag">charts</span><span class="app-tag">options</span>
+            </div>
+          
+        </a>
+        <a href="public-com.html" class="app-card" data-id="1777297347560" style="text-decoration:none;color:inherit">
+          <img src="logo/public.png" alt="Public.com" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Public.com</h3>
+          <p class="app-description">Social investing platform with commission-free trades and community insights.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">social-investing</span><span class="app-tag">commission-free</span><span class="app-tag">community</span>
+            </div>
+          
+        </a>
+        <a href="tradingview.html" class="app-card" data-id="1777297347561" style="text-decoration:none;color:inherit">
+          <img src="logo/tradingview.png" alt="TradingView" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TradingView</h3>
+          <p class="app-description">Advanced charting platform with technical analysis tools and social trading features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">charting</span><span class="app-tag">technical-analysis</span><span class="app-tag">social</span>
+            </div>
+          
+        </a>
+        <a href="metatrader-4.html" class="app-card" data-id="1777297347562" style="text-decoration:none;color:inherit">
+          <img src="logo/mt4.png" alt="MetaTrader 4" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MetaTrader 4</h3>
+          <p class="app-description">Popular forex trading platform with automated trading and technical analysis tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">forex</span><span class="app-tag">trading</span><span class="app-tag">automated</span>
+            </div>
+          
+        </a>
+        <a href="metatrader-5.html" class="app-card" data-id="1777297347563" style="text-decoration:none;color:inherit">
+          <img src="logo/mt5.png" alt="MetaTrader 5" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MetaTrader 5</h3>
+          <p class="app-description">Advanced multi-asset trading platform with enhanced features and algorithmic trading.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">multi-asset</span><span class="app-tag">trading</span><span class="app-tag">algorithmic</span>
+            </div>
+          
+        </a>
+        <a href="ctrader.html" class="app-card" data-id="1777297347564" style="text-decoration:none;color:inherit">
+          <img src="logo/ctrader.png" alt="cTrader" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">cTrader</h3>
+          <p class="app-description">Professional forex and CFD trading platform with advanced order types and automation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">forex</span><span class="app-tag">cfd</span><span class="app-tag">automation</span>
+            </div>
+          
+        </a>
+        <a href="ninjatrader.html" class="app-card" data-id="1777297347565" style="text-decoration:none;color:inherit">
+          <img src="logo/ninjatrader.png" alt="NinjaTrader" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NinjaTrader</h3>
+          <p class="app-description">Advanced futures and forex trading platform with strategy development and backtesting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">futures</span><span class="app-tag">forex</span><span class="app-tag">backtesting</span>
+            </div>
+          
+        </a>
+        <a href="thinkorswim.html" class="app-card" data-id="1777297347566" style="text-decoration:none;color:inherit">
+          <img src="logo/thinkorswim.png" alt="Thinkorswim" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Thinkorswim</h3>
+          <p class="app-description">Professional trading platform with advanced charting, options analysis, and paper trading.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">professional</span><span class="app-tag">charting</span><span class="app-tag">options</span>
+            </div>
+          
+        </a>
+        <a href="interactive-brokers.html" class="app-card" data-id="1777297347567" style="text-decoration:none;color:inherit">
+          <img src="logo/interactive-brokers.png" alt="Interactive Brokers" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Interactive Brokers</h3>
+          <p class="app-description">Global trading platform with access to stocks, options, futures, and forex markets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">global</span><span class="app-tag">multi-market</span><span class="app-tag">professional</span>
+            </div>
+          
+        </a>
+        <a href="etoro.html" class="app-card" data-id="1777297347568" style="text-decoration:none;color:inherit">
+          <img src="logo/etoro.png" alt="eToro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">eToro</h3>
+          <p class="app-description">Social trading platform for copying top traders and investing in stocks and crypto.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">social-trading</span><span class="app-tag">copy-trading</span><span class="app-tag">stocks</span>
+            </div>
+          
+        </a>
+        <a href="plus500.html" class="app-card" data-id="1777297347569" style="text-decoration:none;color:inherit">
+          <img src="logo/plus500.png" alt="Plus500" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Plus500</h3>
+          <p class="app-description">CFD trading platform with stocks, forex, commodities, and cryptocurrency trading.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cfd</span><span class="app-tag">trading</span><span class="app-tag">multi-asset</span>
+            </div>
+          
+        </a>
+        <a href="ig-trading.html" class="app-card" data-id="1777297347570" style="text-decoration:none;color:inherit">
+          <img src="logo/ig.png" alt="IG Trading" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">IG Trading</h3>
+          <p class="app-description">Global CFD and forex broker with advanced trading tools and market analysis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cfd</span><span class="app-tag">forex</span><span class="app-tag">global</span>
+            </div>
+          
+        </a>
+        <a href="saxotradergo.html" class="app-card" data-id="1777297347571" style="text-decoration:none;color:inherit">
+          <img src="logo/saxo.png" alt="SaxoTraderGO" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SaxoTraderGO</h3>
+          <p class="app-description">Multi-asset trading platform with access to global markets and advanced research.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">multi-asset</span><span class="app-tag">global</span><span class="app-tag">research</span>
+            </div>
+          
+        </a>
+        <a href="tradestation.html" class="app-card" data-id="1777297347572" style="text-decoration:none;color:inherit">
+          <img src="logo/tradestation.png" alt="TradeStation" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TradeStation</h3>
+          <p class="app-description">Advanced trading platform with strategy development, backtesting, and automated trading.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">advanced</span><span class="app-tag">strategy</span><span class="app-tag">backtesting</span>
+            </div>
+          
+        </a>
+        <a href="zerodha-kite.html" class="app-card" data-id="1777297347573" style="text-decoration:none;color:inherit">
+          <img src="logo/zerodha.png" alt="Zerodha Kite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zerodha Kite</h3>
+          <p class="app-description">Indian stock trading platform with low brokerage and advanced charting tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">stocks</span><span class="app-tag">low-brokerage</span>
+            </div>
+          
+        </a>
+        <a href="upstox.html" class="app-card" data-id="1777297347574" style="text-decoration:none;color:inherit">
+          <img src="logo/upstox.png" alt="Upstox" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Upstox</h3>
+          <p class="app-description">Discount brokerage app for stocks, derivatives, and mutual funds in India.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">discount</span><span class="app-tag">derivatives</span>
+            </div>
+          
+        </a>
+        <a href="angel-one.html" class="app-card" data-id="1777297347575" style="text-decoration:none;color:inherit">
+          <img src="logo/angel-one.png" alt="Angel One" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Angel One</h3>
+          <p class="app-description">Full-service brokerage with trading, research, and advisory services in India.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">full-service</span><span class="app-tag">research</span>
+            </div>
+          
+        </a>
+        <a href="groww.html" class="app-card" data-id="1777297347576" style="text-decoration:none;color:inherit">
+          <img src="logo/groww.png" alt="Groww" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Groww</h3>
+          <p class="app-description">Investment platform for stocks, mutual funds, and IPOs with simple interface.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">simple</span><span class="app-tag">mutual-funds</span>
+            </div>
+          
+        </a>
+        <a href="kuvera.html" class="app-card" data-id="1777297347577" style="text-decoration:none;color:inherit">
+          <img src="logo/kuvera.png" alt="Kuvera" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kuvera</h3>
+          <p class="app-description">Direct mutual fund platform with goal-based investing and portfolio tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">mutual-funds</span><span class="app-tag">goal-based</span>
+            </div>
+          
+        </a>
+        <a href="etmoney.html" class="app-card" data-id="1777297347578" style="text-decoration:none;color:inherit">
+          <img src="logo/etmoney.png" alt="ETMoney" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ETMoney</h3>
+          <p class="app-description">Personal finance app for mutual funds, insurance, and fixed deposits in India.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">mutual-funds</span><span class="app-tag">insurance</span>
+            </div>
+          
+        </a>
+        <a href="paytm-money.html" class="app-card" data-id="1777297347579" style="text-decoration:none;color:inherit">
+          <img src="logo/paytm-money.png" alt="Paytm Money" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Paytm Money</h3>
+          <p class="app-description">Investment platform for stocks, mutual funds, and NPS with zero commission.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">zero-commission</span><span class="app-tag">nps</span>
+            </div>
+          
+        </a>
+        <a href="zerodha-coin.html" class="app-card" data-id="1777297347580" style="text-decoration:none;color:inherit">
+          <img src="logo/zerodha-coin.png" alt="Zerodha Coin" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zerodha Coin</h3>
+          <p class="app-description">Direct mutual fund platform with zero commission and portfolio tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">mutual-funds</span><span class="app-tag">zero-commission</span>
+            </div>
+          
+        </a>
+        <a href="smallcase.html" class="app-card" data-id="1777297347581" style="text-decoration:none;color:inherit">
+          <img src="logo/smallcase.png" alt="Smallcase" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Smallcase</h3>
+          <p class="app-description">Thematic investing platform with curated portfolios of stocks and ETFs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">thematic</span><span class="app-tag">portfolios</span>
+            </div>
+          
+        </a>
+        <a href="streak.html" class="app-card" data-id="1777297347582" style="text-decoration:none;color:inherit">
+          <img src="logo/streak.png" alt="Streak" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Streak</h3>
+          <p class="app-description">Algorithmic trading platform for creating and backtesting strategies without coding.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">algorithmic</span><span class="app-tag">no-code</span>
+            </div>
+          
+        </a>
+        <a href="sensibull.html" class="app-card" data-id="1777297347583" style="text-decoration:none;color:inherit">
+          <img src="logo/sensibull.png" alt="Sensibull" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sensibull</h3>
+          <p class="app-description">Options trading platform with strategy builder, virtual trading, and analytics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">options</span><span class="app-tag">strategy</span>
+            </div>
+          
+        </a>
+        <a href="opstra.html" class="app-card" data-id="1777297347584" style="text-decoration:none;color:inherit">
+          <img src="logo/opstra.png" alt="Opstra" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Opstra</h3>
+          <p class="app-description">Options analytics platform with strategy builder and risk analysis tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">options</span><span class="app-tag">analytics</span>
+            </div>
+          
+        </a>
+        <a href="tickertape.html" class="app-card" data-id="1777297347585" style="text-decoration:none;color:inherit">
+          <img src="logo/tickertape.png" alt="Tickertape" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tickertape</h3>
+          <p class="app-description">Stock research platform with screening tools, valuation metrics, and portfolio tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">research</span><span class="app-tag">screening</span>
+            </div>
+          
+        </a>
+        <a href="moneycontrol.html" class="app-card" data-id="1777297347586" style="text-decoration:none;color:inherit">
+          <img src="logo/moneycontrol.png" alt="Moneycontrol" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Moneycontrol</h3>
+          <p class="app-description">Financial news and data platform with stock quotes, portfolio tracking, and market analysis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">news</span><span class="app-tag">quotes</span>
+            </div>
+          
+        </a>
+        <a href="economic-times-markets.html" class="app-card" data-id="1777297347587" style="text-decoration:none;color:inherit">
+          <img src="logo/et-markets.png" alt="Economic Times Markets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Economic Times Markets</h3>
+          <p class="app-description">Business news and market data app with stock analysis and portfolio management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">india</span><span class="app-tag">business-news</span><span class="app-tag">market-data</span>
+            </div>
+          
+        </a>
+        <a href="bloomberg-terminal.html" class="app-card" data-id="1777297347588" style="text-decoration:none;color:inherit">
+          <img src="logo/bloomberg.png" alt="Bloomberg Terminal" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bloomberg Terminal</h3>
+          <p class="app-description">Professional financial data platform with real-time market data, news, and analytics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">professional</span><span class="app-tag">real-time</span><span class="app-tag">data</span>
+            </div>
+          
+        </a>
+        <a href="refinitiv-eikon.html" class="app-card" data-id="1777297347589" style="text-decoration:none;color:inherit">
+          <img src="logo/refinitiv.png" alt="Refinitiv Eikon" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Refinitiv Eikon</h3>
+          <p class="app-description">Financial data and analytics platform for professionals with global market coverage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">professional</span><span class="app-tag">analytics</span><span class="app-tag">global</span>
+            </div>
+          
+        </a>
+        <a href="factset.html" class="app-card" data-id="1777297347590" style="text-decoration:none;color:inherit">
+          <img src="logo/factset.png" alt="FactSet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FactSet</h3>
+          <p class="app-description">Integrated financial information and analytical applications for investment professionals.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">professional</span><span class="app-tag">integrated</span><span class="app-tag">analytical</span>
+            </div>
+          
+        </a>
+        <a href="morningstar-direct.html" class="app-card" data-id="1777297347591" style="text-decoration:none;color:inherit">
+          <img src="logo/morningstar.png" alt="Morningstar Direct" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Morningstar Direct</h3>
+          <p class="app-description">Investment research platform with fund analysis, portfolio construction, and reporting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">research</span><span class="app-tag">fund-analysis</span><span class="app-tag">portfolio</span>
+            </div>
+          
+        </a>
+        <a href="sp-capital-iq.html" class="app-card" data-id="1777297347592" style="text-decoration:none;color:inherit">
+          <img src="logo/capital-iq.png" alt="S&amp;P Capital IQ" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">S&amp;P Capital IQ</h3>
+          <p class="app-description">Financial intelligence platform with company data, screening, and analytics tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">intelligence</span><span class="app-tag">company-data</span><span class="app-tag">screening</span>
+            </div>
+          
+        </a>
+        <a href="yahoo-finance.html" class="app-card" data-id="1777297347593" style="text-decoration:none;color:inherit">
+          <img src="logo/yahoo-finance.png" alt="Yahoo Finance" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Yahoo Finance</h3>
+          <p class="app-description">Free financial news and data platform with stock quotes, portfolio tracking, and analysis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">news</span><span class="app-tag">quotes</span>
+            </div>
+          
+        </a>
+        <a href="google-finance.html" class="app-card" data-id="1777297347594" style="text-decoration:none;color:inherit">
+          <img src="logo/google-finance.png" alt="Google Finance" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Finance</h3>
+          <p class="app-description">Simple financial data tool with stock tracking, news, and basic portfolio management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">simple</span><span class="app-tag">tracking</span>
+            </div>
+          
+        </a>
+        <a href="seeking-alpha.html" class="app-card" data-id="1777297347595" style="text-decoration:none;color:inherit">
+          <img src="logo/seeking-alpha.png" alt="Seeking Alpha" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Seeking Alpha</h3>
+          <p class="app-description">Investment research platform with stock analysis, earnings calls, and community insights.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">research</span><span class="app-tag">analysis</span><span class="app-tag">earnings</span>
+            </div>
+          
+        </a>
+        <a href="zacks-investment-research.html" class="app-card" data-id="1777297347596" style="text-decoration:none;color:inherit">
+          <img src="logo/zacks.png" alt="Zacks Investment Research" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Zacks Investment Research</h3>
+          <p class="app-description">Stock research platform with earnings estimates, rankings, and investment strategies.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">research</span><span class="app-tag">earnings</span><span class="app-tag">rankings</span>
+            </div>
+          
+        </a>
+        <a href="the-motley-fool.html" class="app-card" data-id="1777297347597" style="text-decoration:none;color:inherit">
+          <img src="logo/motley-fool.png" alt="The Motley Fool" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Motley Fool</h3>
+          <p class="app-description">Investment advice platform with stock recommendations, analysis, and educational content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">advice</span><span class="app-tag">recommendations</span><span class="app-tag">analysis</span>
+            </div>
+          
+        </a>
+        <a href="investopedia-simulator.html" class="app-card" data-id="1777297347598" style="text-decoration:none;color:inherit">
+          <img src="logo/investopedia.png" alt="Investopedia Simulator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Investopedia Simulator</h3>
+          <p class="app-description">Virtual stock trading simulator for practicing investing without real money risk.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">simulator</span><span class="app-tag">virtual</span><span class="app-tag">practice</span>
+            </div>
+          
+        </a>
+        <a href="marketwatch.html" class="app-card" data-id="1777297347599" style="text-decoration:none;color:inherit">
+          <img src="logo/marketwatch.png" alt="MarketWatch" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MarketWatch</h3>
+          <p class="app-description">Financial news and data platform with market analysis, stock quotes, and portfolio tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">news</span><span class="app-tag">analysis</span><span class="app-tag">quotes</span>
+            </div>
+          
+        </a>
+        <a href="cnbc-pro.html" class="app-card" data-id="1777297347600" style="text-decoration:none;color:inherit">
+          <img src="logo/cnbc-pro.png" alt="CNBC Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CNBC Pro</h3>
+          <p class="app-description">Premium financial news service with real-time market data and expert analysis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">premium</span><span class="app-tag">news</span><span class="app-tag">real-time</span>
+            </div>
+          
+        </a>
+        <a href="barrons.html" class="app-card" data-id="1777297347601" style="text-decoration:none;color:inherit">
+          <img src="logo/barrons.png" alt="Barron&#039;s" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Barron&#039;s</h3>
+          <p class="app-description">Investment news and analysis publication with stock picks and market insights.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">news</span><span class="app-tag">analysis</span><span class="app-tag">stock-picks</span>
+            </div>
+          
+        </a>
+        <a href="kiplinger.html" class="app-card" data-id="1777297347602" style="text-decoration:none;color:inherit">
+          <img src="logo/kiplinger.png" alt="Kiplinger" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kiplinger</h3>
+          <p class="app-description">Personal finance publication with investing advice, tax tips, and retirement planning.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">personal-finance</span><span class="app-tag">advice</span><span class="app-tag">tax</span>
+            </div>
+          
+        </a>
+        <a href="forbes-advisor.html" class="app-card" data-id="1777297347603" style="text-decoration:none;color:inherit">
+          <img src="logo/forbes-advisor.png" alt="Forbes Advisor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Forbes Advisor</h3>
+          <p class="app-description">Financial advice platform with product reviews, investing guides, and money management tips.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">advice</span><span class="app-tag">reviews</span><span class="app-tag">guides</span>
+            </div>
+          
+        </a>
+        <a href="investors-business-daily.html" class="app-card" data-id="1777297347604" style="text-decoration:none;color:inherit">
+          <img src="logo/ibd.png" alt="Investor&#039;s Business Daily" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Investor&#039;s Business Daily</h3>
+          <p class="app-description">Financial newspaper with stock market analysis, investing strategies, and market data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">newspaper</span><span class="app-tag">analysis</span><span class="app-tag">strategies</span>
+            </div>
+          
+        </a>
+        <a href="wall-street-journal.html" class="app-card" data-id="1777297347605" style="text-decoration:none;color:inherit">
+          <img src="logo/wsj.png" alt="The Wall Street Journal" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Wall Street Journal</h3>
+          <p class="app-description">Premier financial news publication with market coverage, business news, and analysis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">news</span><span class="app-tag">business</span><span class="app-tag">market</span>
+            </div>
+          
+        </a>
+        <a href="financial-times.html" class="app-card" data-id="1777297347606" style="text-decoration:none;color:inherit">
+          <img src="logo/ft.png" alt="Financial Times" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Financial Times</h3>
+          <p class="app-description">Global business and financial news with market analysis and economic insights.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">global</span><span class="app-tag">business</span><span class="app-tag">economic</span>
+            </div>
+          
+        </a>
+        <a href="reuters-finance.html" class="app-card" data-id="1777297347607" style="text-decoration:none;color:inherit">
+          <img src="logo/reuters.png" alt="Reuters Finance" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Reuters Finance</h3>
+          <p class="app-description">Global financial news service with real-time market data and breaking news.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">global</span><span class="app-tag">real-time</span><span class="app-tag">breaking-news</span>
+            </div>
+          
+        </a>
+        <a href="benzinga-pro.html" class="app-card" data-id="1777297347608" style="text-decoration:none;color:inherit">
+          <img src="logo/benzinga.png" alt="Benzinga Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Benzinga Pro</h3>
+          <p class="app-description">Real-time financial news and data platform with squawk box and trading alerts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">real-time</span><span class="app-tag">news</span><span class="app-tag">alerts</span>
+            </div>
+          
+        </a>
+        <a href="stocktwits.html" class="app-card" data-id="1777297347609" style="text-decoration:none;color:inherit">
+          <img src="logo/stocktwits.png" alt="StockTwits" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">StockTwits</h3>
+          <p class="app-description">Social network for investors with real-time stock discussions and sentiment analysis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">social</span><span class="app-tag">investors</span><span class="app-tag">discussions</span>
+            </div>
+          
+        </a>
+        <a href="finviz.html" class="app-card" data-id="1777297347610" style="text-decoration:none;color:inherit">
+          <img src="logo/finviz.png" alt="Finviz" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Finviz</h3>
+          <p class="app-description">Financial visualization platform with stock screener, heatmaps, and news aggregation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">visualization</span><span class="app-tag">screener</span><span class="app-tag">heatmaps</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777297347511,"name":"QuickBooks","slug":"quickbooks","version":"2024.1","description":"Leading accounting software for small businesses with invoicing, payroll, and tax preparation.","category":"finance","logoUrl":"logo/quickbooks.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=QuickBooks1&tracker=1","tags":["accounting","invoicing","payroll","small-business"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347512,"name":"Mint","slug":"mint","version":"8.5.0","description":"Free personal finance app for budgeting, bill tracking, and credit score monitoring.","category":"finance","logoUrl":"logo/mint.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mint2&tracker=2","tags":["budgeting","free","credit-score","personal-finance"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347513,"name":"YNAB (You Need A Budget)","slug":"ynab","version":"5.85.0","description":"Proactive budgeting app that helps you give every dollar a job and break the paycheck-to-paycheck cycle.","category":"finance","logoUrl":"logo/ynab.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=YNAB (You Need A Budget)3&tracker=3","tags":["budgeting","proactive","savings","financial-goals"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347514,"name":"Personal Capital","slug":"personal-capital","version":"4.2.0","description":"Wealth management platform with investment tracking, retirement planning, and financial advisory.","category":"finance","logoUrl":"logo/personal-capital.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Personal Capital4&tracker=4","tags":["wealth-management","investing","retirement","advisory"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347515,"name":"Robinhood","slug":"robinhood","version":"2024.1","description":"Commission-free stock trading app with cryptocurrency and options trading capabilities.","category":"finance","logoUrl":"logo/robinhood.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Robinhood5&tracker=5","tags":["trading","stocks","crypto","commission-free"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347516,"name":"Acorns","slug":"acorns","version":"9.2.0","description":"Micro-investing app that rounds up purchases and invests the spare change automatically.","category":"finance","logoUrl":"logo/acorns.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Acorns6&tracker=6","tags":["micro-investing","round-ups","automated","beginner"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347517,"name":"Wealthfront","slug":"wealthfront","version":"5.1.0","description":"Robo-advisor providing automated investing with tax-loss harvesting and financial planning.","category":"finance","logoUrl":"logo/wealthfront.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wealthfront7&tracker=7","tags":["robo-advisor","automated","tax-loss","planning"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347518,"name":"Betterment","slug":"betterment","version":"4.8.0","description":"Automated investing platform with goal-based portfolios and tax-efficient strategies.","category":"finance","logoUrl":"logo/betterment.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Betterment8&tracker=8","tags":["robo-advisor","goals","tax-efficient","automated"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347519,"name":"Coinbase","slug":"coinbase","version":"10.25.0","description":"Leading cryptocurrency exchange for buying, selling, and storing Bitcoin, Ethereum, and more.","category":"finance","logoUrl":"logo/coinbase.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Coinbase9&tracker=9","tags":["crypto","exchange","bitcoin","ethereum"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347520,"name":"Binance","slug":"binance","version":"2.58.0","description":"Global cryptocurrency exchange with advanced trading features and low fees.","category":"finance","logoUrl":"logo/binance.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Binance10&tracker=10","tags":["crypto","exchange","trading","low-fees"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347521,"name":"Kraken","slug":"kraken","version":"2.12.0","description":"Secure cryptocurrency exchange with advanced trading tools and staking options.","category":"finance","logoUrl":"logo/kraken.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kraken11&tracker=11","tags":["crypto","secure","staking","advanced"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347522,"name":"MetaMask","slug":"metamask","version":"11.9.0","description":"Cryptocurrency wallet and gateway to blockchain apps for Ethereum and EVM chains.","category":"finance","logoUrl":"logo/metamask.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MetaMask12&tracker=12","tags":["wallet","ethereum","defi","web3"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347523,"name":"Trust Wallet","slug":"trust-wallet","version":"7.15.0","description":"Multi-cryptocurrency wallet with built-in DApp browser and staking support.","category":"finance","logoUrl":"logo/trust-wallet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Trust Wallet13&tracker=13","tags":["wallet","multi-crypto","dapp","staking"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347524,"name":"Ledger Live","slug":"ledger-live","version":"2.76.0","description":"Hardware wallet companion app for securely managing cryptocurrency assets.","category":"finance","logoUrl":"logo/ledger-live.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ledger Live14&tracker=14","tags":["hardware-wallet","secure","crypto","management"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347525,"name":"Trezor Suite","slug":"trezor-suite","version":"24.2.0","description":"Desktop app for managing Trezor hardware wallet with portfolio tracking.","category":"finance","logoUrl":"logo/trezor-suite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Trezor Suite15&tracker=15","tags":["hardware-wallet","portfolio","crypto","secure"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347526,"name":"PayPal","slug":"paypal","version":"8.52.0","description":"Digital payment platform for sending money, shopping online, and business transactions.","category":"finance","logoUrl":"logo/paypal.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PayPal16&tracker=16","tags":["payments","online","business","transfers"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347527,"name":"Venmo","slug":"venmo","version":"9.15.0","description":"Social payment app for splitting bills, sending money to friends, and making purchases.","category":"finance","logoUrl":"logo/venmo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Venmo17&tracker=17","tags":["payments","social","p2p","splitting"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347528,"name":"Cash App","slug":"cash-app","version":"4.18.0","description":"All-in-one finance app for payments, investing, banking, and Bitcoin trading.","category":"finance","logoUrl":"logo/cash-app.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Cash App18&tracker=18","tags":["payments","investing","banking","bitcoin"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347529,"name":"Zelle","slug":"zelle","version":"5.8.0","description":"Fast, safe way to send and receive money directly between US bank accounts.","category":"finance","logoUrl":"logo/zelle.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zelle19&tracker=19","tags":["payments","bank-transfer","fast","us-banks"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347530,"name":"Stripe","slug":"stripe","version":"2024.1","description":"Payment processing platform for online businesses with APIs and developer tools.","category":"finance","logoUrl":"logo/stripe.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Stripe20&tracker=20","tags":["payments","api","business","developer"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347531,"name":"Square","slug":"square","version":"8.45.0","description":"Point of sale and payment processing system for small businesses and merchants.","category":"finance","logoUrl":"logo/square.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Square21&tracker=21","tags":["pos","payments","small-business","merchant"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347532,"name":"Shopify Payments","slug":"shopify-payments","version":"2024.1","description":"Integrated payment processing for Shopify e-commerce stores with fraud protection.","category":"finance","logoUrl":"logo/shopify-payments.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Shopify Payments22&tracker=22","tags":["ecommerce","payments","fraud-protection","shopify"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347533,"name":"TurboTax","slug":"turbotax","version":"2024.1","description":"Popular tax preparation software with guided interviews and maximum refund guarantee.","category":"finance","logoUrl":"logo/turbotax.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TurboTax23&tracker=23","tags":["taxes","preparation","guided","refund"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347534,"name":"H&R Block","slug":"hr-block","version":"2024.1","description":"Tax filing software with expert review options and audit defense coverage.","category":"finance","logoUrl":"logo/hr-block.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=H&R Block24&tracker=24","tags":["taxes","filing","expert-review","audit-defense"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347535,"name":"TaxAct","slug":"taxact","version":"2024.1","description":"Affordable tax preparation software with step-by-step guidance and import features.","category":"finance","logoUrl":"logo/taxact.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TaxAct25&tracker=25","tags":["taxes","affordable","guidance","import"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347536,"name":"Credit Karma","slug":"credit-karma","version":"5.28.0","description":"Free credit monitoring with credit scores, reports, and personalized financial recommendations.","category":"finance","logoUrl":"logo/credit-karma.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Credit Karma26&tracker=26","tags":["credit-score","monitoring","free","recommendations"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347537,"name":"Experian","slug":"experian","version":"12.5.0","description":"Credit bureau app with credit reports, scores, identity theft protection, and monitoring.","category":"finance","logoUrl":"logo/experian.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Experian27&tracker=27","tags":["credit-bureau","reports","identity-protection","monitoring"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347538,"name":"Equifax","slug":"equifax","version":"10.8.0","description":"Credit monitoring service with credit reports, scores, and fraud alerts.","category":"finance","logoUrl":"logo/equifax.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Equifax28&tracker=28","tags":["credit","monitoring","fraud-alerts","reports"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347539,"name":"TransUnion","slug":"transunion","version":"9.12.0","description":"Credit monitoring and identity protection with credit reports and score tracking.","category":"finance","logoUrl":"logo/transunion.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TransUnion29&tracker=29","tags":["credit","identity-protection","reports","tracking"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347540,"name":"NerdWallet","slug":"nerdwallet","version":"2024.1","description":"Financial comparison platform for credit cards, loans, insurance, and investing advice.","category":"finance","logoUrl":"logo/nerdwallet.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NerdWallet30&tracker=30","tags":["comparison","credit-cards","loans","advice"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347541,"name":"Bankrate","slug":"bankrate","version":"2024.1","description":"Financial rates comparison for mortgages, loans, CDs, and credit cards with calculators.","category":"finance","logoUrl":"logo/bankrate.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bankrate31&tracker=31","tags":["rates","mortgages","calculators","comparison"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347542,"name":"LendingTree","slug":"lendingtree","version":"2024.1","description":"Loan marketplace connecting borrowers with lenders for mortgages, personal loans, and more.","category":"finance","logoUrl":"logo/lendingtree.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LendingTree32&tracker=32","tags":["loans","marketplace","mortgages","comparison"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347543,"name":"SoFi","slug":"sofi","version":"10.25.0","description":"All-in-one finance app for loans, investing, banking, and career coaching.","category":"finance","logoUrl":"logo/sofi.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SoFi33&tracker=33","tags":["loans","investing","banking","all-in-one"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347544,"name":"Marcus by Goldman Sachs","slug":"marcus-goldman-sachs","version":"4.2.0","description":"High-yield savings accounts and personal loans with no fees from Goldman Sachs.","category":"finance","logoUrl":"logo/marcus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Marcus by Goldman Sachs34&tracker=34","tags":["savings","loans","no-fees","high-yield"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347545,"name":"Ally Bank","slug":"ally-bank","version":"5.8.0","description":"Online bank with competitive savings rates, checking accounts, and investment services.","category":"finance","logoUrl":"logo/ally.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ally Bank35&tracker=35","tags":["online-bank","savings","checking","investing"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347546,"name":"Chime","slug":"chime","version":"3.45.0","description":"Mobile banking app with no fees, early direct deposit, and automatic savings features.","category":"finance","logoUrl":"logo/chime.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Chime36&tracker=36","tags":["mobile-banking","no-fees","early-deposit","savings"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347547,"name":"Current","slug":"current","version":"4.12.0","description":"Mobile banking with instant notifications, savings pods, and fee-free overdraft.","category":"finance","logoUrl":"logo/current.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Current37&tracker=37","tags":["mobile-banking","notifications","savings","overdraft"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347548,"name":"Varo Bank","slug":"varo-bank","version":"3.28.0","description":"Mobile-first bank with no fees, high-yield savings, and credit builder tools.","category":"finance","logoUrl":"logo/varo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Varo Bank38&tracker=38","tags":["mobile-bank","no-fees","high-yield","credit-builder"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347549,"name":"Simple","slug":"simple","version":"4.5.0","description":"Mobile banking with smart budgeting tools, savings goals, and fee-free accounts.","category":"finance","logoUrl":"logo/simple.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Simple39&tracker=39","tags":["mobile-banking","budgeting","goals","fee-free"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347550,"name":"Digit","slug":"digit","version":"5.1.0","description":"Automated savings app that analyzes spending and transfers small amounts to savings.","category":"finance","logoUrl":"logo/digit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Digit40&tracker=40","tags":["automated-savings","spending-analysis","transfers","smart"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347551,"name":"Qapital","slug":"qapital","version":"6.8.0","description":"Goal-based savings app with rules-based automation and investment options.","category":"finance","logoUrl":"logo/qapital.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Qapital41&tracker=41","tags":["goal-based","automation","rules","investing"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347552,"name":"Stash","slug":"stash","version":"7.25.0","description":"Investing app for beginners with fractional shares, banking, and retirement accounts.","category":"finance","logoUrl":"logo/stash.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Stash42&tracker=42","tags":["investing","beginner","fractional","retirement"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347553,"name":"M1 Finance","slug":"m1-finance","version":"4.15.0","description":"Automated investing platform with custom portfolios, banking, and borrowing features.","category":"finance","logoUrl":"logo/m1-finance.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=M1 Finance43&tracker=43","tags":["automated","custom-portfolios","banking","borrowing"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347554,"name":"Fidelity Investments","slug":"fidelity-investments","version":"12.8.0","description":"Full-service brokerage with investing, retirement planning, and banking services.","category":"finance","logoUrl":"logo/fidelity.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fidelity Investments44&tracker=44","tags":["brokerage","investing","retirement","banking"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347555,"name":"Charles Schwab","slug":"charles-schwab","version":"11.5.0","description":"Investment and banking services with research tools, trading, and financial planning.","category":"finance","logoUrl":"logo/schwab.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Charles Schwab45&tracker=45","tags":["brokerage","research","trading","planning"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347556,"name":"Vanguard","slug":"vanguard","version":"5.12.0","description":"Low-cost index fund investing with retirement accounts and financial advisory services.","category":"finance","logoUrl":"logo/vanguard.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Vanguard46&tracker=46","tags":["index-funds","low-cost","retirement","advisory"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347557,"name":"E*TRADE","slug":"etrade","version":"10.2.0","description":"Online brokerage with advanced trading tools, research, and retirement planning.","category":"finance","logoUrl":"logo/etrade.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=E*TRADE47&tracker=47","tags":["brokerage","trading-tools","research","retirement"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347558,"name":"TD Ameritrade","slug":"td-ameritrade","version":"9.8.0","description":"Commission-free trading platform with thinkorswim tools and educational resources.","category":"finance","logoUrl":"logo/td-ameritrade.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TD Ameritrade48&tracker=48","tags":["commission-free","thinkorswim","education","trading"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347559,"name":"Webull","slug":"webull","version":"8.15.0","description":"Commission-free trading app with advanced charts, options, and cryptocurrency trading.","category":"finance","logoUrl":"logo/webull.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Webull49&tracker=49","tags":["commission-free","charts","options","crypto"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347560,"name":"Public.com","slug":"public-com","version":"6.5.0","description":"Social investing platform with commission-free trades and community insights.","category":"finance","logoUrl":"logo/public.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Public.com50&tracker=50","tags":["social-investing","commission-free","community","insights"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347561,"name":"TradingView","slug":"tradingview","version":"2024.1","description":"Advanced charting platform with technical analysis tools and social trading features.","category":"finance","logoUrl":"logo/tradingview.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TradingView51&tracker=51","tags":["charting","technical-analysis","social","trading"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347562,"name":"MetaTrader 4","slug":"metatrader-4","version":"4.00.1290","description":"Popular forex trading platform with automated trading and technical analysis tools.","category":"finance","logoUrl":"logo/mt4.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MetaTrader 452&tracker=52","tags":["forex","trading","automated","technical-analysis"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347563,"name":"MetaTrader 5","slug":"metatrader-5","version":"5.00.3760","description":"Advanced multi-asset trading platform with enhanced features and algorithmic trading.","category":"finance","logoUrl":"logo/mt5.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MetaTrader 553&tracker=53","tags":["multi-asset","trading","algorithmic","advanced"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347564,"name":"cTrader","slug":"ctrader","version":"4.8.0","description":"Professional forex and CFD trading platform with advanced order types and automation.","category":"finance","logoUrl":"logo/ctrader.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=cTrader54&tracker=54","tags":["forex","cfd","automation","professional"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347565,"name":"NinjaTrader","slug":"ninjatrader","version":"8.1.0.15","description":"Advanced futures and forex trading platform with strategy development and backtesting.","category":"finance","logoUrl":"logo/ninjatrader.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NinjaTrader55&tracker=55","tags":["futures","forex","backtesting","strategy"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347566,"name":"Thinkorswim","slug":"thinkorswim","version":"2024.1","description":"Professional trading platform with advanced charting, options analysis, and paper trading.","category":"finance","logoUrl":"logo/thinkorswim.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Thinkorswim56&tracker=56","tags":["professional","charting","options","paper-trading"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347567,"name":"Interactive Brokers","slug":"interactive-brokers","version":"10.20.0","description":"Global trading platform with access to stocks, options, futures, and forex markets.","category":"finance","logoUrl":"logo/interactive-brokers.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Interactive Brokers57&tracker=57","tags":["global","multi-market","professional","low-cost"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347568,"name":"eToro","slug":"etoro","version":"2024.1","description":"Social trading platform for copying top traders and investing in stocks and crypto.","category":"finance","logoUrl":"logo/etoro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=eToro58&tracker=58","tags":["social-trading","copy-trading","stocks","crypto"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347569,"name":"Plus500","slug":"plus500","version":"2024.1","description":"CFD trading platform with stocks, forex, commodities, and cryptocurrency trading.","category":"finance","logoUrl":"logo/plus500.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Plus50059&tracker=59","tags":["cfd","trading","multi-asset","crypto"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347570,"name":"IG Trading","slug":"ig-trading","version":"2024.1","description":"Global CFD and forex broker with advanced trading tools and market analysis.","category":"finance","logoUrl":"logo/ig.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=IG Trading60&tracker=60","tags":["cfd","forex","global","analysis"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347571,"name":"SaxoTraderGO","slug":"saxotradergo","version":"2024.1","description":"Multi-asset trading platform with access to global markets and advanced research.","category":"finance","logoUrl":"logo/saxo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SaxoTraderGO61&tracker=61","tags":["multi-asset","global","research","professional"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347572,"name":"TradeStation","slug":"tradestation","version":"10.5.0","description":"Advanced trading platform with strategy development, backtesting, and automated trading.","category":"finance","logoUrl":"logo/tradestation.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TradeStation62&tracker=62","tags":["advanced","strategy","backtesting","automated"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347573,"name":"Zerodha Kite","slug":"zerodha-kite","version":"3.0.0","description":"Indian stock trading platform with low brokerage and advanced charting tools.","category":"finance","logoUrl":"logo/zerodha.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zerodha Kite63&tracker=63","tags":["india","stocks","low-brokerage","charting"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347574,"name":"Upstox","slug":"upstox","version":"4.2.0","description":"Discount brokerage app for stocks, derivatives, and mutual funds in India.","category":"finance","logoUrl":"logo/upstox.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Upstox64&tracker=64","tags":["india","discount","derivatives","mutual-funds"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347575,"name":"Angel One","slug":"angel-one","version":"5.8.0","description":"Full-service brokerage with trading, research, and advisory services in India.","category":"finance","logoUrl":"logo/angel-one.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Angel One65&tracker=65","tags":["india","full-service","research","advisory"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347576,"name":"Groww","slug":"groww","version":"3.15.0","description":"Investment platform for stocks, mutual funds, and IPOs with simple interface.","category":"finance","logoUrl":"logo/groww.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Groww66&tracker=66","tags":["india","simple","mutual-funds","ipo"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347577,"name":"Kuvera","slug":"kuvera","version":"4.5.0","description":"Direct mutual fund platform with goal-based investing and portfolio tracking.","category":"finance","logoUrl":"logo/kuvera.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kuvera67&tracker=67","tags":["india","mutual-funds","goal-based","tracking"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347578,"name":"ETMoney","slug":"etmoney","version":"5.2.0","description":"Personal finance app for mutual funds, insurance, and fixed deposits in India.","category":"finance","logoUrl":"logo/etmoney.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ETMoney68&tracker=68","tags":["india","mutual-funds","insurance","fixed-deposits"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347579,"name":"Paytm Money","slug":"paytm-money","version":"3.8.0","description":"Investment platform for stocks, mutual funds, and NPS with zero commission.","category":"finance","logoUrl":"logo/paytm-money.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Paytm Money69&tracker=69","tags":["india","zero-commission","nps","stocks"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347580,"name":"Zerodha Coin","slug":"zerodha-coin","version":"2.5.0","description":"Direct mutual fund platform with zero commission and portfolio tracking.","category":"finance","logoUrl":"logo/zerodha-coin.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zerodha Coin70&tracker=70","tags":["india","mutual-funds","zero-commission","tracking"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347581,"name":"Smallcase","slug":"smallcase","version":"4.12.0","description":"Thematic investing platform with curated portfolios of stocks and ETFs.","category":"finance","logoUrl":"logo/smallcase.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Smallcase71&tracker=71","tags":["india","thematic","portfolios","etf"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347582,"name":"Streak","slug":"streak","version":"3.5.0","description":"Algorithmic trading platform for creating and backtesting strategies without coding.","category":"finance","logoUrl":"logo/streak.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Streak72&tracker=72","tags":["india","algorithmic","no-code","backtesting"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347583,"name":"Sensibull","slug":"sensibull","version":"2.8.0","description":"Options trading platform with strategy builder, virtual trading, and analytics.","category":"finance","logoUrl":"logo/sensibull.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sensibull73&tracker=73","tags":["india","options","strategy","virtual-trading"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347584,"name":"Opstra","slug":"opstra","version":"2.1.0","description":"Options analytics platform with strategy builder and risk analysis tools.","category":"finance","logoUrl":"logo/opstra.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Opstra74&tracker=74","tags":["india","options","analytics","risk-analysis"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347585,"name":"Tickertape","slug":"tickertape","version":"3.2.0","description":"Stock research platform with screening tools, valuation metrics, and portfolio tracking.","category":"finance","logoUrl":"logo/tickertape.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tickertape75&tracker=75","tags":["india","research","screening","valuation"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347586,"name":"Moneycontrol","slug":"moneycontrol","version":"6.5.0","description":"Financial news and data platform with stock quotes, portfolio tracking, and market analysis.","category":"finance","logoUrl":"logo/moneycontrol.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Moneycontrol76&tracker=76","tags":["india","news","quotes","analysis"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347587,"name":"Economic Times Markets","slug":"economic-times-markets","version":"5.1.0","description":"Business news and market data app with stock analysis and portfolio management.","category":"finance","logoUrl":"logo/et-markets.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Economic Times Markets77&tracker=77","tags":["india","business-news","market-data","portfolio"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347588,"name":"Bloomberg Terminal","slug":"bloomberg-terminal","version":"2024.1","description":"Professional financial data platform with real-time market data, news, and analytics.","category":"finance","logoUrl":"logo/bloomberg.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bloomberg Terminal78&tracker=78","tags":["professional","real-time","data","analytics"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347589,"name":"Refinitiv Eikon","slug":"refinitiv-eikon","version":"2024.1","description":"Financial data and analytics platform for professionals with global market coverage.","category":"finance","logoUrl":"logo/refinitiv.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Refinitiv Eikon79&tracker=79","tags":["professional","analytics","global","data"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347590,"name":"FactSet","slug":"factset","version":"2024.1","description":"Integrated financial information and analytical applications for investment professionals.","category":"finance","logoUrl":"logo/factset.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FactSet80&tracker=80","tags":["professional","integrated","analytical","investment"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347591,"name":"Morningstar Direct","slug":"morningstar-direct","version":"2024.1","description":"Investment research platform with fund analysis, portfolio construction, and reporting.","category":"finance","logoUrl":"logo/morningstar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Morningstar Direct81&tracker=81","tags":["research","fund-analysis","portfolio","reporting"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347592,"name":"S&P Capital IQ","slug":"sp-capital-iq","version":"2024.1","description":"Financial intelligence platform with company data, screening, and analytics tools.","category":"finance","logoUrl":"logo/capital-iq.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=S&P Capital IQ82&tracker=82","tags":["intelligence","company-data","screening","analytics"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347593,"name":"Yahoo Finance","slug":"yahoo-finance","version":"2024.1","description":"Free financial news and data platform with stock quotes, portfolio tracking, and analysis.","category":"finance","logoUrl":"logo/yahoo-finance.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Yahoo Finance83&tracker=83","tags":["free","news","quotes","portfolio"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347594,"name":"Google Finance","slug":"google-finance","version":"2024.1","description":"Simple financial data tool with stock tracking, news, and basic portfolio management.","category":"finance","logoUrl":"logo/google-finance.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Finance84&tracker=84","tags":["free","simple","tracking","google"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347595,"name":"Seeking Alpha","slug":"seeking-alpha","version":"2024.1","description":"Investment research platform with stock analysis, earnings calls, and community insights.","category":"finance","logoUrl":"logo/seeking-alpha.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Seeking Alpha85&tracker=85","tags":["research","analysis","earnings","community"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347596,"name":"Zacks Investment Research","slug":"zacks-investment-research","version":"2024.1","description":"Stock research platform with earnings estimates, rankings, and investment strategies.","category":"finance","logoUrl":"logo/zacks.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Zacks Investment Research86&tracker=86","tags":["research","earnings","rankings","strategies"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347597,"name":"The Motley Fool","slug":"the-motley-fool","version":"2024.1","description":"Investment advice platform with stock recommendations, analysis, and educational content.","category":"finance","logoUrl":"logo/motley-fool.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Motley Fool87&tracker=87","tags":["advice","recommendations","analysis","education"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347598,"name":"Investopedia Simulator","slug":"investopedia-simulator","version":"2024.1","description":"Virtual stock trading simulator for practicing investing without real money risk.","category":"finance","logoUrl":"logo/investopedia.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Investopedia Simulator88&tracker=88","tags":["simulator","virtual","practice","education"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347599,"name":"MarketWatch","slug":"marketwatch","version":"2024.1","description":"Financial news and data platform with market analysis, stock quotes, and portfolio tools.","category":"finance","logoUrl":"logo/marketwatch.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MarketWatch89&tracker=89","tags":["news","analysis","quotes","portfolio"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347600,"name":"CNBC Pro","slug":"cnbc-pro","version":"2024.1","description":"Premium financial news service with real-time market data and expert analysis.","category":"finance","logoUrl":"logo/cnbc-pro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CNBC Pro90&tracker=90","tags":["premium","news","real-time","expert"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347601,"name":"Barron's","slug":"barrons","version":"2024.1","description":"Investment news and analysis publication with stock picks and market insights.","category":"finance","logoUrl":"logo/barrons.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Barron's91&tracker=91","tags":["news","analysis","stock-picks","insights"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347602,"name":"Kiplinger","slug":"kiplinger","version":"2024.1","description":"Personal finance publication with investing advice, tax tips, and retirement planning.","category":"finance","logoUrl":"logo/kiplinger.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kiplinger92&tracker=92","tags":["personal-finance","advice","tax","retirement"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347603,"name":"Forbes Advisor","slug":"forbes-advisor","version":"2024.1","description":"Financial advice platform with product reviews, investing guides, and money management tips.","category":"finance","logoUrl":"logo/forbes-advisor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Forbes Advisor93&tracker=93","tags":["advice","reviews","guides","money-management"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347604,"name":"Investor's Business Daily","slug":"investors-business-daily","version":"2024.1","description":"Financial newspaper with stock market analysis, investing strategies, and market data.","category":"finance","logoUrl":"logo/ibd.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Investor's Business Daily94&tracker=94","tags":["newspaper","analysis","strategies","data"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347605,"name":"The Wall Street Journal","slug":"wall-street-journal","version":"2024.1","description":"Premier financial news publication with market coverage, business news, and analysis.","category":"finance","logoUrl":"logo/wsj.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Wall Street Journal95&tracker=95","tags":["news","business","market","analysis"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347606,"name":"Financial Times","slug":"financial-times","version":"2024.1","description":"Global business and financial news with market analysis and economic insights.","category":"finance","logoUrl":"logo/ft.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Financial Times96&tracker=96","tags":["global","business","economic","analysis"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347607,"name":"Reuters Finance","slug":"reuters-finance","version":"2024.1","description":"Global financial news service with real-time market data and breaking news.","category":"finance","logoUrl":"logo/reuters.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Reuters Finance97&tracker=97","tags":["global","real-time","breaking-news","data"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347608,"name":"Benzinga Pro","slug":"benzinga-pro","version":"2024.1","description":"Real-time financial news and data platform with squawk box and trading alerts.","category":"finance","logoUrl":"logo/benzinga.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Benzinga Pro98&tracker=98","tags":["real-time","news","alerts","squawk"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347609,"name":"StockTwits","slug":"stocktwits","version":"2024.1","description":"Social network for investors with real-time stock discussions and sentiment analysis.","category":"finance","logoUrl":"logo/stocktwits.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=StockTwits99&tracker=99","tags":["social","investors","discussions","sentiment"],"scrapedAt":"2026-04-27T13:42:27.511Z"},{"id":1777297347610,"name":"Finviz","slug":"finviz","version":"2024.1","description":"Financial visualization platform with stock screener, heatmaps, and news aggregation.","category":"finance","logoUrl":"logo/finviz.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Finviz100&tracker=100","tags":["visualization","screener","heatmaps","news"],"scrapedAt":"2026-04-27T13:42:27.511Z"}];
+    const CURRENT_CATEGORY = 'finance';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

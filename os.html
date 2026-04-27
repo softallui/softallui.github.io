@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>OS — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>OS</h1>
+    <p><span class="highlight">25</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="macos-sequoia.html" class="app-card" data-id="1777301317681" style="text-decoration:none;color:inherit">
+          <img src="logo/macos-sequoia.png" alt="macOS Sequoia" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">macOS Sequoia</h3>
+          <p class="app-description">Latest macOS with Apple Intelligence, window tiling, iPhone mirroring, and enhanced Safari.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">latest</span><span class="app-tag">intelligence</span>
+            </div>
+          
+        </a>
+        <a href="macos-sonoma.html" class="app-card" data-id="1777301317682" style="text-decoration:none;color:inherit">
+          <img src="logo/macos-sonoma.png" alt="macOS Sonoma" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">macOS Sonoma</h3>
+          <p class="app-description">macOS with interactive widgets, video conferencing enhancements, and gaming improvements.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">widgets</span><span class="app-tag">gaming</span>
+            </div>
+          
+        </a>
+        <a href="macos-ventura.html" class="app-card" data-id="1777301317683" style="text-decoration:none;color:inherit">
+          <img src="logo/macos-ventura.png" alt="macOS Ventura" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">macOS Ventura</h3>
+          <p class="app-description">macOS with Stage Manager, Continuity Camera, and enhanced Spotlight search.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">stage-manager</span><span class="app-tag">continuity</span>
+            </div>
+          
+        </a>
+        <a href="macos-monterey.html" class="app-card" data-id="1777301317684" style="text-decoration:none;color:inherit">
+          <img src="logo/macos-monterey.png" alt="macOS Monterey" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">macOS Monterey</h3>
+          <p class="app-description">macOS with Universal Control, Shortcuts app, and Focus modes for productivity.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">universal-control</span><span class="app-tag">shortcuts</span>
+            </div>
+          
+        </a>
+        <a href="macos-big-sur.html" class="app-card" data-id="1777301317685" style="text-decoration:none;color:inherit">
+          <img src="logo/macos-big-sur.png" alt="macOS Big Sur" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">macOS Big Sur</h3>
+          <p class="app-description">Major redesign of macOS with new control center, notifications, and Apple Silicon support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">redesign</span><span class="app-tag">apple-silicon</span>
+            </div>
+          
+        </a>
+        <a href="macos-catalina.html" class="app-card" data-id="1777301317686" style="text-decoration:none;color:inherit">
+          <img src="logo/macos-catalina.png" alt="macOS Catalina" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">macOS Catalina</h3>
+          <p class="app-description">macOS that replaced iTunes with separate Music, TV, and Podcasts apps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">itunes-replacement</span><span class="app-tag">sidecar</span>
+            </div>
+          
+        </a>
+        <a href="macos-mojave.html" class="app-card" data-id="1777301317687" style="text-decoration:none;color:inherit">
+          <img src="logo/macos-mojave.png" alt="macOS Mojave" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">macOS Mojave</h3>
+          <p class="app-description">macOS with Dark Mode, Desktop Stacks, and enhanced screenshot tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">dark-mode</span><span class="app-tag">stacks</span>
+            </div>
+          
+        </a>
+        <a href="macos-high-sierra.html" class="app-card" data-id="1777301317688" style="text-decoration:none;color:inherit">
+          <img src="logo/macos-high-sierra.png" alt="macOS High Sierra" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">macOS High Sierra</h3>
+          <p class="app-description">macOS focused on refinements with APFS, Metal 2, and VR support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">apfs</span><span class="app-tag">metal2</span>
+            </div>
+          
+        </a>
+        <a href="macos-sierra.html" class="app-card" data-id="1777301317689" style="text-decoration:none;color:inherit">
+          <img src="logo/macos-sierra.png" alt="macOS Sierra" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">macOS Sierra</h3>
+          <p class="app-description">macOS with Siri integration, Universal Clipboard, and Auto Unlock with Apple Watch.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">siri</span><span class="app-tag">universal-clipboard</span>
+            </div>
+          
+        </a>
+        <a href="os-x-el-capitan.html" class="app-card" data-id="1777301317690" style="text-decoration:none;color:inherit">
+          <img src="logo/osx-el-capitan.png" alt="OS X El Capitan" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OS X El Capitan</h3>
+          <p class="app-description">OS X focused on performance improvements and refined user experience.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">performance</span><span class="app-tag">split-view</span>
+            </div>
+          
+        </a>
+        <a href="os-x-yosemite.html" class="app-card" data-id="1777301317691" style="text-decoration:none;color:inherit">
+          <img src="logo/osx-yosemite.png" alt="OS X Yosemite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OS X Yosemite</h3>
+          <p class="app-description">OS X with redesigned interface, Continuity features, and Handoff support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">redesign</span><span class="app-tag">continuity</span>
+            </div>
+          
+        </a>
+        <a href="os-x-mavericks.html" class="app-card" data-id="1777301317692" style="text-decoration:none;color:inherit">
+          <img src="logo/osx-mavericks.png" alt="OS X Mavericks" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OS X Mavericks</h3>
+          <p class="app-description">First free OS X update with Maps, iBooks, and enhanced multi-display support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">free</span><span class="app-tag">maps</span>
+            </div>
+          
+        </a>
+        <a href="os-x-mountain-lion.html" class="app-card" data-id="1777301317693" style="text-decoration:none;color:inherit">
+          <img src="logo/osx-mountain-lion.png" alt="OS X Mountain Lion" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OS X Mountain Lion</h3>
+          <p class="app-description">OS X with iCloud integration, Notification Center, and Gatekeeper security.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">icloud</span><span class="app-tag">notification-center</span>
+            </div>
+          
+        </a>
+        <a href="os-x-lion.html" class="app-card" data-id="1777301317694" style="text-decoration:none;color:inherit">
+          <img src="logo/osx-lion.png" alt="OS X Lion" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OS X Lion</h3>
+          <p class="app-description">OS X with Launchpad, Mission Control, and Multi-Touch gestures.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">launchpad</span><span class="app-tag">mission-control</span>
+            </div>
+          
+        </a>
+        <a href="mac-os-x-snow-leopard.html" class="app-card" data-id="1777301317695" style="text-decoration:none;color:inherit">
+          <img src="logo/osx-snow-leopard.png" alt="Mac OS X Snow Leopard" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mac OS X Snow Leopard</h3>
+          <p class="app-description">Refined OS X focused on performance, stability, and Grand Central Dispatch.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">performance</span><span class="app-tag">gcd</span>
+            </div>
+          
+        </a>
+        <a href="mac-os-x-leopard.html" class="app-card" data-id="1777301317696" style="text-decoration:none;color:inherit">
+          <img src="logo/osx-leopard.png" alt="Mac OS X Leopard" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mac OS X Leopard</h3>
+          <p class="app-description">OS X with Time Machine, Spaces, Boot Camp, and enhanced Spotlight.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">time-machine</span><span class="app-tag">spaces</span>
+            </div>
+          
+        </a>
+        <a href="mac-os-x-tiger.html" class="app-card" data-id="1777301317697" style="text-decoration:none;color:inherit">
+          <img src="logo/osx-tiger.png" alt="Mac OS X Tiger" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mac OS X Tiger</h3>
+          <p class="app-description">OS X with Spotlight, Dashboard, Automator, and Safari RSS support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">spotlight</span><span class="app-tag">dashboard</span>
+            </div>
+          
+        </a>
+        <a href="mac-os-x-panther.html" class="app-card" data-id="1777301317698" style="text-decoration:none;color:inherit">
+          <img src="logo/osx-panther.png" alt="Mac OS X Panther" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mac OS X Panther</h3>
+          <p class="app-description">OS X with Exposé, FileVault, Fast User Switching, and Safari browser.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">expose</span><span class="app-tag">filevault</span>
+            </div>
+          
+        </a>
+        <a href="mac-os-x-jaguar.html" class="app-card" data-id="1777301317699" style="text-decoration:none;color:inherit">
+          <img src="logo/osx-jaguar.png" alt="Mac OS X Jaguar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mac OS X Jaguar</h3>
+          <p class="app-description">OS X with Quartz Extreme, iChat, Rendezvous, and improved Finder.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">quartz-extreme</span><span class="app-tag">ichat</span>
+            </div>
+          
+        </a>
+        <a href="mac-os-x-puma.html" class="app-card" data-id="1777301317700" style="text-decoration:none;color:inherit">
+          <img src="logo/osx-puma.png" alt="Mac OS X Puma" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mac OS X Puma</h3>
+          <p class="app-description">First major update to Mac OS X with DVD playback and performance improvements.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">dvd-playback</span><span class="app-tag">performance</span>
+            </div>
+          
+        </a>
+        <a href="mac-os-x-cheetah.html" class="app-card" data-id="1777301317701" style="text-decoration:none;color:inherit">
+          <img src="logo/osx-cheetah.png" alt="Mac OS X Cheetah" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mac OS X Cheetah</h3>
+          <p class="app-description">First public release of Mac OS X with Aqua interface and Unix foundation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">aqua</span><span class="app-tag">unix</span>
+            </div>
+          
+        </a>
+        <a href="mac-os-x-public-beta.html" class="app-card" data-id="1777301317702" style="text-decoration:none;color:inherit">
+          <img src="logo/osx-kodiak.png" alt="Mac OS X Public Beta" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mac OS X Public Beta</h3>
+          <p class="app-description">Public beta release of Mac OS X that introduced the Aqua interface to developers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">beta</span><span class="app-tag">aqua</span>
+            </div>
+          
+        </a>
+        <a href="mac-os-9.html" class="app-card" data-id="1777301317703" style="text-decoration:none;color:inherit">
+          <img src="logo/mac-os-9.png" alt="Mac OS 9" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mac OS 9</h3>
+          <p class="app-description">Final classic Mac OS release before transition to Mac OS X.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">classic</span><span class="app-tag">legacy</span>
+            </div>
+          
+        </a>
+        <a href="mac-os-8.html" class="app-card" data-id="1777301317704" style="text-decoration:none;color:inherit">
+          <img src="logo/mac-os-8.png" alt="Mac OS 8" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mac OS 8</h3>
+          <p class="app-description">Classic Mac OS with Platinum interface and improved multitasking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">classic</span><span class="app-tag">platinum</span>
+            </div>
+          
+        </a>
+        <a href="mac-os-7.html" class="app-card" data-id="1777301317705" style="text-decoration:none;color:inherit">
+          <img src="logo/mac-os-7.png" alt="Mac OS 7" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mac OS 7</h3>
+          <p class="app-description">Major Mac OS release with virtual memory, cooperative multitasking, and aliases.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">apple</span><span class="app-tag">classic</span><span class="app-tag">virtual-memory</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777301317681,"name":"macOS Sequoia","slug":"macos-sequoia","version":"15.0","description":"Latest macOS with Apple Intelligence, window tiling, iPhone mirroring, and enhanced Safari.","category":"os","logoUrl":"logo/macos-sequoia.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=macOS Sequoia1&tracker=1","tags":["apple","latest","intelligence","iphone-mirroring"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317682,"name":"macOS Sonoma","slug":"macos-sonoma","version":"14.0","description":"macOS with interactive widgets, video conferencing enhancements, and gaming improvements.","category":"os","logoUrl":"logo/macos-sonoma.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=macOS Sonoma2&tracker=2","tags":["apple","widgets","gaming","video-conferencing"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317683,"name":"macOS Ventura","slug":"macos-ventura","version":"13.0","description":"macOS with Stage Manager, Continuity Camera, and enhanced Spotlight search.","category":"os","logoUrl":"logo/macos-ventura.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=macOS Ventura3&tracker=3","tags":["apple","stage-manager","continuity","spotlight"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317684,"name":"macOS Monterey","slug":"macos-monterey","version":"12.0","description":"macOS with Universal Control, Shortcuts app, and Focus modes for productivity.","category":"os","logoUrl":"logo/macos-monterey.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=macOS Monterey4&tracker=4","tags":["apple","universal-control","shortcuts","focus"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317685,"name":"macOS Big Sur","slug":"macos-big-sur","version":"11.0","description":"Major redesign of macOS with new control center, notifications, and Apple Silicon support.","category":"os","logoUrl":"logo/macos-big-sur.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=macOS Big Sur5&tracker=5","tags":["apple","redesign","apple-silicon","control-center"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317686,"name":"macOS Catalina","slug":"macos-catalina","version":"10.15","description":"macOS that replaced iTunes with separate Music, TV, and Podcasts apps.","category":"os","logoUrl":"logo/macos-catalina.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=macOS Catalina6&tracker=6","tags":["apple","itunes-replacement","sidecar","catalyst"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317687,"name":"macOS Mojave","slug":"macos-mojave","version":"10.14","description":"macOS with Dark Mode, Desktop Stacks, and enhanced screenshot tools.","category":"os","logoUrl":"logo/macos-mojave.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=macOS Mojave7&tracker=7","tags":["apple","dark-mode","stacks","screenshots"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317688,"name":"macOS High Sierra","slug":"macos-high-sierra","version":"10.13","description":"macOS focused on refinements with APFS, Metal 2, and VR support.","category":"os","logoUrl":"logo/macos-high-sierra.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=macOS High Sierra8&tracker=8","tags":["apple","apfs","metal2","vr"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317689,"name":"macOS Sierra","slug":"macos-sierra","version":"10.12","description":"macOS with Siri integration, Universal Clipboard, and Auto Unlock with Apple Watch.","category":"os","logoUrl":"logo/macos-sierra.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=macOS Sierra9&tracker=9","tags":["apple","siri","universal-clipboard","apple-watch"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317690,"name":"OS X El Capitan","slug":"os-x-el-capitan","version":"10.11","description":"OS X focused on performance improvements and refined user experience.","category":"os","logoUrl":"logo/osx-el-capitan.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OS X El Capitan10&tracker=10","tags":["apple","performance","split-view","metal"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317691,"name":"OS X Yosemite","slug":"os-x-yosemite","version":"10.10","description":"OS X with redesigned interface, Continuity features, and Handoff support.","category":"os","logoUrl":"logo/osx-yosemite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OS X Yosemite11&tracker=11","tags":["apple","redesign","continuity","handoff"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317692,"name":"OS X Mavericks","slug":"os-x-mavericks","version":"10.9","description":"First free OS X update with Maps, iBooks, and enhanced multi-display support.","category":"os","logoUrl":"logo/osx-mavericks.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OS X Mavericks12&tracker=12","tags":["apple","free","maps","ibooks"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317693,"name":"OS X Mountain Lion","slug":"os-x-mountain-lion","version":"10.8","description":"OS X with iCloud integration, Notification Center, and Gatekeeper security.","category":"os","logoUrl":"logo/osx-mountain-lion.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OS X Mountain Lion13&tracker=13","tags":["apple","icloud","notification-center","gatekeeper"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317694,"name":"OS X Lion","slug":"os-x-lion","version":"10.7","description":"OS X with Launchpad, Mission Control, and Multi-Touch gestures.","category":"os","logoUrl":"logo/osx-lion.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OS X Lion14&tracker=14","tags":["apple","launchpad","mission-control","multi-touch"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317695,"name":"Mac OS X Snow Leopard","slug":"mac-os-x-snow-leopard","version":"10.6","description":"Refined OS X focused on performance, stability, and Grand Central Dispatch.","category":"os","logoUrl":"logo/osx-snow-leopard.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mac OS X Snow Leopard15&tracker=15","tags":["apple","performance","gcd","refinement"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317696,"name":"Mac OS X Leopard","slug":"mac-os-x-leopard","version":"10.5","description":"OS X with Time Machine, Spaces, Boot Camp, and enhanced Spotlight.","category":"os","logoUrl":"logo/osx-leopard.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mac OS X Leopard16&tracker=16","tags":["apple","time-machine","spaces","boot-camp"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317697,"name":"Mac OS X Tiger","slug":"mac-os-x-tiger","version":"10.4","description":"OS X with Spotlight, Dashboard, Automator, and Safari RSS support.","category":"os","logoUrl":"logo/osx-tiger.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mac OS X Tiger17&tracker=17","tags":["apple","spotlight","dashboard","automator"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317698,"name":"Mac OS X Panther","slug":"mac-os-x-panther","version":"10.3","description":"OS X with Exposé, FileVault, Fast User Switching, and Safari browser.","category":"os","logoUrl":"logo/osx-panther.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mac OS X Panther18&tracker=18","tags":["apple","expose","filevault","safari"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317699,"name":"Mac OS X Jaguar","slug":"mac-os-x-jaguar","version":"10.2","description":"OS X with Quartz Extreme, iChat, Rendezvous, and improved Finder.","category":"os","logoUrl":"logo/osx-jaguar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mac OS X Jaguar19&tracker=19","tags":["apple","quartz-extreme","ichat","rendezvous"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317700,"name":"Mac OS X Puma","slug":"mac-os-x-puma","version":"10.1","description":"First major update to Mac OS X with DVD playback and performance improvements.","category":"os","logoUrl":"logo/osx-puma.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mac OS X Puma20&tracker=20","tags":["apple","dvd-playback","performance","update"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317701,"name":"Mac OS X Cheetah","slug":"mac-os-x-cheetah","version":"10.0","description":"First public release of Mac OS X with Aqua interface and Unix foundation.","category":"os","logoUrl":"logo/osx-cheetah.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mac OS X Cheetah21&tracker=21","tags":["apple","aqua","unix","first-release"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317702,"name":"Mac OS X Public Beta","slug":"mac-os-x-public-beta","version":"Kodiak","description":"Public beta release of Mac OS X that introduced the Aqua interface to developers.","category":"os","logoUrl":"logo/osx-kodiak.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mac OS X Public Beta22&tracker=22","tags":["apple","beta","aqua","developer"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317703,"name":"Mac OS 9","slug":"mac-os-9","version":"9.2.2","description":"Final classic Mac OS release before transition to Mac OS X.","category":"os","logoUrl":"logo/mac-os-9.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mac OS 923&tracker=23","tags":["apple","classic","legacy","pre-x"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317704,"name":"Mac OS 8","slug":"mac-os-8","version":"8.6","description":"Classic Mac OS with Platinum interface and improved multitasking.","category":"os","logoUrl":"logo/mac-os-8.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mac OS 824&tracker=24","tags":["apple","classic","platinum","multitasking"],"scrapedAt":"2026-04-27T14:48:37.681Z"},{"id":1777301317705,"name":"Mac OS 7","slug":"mac-os-7","version":"7.6.1","description":"Major Mac OS release with virtual memory, cooperative multitasking, and aliases.","category":"os","logoUrl":"logo/mac-os-7.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mac OS 725&tracker=25","tags":["apple","classic","virtual-memory","multitasking"],"scrapedAt":"2026-04-27T14:48:37.681Z"}];
+    const CURRENT_CATEGORY = 'os';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

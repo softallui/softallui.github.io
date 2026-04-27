@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Entertainment — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Entertainment</h1>
+    <p><span class="highlight">83</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="netflix.html" class="app-card" data-id="1777297685361" style="text-decoration:none;color:inherit">
+          <img src="logo/netflix.png" alt="Netflix" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Netflix</h3>
+          <p class="app-description">Stream unlimited movies, TV shows, and original content on any device.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">movies</span><span class="app-tag">tv-shows</span>
+            </div>
+          
+        </a>
+        <a href="disney-plus.html" class="app-card" data-id="1777297685362" style="text-decoration:none;color:inherit">
+          <img src="logo/disney-plus.png" alt="Disney+" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Disney+</h3>
+          <p class="app-description">Stream Disney, Pixar, Marvel, Star Wars, and National Geographic content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">disney</span><span class="app-tag">marvel</span>
+            </div>
+          
+        </a>
+        <a href="amazon-prime-video.html" class="app-card" data-id="1777297685363" style="text-decoration:none;color:inherit">
+          <img src="logo/prime-video.png" alt="Amazon Prime Video" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Amazon Prime Video</h3>
+          <p class="app-description">Watch movies, TV shows, and Amazon Originals with Prime membership.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">amazon</span><span class="app-tag">originals</span>
+            </div>
+          
+        </a>
+        <a href="hulu.html" class="app-card" data-id="1777297685364" style="text-decoration:none;color:inherit">
+          <img src="logo/hulu.png" alt="Hulu" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hulu</h3>
+          <p class="app-description">Stream current TV episodes, classic shows, movies, and Hulu Originals.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">tv</span><span class="app-tag">movies</span>
+            </div>
+          
+        </a>
+        <a href="hbo-max.html" class="app-card" data-id="1777297685365" style="text-decoration:none;color:inherit">
+          <img src="logo/hbo-max.png" alt="HBO Max" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HBO Max</h3>
+          <p class="app-description">Stream HBO originals, blockbuster movies, and exclusive Max content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">hbo</span><span class="app-tag">movies</span>
+            </div>
+          
+        </a>
+        <a href="apple-tv-plus.html" class="app-card" data-id="1777297685366" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-tv-plus.png" alt="Apple TV+" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple TV+</h3>
+          <p class="app-description">Stream award-winning Apple Original shows and movies in 4K HDR.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">apple</span><span class="app-tag">originals</span>
+            </div>
+          
+        </a>
+        <a href="paramount-plus.html" class="app-card" data-id="1777297685367" style="text-decoration:none;color:inherit">
+          <img src="logo/paramount-plus.png" alt="Paramount+" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Paramount+</h3>
+          <p class="app-description">Stream CBS shows, Paramount movies, and exclusive originals.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">cbs</span><span class="app-tag">paramount</span>
+            </div>
+          
+        </a>
+        <a href="peacock.html" class="app-card" data-id="1777297685368" style="text-decoration:none;color:inherit">
+          <img src="logo/peacock.png" alt="Peacock" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Peacock</h3>
+          <p class="app-description">Stream NBC shows, movies, sports, and WWE content with free and premium tiers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">streaming</span><span class="app-tag">nbc</span><span class="app-tag">sports</span>
+            </div>
+          
+        </a>
+        <a href="youtube-premium.html" class="app-card" data-id="1777297685369" style="text-decoration:none;color:inherit">
+          <img src="logo/youtube-premium.png" alt="YouTube Premium" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">YouTube Premium</h3>
+          <p class="app-description">Ad-free YouTube with background play, downloads, and YouTube Originals.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">youtube</span><span class="app-tag">ad-free</span><span class="app-tag">downloads</span>
+            </div>
+          
+        </a>
+        <a href="twitch.html" class="app-card" data-id="1777297685370" style="text-decoration:none;color:inherit">
+          <img src="logo/twitch.png" alt="Twitch" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Twitch</h3>
+          <p class="app-description">Live streaming platform for gaming, music, creative content, and esports.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">live-streaming</span><span class="app-tag">gaming</span><span class="app-tag">esports</span>
+            </div>
+          
+        </a>
+        <a href="crunchyroll.html" class="app-card" data-id="1777297685371" style="text-decoration:none;color:inherit">
+          <img src="logo/crunchyroll.png" alt="Crunchyroll" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Crunchyroll</h3>
+          <p class="app-description">Stream the largest collection of anime and manga with simulcast episodes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">anime</span><span class="app-tag">manga</span><span class="app-tag">simulcast</span>
+            </div>
+          
+        </a>
+        <a href="funimation.html" class="app-card" data-id="1777297685372" style="text-decoration:none;color:inherit">
+          <img src="logo/funimation.png" alt="Funimation" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Funimation</h3>
+          <p class="app-description">Stream dubbed and subbed anime with exclusive content and simulcasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">anime</span><span class="app-tag">dubbed</span><span class="app-tag">simulcast</span>
+            </div>
+          
+        </a>
+        <a href="shudder.html" class="app-card" data-id="1777297685373" style="text-decoration:none;color:inherit">
+          <img src="logo/shudder.png" alt="Shudder" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Shudder</h3>
+          <p class="app-description">Streaming service dedicated to horror, thriller, and supernatural content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">horror</span><span class="app-tag">thriller</span><span class="app-tag">supernatural</span>
+            </div>
+          
+        </a>
+        <a href="mubi.html" class="app-card" data-id="1777297685374" style="text-decoration:none;color:inherit">
+          <img src="logo/mubi.png" alt="MUBI" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MUBI</h3>
+          <p class="app-description">Curated streaming service featuring classic, independent, and award-winning films.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">classic</span><span class="app-tag">independent</span><span class="app-tag">curated</span>
+            </div>
+          
+        </a>
+        <a href="criterion-channel.html" class="app-card" data-id="1777297685375" style="text-decoration:none;color:inherit">
+          <img src="logo/criterion.png" alt="The Criterion Channel" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Criterion Channel</h3>
+          <p class="app-description">Stream classic and contemporary films from the Criterion Collection.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">classic</span><span class="app-tag">criterion</span><span class="app-tag">cinema</span>
+            </div>
+          
+        </a>
+        <a href="tubi.html" class="app-card" data-id="1777297685376" style="text-decoration:none;color:inherit">
+          <img src="logo/tubi.png" alt="Tubi" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tubi</h3>
+          <p class="app-description">Free streaming service with thousands of movies and TV shows, ad-supported.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">ad-supported</span><span class="app-tag">movies</span>
+            </div>
+          
+        </a>
+        <a href="pluto-tv.html" class="app-card" data-id="1777297685377" style="text-decoration:none;color:inherit">
+          <img src="logo/pluto-tv.png" alt="Pluto TV" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pluto TV</h3>
+          <p class="app-description">Free live TV and on-demand streaming with hundreds of channels.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">free</span><span class="app-tag">live-tv</span><span class="app-tag">channels</span>
+            </div>
+          
+        </a>
+        <a href="plex.html" class="app-card" data-id="1777297685378" style="text-decoration:none;color:inherit">
+          <img src="logo/plex.png" alt="Plex" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Plex</h3>
+          <p class="app-description">Media server and streaming app for organizing and watching personal media libraries.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">media-server</span><span class="app-tag">personal</span><span class="app-tag">streaming</span>
+            </div>
+          
+        </a>
+        <a href="popcorn-time.html" class="app-card" data-id="1777297685383" style="text-decoration:none;color:inherit">
+          <img src="logo/popcorn-time.png" alt="Popcorn Time" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Popcorn Time</h3>
+          <p class="app-description">BitTorrent client for streaming movies and TV shows directly from torrent sources.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">torrent</span><span class="app-tag">streaming</span><span class="app-tag">movies</span>
+            </div>
+          
+        </a>
+        <a href="readarr.html" class="app-card" data-id="1777297685385" style="text-decoration:none;color:inherit">
+          <img src="logo/readarr.png" alt="Readarr" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Readarr</h3>
+          <p class="app-description">E-book and audiobook manager with automatic downloading and library organization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ebooks</span><span class="app-tag">audiobooks</span><span class="app-tag">automation</span>
+            </div>
+          
+        </a>
+        <a href="sonarr.html" class="app-card" data-id="1777297685386" style="text-decoration:none;color:inherit">
+          <img src="logo/sonarr.png" alt="Sonarr" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sonarr</h3>
+          <p class="app-description">Automatic TV show downloader and organizer for Usenet and BitTorrent.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tv-shows</span><span class="app-tag">automation</span><span class="app-tag">usenet</span>
+            </div>
+          
+        </a>
+        <a href="radarr.html" class="app-card" data-id="1777297685387" style="text-decoration:none;color:inherit">
+          <img src="logo/radarr.png" alt="Radarr" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Radarr</h3>
+          <p class="app-description">Automatic movie downloader and organizer for Usenet and BitTorrent sources.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">movies</span><span class="app-tag">automation</span><span class="app-tag">usenet</span>
+            </div>
+          
+        </a>
+        <a href="lidarr.html" class="app-card" data-id="1777297685388" style="text-decoration:none;color:inherit">
+          <img src="logo/lidarr.png" alt="Lidarr" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Lidarr</h3>
+          <p class="app-description">Music collection manager for automatic downloading and organizing albums.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">albums</span><span class="app-tag">automation</span>
+            </div>
+          
+        </a>
+        <a href="bazarr.html" class="app-card" data-id="1777297685389" style="text-decoration:none;color:inherit">
+          <img src="logo/bazarr.png" alt="Bazarr" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bazarr</h3>
+          <p class="app-description">Subtitle management tool that works with Sonarr and Radarr for automatic downloads.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">subtitles</span><span class="app-tag">automation</span><span class="app-tag">sonarr</span>
+            </div>
+          
+        </a>
+        <a href="overseerr.html" class="app-card" data-id="1777297685390" style="text-decoration:none;color:inherit">
+          <img src="logo/overseerr.png" alt="Overseerr" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Overseerr</h3>
+          <p class="app-description">Media request and discovery system for Plex and Jellyfin servers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">requests</span><span class="app-tag">plex</span><span class="app-tag">jellyfin</span>
+            </div>
+          
+        </a>
+        <a href="jellyseerr.html" class="app-card" data-id="1777297685391" style="text-decoration:none;color:inherit">
+          <img src="logo/jellyseerr.png" alt="Jellyseerr" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Jellyseerr</h3>
+          <p class="app-description">Fork of Overseerr optimized for Jellyfin with media requests and discovery.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">jellyfin</span><span class="app-tag">requests</span><span class="app-tag">discovery</span>
+            </div>
+          
+        </a>
+        <a href="tautulli.html" class="app-card" data-id="1777297685392" style="text-decoration:none;color:inherit">
+          <img src="logo/tautulli.png" alt="Tautulli" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tautulli</h3>
+          <p class="app-description">Monitoring and tracking tool for Plex Media Server with statistics and notifications.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">plex</span><span class="app-tag">monitoring</span><span class="app-tag">statistics</span>
+            </div>
+          
+        </a>
+        <a href="ombi.html" class="app-card" data-id="1777297685393" style="text-decoration:none;color:inherit">
+          <img src="logo/ombi.png" alt="Ombi" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ombi</h3>
+          <p class="app-description">Self-hosted media request system for Plex, Emby, and Jellyfin servers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">requests</span><span class="app-tag">plex</span><span class="app-tag">emby</span>
+            </div>
+          
+        </a>
+        <a href="jackett.html" class="app-card" data-id="1777297685394" style="text-decoration:none;color:inherit">
+          <img src="logo/jackett.png" alt="Jackett" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Jackett</h3>
+          <p class="app-description">API support for your favorite torrent trackers with proxy functionality.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">torrent</span><span class="app-tag">api</span><span class="app-tag">proxy</span>
+            </div>
+          
+        </a>
+        <a href="prowlarr.html" class="app-card" data-id="1777297685395" style="text-decoration:none;color:inherit">
+          <img src="logo/prowlarr.png" alt="Prowlarr" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Prowlarr</h3>
+          <p class="app-description">Indexer manager/proxy for connecting *arr apps with torrent and Usenet indexers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">indexer</span><span class="app-tag">proxy</span><span class="app-tag">usenet</span>
+            </div>
+          
+        </a>
+        <a href="qbittorrent.html" class="app-card" data-id="1777297685396" style="text-decoration:none;color:inherit">
+          <img src="logo/qbittorrent.png" alt="qBittorrent" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">qBittorrent</h3>
+          <p class="app-description">Free, open-source BitTorrent client with web UI and advanced features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">torrent</span><span class="app-tag">open-source</span><span class="app-tag">web-ui</span>
+            </div>
+          
+        </a>
+        <a href="transmission.html" class="app-card" data-id="1777297685397" style="text-decoration:none;color:inherit">
+          <img src="logo/transmission.png" alt="Transmission" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Transmission</h3>
+          <p class="app-description">Fast, easy, and free BitTorrent client with minimal resource usage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">torrent</span><span class="app-tag">lightweight</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="deluge.html" class="app-card" data-id="1777297685398" style="text-decoration:none;color:inherit">
+          <img src="logo/deluge.png" alt="Deluge" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Deluge</h3>
+          <p class="app-description">Lightweight BitTorrent client with plugin system and remote control.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">torrent</span><span class="app-tag">plugins</span><span class="app-tag">lightweight</span>
+            </div>
+          
+        </a>
+        <a href="rtorrent.html" class="app-card" data-id="1777297685399" style="text-decoration:none;color:inherit">
+          <img src="logo/rtorrent.png" alt="rTorrent" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">rTorrent</h3>
+          <p class="app-description">Terminal-based BitTorrent client with high performance and low resource usage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">torrent</span><span class="app-tag">terminal</span><span class="app-tag">cli</span>
+            </div>
+          
+        </a>
+        <a href="utorrent.html" class="app-card" data-id="1777297685400" style="text-decoration:none;color:inherit">
+          <img src="logo/utorrent.png" alt="uTorrent" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">uTorrent</h3>
+          <p class="app-description">Popular lightweight BitTorrent client with web remote and scheduler.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">torrent</span><span class="app-tag">lightweight</span><span class="app-tag">web-remote</span>
+            </div>
+          
+        </a>
+        <a href="bittorrent.html" class="app-card" data-id="1777297685401" style="text-decoration:none;color:inherit">
+          <img src="logo/bittorrent.png" alt="BitTorrent" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">BitTorrent</h3>
+          <p class="app-description">Official BitTorrent client with built-in search and media player.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">torrent</span><span class="app-tag">search</span><span class="app-tag">media-player</span>
+            </div>
+          
+        </a>
+        <a href="sabnzbd.html" class="app-card" data-id="1777297685402" style="text-decoration:none;color:inherit">
+          <img src="logo/sabnzbd.png" alt="SABnzbd" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SABnzbd</h3>
+          <p class="app-description">Open-source Usenet downloader with web interface and automation features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">usenet</span><span class="app-tag">downloader</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="nzbget.html" class="app-card" data-id="1777297685403" style="text-decoration:none;color:inherit">
+          <img src="logo/nzbget.png" alt="NZBGet" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NZBGet</h3>
+          <p class="app-description">Efficient Usenet downloader with low resource usage and advanced scripting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">usenet</span><span class="app-tag">efficient</span><span class="app-tag">scripting</span>
+            </div>
+          
+        </a>
+        <a href="audible.html" class="app-card" data-id="1777297685404" style="text-decoration:none;color:inherit">
+          <img src="logo/audible.png" alt="Audible" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Audible</h3>
+          <p class="app-description">Audiobook platform from Amazon with exclusive titles and original content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">audiobooks</span><span class="app-tag">amazon</span><span class="app-tag">exclusive</span>
+            </div>
+          
+        </a>
+        <a href="libby.html" class="app-card" data-id="1777297685405" style="text-decoration:none;color:inherit">
+          <img src="logo/libby.png" alt="Libby" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Libby</h3>
+          <p class="app-description">Library app for borrowing ebooks and audiobooks from local libraries.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">library</span><span class="app-tag">ebooks</span><span class="app-tag">audiobooks</span>
+            </div>
+          
+        </a>
+        <a href="hoopla.html" class="app-card" data-id="1777297685406" style="text-decoration:none;color:inherit">
+          <img src="logo/hoopla.png" alt="Hoopla" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hoopla</h3>
+          <p class="app-description">Digital media service for borrowing movies, music, ebooks, and comics from libraries.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">library</span><span class="app-tag">movies</span><span class="app-tag">music</span>
+            </div>
+          
+        </a>
+        <a href="kindle.html" class="app-card" data-id="1777297685407" style="text-decoration:none;color:inherit">
+          <img src="logo/kindle.png" alt="Kindle" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Kindle</h3>
+          <p class="app-description">E-reader app for purchasing and reading ebooks with Whispersync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ebooks</span><span class="app-tag">reading</span><span class="app-tag">amazon</span>
+            </div>
+          
+        </a>
+        <a href="calibre.html" class="app-card" data-id="1777297685408" style="text-decoration:none;color:inherit">
+          <img src="logo/calibre.png" alt="Calibre" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Calibre</h3>
+          <p class="app-description">Free, open-source ebook manager for organizing, converting, and syncing libraries.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ebooks</span><span class="app-tag">open-source</span><span class="app-tag">manager</span>
+            </div>
+          
+        </a>
+        <a href="goodreads.html" class="app-card" data-id="1777297685409" style="text-decoration:none;color:inherit">
+          <img src="logo/goodreads.png" alt="Goodreads" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Goodreads</h3>
+          <p class="app-description">Social platform for tracking reading, reviewing books, and discovering new titles.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">social</span><span class="app-tag">books</span><span class="app-tag">reviews</span>
+            </div>
+          
+        </a>
+        <a href="storygraph.html" class="app-card" data-id="1777297685410" style="text-decoration:none;color:inherit">
+          <img src="logo/storygraph.png" alt="StoryGraph" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">StoryGraph</h3>
+          <p class="app-description">Book tracking app with personalized recommendations and reading statistics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">books</span><span class="app-tag">tracking</span><span class="app-tag">statistics</span>
+            </div>
+          
+        </a>
+        <a href="pocket.html" class="app-card" data-id="1777297685411" style="text-decoration:none;color:inherit">
+          <img src="logo/pocket.png" alt="Pocket" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pocket</h3>
+          <p class="app-description">Save articles, videos, and stories for offline reading with tagging and search.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">reading</span><span class="app-tag">offline</span><span class="app-tag">save</span>
+            </div>
+          
+        </a>
+        <a href="instapaper.html" class="app-card" data-id="1777297685412" style="text-decoration:none;color:inherit">
+          <img src="logo/instapaper.png" alt="Instapaper" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Instapaper</h3>
+          <p class="app-description">Read-it-later service with clean text view and offline access to saved articles.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">read-later</span><span class="app-tag">offline</span><span class="app-tag">clean</span>
+            </div>
+          
+        </a>
+        <a href="feedly.html" class="app-card" data-id="1777297685413" style="text-decoration:none;color:inherit">
+          <img src="logo/feedly.png" alt="Feedly" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Feedly</h3>
+          <p class="app-description">RSS reader for organizing news, blogs, and content from favorite sources.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">rss</span><span class="app-tag">news</span><span class="app-tag">blogs</span>
+            </div>
+          
+        </a>
+        <a href="inoreader.html" class="app-card" data-id="1777297685414" style="text-decoration:none;color:inherit">
+          <img src="logo/inoreader.png" alt="Inoreader" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Inoreader</h3>
+          <p class="app-description">Advanced RSS reader with rules, filters, and automation for content management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">rss</span><span class="app-tag">automation</span><span class="app-tag">filters</span>
+            </div>
+          
+        </a>
+        <a href="reeder.html" class="app-card" data-id="1777297685415" style="text-decoration:none;color:inherit">
+          <img src="logo/reeder.png" alt="Reeder" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Reeder</h3>
+          <p class="app-description">Elegant RSS reader for Mac and iOS with support for multiple sync services.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">rss</span><span class="app-tag">elegant</span><span class="app-tag">mac</span>
+            </div>
+          
+        </a>
+        <a href="netnewswire.html" class="app-card" data-id="1777297685416" style="text-decoration:none;color:inherit">
+          <img src="logo/netnewswire.png" alt="NetNewsWire" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NetNewsWire</h3>
+          <p class="app-description">Free, open-source RSS reader for Mac and iOS with fast syncing and clean UI.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">rss</span><span class="app-tag">open-source</span><span class="app-tag">free</span>
+            </div>
+          
+        </a>
+        <a href="spotify.html" class="app-card" data-id="1777297685417" style="text-decoration:none;color:inherit">
+          <img src="logo/spotify.png" alt="Spotify" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Spotify</h3>
+          <p class="app-description">Stream millions of songs and podcasts with personalized playlists and recommendations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">streaming</span><span class="app-tag">podcasts</span>
+            </div>
+          
+        </a>
+        <a href="bandcamp.html" class="app-card" data-id="1777297685421" style="text-decoration:none;color:inherit">
+          <img src="logo/bandcamp.png" alt="Bandcamp" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bandcamp</h3>
+          <p class="app-description">Platform for artists to sell music directly to fans with high-quality downloads.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">indie</span><span class="app-tag">direct-sales</span>
+            </div>
+          
+        </a>
+        <a href="tidal.html" class="app-card" data-id="1777297685422" style="text-decoration:none;color:inherit">
+          <img src="logo/tidal.png" alt="Tidal" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tidal</h3>
+          <p class="app-description">High-fidelity music streaming with lossless audio and exclusive content.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">hi-fi</span><span class="app-tag">lossless</span>
+            </div>
+          
+        </a>
+        <a href="deezer.html" class="app-card" data-id="1777297685423" style="text-decoration:none;color:inherit">
+          <img src="logo/deezer.png" alt="Deezer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Deezer</h3>
+          <p class="app-description">Music streaming with Flow personalized radio and lyrics integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">music</span><span class="app-tag">flow</span><span class="app-tag">lyrics</span>
+            </div>
+          
+        </a>
+        <a href="qobuz.html" class="app-card" data-id="1777297685424" style="text-decoration:none;color:inherit">
+          <img src="logo/qobuz.png" alt="Qobuz" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Qobuz</h3>
+          <p class="app-description">Hi-res music streaming and download service for audiophiles.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hi-res</span><span class="app-tag">audiophile</span><span class="app-tag">downloads</span>
+            </div>
+          
+        </a>
+        <a href="pandora.html" class="app-card" data-id="1777297685425" style="text-decoration:none;color:inherit">
+          <img src="logo/pandora.png" alt="Pandora" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Pandora</h3>
+          <p class="app-description">Personalized radio stations powered by the Music Genome Project algorithm.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">radio</span><span class="app-tag">personalized</span><span class="app-tag">algorithm</span>
+            </div>
+          
+        </a>
+        <a href="iheartradio.html" class="app-card" data-id="1777297685426" style="text-decoration:none;color:inherit">
+          <img src="logo/iheartradio.png" alt="iHeartRadio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">iHeartRadio</h3>
+          <p class="app-description">Live radio, podcasts, and custom stations from thousands of stations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">radio</span><span class="app-tag">live</span><span class="app-tag">podcasts</span>
+            </div>
+          
+        </a>
+        <a href="tunein-radio.html" class="app-card" data-id="1777297685427" style="text-decoration:none;color:inherit">
+          <img src="logo/tunein.png" alt="TuneIn Radio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TuneIn Radio</h3>
+          <p class="app-description">Global radio app with live sports, news, music, and podcasts from 100k+ stations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">radio</span><span class="app-tag">global</span><span class="app-tag">sports</span>
+            </div>
+          
+        </a>
+        <a href="radio-co.html" class="app-card" data-id="1777297685428" style="text-decoration:none;color:inherit">
+          <img src="logo/radio-co.png" alt="Radio.co" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Radio.co</h3>
+          <p class="app-description">Cloud-based radio broadcasting platform for creating and managing internet radio.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">broadcasting</span><span class="app-tag">cloud</span><span class="app-tag">internet-radio</span>
+            </div>
+          
+        </a>
+        <a href="airtime-pro.html" class="app-card" data-id="1777297685429" style="text-decoration:none;color:inherit">
+          <img src="logo/airtime-pro.png" alt="Airtime Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Airtime Pro</h3>
+          <p class="app-description">Professional radio automation software for scheduling and live broadcasting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">radio</span><span class="app-tag">automation</span><span class="app-tag">scheduling</span>
+            </div>
+          
+        </a>
+        <a href="azuracast.html" class="app-card" data-id="1777297685430" style="text-decoration:none;color:inherit">
+          <img src="logo/azuracast.png" alt="AzuraCast" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AzuraCast</h3>
+          <p class="app-description">Open-source web radio management suite with AutoDJ and listener stats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">radio</span><span class="app-tag">open-source</span><span class="app-tag">autodj</span>
+            </div>
+          
+        </a>
+        <a href="butt.html" class="app-card" data-id="1777297685431" style="text-decoration:none;color:inherit">
+          <img src="logo/butt.png" alt="BUTT" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">BUTT</h3>
+          <p class="app-description">Broadcast Using This Tool - simple software for streaming audio to Icecast/Shoutcast.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">broadcasting</span><span class="app-tag">icecast</span><span class="app-tag">shoutcast</span>
+            </div>
+          
+        </a>
+        <a href="mixxx.html" class="app-card" data-id="1777297685432" style="text-decoration:none;color:inherit">
+          <img src="logo/mixxx.png" alt="Mixxx" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mixxx</h3>
+          <p class="app-description">Free, open-source DJ software for mixing music with hardware controller support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dj</span><span class="app-tag">mixing</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="virtualdj.html" class="app-card" data-id="1777297685433" style="text-decoration:none;color:inherit">
+          <img src="logo/virtualdj.png" alt="VirtualDJ" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">VirtualDJ</h3>
+          <p class="app-description">Professional DJ software with video mixing, karaoke, and streaming capabilities.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dj</span><span class="app-tag">video</span><span class="app-tag">karaoke</span>
+            </div>
+          
+        </a>
+        <a href="serato-dj-pro.html" class="app-card" data-id="1777297685434" style="text-decoration:none;color:inherit">
+          <img src="logo/serato.png" alt="Serato DJ Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Serato DJ Pro</h3>
+          <p class="app-description">Industry-standard DJ software with advanced effects and hardware integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dj</span><span class="app-tag">professional</span><span class="app-tag">effects</span>
+            </div>
+          
+        </a>
+        <a href="rekordbox.html" class="app-card" data-id="1777297685435" style="text-decoration:none;color:inherit">
+          <img src="logo/rekordbox.png" alt="Rekordbox" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Rekordbox</h3>
+          <p class="app-description">Pioneer DJ software for music management, preparation, and performance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dj</span><span class="app-tag">pioneer</span><span class="app-tag">management</span>
+            </div>
+          
+        </a>
+        <a href="traktor-pro.html" class="app-card" data-id="1777297685436" style="text-decoration:none;color:inherit">
+          <img src="logo/traktor.png" alt="Traktor Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Traktor Pro</h3>
+          <p class="app-description">Professional DJ software with advanced mixing tools and remix decks.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dj</span><span class="app-tag">mixing</span><span class="app-tag">remix</span>
+            </div>
+          
+        </a>
+        <a href="djay-pro.html" class="app-card" data-id="1777297685437" style="text-decoration:none;color:inherit">
+          <img src="logo/djay-pro.png" alt="djay Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">djay Pro</h3>
+          <p class="app-description">Intuitive DJ app with AI-powered mixing and seamless iTunes/Apple Music integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dj</span><span class="app-tag">ai</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="cross-dj.html" class="app-card" data-id="1777297685438" style="text-decoration:none;color:inherit">
+          <img src="logo/cross-dj.png" alt="Cross DJ" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Cross DJ</h3>
+          <p class="app-description">Professional DJ software with beatmatching, effects, and video mixing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dj</span><span class="app-tag">beatmatching</span><span class="app-tag">video</span>
+            </div>
+          
+        </a>
+        <a href="playstation-remote-play.html" class="app-card" data-id="1777297685447" style="text-decoration:none;color:inherit">
+          <img src="logo/ps-remote-play.png" alt="PlayStation Remote Play" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PlayStation Remote Play</h3>
+          <p class="app-description">Stream PS4 and PS5 games to PC, Mac, or mobile devices remotely.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gaming</span><span class="app-tag">streaming</span><span class="app-tag">playstation</span>
+            </div>
+          
+        </a>
+        <a href="geforce-now.html" class="app-card" data-id="1777297685448" style="text-decoration:none;color:inherit">
+          <img src="logo/geforce-now.png" alt="GeForce Now" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GeForce Now</h3>
+          <p class="app-description">Cloud gaming service for streaming PC games from NVIDIA servers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud-gaming</span><span class="app-tag">nvidia</span><span class="app-tag">streaming</span>
+            </div>
+          
+        </a>
+        <a href="xbox-cloud-gaming.html" class="app-card" data-id="1777297685449" style="text-decoration:none;color:inherit">
+          <img src="logo/xbox-cloud.png" alt="Xbox Cloud Gaming" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Xbox Cloud Gaming</h3>
+          <p class="app-description">Stream Xbox Game Pass titles to PC, mobile, and browser without console.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud-gaming</span><span class="app-tag">xbox</span><span class="app-tag">gamepass</span>
+            </div>
+          
+        </a>
+        <a href="amazon-luna.html" class="app-card" data-id="1777297685450" style="text-decoration:none;color:inherit">
+          <img src="logo/amazon-luna.png" alt="Amazon Luna" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Amazon Luna</h3>
+          <p class="app-description">Cloud gaming service with Twitch integration and family-friendly channels.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud-gaming</span><span class="app-tag">amazon</span><span class="app-tag">twitch</span>
+            </div>
+          
+        </a>
+        <a href="boosteroid.html" class="app-card" data-id="1777297685451" style="text-decoration:none;color:inherit">
+          <img src="logo/boosteroid.png" alt="Boosteroid" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Boosteroid</h3>
+          <p class="app-description">Cloud gaming platform for streaming AAA games on any device with low latency.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud-gaming</span><span class="app-tag">aaa</span><span class="app-tag">low-latency</span>
+            </div>
+          
+        </a>
+        <a href="shadow.html" class="app-card" data-id="1777297685452" style="text-decoration:none;color:inherit">
+          <img src="logo/shadow.png" alt="Shadow" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Shadow</h3>
+          <p class="app-description">Full Windows PC in the cloud for gaming, work, and creative applications.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cloud-pc</span><span class="app-tag">gaming</span><span class="app-tag">windows</span>
+            </div>
+          
+        </a>
+        <a href="moonlight.html" class="app-card" data-id="1777297685454" style="text-decoration:none;color:inherit">
+          <img src="logo/moonlight.png" alt="Moonlight" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Moonlight</h3>
+          <p class="app-description">Open-source GameStream client for streaming PC games from NVIDIA GPUs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gamestream</span><span class="app-tag">open-source</span><span class="app-tag">nvidia</span>
+            </div>
+          
+        </a>
+        <a href="sunshine.html" class="app-card" data-id="1777297685455" style="text-decoration:none;color:inherit">
+          <img src="logo/sunshine.png" alt="Sunshine" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sunshine</h3>
+          <p class="app-description">Open-source GameStream host for streaming games from any GPU to Moonlight clients.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">gamestream</span><span class="app-tag">open-source</span><span class="app-tag">host</span>
+            </div>
+          
+        </a>
+        <a href="chiaki.html" class="app-card" data-id="1777297685456" style="text-decoration:none;color:inherit">
+          <img src="logo/chiaki.png" alt="Chiaki" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Chiaki</h3>
+          <p class="app-description">Open-source PlayStation Remote Play client for Linux, Windows, and macOS.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">playstation</span><span class="app-tag">remote-play</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="retroarch.html" class="app-card" data-id="1777297685457" style="text-decoration:none;color:inherit">
+          <img src="logo/retroarch.png" alt="RetroArch" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">RetroArch</h3>
+          <p class="app-description">Frontend for emulators with shaders, netplay, and achievement support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">retro</span><span class="app-tag">shaders</span>
+            </div>
+          
+        </a>
+        <a href="dolphin-emulator.html" class="app-card" data-id="1777297685458" style="text-decoration:none;color:inherit">
+          <img src="logo/dolphin.png" alt="Dolphin Emulator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Dolphin Emulator</h3>
+          <p class="app-description">Emulator for Nintendo GameCube and Wii games with HD upscaling.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">gamecube</span><span class="app-tag">wii</span>
+            </div>
+          
+        </a>
+        <a href="pcsx2.html" class="app-card" data-id="1777297685459" style="text-decoration:none;color:inherit">
+          <img src="logo/pcsx2.png" alt="PCSX2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PCSX2</h3>
+          <p class="app-description">PlayStation 2 emulator with widescreen patches and save state support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">ps2</span><span class="app-tag">widescreen</span>
+            </div>
+          
+        </a>
+        <a href="rpcs3.html" class="app-card" data-id="1777297685460" style="text-decoration:none;color:inherit">
+          <img src="logo/rpcs3.png" alt="RPCS3" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">RPCS3</h3>
+          <p class="app-description">Open-source PlayStation 3 emulator with improving compatibility and performance.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">emulation</span><span class="app-tag">ps3</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777297685361,"name":"Netflix","slug":"netflix","version":"8.95.0","description":"Stream unlimited movies, TV shows, and original content on any device.","category":"entertainment","logoUrl":"logo/netflix.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Netflix1&tracker=1","tags":["streaming","movies","tv-shows","originals"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685362,"name":"Disney+","slug":"disney-plus","version":"2.18.0","description":"Stream Disney, Pixar, Marvel, Star Wars, and National Geographic content.","category":"entertainment","logoUrl":"logo/disney-plus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Disney+2&tracker=2","tags":["streaming","disney","marvel","star-wars"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685363,"name":"Amazon Prime Video","slug":"amazon-prime-video","version":"3.0.338","description":"Watch movies, TV shows, and Amazon Originals with Prime membership.","category":"entertainment","logoUrl":"logo/prime-video.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Amazon Prime Video3&tracker=3","tags":["streaming","amazon","originals","movies"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685364,"name":"Hulu","slug":"hulu","version":"4.75.0","description":"Stream current TV episodes, classic shows, movies, and Hulu Originals.","category":"entertainment","logoUrl":"logo/hulu.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hulu4&tracker=4","tags":["streaming","tv","movies","originals"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685365,"name":"HBO Max","slug":"hbo-max","version":"52.50.0","description":"Stream HBO originals, blockbuster movies, and exclusive Max content.","category":"entertainment","logoUrl":"logo/hbo-max.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HBO Max5&tracker=5","tags":["streaming","hbo","movies","exclusive"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685366,"name":"Apple TV+","slug":"apple-tv-plus","version":"2.3.0","description":"Stream award-winning Apple Original shows and movies in 4K HDR.","category":"entertainment","logoUrl":"logo/apple-tv-plus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple TV+6&tracker=6","tags":["streaming","apple","originals","4k"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685367,"name":"Paramount+","slug":"paramount-plus","version":"7.2.0","description":"Stream CBS shows, Paramount movies, and exclusive originals.","category":"entertainment","logoUrl":"logo/paramount-plus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Paramount+7&tracker=7","tags":["streaming","cbs","paramount","live-tv"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685368,"name":"Peacock","slug":"peacock","version":"7.8.0","description":"Stream NBC shows, movies, sports, and WWE content with free and premium tiers.","category":"entertainment","logoUrl":"logo/peacock.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Peacock8&tracker=8","tags":["streaming","nbc","sports","free-tier"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685369,"name":"YouTube Premium","slug":"youtube-premium","version":"19.02.3","description":"Ad-free YouTube with background play, downloads, and YouTube Originals.","category":"entertainment","logoUrl":"logo/youtube-premium.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=YouTube Premium9&tracker=9","tags":["youtube","ad-free","downloads","originals"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685370,"name":"Twitch","slug":"twitch","version":"16.4.0","description":"Live streaming platform for gaming, music, creative content, and esports.","category":"entertainment","logoUrl":"logo/twitch.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Twitch10&tracker=10","tags":["live-streaming","gaming","esports","community"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685371,"name":"Crunchyroll","slug":"crunchyroll","version":"3.45.0","description":"Stream the largest collection of anime and manga with simulcast episodes.","category":"entertainment","logoUrl":"logo/crunchyroll.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Crunchyroll11&tracker=11","tags":["anime","manga","simulcast","japanese"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685372,"name":"Funimation","slug":"funimation","version":"3.12.0","description":"Stream dubbed and subbed anime with exclusive content and simulcasts.","category":"entertainment","logoUrl":"logo/funimation.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Funimation12&tracker=12","tags":["anime","dubbed","simulcast","exclusive"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685373,"name":"Shudder","slug":"shudder","version":"5.8.0","description":"Streaming service dedicated to horror, thriller, and supernatural content.","category":"entertainment","logoUrl":"logo/shudder.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Shudder13&tracker=13","tags":["horror","thriller","supernatural","niche"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685374,"name":"MUBI","slug":"mubi","version":"7.5.0","description":"Curated streaming service featuring classic, independent, and award-winning films.","category":"entertainment","logoUrl":"logo/mubi.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MUBI14&tracker=14","tags":["classic","independent","curated","cinema"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685375,"name":"The Criterion Channel","slug":"criterion-channel","version":"3.2.0","description":"Stream classic and contemporary films from the Criterion Collection.","category":"entertainment","logoUrl":"logo/criterion.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Criterion Channel15&tracker=15","tags":["classic","criterion","cinema","art-house"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685376,"name":"Tubi","slug":"tubi","version":"4.18.0","description":"Free streaming service with thousands of movies and TV shows, ad-supported.","category":"entertainment","logoUrl":"logo/tubi.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tubi16&tracker=16","tags":["free","ad-supported","movies","tv"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685377,"name":"Pluto TV","slug":"pluto-tv","version":"5.25.0","description":"Free live TV and on-demand streaming with hundreds of channels.","category":"entertainment","logoUrl":"logo/pluto-tv.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pluto TV17&tracker=17","tags":["free","live-tv","channels","on-demand"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685378,"name":"Plex","slug":"plex","version":"1.92.0","description":"Media server and streaming app for organizing and watching personal media libraries.","category":"entertainment","logoUrl":"logo/plex.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Plex18&tracker=18","tags":["media-server","personal","streaming","organizing"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685383,"name":"Popcorn Time","slug":"popcorn-time","version":"0.4.9","description":"BitTorrent client for streaming movies and TV shows directly from torrent sources.","category":"entertainment","logoUrl":"logo/popcorn-time.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Popcorn Time23&tracker=23","tags":["torrent","streaming","movies","p2p"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685385,"name":"Readarr","slug":"readarr","version":"0.3.0","description":"E-book and audiobook manager with automatic downloading and library organization.","category":"entertainment","logoUrl":"logo/readarr.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Readarr25&tracker=25","tags":["ebooks","audiobooks","automation","library"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685386,"name":"Sonarr","slug":"sonarr","version":"4.0.0","description":"Automatic TV show downloader and organizer for Usenet and BitTorrent.","category":"entertainment","logoUrl":"logo/sonarr.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sonarr26&tracker=26","tags":["tv-shows","automation","usenet","torrent"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685387,"name":"Radarr","slug":"radarr","version":"5.3.0","description":"Automatic movie downloader and organizer for Usenet and BitTorrent sources.","category":"entertainment","logoUrl":"logo/radarr.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Radarr27&tracker=27","tags":["movies","automation","usenet","torrent"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685388,"name":"Lidarr","slug":"lidarr","version":"2.2.0","description":"Music collection manager for automatic downloading and organizing albums.","category":"entertainment","logoUrl":"logo/lidarr.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Lidarr28&tracker=28","tags":["music","albums","automation","collection"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685389,"name":"Bazarr","slug":"bazarr","version":"1.4.0","description":"Subtitle management tool that works with Sonarr and Radarr for automatic downloads.","category":"entertainment","logoUrl":"logo/bazarr.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bazarr29&tracker=29","tags":["subtitles","automation","sonarr","radarr"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685390,"name":"Overseerr","slug":"overseerr","version":"1.33.0","description":"Media request and discovery system for Plex and Jellyfin servers.","category":"entertainment","logoUrl":"logo/overseerr.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Overseerr30&tracker=30","tags":["requests","plex","jellyfin","discovery"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685391,"name":"Jellyseerr","slug":"jellyseerr","version":"1.8.0","description":"Fork of Overseerr optimized for Jellyfin with media requests and discovery.","category":"entertainment","logoUrl":"logo/jellyseerr.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Jellyseerr31&tracker=31","tags":["jellyfin","requests","discovery","fork"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685392,"name":"Tautulli","slug":"tautulli","version":"2.13.0","description":"Monitoring and tracking tool for Plex Media Server with statistics and notifications.","category":"entertainment","logoUrl":"logo/tautulli.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tautulli32&tracker=32","tags":["plex","monitoring","statistics","notifications"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685393,"name":"Ombi","slug":"ombi","version":"4.0.2320","description":"Self-hosted media request system for Plex, Emby, and Jellyfin servers.","category":"entertainment","logoUrl":"logo/ombi.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ombi33&tracker=33","tags":["requests","plex","emby","self-hosted"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685394,"name":"Jackett","slug":"jackett","version":"0.22.750","description":"API support for your favorite torrent trackers with proxy functionality.","category":"entertainment","logoUrl":"logo/jackett.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Jackett34&tracker=34","tags":["torrent","api","proxy","trackers"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685395,"name":"Prowlarr","slug":"prowlarr","version":"1.13.0","description":"Indexer manager/proxy for connecting *arr apps with torrent and Usenet indexers.","category":"entertainment","logoUrl":"logo/prowlarr.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Prowlarr35&tracker=35","tags":["indexer","proxy","usenet","torrent"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685396,"name":"qBittorrent","slug":"qbittorrent","version":"4.6.3","description":"Free, open-source BitTorrent client with web UI and advanced features.","category":"entertainment","logoUrl":"logo/qbittorrent.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=qBittorrent36&tracker=36","tags":["torrent","open-source","web-ui","p2p"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685397,"name":"Transmission","slug":"transmission","version":"4.0.5","description":"Fast, easy, and free BitTorrent client with minimal resource usage.","category":"entertainment","logoUrl":"logo/transmission.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Transmission37&tracker=37","tags":["torrent","lightweight","free","minimal"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685398,"name":"Deluge","slug":"deluge","version":"2.1.1","description":"Lightweight BitTorrent client with plugin system and remote control.","category":"entertainment","logoUrl":"logo/deluge.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Deluge38&tracker=38","tags":["torrent","plugins","lightweight","remote"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685399,"name":"rTorrent","slug":"rtorrent","version":"0.15.0","description":"Terminal-based BitTorrent client with high performance and low resource usage.","category":"entertainment","logoUrl":"logo/rtorrent.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=rTorrent39&tracker=39","tags":["torrent","terminal","cli","performance"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685400,"name":"uTorrent","slug":"utorrent","version":"3.6.0","description":"Popular lightweight BitTorrent client with web remote and scheduler.","category":"entertainment","logoUrl":"logo/utorrent.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=uTorrent40&tracker=40","tags":["torrent","lightweight","web-remote","scheduler"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685401,"name":"BitTorrent","slug":"bittorrent","version":"7.10.50","description":"Official BitTorrent client with built-in search and media player.","category":"entertainment","logoUrl":"logo/bittorrent.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=BitTorrent41&tracker=41","tags":["torrent","search","media-player","official"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685402,"name":"SABnzbd","slug":"sabnzbd","version":"4.3.0","description":"Open-source Usenet downloader with web interface and automation features.","category":"entertainment","logoUrl":"logo/sabnzbd.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SABnzbd42&tracker=42","tags":["usenet","downloader","open-source","automation"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685403,"name":"NZBGet","slug":"nzbget","version":"21.1","description":"Efficient Usenet downloader with low resource usage and advanced scripting.","category":"entertainment","logoUrl":"logo/nzbget.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NZBGet43&tracker=43","tags":["usenet","efficient","scripting","lightweight"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685404,"name":"Audible","slug":"audible","version":"3.65.0","description":"Audiobook platform from Amazon with exclusive titles and original content.","category":"entertainment","logoUrl":"logo/audible.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Audible44&tracker=44","tags":["audiobooks","amazon","exclusive","originals"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685405,"name":"Libby","slug":"libby","version":"5.6.0","description":"Library app for borrowing ebooks and audiobooks from local libraries.","category":"entertainment","logoUrl":"logo/libby.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Libby45&tracker=45","tags":["library","ebooks","audiobooks","free"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685406,"name":"Hoopla","slug":"hoopla","version":"4.8.0","description":"Digital media service for borrowing movies, music, ebooks, and comics from libraries.","category":"entertainment","logoUrl":"logo/hoopla.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hoopla46&tracker=46","tags":["library","movies","music","comics"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685407,"name":"Kindle","slug":"kindle","version":"1.40.0","description":"E-reader app for purchasing and reading ebooks with Whispersync.","category":"entertainment","logoUrl":"logo/kindle.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Kindle47&tracker=47","tags":["ebooks","reading","amazon","whispersync"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685408,"name":"Calibre","slug":"calibre","version":"7.8.0","description":"Free, open-source ebook manager for organizing, converting, and syncing libraries.","category":"entertainment","logoUrl":"logo/calibre.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Calibre48&tracker=48","tags":["ebooks","open-source","manager","conversion"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685409,"name":"Goodreads","slug":"goodreads","version":"4.35.0","description":"Social platform for tracking reading, reviewing books, and discovering new titles.","category":"entertainment","logoUrl":"logo/goodreads.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Goodreads49&tracker=49","tags":["social","books","reviews","discovery"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685410,"name":"StoryGraph","slug":"storygraph","version":"2.15.0","description":"Book tracking app with personalized recommendations and reading statistics.","category":"entertainment","logoUrl":"logo/storygraph.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=StoryGraph50&tracker=50","tags":["books","tracking","statistics","recommendations"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685411,"name":"Pocket","slug":"pocket","version":"8.2.0","description":"Save articles, videos, and stories for offline reading with tagging and search.","category":"entertainment","logoUrl":"logo/pocket.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pocket51&tracker=51","tags":["reading","offline","save","tagging"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685412,"name":"Instapaper","slug":"instapaper","version":"6.25.0","description":"Read-it-later service with clean text view and offline access to saved articles.","category":"entertainment","logoUrl":"logo/instapaper.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Instapaper52&tracker=52","tags":["read-later","offline","clean","articles"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685413,"name":"Feedly","slug":"feedly","version":"95.0.0","description":"RSS reader for organizing news, blogs, and content from favorite sources.","category":"entertainment","logoUrl":"logo/feedly.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Feedly53&tracker=53","tags":["rss","news","blogs","organization"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685414,"name":"Inoreader","slug":"inoreader","version":"4.12.0","description":"Advanced RSS reader with rules, filters, and automation for content management.","category":"entertainment","logoUrl":"logo/inoreader.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Inoreader54&tracker=54","tags":["rss","automation","filters","advanced"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685415,"name":"Reeder","slug":"reeder","version":"5.4.0","description":"Elegant RSS reader for Mac and iOS with support for multiple sync services.","category":"entertainment","logoUrl":"logo/reeder.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Reeder55&tracker=55","tags":["rss","elegant","mac","sync"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685416,"name":"NetNewsWire","slug":"netnewswire","version":"6.1.0","description":"Free, open-source RSS reader for Mac and iOS with fast syncing and clean UI.","category":"entertainment","logoUrl":"logo/netnewswire.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NetNewsWire56&tracker=56","tags":["rss","open-source","free","fast"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685417,"name":"Spotify","slug":"spotify","version":"1.2.35","description":"Stream millions of songs and podcasts with personalized playlists and recommendations.","category":"entertainment","logoUrl":"logo/spotify.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Spotify57&tracker=57","tags":["music","streaming","podcasts","playlists"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685421,"name":"Bandcamp","slug":"bandcamp","version":"4.5.0","description":"Platform for artists to sell music directly to fans with high-quality downloads.","category":"entertainment","logoUrl":"logo/bandcamp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bandcamp61&tracker=61","tags":["music","indie","direct-sales","high-quality"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685422,"name":"Tidal","slug":"tidal","version":"2.95.0","description":"High-fidelity music streaming with lossless audio and exclusive content.","category":"entertainment","logoUrl":"logo/tidal.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tidal62&tracker=62","tags":["music","hi-fi","lossless","exclusive"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685423,"name":"Deezer","slug":"deezer","version":"9.18.0","description":"Music streaming with Flow personalized radio and lyrics integration.","category":"entertainment","logoUrl":"logo/deezer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Deezer63&tracker=63","tags":["music","flow","lyrics","personalized"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685424,"name":"Qobuz","slug":"qobuz","version":"7.2.0","description":"Hi-res music streaming and download service for audiophiles.","category":"entertainment","logoUrl":"logo/qobuz.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Qobuz64&tracker=64","tags":["hi-res","audiophile","downloads","streaming"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685425,"name":"Pandora","slug":"pandora","version":"2402.1","description":"Personalized radio stations powered by the Music Genome Project algorithm.","category":"entertainment","logoUrl":"logo/pandora.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Pandora65&tracker=65","tags":["radio","personalized","algorithm","genome"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685426,"name":"iHeartRadio","slug":"iheartradio","version":"11.5.0","description":"Live radio, podcasts, and custom stations from thousands of stations.","category":"entertainment","logoUrl":"logo/iheartradio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=iHeartRadio66&tracker=66","tags":["radio","live","podcasts","custom"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685427,"name":"TuneIn Radio","slug":"tunein-radio","version":"32.5.0","description":"Global radio app with live sports, news, music, and podcasts from 100k+ stations.","category":"entertainment","logoUrl":"logo/tunein.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TuneIn Radio67&tracker=67","tags":["radio","global","sports","news"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685428,"name":"Radio.co","slug":"radio-co","version":"3.2.0","description":"Cloud-based radio broadcasting platform for creating and managing internet radio.","category":"entertainment","logoUrl":"logo/radio-co.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Radio.co68&tracker=68","tags":["broadcasting","cloud","internet-radio","streaming"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685429,"name":"Airtime Pro","slug":"airtime-pro","version":"3.0.0","description":"Professional radio automation software for scheduling and live broadcasting.","category":"entertainment","logoUrl":"logo/airtime-pro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Airtime Pro69&tracker=69","tags":["radio","automation","scheduling","professional"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685430,"name":"AzuraCast","slug":"azuracast","version":"0.19.0","description":"Open-source web radio management suite with AutoDJ and listener stats.","category":"entertainment","logoUrl":"logo/azuracast.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AzuraCast70&tracker=70","tags":["radio","open-source","autodj","self-hosted"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685431,"name":"BUTT","slug":"butt","version":"1.28.0","description":"Broadcast Using This Tool - simple software for streaming audio to Icecast/Shoutcast.","category":"entertainment","logoUrl":"logo/butt.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=BUTT71&tracker=71","tags":["broadcasting","icecast","shoutcast","streaming"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685432,"name":"Mixxx","slug":"mixxx","version":"2.4.2","description":"Free, open-source DJ software for mixing music with hardware controller support.","category":"entertainment","logoUrl":"logo/mixxx.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mixxx72&tracker=72","tags":["dj","mixing","open-source","controllers"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685433,"name":"VirtualDJ","slug":"virtualdj","version":"2024.0","description":"Professional DJ software with video mixing, karaoke, and streaming capabilities.","category":"entertainment","logoUrl":"logo/virtualdj.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=VirtualDJ73&tracker=73","tags":["dj","video","karaoke","professional"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685434,"name":"Serato DJ Pro","slug":"serato-dj-pro","version":"3.1.0","description":"Industry-standard DJ software with advanced effects and hardware integration.","category":"entertainment","logoUrl":"logo/serato.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Serato DJ Pro74&tracker=74","tags":["dj","professional","effects","hardware"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685435,"name":"Rekordbox","slug":"rekordbox","version":"7.1.0","description":"Pioneer DJ software for music management, preparation, and performance.","category":"entertainment","logoUrl":"logo/rekordbox.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Rekordbox75&tracker=75","tags":["dj","pioneer","management","performance"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685436,"name":"Traktor Pro","slug":"traktor-pro","version":"3.8.0","description":"Professional DJ software with advanced mixing tools and remix decks.","category":"entertainment","logoUrl":"logo/traktor.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Traktor Pro76&tracker=76","tags":["dj","mixing","remix","professional"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685437,"name":"djay Pro","slug":"djay-pro","version":"4.2.0","description":"Intuitive DJ app with AI-powered mixing and seamless iTunes/Apple Music integration.","category":"entertainment","logoUrl":"logo/djay-pro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=djay Pro77&tracker=77","tags":["dj","ai","apple","intuitive"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685438,"name":"Cross DJ","slug":"cross-dj","version":"4.2.0","description":"Professional DJ software with beatmatching, effects, and video mixing.","category":"entertainment","logoUrl":"logo/cross-dj.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Cross DJ78&tracker=78","tags":["dj","beatmatching","video","effects"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685447,"name":"PlayStation Remote Play","slug":"playstation-remote-play","version":"5.3.0","description":"Stream PS4 and PS5 games to PC, Mac, or mobile devices remotely.","category":"entertainment","logoUrl":"logo/ps-remote-play.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PlayStation Remote Play87&tracker=87","tags":["gaming","streaming","playstation","remote"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685448,"name":"GeForce Now","slug":"geforce-now","version":"2.0.55","description":"Cloud gaming service for streaming PC games from NVIDIA servers.","category":"entertainment","logoUrl":"logo/geforce-now.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GeForce Now88&tracker=88","tags":["cloud-gaming","nvidia","streaming","pc"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685449,"name":"Xbox Cloud Gaming","slug":"xbox-cloud-gaming","version":"2024.02","description":"Stream Xbox Game Pass titles to PC, mobile, and browser without console.","category":"entertainment","logoUrl":"logo/xbox-cloud.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Xbox Cloud Gaming89&tracker=89","tags":["cloud-gaming","xbox","gamepass","browser"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685450,"name":"Amazon Luna","slug":"amazon-luna","version":"2024.02","description":"Cloud gaming service with Twitch integration and family-friendly channels.","category":"entertainment","logoUrl":"logo/amazon-luna.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Amazon Luna90&tracker=90","tags":["cloud-gaming","amazon","twitch","family"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685451,"name":"Boosteroid","slug":"boosteroid","version":"2024.02","description":"Cloud gaming platform for streaming AAA games on any device with low latency.","category":"entertainment","logoUrl":"logo/boosteroid.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Boosteroid91&tracker=91","tags":["cloud-gaming","aaa","low-latency","cross-device"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685452,"name":"Shadow","slug":"shadow","version":"4.19.0","description":"Full Windows PC in the cloud for gaming, work, and creative applications.","category":"entertainment","logoUrl":"logo/shadow.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Shadow92&tracker=92","tags":["cloud-pc","gaming","windows","remote"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685454,"name":"Moonlight","slug":"moonlight","version":"4.3.1","description":"Open-source GameStream client for streaming PC games from NVIDIA GPUs.","category":"entertainment","logoUrl":"logo/moonlight.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Moonlight94&tracker=94","tags":["gamestream","open-source","nvidia","streaming"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685455,"name":"Sunshine","slug":"sunshine","version":"0.2.0","description":"Open-source GameStream host for streaming games from any GPU to Moonlight clients.","category":"entertainment","logoUrl":"logo/sunshine.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sunshine95&tracker=95","tags":["gamestream","open-source","host","cross-gpu"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685456,"name":"Chiaki","slug":"chiaki","version":"2.2.0","description":"Open-source PlayStation Remote Play client for Linux, Windows, and macOS.","category":"entertainment","logoUrl":"logo/chiaki.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Chiaki96&tracker=96","tags":["playstation","remote-play","open-source","cross-platform"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685457,"name":"RetroArch","slug":"retroarch","version":"1.19.0","description":"Frontend for emulators with shaders, netplay, and achievement support.","category":"entertainment","logoUrl":"logo/retroarch.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=RetroArch97&tracker=97","tags":["emulation","retro","shaders","achievements"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685458,"name":"Dolphin Emulator","slug":"dolphin-emulator","version":"5.0-20766","description":"Emulator for Nintendo GameCube and Wii games with HD upscaling.","category":"entertainment","logoUrl":"logo/dolphin.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Dolphin Emulator98&tracker=98","tags":["emulation","gamecube","wii","hd"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685459,"name":"PCSX2","slug":"pcsx2","version":"1.7.5430","description":"PlayStation 2 emulator with widescreen patches and save state support.","category":"entertainment","logoUrl":"logo/pcsx2.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PCSX299&tracker=99","tags":["emulation","ps2","widescreen","savestates"],"scrapedAt":"2026-04-27T13:48:05.361Z"},{"id":1777297685460,"name":"RPCS3","slug":"rpcs3","version":"0.0.30-16000","description":"Open-source PlayStation 3 emulator with improving compatibility and performance.","category":"entertainment","logoUrl":"logo/rpcs3.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=RPCS3100&tracker=100","tags":["emulation","ps3","open-source","compatibility"],"scrapedAt":"2026-04-27T13:48:05.361Z"}];
+    const CURRENT_CATEGORY = 'entertainment';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

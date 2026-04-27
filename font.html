@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Font — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Font</h1>
+    <p><span class="highlight">42</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="fontself.html" class="app-card" data-id="1777301800439" style="text-decoration:none;color:inherit">
+          <img src="logo/fontself.png" alt="Fontself" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fontself</h3>
+          <p class="app-description">Create fonts directly in Illustrator and Photoshop with drag-and-drop.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">illustrator</span><span class="app-tag">photoshop</span>
+            </div>
+          
+        </a>
+        <a href="birdfont.html" class="app-card" data-id="1777301800440" style="text-decoration:none;color:inherit">
+          <img src="logo/birdfont.png" alt="BirdFont" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">BirdFont</h3>
+          <p class="app-description">Free font editor for creating vector fonts with SVG and EOT export.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">free</span><span class="app-tag">vector</span>
+            </div>
+          
+        </a>
+        <a href="fontcreator.html" class="app-card" data-id="1777301800441" style="text-decoration:none;color:inherit">
+          <img src="logo/fontcreator.png" alt="FontCreator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontCreator</h3>
+          <p class="app-description">Professional font editor for Windows with OpenType and variable font support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">windows</span><span class="app-tag">opentype</span>
+            </div>
+          
+        </a>
+        <a href="high-logic-fontcreator.html" class="app-card" data-id="1777301800442" style="text-decoration:none;color:inherit">
+          <img src="logo/high-logic.png" alt="High-Logic FontCreator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">High-Logic FontCreator</h3>
+          <p class="app-description">Advanced font design software with auto-tracing and hinting tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">auto-trace</span><span class="app-tag">hinting</span>
+            </div>
+          
+        </a>
+        <a href="fontlab-studio.html" class="app-card" data-id="1777301800443" style="text-decoration:none;color:inherit">
+          <img src="logo/fontlab-studio.png" alt="FontLab Studio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontLab Studio</h3>
+          <p class="app-description">Classic font editor for creating and editing professional typefaces.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">classic</span><span class="app-tag">professional</span>
+            </div>
+          
+        </a>
+        <a href="typetool.html" class="app-card" data-id="1777301800444" style="text-decoration:none;color:inherit">
+          <img src="logo/typetool.png" alt="TypeTool" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TypeTool</h3>
+          <p class="app-description">Entry-level font editor for creating custom fonts and typefaces.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">entry-level</span><span class="app-tag">custom</span>
+            </div>
+          
+        </a>
+        <a href="fontographer.html" class="app-card" data-id="1777301800445" style="text-decoration:none;color:inherit">
+          <img src="logo/fontographer.png" alt="Fontographer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fontographer</h3>
+          <p class="app-description">Professional font design software for creating and modifying fonts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">professional</span><span class="app-tag">design</span>
+            </div>
+          
+        </a>
+        <a href="fontstruct.html" class="app-card" data-id="1777301800446" style="text-decoration:none;color:inherit">
+          <img src="logo/fontstruct.png" alt="FontStruct" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontStruct</h3>
+          <p class="app-description">Web-based font builder for creating fonts from geometric shapes.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">web-based</span><span class="app-tag">geometric</span>
+            </div>
+          
+        </a>
+        <a href="calligraphr.html" class="app-card" data-id="1777301800447" style="text-decoration:none;color:inherit">
+          <img src="logo/calligraphr.png" alt="Calligraphr" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Calligraphr</h3>
+          <p class="app-description">Create custom fonts from your handwriting with online template generator.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">handwriting</span><span class="app-tag">custom</span>
+            </div>
+          
+        </a>
+        <a href="fontifier.html" class="app-card" data-id="1777301800448" style="text-decoration:none;color:inherit">
+          <img src="logo/fontifier.png" alt="Fontifier" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fontifier</h3>
+          <p class="app-description">Turn your handwriting into a font with simple online tool.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">handwriting</span><span class="app-tag">simple</span>
+            </div>
+          
+        </a>
+        <a href="myscriptfont.html" class="app-card" data-id="1777301800449" style="text-decoration:none;color:inherit">
+          <img src="logo/myscriptfont.png" alt="MyScriptFont" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MyScriptFont</h3>
+          <p class="app-description">Free online tool to create fonts from your own handwriting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">free</span><span class="app-tag">handwriting</span>
+            </div>
+          
+        </a>
+        <a href="font-squirrel-generator.html" class="app-card" data-id="1777301800450" style="text-decoration:none;color:inherit">
+          <img src="logo/font-squirrel-gen.png" alt="Font Squirrel Generator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Font Squirrel Generator</h3>
+          <p class="app-description">Free webfont generator for converting fonts to web-ready formats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">webfonts</span><span class="app-tag">generator</span>
+            </div>
+          
+        </a>
+        <a href="transfonter.html" class="app-card" data-id="1777301800451" style="text-decoration:none;color:inherit">
+          <img src="logo/transfonter.png" alt="Transfonter" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Transfonter</h3>
+          <p class="app-description">Online font converter for generating webfont kits in multiple formats.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">converter</span><span class="app-tag">webfonts</span>
+            </div>
+          
+        </a>
+        <a href="fontdrop.html" class="app-card" data-id="1777301800452" style="text-decoration:none;color:inherit">
+          <img src="logo/fontdrop.png" alt="FontDrop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontDrop</h3>
+          <p class="app-description">Drag-and-drop font inspector for viewing font metadata and glyphs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">inspector</span><span class="app-tag">metadata</span>
+            </div>
+          
+        </a>
+        <a href="whatthefont.html" class="app-card" data-id="1777301800453" style="text-decoration:none;color:inherit">
+          <img src="logo/whatthefont.png" alt="WhatTheFont" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WhatTheFont</h3>
+          <p class="app-description">Font identification tool for matching fonts from images.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">identification</span><span class="app-tag">matching</span>
+            </div>
+          
+        </a>
+        <a href="font-matcherator.html" class="app-card" data-id="1777301800454" style="text-decoration:none;color:inherit">
+          <img src="logo/matcherator.png" alt="Font Matcherator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Font Matcherator</h3>
+          <p class="app-description">Identify fonts from images with Font Squirrel&#039;s matching algorithm.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">identification</span><span class="app-tag">matching</span>
+            </div>
+          
+        </a>
+        <a href="identifont.html" class="app-card" data-id="1777301800455" style="text-decoration:none;color:inherit">
+          <img src="logo/identifont.png" alt="Identifont" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Identifont</h3>
+          <p class="app-description">Font identification service using question-based matching.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">identification</span><span class="app-tag">questions</span>
+            </div>
+          
+        </a>
+        <a href="fontspring-matcher.html" class="app-card" data-id="1777301800456" style="text-decoration:none;color:inherit">
+          <img src="logo/fontspring-matcher.png" alt="FontSpring Matcher" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontSpring Matcher</h3>
+          <p class="app-description">Font identification tool with commercial licensing options.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">identification</span><span class="app-tag">commercial</span>
+            </div>
+          
+        </a>
+        <a href="typekit-font-finder.html" class="app-card" data-id="1777301800457" style="text-decoration:none;color:inherit">
+          <img src="logo/typekit-finder.png" alt="Typekit Font Finder" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Typekit Font Finder</h3>
+          <p class="app-description">Browser extension for identifying fonts used on websites.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">browser</span><span class="app-tag">extension</span>
+            </div>
+          
+        </a>
+        <a href="whatfont.html" class="app-card" data-id="1777301800458" style="text-decoration:none;color:inherit">
+          <img src="logo/whatfont.png" alt="WhatFont" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WhatFont</h3>
+          <p class="app-description">Browser extension for quickly identifying fonts on web pages.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">browser</span><span class="app-tag">extension</span>
+            </div>
+          
+        </a>
+        <a href="font-face-ninja.html" class="app-card" data-id="1777301800459" style="text-decoration:none;color:inherit">
+          <img src="logo/font-face-ninja.png" alt="Font Face Ninja" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Font Face Ninja</h3>
+          <p class="app-description">Browser extension for inspecting and trying fonts on any website.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">browser</span><span class="app-tag">extension</span>
+            </div>
+          
+        </a>
+        <a href="fonts-ninja.html" class="app-card" data-id="1777301800460" style="text-decoration:none;color:inherit">
+          <img src="logo/fonts-ninja.png" alt="Fonts Ninja" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Fonts Ninja</h3>
+          <p class="app-description">Browser extension and app for identifying and testing fonts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">browser</span><span class="app-tag">app</span>
+            </div>
+          
+        </a>
+        <a href="font-picker-chrome.html" class="app-card" data-id="1777301800461" style="text-decoration:none;color:inherit">
+          <img src="logo/font-picker.png" alt="Font Picker for Chrome" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Font Picker for Chrome</h3>
+          <p class="app-description">Chrome extension for browsing and testing Google Fonts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">chrome</span><span class="app-tag">extension</span>
+            </div>
+          
+        </a>
+        <a href="google-fonts-helper.html" class="app-card" data-id="1777301800462" style="text-decoration:none;color:inherit">
+          <img src="logo/google-fonts-helper.png" alt="Google Fonts Helper" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Fonts Helper</h3>
+          <p class="app-description">Desktop app for downloading and managing Google Fonts offline.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">google</span><span class="app-tag">offline</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-teams.html" class="app-card" data-id="1777301800463" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-teams.png" alt="FontBase for Teams" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase for Teams</h3>
+          <p class="app-description">Team font management with shared libraries and collaboration features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">teams</span><span class="app-tag">collaboration</span>
+            </div>
+          
+        </a>
+        <a href="suitcase-fusion.html" class="app-card" data-id="1777301800464" style="text-decoration:none;color:inherit">
+          <img src="logo/suitcase-fusion.png" alt="Suitcase Fusion" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Suitcase Fusion</h3>
+          <p class="app-description">Professional font management with auto-activation and cloud sync.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">professional</span><span class="app-tag">auto-activation</span>
+            </div>
+          
+        </a>
+        <a href="universal-type-server.html" class="app-card" data-id="1777301800465" style="text-decoration:none;color:inherit">
+          <img src="logo/universal-type.png" alt="Universal Type Server" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Universal Type Server</h3>
+          <p class="app-description">Enterprise font management with centralized licensing and deployment.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">enterprise</span><span class="app-tag">licensing</span>
+            </div>
+          
+        </a>
+        <a href="fontexplorer-x-pro.html" class="app-card" data-id="1777301800466" style="text-decoration:none;color:inherit">
+          <img src="logo/fontexplorer.png" alt="FontExplorer X Pro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontExplorer X Pro</h3>
+          <p class="app-description">Professional font manager with activation, syncing, and collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">professional</span><span class="app-tag">activation</span>
+            </div>
+          
+        </a>
+        <a href="typeface.html" class="app-card" data-id="1777301800467" style="text-decoration:none;color:inherit">
+          <img src="logo/typeface.png" alt="Typeface" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Typeface</h3>
+          <p class="app-description">Beautiful font management app for Mac with preview and organization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">mac</span><span class="app-tag">preview</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-mini.html" class="app-card" data-id="1777301800468" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-mini.png" alt="FontBase Mini" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase Mini</h3>
+          <p class="app-description">Lightweight version of FontBase for quick font activation and preview.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">lightweight</span><span class="app-tag">quick</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-server.html" class="app-card" data-id="1777301800469" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-server.png" alt="FontBase Server" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase Server</h3>
+          <p class="app-description">Self-hosted font server for team font management and distribution.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">server</span><span class="app-tag">self-hosted</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-cli.html" class="app-card" data-id="1777301800470" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-cli.png" alt="FontBase CLI" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase CLI</h3>
+          <p class="app-description">Command-line interface for managing fonts with FontBase backend.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">cli</span><span class="app-tag">command-line</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-api.html" class="app-card" data-id="1777301800471" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-api.png" alt="FontBase API" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase API</h3>
+          <p class="app-description">API for integrating FontBase font management into custom workflows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">api</span><span class="app-tag">integration</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-web.html" class="app-card" data-id="1777301800472" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-web.png" alt="FontBase Web" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase Web</h3>
+          <p class="app-description">Web-based font management with cloud sync and team collaboration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">web</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-mobile.html" class="app-card" data-id="1777301800473" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-mobile.png" alt="FontBase Mobile" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase Mobile</h3>
+          <p class="app-description">Mobile app for browsing and previewing fonts on iOS and Android.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">mobile</span><span class="app-tag">ios</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-watch.html" class="app-card" data-id="1777301800474" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-watch.png" alt="FontBase Watch" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase Watch</h3>
+          <p class="app-description">Apple Watch app for quick font previews and activation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">apple-watch</span><span class="app-tag">preview</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-extension.html" class="app-card" data-id="1777301800475" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-extension.png" alt="FontBase Extension" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase Extension</h3>
+          <p class="app-description">Browser extension for activating fonts directly from web pages.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">browser</span><span class="app-tag">extension</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-plugin.html" class="app-card" data-id="1777301800476" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-plugin.png" alt="FontBase Plugin" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase Plugin</h3>
+          <p class="app-description">Plugin system for extending FontBase with custom features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">plugin</span><span class="app-tag">extensible</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-theme.html" class="app-card" data-id="1777301800477" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-theme.png" alt="FontBase Theme" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase Theme</h3>
+          <p class="app-description">Custom themes for personalizing the FontBase interface.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">themes</span><span class="app-tag">customization</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-language-pack.html" class="app-card" data-id="1777301800478" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-lang.png" alt="FontBase Language Pack" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase Language Pack</h3>
+          <p class="app-description">Localization packs for FontBase in multiple languages.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">localization</span><span class="app-tag">multilingual</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-presets.html" class="app-card" data-id="1777301800479" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-presets.png" alt="FontBase Presets" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase Presets</h3>
+          <p class="app-description">Pre-configured settings and collections for FontBase users.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">presets</span><span class="app-tag">collections</span>
+            </div>
+          
+        </a>
+        <a href="fontbase-templates.html" class="app-card" data-id="1777301800480" style="text-decoration:none;color:inherit">
+          <img src="logo/fontbase-templates.png" alt="FontBase Templates" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FontBase Templates</h3>
+          <p class="app-description">Template system for organizing fonts by project and workflow.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fonts</span><span class="app-tag">templates</span><span class="app-tag">organization</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777301800439,"name":"Fontself","slug":"fontself","version":"4.0.0","description":"Create fonts directly in Illustrator and Photoshop with drag-and-drop.","category":"font","logoUrl":"logo/fontself.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fontself59&tracker=59","tags":["fonts","illustrator","photoshop","drag-drop"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800440,"name":"BirdFont","slug":"birdfont","version":"4.28.0","description":"Free font editor for creating vector fonts with SVG and EOT export.","category":"font","logoUrl":"logo/birdfont.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=BirdFont60&tracker=60","tags":["fonts","free","vector","svg"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800441,"name":"FontCreator","slug":"fontcreator","version":"15.0","description":"Professional font editor for Windows with OpenType and variable font support.","category":"font","logoUrl":"logo/fontcreator.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontCreator61&tracker=61","tags":["fonts","windows","opentype","variable"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800442,"name":"High-Logic FontCreator","slug":"high-logic-fontcreator","version":"15.0","description":"Advanced font design software with auto-tracing and hinting tools.","category":"font","logoUrl":"logo/high-logic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=High-Logic FontCreator62&tracker=62","tags":["fonts","auto-trace","hinting","professional"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800443,"name":"FontLab Studio","slug":"fontlab-studio","version":"5.2","description":"Classic font editor for creating and editing professional typefaces.","category":"font","logoUrl":"logo/fontlab-studio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontLab Studio63&tracker=63","tags":["fonts","classic","professional","typefaces"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800444,"name":"TypeTool","slug":"typetool","version":"3.0","description":"Entry-level font editor for creating custom fonts and typefaces.","category":"font","logoUrl":"logo/typetool.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TypeTool64&tracker=64","tags":["fonts","entry-level","custom","beginner"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800445,"name":"Fontographer","slug":"fontographer","version":"5.2","description":"Professional font design software for creating and modifying fonts.","category":"font","logoUrl":"logo/fontographer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fontographer65&tracker=65","tags":["fonts","professional","design","modification"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800446,"name":"FontStruct","slug":"fontstruct","version":"2024.1","description":"Web-based font builder for creating fonts from geometric shapes.","category":"font","logoUrl":"logo/fontstruct.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontStruct66&tracker=66","tags":["fonts","web-based","geometric","builder"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800447,"name":"Calligraphr","slug":"calligraphr","version":"2024.1","description":"Create custom fonts from your handwriting with online template generator.","category":"font","logoUrl":"logo/calligraphr.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Calligraphr67&tracker=67","tags":["fonts","handwriting","custom","online"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800448,"name":"Fontifier","slug":"fontifier","version":"2024.1","description":"Turn your handwriting into a font with simple online tool.","category":"font","logoUrl":"logo/fontifier.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fontifier68&tracker=68","tags":["fonts","handwriting","simple","online"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800449,"name":"MyScriptFont","slug":"myscriptfont","version":"2024.1","description":"Free online tool to create fonts from your own handwriting.","category":"font","logoUrl":"logo/myscriptfont.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MyScriptFont69&tracker=69","tags":["fonts","free","handwriting","online"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800450,"name":"Font Squirrel Generator","slug":"font-squirrel-generator","version":"2024.1","description":"Free webfont generator for converting fonts to web-ready formats.","category":"font","logoUrl":"logo/font-squirrel-gen.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Font Squirrel Generator70&tracker=70","tags":["fonts","webfonts","generator","free"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800451,"name":"Transfonter","slug":"transfonter","version":"2024.1","description":"Online font converter for generating webfont kits in multiple formats.","category":"font","logoUrl":"logo/transfonter.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Transfonter71&tracker=71","tags":["fonts","converter","webfonts","online"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800452,"name":"FontDrop","slug":"fontdrop","version":"2024.1","description":"Drag-and-drop font inspector for viewing font metadata and glyphs.","category":"font","logoUrl":"logo/fontdrop.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontDrop72&tracker=72","tags":["fonts","inspector","metadata","drag-drop"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800453,"name":"WhatTheFont","slug":"whatthefont","version":"2024.1","description":"Font identification tool for matching fonts from images.","category":"font","logoUrl":"logo/whatthefont.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WhatTheFont73&tracker=73","tags":["fonts","identification","matching","images"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800454,"name":"Font Matcherator","slug":"font-matcherator","version":"2024.1","description":"Identify fonts from images with Font Squirrel's matching algorithm.","category":"font","logoUrl":"logo/matcherator.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Font Matcherator74&tracker=74","tags":["fonts","identification","matching","algorithm"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800455,"name":"Identifont","slug":"identifont","version":"2024.1","description":"Font identification service using question-based matching.","category":"font","logoUrl":"logo/identifont.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Identifont75&tracker=75","tags":["fonts","identification","questions","matching"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800456,"name":"FontSpring Matcher","slug":"fontspring-matcher","version":"2024.1","description":"Font identification tool with commercial licensing options.","category":"font","logoUrl":"logo/fontspring-matcher.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontSpring Matcher76&tracker=76","tags":["fonts","identification","commercial","licensing"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800457,"name":"Typekit Font Finder","slug":"typekit-font-finder","version":"2024.1","description":"Browser extension for identifying fonts used on websites.","category":"font","logoUrl":"logo/typekit-finder.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Typekit Font Finder77&tracker=77","tags":["fonts","browser","extension","identification"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800458,"name":"WhatFont","slug":"whatfont","version":"2.0.0","description":"Browser extension for quickly identifying fonts on web pages.","category":"font","logoUrl":"logo/whatfont.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WhatFont78&tracker=78","tags":["fonts","browser","extension","web"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800459,"name":"Font Face Ninja","slug":"font-face-ninja","version":"3.0.0","description":"Browser extension for inspecting and trying fonts on any website.","category":"font","logoUrl":"logo/font-face-ninja.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Font Face Ninja79&tracker=79","tags":["fonts","browser","extension","inspection"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800460,"name":"Fonts Ninja","slug":"fonts-ninja","version":"2.0.0","description":"Browser extension and app for identifying and testing fonts.","category":"font","logoUrl":"logo/fonts-ninja.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Fonts Ninja80&tracker=80","tags":["fonts","browser","app","testing"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800461,"name":"Font Picker for Chrome","slug":"font-picker-chrome","version":"1.5.0","description":"Chrome extension for browsing and testing Google Fonts.","category":"font","logoUrl":"logo/font-picker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Font Picker for Chrome81&tracker=81","tags":["fonts","chrome","extension","google-fonts"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800462,"name":"Google Fonts Helper","slug":"google-fonts-helper","version":"2024.1","description":"Desktop app for downloading and managing Google Fonts offline.","category":"font","logoUrl":"logo/google-fonts-helper.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Fonts Helper82&tracker=82","tags":["fonts","google","offline","management"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800463,"name":"FontBase for Teams","slug":"fontbase-teams","version":"2.17.0","description":"Team font management with shared libraries and collaboration features.","category":"font","logoUrl":"logo/fontbase-teams.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase for Teams83&tracker=83","tags":["fonts","teams","collaboration","shared"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800464,"name":"Suitcase Fusion","slug":"suitcase-fusion","version":"23.3.0","description":"Professional font management with auto-activation and cloud sync.","category":"font","logoUrl":"logo/suitcase-fusion.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Suitcase Fusion84&tracker=84","tags":["fonts","professional","auto-activation","cloud"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800465,"name":"Universal Type Server","slug":"universal-type-server","version":"7.0.0","description":"Enterprise font management with centralized licensing and deployment.","category":"font","logoUrl":"logo/universal-type.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Universal Type Server85&tracker=85","tags":["fonts","enterprise","licensing","centralized"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800466,"name":"FontExplorer X Pro","slug":"fontexplorer-x-pro","version":"3.7.0","description":"Professional font manager with activation, syncing, and collaboration.","category":"font","logoUrl":"logo/fontexplorer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontExplorer X Pro86&tracker=86","tags":["fonts","professional","activation","syncing"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800467,"name":"Typeface","slug":"typeface","version":"1.2.0","description":"Beautiful font management app for Mac with preview and organization.","category":"font","logoUrl":"logo/typeface.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Typeface87&tracker=87","tags":["fonts","mac","preview","organization"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800468,"name":"FontBase Mini","slug":"fontbase-mini","version":"1.0.0","description":"Lightweight version of FontBase for quick font activation and preview.","category":"font","logoUrl":"logo/fontbase-mini.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase Mini88&tracker=88","tags":["fonts","lightweight","quick","preview"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800469,"name":"FontBase Server","slug":"fontbase-server","version":"2.0.0","description":"Self-hosted font server for team font management and distribution.","category":"font","logoUrl":"logo/fontbase-server.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase Server89&tracker=89","tags":["fonts","server","self-hosted","team"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800470,"name":"FontBase CLI","slug":"fontbase-cli","version":"1.0.0","description":"Command-line interface for managing fonts with FontBase backend.","category":"font","logoUrl":"logo/fontbase-cli.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase CLI90&tracker=90","tags":["fonts","cli","command-line","automation"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800471,"name":"FontBase API","slug":"fontbase-api","version":"1.0.0","description":"API for integrating FontBase font management into custom workflows.","category":"font","logoUrl":"logo/fontbase-api.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase API91&tracker=91","tags":["fonts","api","integration","workflows"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800472,"name":"FontBase Web","slug":"fontbase-web","version":"2024.1","description":"Web-based font management with cloud sync and team collaboration.","category":"font","logoUrl":"logo/fontbase-web.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase Web92&tracker=92","tags":["fonts","web","cloud","collaboration"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800473,"name":"FontBase Mobile","slug":"fontbase-mobile","version":"1.5.0","description":"Mobile app for browsing and previewing fonts on iOS and Android.","category":"font","logoUrl":"logo/fontbase-mobile.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase Mobile93&tracker=93","tags":["fonts","mobile","ios","android"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800474,"name":"FontBase Watch","slug":"fontbase-watch","version":"1.0.0","description":"Apple Watch app for quick font previews and activation.","category":"font","logoUrl":"logo/fontbase-watch.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase Watch94&tracker=94","tags":["fonts","apple-watch","preview","quick"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800475,"name":"FontBase Extension","slug":"fontbase-extension","version":"2.0.0","description":"Browser extension for activating fonts directly from web pages.","category":"font","logoUrl":"logo/fontbase-extension.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase Extension95&tracker=95","tags":["fonts","browser","extension","activation"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800476,"name":"FontBase Plugin","slug":"fontbase-plugin","version":"1.0.0","description":"Plugin system for extending FontBase with custom features.","category":"font","logoUrl":"logo/fontbase-plugin.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase Plugin96&tracker=96","tags":["fonts","plugin","extensible","custom"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800477,"name":"FontBase Theme","slug":"fontbase-theme","version":"1.0.0","description":"Custom themes for personalizing the FontBase interface.","category":"font","logoUrl":"logo/fontbase-theme.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase Theme97&tracker=97","tags":["fonts","themes","customization","ui"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800478,"name":"FontBase Language Pack","slug":"fontbase-language-pack","version":"2024.1","description":"Localization packs for FontBase in multiple languages.","category":"font","logoUrl":"logo/fontbase-lang.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase Language Pack98&tracker=98","tags":["fonts","localization","multilingual","i18n"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800479,"name":"FontBase Presets","slug":"fontbase-presets","version":"1.0.0","description":"Pre-configured settings and collections for FontBase users.","category":"font","logoUrl":"logo/fontbase-presets.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase Presets99&tracker=99","tags":["fonts","presets","collections","settings"],"scrapedAt":"2026-04-27T14:56:40.381Z"},{"id":1777301800480,"name":"FontBase Templates","slug":"fontbase-templates","version":"1.0.0","description":"Template system for organizing fonts by project and workflow.","category":"font","logoUrl":"logo/fontbase-templates.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FontBase Templates100&tracker=100","tags":["fonts","templates","organization","workflow"],"scrapedAt":"2026-04-27T14:56:40.381Z"}];
+    const CURRENT_CATEGORY = 'font';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

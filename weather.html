@@ -1,0 +1,1301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Weather — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Weather</h1>
+    <p><span class="highlight">100</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="the-weather-channel.html" class="app-card" data-id="1777300651585" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-channel.png" alt="The Weather Channel" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Weather Channel</h3>
+          <p class="app-description">Comprehensive weather forecasts, radar maps, and severe weather alerts from the trusted source.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">forecasts</span><span class="app-tag">radar</span><span class="app-tag">alerts</span>
+            </div>
+          
+        </a>
+        <a href="accuweather.html" class="app-card" data-id="1777300651586" style="text-decoration:none;color:inherit">
+          <img src="logo/accuweather.png" alt="AccuWeather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AccuWeather</h3>
+          <p class="app-description">Hyperlocal weather forecasts with MinuteCast precipitation predictions and real-time radar.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hyperlocal</span><span class="app-tag">minutecast</span><span class="app-tag">radar</span>
+            </div>
+          
+        </a>
+        <a href="weather-underground.html" class="app-card" data-id="1777300651587" style="text-decoration:none;color:inherit">
+          <img src="logo/wunderground.png" alt="Weather Underground" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Underground</h3>
+          <p class="app-description">Crowdsourced weather data from personal weather stations with detailed local forecasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">crowdsourced</span><span class="app-tag">personal-stations</span><span class="app-tag">local</span>
+            </div>
+          
+        </a>
+        <a href="dark-sky.html" class="app-card" data-id="1777300651588" style="text-decoration:none;color:inherit">
+          <img src="logo/dark-sky.png" alt="Dark Sky (Archived)" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Dark Sky (Archived)</h3>
+          <p class="app-description">Hyperlocal weather app with minute-by-minute precipitation forecasts (now part of Apple Weather).</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hyperlocal</span><span class="app-tag">precipitation</span><span class="app-tag">archived</span>
+            </div>
+          
+        </a>
+        <a href="apple-weather.html" class="app-card" data-id="1777300651589" style="text-decoration:none;color:inherit">
+          <img src="logo/apple-weather.png" alt="Apple Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Apple Weather</h3>
+          <p class="app-description">Native weather app for Apple devices with beautiful animations and detailed forecasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">native</span><span class="app-tag">apple</span><span class="app-tag">animations</span>
+            </div>
+          
+        </a>
+        <a href="google-weather.html" class="app-card" data-id="1777300651590" style="text-decoration:none;color:inherit">
+          <img src="logo/google-weather.png" alt="Google Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Google Weather</h3>
+          <p class="app-description">Integrated weather service in Google Search and Android with hourly and daily forecasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">google</span><span class="app-tag">android</span><span class="app-tag">hourly</span>
+            </div>
+          
+        </a>
+        <a href="weatherbug.html" class="app-card" data-id="1777300651591" style="text-decoration:none;color:inherit">
+          <img src="logo/weatherbug.png" alt="WeatherBug" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WeatherBug</h3>
+          <p class="app-description">Real-time weather conditions with live camera feeds and lightning alerts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">real-time</span><span class="app-tag">cameras</span><span class="app-tag">lightning</span>
+            </div>
+          
+        </a>
+        <a href="noaa-weather-radar.html" class="app-card" data-id="1777300651592" style="text-decoration:none;color:inherit">
+          <img src="logo/noaa.png" alt="NOAA Weather Radar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NOAA Weather Radar</h3>
+          <p class="app-description">Official NOAA app with Doppler radar, warnings, and marine forecasts for the US.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">noaa</span><span class="app-tag">doppler</span><span class="app-tag">marine</span>
+            </div>
+          
+        </a>
+        <a href="windy.html" class="app-card" data-id="1777300651593" style="text-decoration:none;color:inherit">
+          <img src="logo/windy.png" alt="Windy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Windy</h3>
+          <p class="app-description">Advanced weather visualization with wind, rain, temperature, and wave maps for enthusiasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">visualization</span><span class="app-tag">wind</span><span class="app-tag">maps</span>
+            </div>
+          
+        </a>
+        <a href="ventusky.html" class="app-card" data-id="1777300651594" style="text-decoration:none;color:inherit">
+          <img src="logo/ventusky.png" alt="Ventusky" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ventusky</h3>
+          <p class="app-description">Beautiful weather maps with animated wind, precipitation, and temperature visualizations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">maps</span><span class="app-tag">animated</span><span class="app-tag">visualizations</span>
+            </div>
+          
+        </a>
+        <a href="myradar.html" class="app-card" data-id="1777300651595" style="text-decoration:none;color:inherit">
+          <img src="logo/myradar.png" alt="MyRadar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MyRadar</h3>
+          <p class="app-description">Fast, animated weather radar with hurricane tracking and aviation weather layers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">radar</span><span class="app-tag">animated</span><span class="app-tag">hurricane</span>
+            </div>
+          
+        </a>
+        <a href="radarscope.html" class="app-card" data-id="1777300651596" style="text-decoration:none;color:inherit">
+          <img src="logo/radarscope.png" alt="RadarScope" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">RadarScope</h3>
+          <p class="app-description">Professional-grade Doppler radar display for weather enthusiasts and storm chasers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">doppler</span><span class="app-tag">professional</span><span class="app-tag">storm-chasing</span>
+            </div>
+          
+        </a>
+        <a href="storm-radar.html" class="app-card" data-id="1777300651597" style="text-decoration:none;color:inherit">
+          <img src="logo/storm-radar.png" alt="Storm Radar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Storm Radar</h3>
+          <p class="app-description">Real-time storm tracking with precipitation forecasts and severe weather alerts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">storm-tracking</span><span class="app-tag">precipitation</span><span class="app-tag">alerts</span>
+            </div>
+          
+        </a>
+        <a href="carrot-weather.html" class="app-card" data-id="1777300651598" style="text-decoration:none;color:inherit">
+          <img src="logo/carrot-weather.png" alt="Carrot Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Carrot Weather</h3>
+          <p class="app-description">Weather app with personality, featuring sarcastic forecasts and customizable data sources.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">personality</span><span class="app-tag">sarcastic</span><span class="app-tag">customizable</span>
+            </div>
+          
+        </a>
+        <a href="weather-live.html" class="app-card" data-id="1777300651599" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-live.png" alt="Weather Live" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Live</h3>
+          <p class="app-description">Beautiful weather app with live backgrounds and detailed hourly forecasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">live-backgrounds</span><span class="app-tag">beautiful</span><span class="app-tag">hourly</span>
+            </div>
+          
+        </a>
+        <a href="weather-radar.html" class="app-card" data-id="1777300651600" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-radar.png" alt="Weather &amp; Radar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather &amp; Radar</h3>
+          <p class="app-description">All-in-one weather app with radar, forecasts, and weather news from multiple sources.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">all-in-one</span><span class="app-tag">radar</span><span class="app-tag">news</span>
+            </div>
+          
+        </a>
+        <a href="1weather.html" class="app-card" data-id="1777300651601" style="text-decoration:none;color:inherit">
+          <img src="logo/1weather.png" alt="1Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+MTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">1Weather</h3>
+          <p class="app-description">Comprehensive weather app with widgets, alerts, and multiple forecast models.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">widgets</span><span class="app-tag">alerts</span><span class="app-tag">models</span>
+            </div>
+          
+        </a>
+        <a href="weathermate.html" class="app-card" data-id="1777300651602" style="text-decoration:none;color:inherit">
+          <img src="logo/weathermate.png" alt="WeatherMate" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WeatherMate</h3>
+          <p class="app-description">Simple and elegant weather app with clean design and accurate forecasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">simple</span><span class="app-tag">elegant</span><span class="app-tag">clean</span>
+            </div>
+          
+        </a>
+        <a href="yowindow-weather.html" class="app-card" data-id="1777300651603" style="text-decoration:none;color:inherit">
+          <img src="logo/yowindow.png" alt="YoWindow Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">YoWindow Weather</h3>
+          <p class="app-description">Unique weather app with animated landscape that reflects current conditions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">animated</span><span class="app-tag">landscape</span><span class="app-tag">unique</span>
+            </div>
+          
+        </a>
+        <a href="weatherpro.html" class="app-card" data-id="1777300651604" style="text-decoration:none;color:inherit">
+          <img src="logo/weatherpro.png" alt="WeatherPro" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WeatherPro</h3>
+          <p class="app-description">Professional weather app with detailed forecasts and multiple data sources.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">professional</span><span class="app-tag">detailed</span><span class="app-tag">multi-source</span>
+            </div>
+          
+        </a>
+        <a href="meteoearth.html" class="app-card" data-id="1777300651605" style="text-decoration:none;color:inherit">
+          <img src="logo/meteoearth.png" alt="MeteoEarth" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MeteoEarth</h3>
+          <p class="app-description">Interactive 3D globe showing weather patterns, wind, and atmospheric conditions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">3d-globe</span><span class="app-tag">interactive</span><span class="app-tag">patterns</span>
+            </div>
+          
+        </a>
+        <a href="earth.html" class="app-card" data-id="1777300651606" style="text-decoration:none;color:inherit">
+          <img src="logo/earth.png" alt="Earth" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Earth</h3>
+          <p class="app-description">Beautiful global weather visualization with wind, temperature, and ocean currents.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">global</span><span class="app-tag">visualization</span><span class="app-tag">ocean</span>
+            </div>
+          
+        </a>
+        <a href="wetteronline.html" class="app-card" data-id="1777300651607" style="text-decoration:none;color:inherit">
+          <img src="logo/wetteronline.png" alt="WetterOnline" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WetterOnline</h3>
+          <p class="app-description">Popular European weather app with detailed forecasts and precipitation radar.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">european</span><span class="app-tag">detailed</span><span class="app-tag">precipitation</span>
+            </div>
+          
+        </a>
+        <a href="yr-no.html" class="app-card" data-id="1777300651608" style="text-decoration:none;color:inherit">
+          <img src="logo/yr.png" alt="Yr.no" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Yr.no</h3>
+          <p class="app-description">Norwegian Meteorological Institute&#039;s weather service with accurate forecasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">norwegian</span><span class="app-tag">meteorological</span><span class="app-tag">accurate</span>
+            </div>
+          
+        </a>
+        <a href="meteoblue.html" class="app-card" data-id="1777300651609" style="text-decoration:none;color:inherit">
+          <img src="logo/meteoblue.png" alt="Meteoblue" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Meteoblue</h3>
+          <p class="app-description">Swiss weather service with multi-model forecasts and specialized agriculture tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">swiss</span><span class="app-tag">multi-model</span><span class="app-tag">agriculture</span>
+            </div>
+          
+        </a>
+        <a href="foreca.html" class="app-card" data-id="1777300651610" style="text-decoration:none;color:inherit">
+          <img src="logo/foreca.png" alt="Foreca" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Foreca</h3>
+          <p class="app-description">Finnish weather service with global coverage and detailed local forecasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">finnish</span><span class="app-tag">global</span><span class="app-tag">local</span>
+            </div>
+          
+        </a>
+        <a href="accuweather-minutecast.html" class="app-card" data-id="1777300651611" style="text-decoration:none;color:inherit">
+          <img src="logo/minutecast.png" alt="AccuWeather MinuteCast" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AccuWeather MinuteCast</h3>
+          <p class="app-description">Minute-by-minute precipitation forecasts for the next two hours at your location.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">minute-by-minute</span><span class="app-tag">precipitation</span><span class="app-tag">short-term</span>
+            </div>
+          
+        </a>
+        <a href="rainviewer.html" class="app-card" data-id="1777300651612" style="text-decoration:none;color:inherit">
+          <img src="logo/rainviewer.png" alt="RainViewer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">RainViewer</h3>
+          <p class="app-description">Real-time rain radar with precipitation forecasts and storm tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">rain</span><span class="app-tag">radar</span><span class="app-tag">real-time</span>
+            </div>
+          
+        </a>
+        <a href="raintoday.html" class="app-card" data-id="1777300651613" style="text-decoration:none;color:inherit">
+          <img src="logo/raintoday.png" alt="RainToday" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">RainToday</h3>
+          <p class="app-description">Simple app focused on precipitation forecasts and rain alerts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">precipitation</span><span class="app-tag">simple</span><span class="app-tag">alerts</span>
+            </div>
+          
+        </a>
+        <a href="precipitation-radar.html" class="app-card" data-id="1777300651614" style="text-decoration:none;color:inherit">
+          <img src="logo/precip-radar.png" alt="Precipitation Radar" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Precipitation Radar</h3>
+          <p class="app-description">Dedicated radar app for tracking rain, snow, and other precipitation types.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">radar</span><span class="app-tag">rain</span><span class="app-tag">snow</span>
+            </div>
+          
+        </a>
+        <a href="hurricane-tracker.html" class="app-card" data-id="1777300651615" style="text-decoration:none;color:inherit">
+          <img src="logo/hurricane-tracker.png" alt="Hurricane Tracker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hurricane Tracker</h3>
+          <p class="app-description">Specialized app for tracking tropical storms and hurricanes with cone forecasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hurricane</span><span class="app-tag">tropical</span><span class="app-tag">cone-forecast</span>
+            </div>
+          
+        </a>
+        <a href="tropical-storm-tracker.html" class="app-card" data-id="1777300651616" style="text-decoration:none;color:inherit">
+          <img src="logo/tropical-tracker.png" alt="Tropical Storm Tracker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tropical Storm Tracker</h3>
+          <p class="app-description">Real-time tracking of tropical cyclones with official NHC data and maps.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tropical</span><span class="app-tag">cyclones</span><span class="app-tag">nhc</span>
+            </div>
+          
+        </a>
+        <a href="tornado-alert.html" class="app-card" data-id="1777300651617" style="text-decoration:none;color:inherit">
+          <img src="logo/tornado-alert.png" alt="Tornado Alert" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tornado Alert</h3>
+          <p class="app-description">Severe weather app focused on tornado warnings and storm cell tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tornado</span><span class="app-tag">warnings</span><span class="app-tag">severe</span>
+            </div>
+          
+        </a>
+        <a href="severe-weather-alert.html" class="app-card" data-id="1777300651618" style="text-decoration:none;color:inherit">
+          <img src="logo/severe-alert.png" alt="Severe Weather Alert" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Severe Weather Alert</h3>
+          <p class="app-description">Push notifications for severe weather warnings including tornadoes, floods, and storms.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">alerts</span><span class="app-tag">push</span><span class="app-tag">warnings</span>
+            </div>
+          
+        </a>
+        <a href="weather-alert-radio.html" class="app-card" data-id="1777300651619" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-alert-radio.png" alt="Weather Alert Radio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Alert Radio</h3>
+          <p class="app-description">NOAA Weather Radio streaming with automatic alerts for your location.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">noaa-radio</span><span class="app-tag">streaming</span><span class="app-tag">automatic</span>
+            </div>
+          
+        </a>
+        <a href="noaa-weather-radio.html" class="app-card" data-id="1777300651620" style="text-decoration:none;color:inherit">
+          <img src="logo/noaa-radio.png" alt="NOAA Weather Radio" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">NOAA Weather Radio</h3>
+          <p class="app-description">Official NOAA Weather Radio app with live audio and text alerts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">noaa</span><span class="app-tag">radio</span><span class="app-tag">audio</span>
+            </div>
+          
+        </a>
+        <a href="weather-station.html" class="app-card" data-id="1777300651621" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-station.png" alt="Weather Station" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Station</h3>
+          <p class="app-description">App for connecting to and viewing data from personal weather stations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">personal-station</span><span class="app-tag">data</span><span class="app-tag">connection</span>
+            </div>
+          
+        </a>
+        <a href="wunderground-station.html" class="app-card" data-id="1777300651622" style="text-decoration:none;color:inherit">
+          <img src="logo/wu-station.png" alt="Weather Underground Station" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Underground Station</h3>
+          <p class="app-description">Manage and view data from your Weather Underground personal weather station.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">personal-station</span><span class="app-tag">wunderground</span><span class="app-tag">management</span>
+            </div>
+          
+        </a>
+        <a href="ambient-weather.html" class="app-card" data-id="1777300651623" style="text-decoration:none;color:inherit">
+          <img src="logo/ambient.png" alt="Ambient Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ambient Weather</h3>
+          <p class="app-description">App for Ambient Weather personal weather stations with real-time data and alerts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ambient</span><span class="app-tag">personal-station</span><span class="app-tag">real-time</span>
+            </div>
+          
+        </a>
+        <a href="davis-instruments.html" class="app-card" data-id="1777300651624" style="text-decoration:none;color:inherit">
+          <img src="logo/davis.png" alt="Davis Instruments" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Davis Instruments</h3>
+          <p class="app-description">App for Davis Vantage weather stations with detailed meteorological data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">davis</span><span class="app-tag">vantage</span><span class="app-tag">meteorological</span>
+            </div>
+          
+        </a>
+        <a href="weatherflow.html" class="app-card" data-id="1777300651625" style="text-decoration:none;color:inherit">
+          <img src="logo/weatherflow.png" alt="WeatherFlow" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WeatherFlow</h3>
+          <p class="app-description">App for WeatherFlow smart weather stations with Tempest sensor integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">weatherflow</span><span class="app-tag">tempest</span><span class="app-tag">smart</span>
+            </div>
+          
+        </a>
+        <a href="netatmo-weather.html" class="app-card" data-id="1777300651626" style="text-decoration:none;color:inherit">
+          <img src="logo/netatmo.png" alt="Netatmo Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Netatmo Weather</h3>
+          <p class="app-description">App for Netatmo smart weather stations with indoor and outdoor monitoring.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">netatmo</span><span class="app-tag">smart</span><span class="app-tag">indoor</span>
+            </div>
+          
+        </a>
+        <a href="ecowitt.html" class="app-card" data-id="1777300651627" style="text-decoration:none;color:inherit">
+          <img src="logo/ecowitt.png" alt="Ecowitt" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ecowitt</h3>
+          <p class="app-description">App for Ecowitt weather stations with cloud sync and data logging.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ecowitt</span><span class="app-tag">cloud</span><span class="app-tag">logging</span>
+            </div>
+          
+        </a>
+        <a href="weatherlink.html" class="app-card" data-id="1777300651628" style="text-decoration:none;color:inherit">
+          <img src="logo/weatherlink.png" alt="WeatherLink" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WeatherLink</h3>
+          <p class="app-description">Official app for Davis Instruments weather stations with live data and history.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">davis</span><span class="app-tag">live-data</span><span class="app-tag">history</span>
+            </div>
+          
+        </a>
+        <a href="weathercat.html" class="app-card" data-id="1777300651629" style="text-decoration:none;color:inherit">
+          <img src="logo/weathercat.png" alt="WeatherCat" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WeatherCat</h3>
+          <p class="app-description">Mac app for collecting and analyzing data from weather stations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">analysis</span><span class="app-tag">data-collection</span>
+            </div>
+          
+        </a>
+        <a href="cumulus-mx.html" class="app-card" data-id="1777300651630" style="text-decoration:none;color:inherit">
+          <img src="logo/cumulus.png" alt="Cumulus MX" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Cumulus MX</h3>
+          <p class="app-description">Open-source weather station software for logging and uploading data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">logging</span><span class="app-tag">upload</span>
+            </div>
+          
+        </a>
+        <a href="weewx.html" class="app-card" data-id="1777300651631" style="text-decoration:none;color:inherit">
+          <img src="logo/weewx.png" alt="WeeWX" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WeeWX</h3>
+          <p class="app-description">Open-source software for weather stations with web publishing capabilities.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">web-publishing</span><span class="app-tag">software</span>
+            </div>
+          
+        </a>
+        <a href="meteobridge.html" class="app-card" data-id="1777300651632" style="text-decoration:none;color:inherit">
+          <img src="logo/meteobridge.png" alt="Meteobridge" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Meteobridge</h3>
+          <p class="app-description">Hardware and software solution for uploading weather station data to online services.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hardware</span><span class="app-tag">upload</span><span class="app-tag">online-services</span>
+            </div>
+          
+        </a>
+        <a href="weather-display.html" class="app-card" data-id="1777300651633" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-display.png" alt="Weather Display" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Display</h3>
+          <p class="app-description">Comprehensive weather station software with graphing and web publishing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">comprehensive</span><span class="app-tag">graphing</span><span class="app-tag">web</span>
+            </div>
+          
+        </a>
+        <a href="virtual-weather-station.html" class="app-card" data-id="1777300651634" style="text-decoration:none;color:inherit">
+          <img src="logo/vws.png" alt="Virtual Weather Station" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Virtual Weather Station</h3>
+          <p class="app-description">Software for collecting and displaying weather data from various station types.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">collection</span><span class="app-tag">display</span><span class="app-tag">multi-station</span>
+            </div>
+          
+        </a>
+        <a href="weathersnoop.html" class="app-card" data-id="1777300651635" style="text-decoration:none;color:inherit">
+          <img src="logo/weathersnoop.png" alt="WeatherSnoop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WeatherSnoop</h3>
+          <p class="app-description">Mac app for monitoring multiple weather stations with customizable displays.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">multi-station</span><span class="app-tag">monitoring</span>
+            </div>
+          
+        </a>
+        <a href="weather-tracker.html" class="app-card" data-id="1777300651636" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-tracker.png" alt="Weather Tracker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Tracker</h3>
+          <p class="app-description">Simple weather tracking app with historical data and trend analysis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tracking</span><span class="app-tag">historical</span><span class="app-tag">trends</span>
+            </div>
+          
+        </a>
+        <a href="climate-data-online.html" class="app-card" data-id="1777300651637" style="text-decoration:none;color:inherit">
+          <img src="logo/cdo.png" alt="Climate Data Online" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Climate Data Online</h3>
+          <p class="app-description">NOAA&#039;s portal for accessing historical climate and weather data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">climate</span><span class="app-tag">historical</span><span class="app-tag">noaa</span>
+            </div>
+          
+        </a>
+        <a href="weather-spark.html" class="app-card" data-id="1777300651638" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-spark.png" alt="Weather Spark" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Spark</h3>
+          <p class="app-description">Visual weather reports with graphs and charts for any location worldwide.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">visual</span><span class="app-tag">graphs</span><span class="app-tag">charts</span>
+            </div>
+          
+        </a>
+        <a href="time-date-weather.html" class="app-card" data-id="1777300651639" style="text-decoration:none;color:inherit">
+          <img src="logo/timeanddate.png" alt="Time and Date Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Time and Date Weather</h3>
+          <p class="app-description">Weather forecasts integrated with time zone and astronomical data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">time-zone</span><span class="app-tag">astronomical</span><span class="app-tag">forecasts</span>
+            </div>
+          
+        </a>
+        <a href="sunrise-sunset.html" class="app-card" data-id="1777300651640" style="text-decoration:none;color:inherit">
+          <img src="logo/sunrise-sunset.png" alt="Sunrise Sunset" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sunrise Sunset</h3>
+          <p class="app-description">App for tracking sunrise, sunset, and golden hour times for photography.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sunrise</span><span class="app-tag">sunset</span><span class="app-tag">golden-hour</span>
+            </div>
+          
+        </a>
+        <a href="photopills.html" class="app-card" data-id="1777300651641" style="text-decoration:none;color:inherit">
+          <img src="logo/photopills.png" alt="PhotoPills" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PhotoPills</h3>
+          <p class="app-description">Photography planning app with sun/moon positions, weather, and light conditions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">photography</span><span class="app-tag">planning</span><span class="app-tag">sun-moon</span>
+            </div>
+          
+        </a>
+        <a href="photographers-ephemeris.html" class="app-card" data-id="1777300651642" style="text-decoration:none;color:inherit">
+          <img src="logo/tpe.png" alt="The Photographer&#039;s Ephemeris" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">The Photographer&#039;s Ephemeris</h3>
+          <p class="app-description">Planning tool for outdoor photography with sun, moon, and weather data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">photography</span><span class="app-tag">ephemeris</span><span class="app-tag">planning</span>
+            </div>
+          
+        </a>
+        <a href="skyview.html" class="app-card" data-id="1777300651643" style="text-decoration:none;color:inherit">
+          <img src="logo/skyview.png" alt="SkyView" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SkyView</h3>
+          <p class="app-description">Augmented reality app for identifying stars, planets, and satellites with weather overlay.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ar</span><span class="app-tag">astronomy</span><span class="app-tag">overlay</span>
+            </div>
+          
+        </a>
+        <a href="star-walk-2.html" class="app-card" data-id="1777300651644" style="text-decoration:none;color:inherit">
+          <img src="logo/star-walk.png" alt="Star Walk 2" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Star Walk 2</h3>
+          <p class="app-description">Astronomy app with real-time sky maps and weather conditions for stargazing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">astronomy</span><span class="app-tag">sky-map</span><span class="app-tag">stargazing</span>
+            </div>
+          
+        </a>
+        <a href="night-sky.html" class="app-card" data-id="1777300651645" style="text-decoration:none;color:inherit">
+          <img src="logo/night-sky.png" alt="Night Sky" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Night Sky</h3>
+          <p class="app-description">AR astronomy app with celestial object identification and weather integration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ar</span><span class="app-tag">astronomy</span><span class="app-tag">celestial</span>
+            </div>
+          
+        </a>
+        <a href="clear-outside.html" class="app-card" data-id="1777300651646" style="text-decoration:none;color:inherit">
+          <img src="logo/clear-outside.png" alt="Clear Outside" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Clear Outside</h3>
+          <p class="app-description">Astronomy-focused weather app with cloud cover and seeing forecasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">astronomy</span><span class="app-tag">cloud-cover</span><span class="app-tag">seeing</span>
+            </div>
+          
+        </a>
+        <a href="astroweather.html" class="app-card" data-id="1777300651647" style="text-decoration:none;color:inherit">
+          <img src="logo/astroweather.png" alt="AstroWeather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AstroWeather</h3>
+          <p class="app-description">Specialized weather forecasts for astronomers with transparency and seeing data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">astronomy</span><span class="app-tag">transparency</span><span class="app-tag">seeing</span>
+            </div>
+          
+        </a>
+        <a href="7timer.html" class="app-card" data-id="1777300651648" style="text-decoration:none;color:inherit">
+          <img src="logo/7timer.png" alt="7Timer!" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+NzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">7Timer!</h3>
+          <p class="app-description">Astronomy weather forecasts with model data for stargazing conditions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">astronomy</span><span class="app-tag">model-data</span><span class="app-tag">stargazing</span>
+            </div>
+          
+        </a>
+        <a href="meteogram.html" class="app-card" data-id="1777300651649" style="text-decoration:none;color:inherit">
+          <img src="logo/meteogram.png" alt="Meteogram" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Meteogram</h3>
+          <p class="app-description">Visual weather forecast charts showing temperature, precipitation, and wind trends.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">charts</span><span class="app-tag">visual</span><span class="app-tag">trends</span>
+            </div>
+          
+        </a>
+        <a href="weather-graph.html" class="app-card" data-id="1777300651650" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-graph.png" alt="Weather Graph" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Graph</h3>
+          <p class="app-description">Minimalist weather app focused on graphical data representation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">minimalist</span><span class="app-tag">graphical</span><span class="app-tag">data</span>
+            </div>
+          
+        </a>
+        <a href="geometric-weather.html" class="app-card" data-id="1777300651651" style="text-decoration:none;color:inherit">
+          <img src="logo/geometric.png" alt="Geometric Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Geometric Weather</h3>
+          <p class="app-description">Material Design weather app with multiple sources and customizable widgets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">material-design</span><span class="app-tag">multi-source</span><span class="app-tag">widgets</span>
+            </div>
+          
+        </a>
+        <a href="breezy-weather.html" class="app-card" data-id="1777300651652" style="text-decoration:none;color:inherit">
+          <img src="logo/breezy.png" alt="Breezy Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Breezy Weather</h3>
+          <p class="app-description">Open-source weather app with Material You design and multiple data providers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">open-source</span><span class="app-tag">material-you</span><span class="app-tag">multi-provider</span>
+            </div>
+          
+        </a>
+        <a href="weather-xl.html" class="app-card" data-id="1777300651653" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-xl.png" alt="Weather XL" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather XL</h3>
+          <p class="app-description">Feature-rich weather app with extensive customization and widget options.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">feature-rich</span><span class="app-tag">customization</span><span class="app-tag">widgets</span>
+            </div>
+          
+        </a>
+        <a href="weather-timeline.html" class="app-card" data-id="1777300651654" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-timeline.png" alt="Weather Timeline" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Timeline</h3>
+          <p class="app-description">Timeline-based weather app showing forecasts in a horizontal scroll format.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">timeline</span><span class="app-tag">horizontal</span><span class="app-tag">scroll</span>
+            </div>
+          
+        </a>
+        <a href="today-weather.html" class="app-card" data-id="1777300651655" style="text-decoration:none;color:inherit">
+          <img src="logo/today-weather.png" alt="Today Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Today Weather</h3>
+          <p class="app-description">Clean weather app with multiple data sources and beautiful widgets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">clean</span><span class="app-tag">multi-source</span><span class="app-tag">widgets</span>
+            </div>
+          
+        </a>
+        <a href="weather-clock-widget.html" class="app-card" data-id="1777300651656" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-clock.png" alt="Weather &amp; Clock Widget" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather &amp; Clock Widget</h3>
+          <p class="app-description">Combined weather and clock widget with multiple styles and customization.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">widget</span><span class="app-tag">clock</span><span class="app-tag">combined</span>
+            </div>
+          
+        </a>
+        <a href="transparent-clock-weather.html" class="app-card" data-id="1777300651657" style="text-decoration:none;color:inherit">
+          <img src="logo/transparent-clock.png" alt="Transparent Clock &amp; Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Transparent Clock &amp; Weather</h3>
+          <p class="app-description">Transparent weather and clock widget with extensive customization options.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">transparent</span><span class="app-tag">widget</span><span class="app-tag">clock</span>
+            </div>
+          
+        </a>
+        <a href="beautiful-weather.html" class="app-card" data-id="1777300651658" style="text-decoration:none;color:inherit">
+          <img src="logo/beautiful-weather.png" alt="Beautiful Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Beautiful Weather</h3>
+          <p class="app-description">Visually stunning weather app with animations and detailed forecasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">beautiful</span><span class="app-tag">animations</span><span class="app-tag">visual</span>
+            </div>
+          
+        </a>
+        <a href="elegant-weather.html" class="app-card" data-id="1777300651659" style="text-decoration:none;color:inherit">
+          <img src="logo/elegant-weather.png" alt="Elegant Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Elegant Weather</h3>
+          <p class="app-description">Minimalist weather app with elegant design and essential forecast information.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">minimalist</span><span class="app-tag">elegant</span><span class="app-tag">essential</span>
+            </div>
+          
+        </a>
+        <a href="simple-weather.html" class="app-card" data-id="1777300651660" style="text-decoration:none;color:inherit">
+          <img src="logo/simple-weather.png" alt="Simple Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Simple Weather</h3>
+          <p class="app-description">Lightweight weather app with no ads and basic forecast information.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">simple</span><span class="app-tag">lightweight</span><span class="app-tag">no-ads</span>
+            </div>
+          
+        </a>
+        <a href="minimalist-weather.html" class="app-card" data-id="1777300651661" style="text-decoration:none;color:inherit">
+          <img src="logo/minimalist-weather.png" alt="Minimalist Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Minimalist Weather</h3>
+          <p class="app-description">Ultra-minimal weather display with only essential information.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ultra-minimal</span><span class="app-tag">essential</span><span class="app-tag">clean</span>
+            </div>
+          
+        </a>
+        <a href="weather-now.html" class="app-card" data-id="1777300651662" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-now.png" alt="Weather Now" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Now</h3>
+          <p class="app-description">Quick-glance weather app with current conditions and hourly forecasts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">quick</span><span class="app-tag">current</span><span class="app-tag">hourly</span>
+            </div>
+          
+        </a>
+        <a href="instant-weather.html" class="app-card" data-id="1777300651663" style="text-decoration:none;color:inherit">
+          <img src="logo/instant-weather.png" alt="Instant Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+STwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Instant Weather</h3>
+          <p class="app-description">Fast-loading weather app with instant access to current conditions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fast</span><span class="app-tag">instant</span><span class="app-tag">current</span>
+            </div>
+          
+        </a>
+        <a href="quick-weather.html" class="app-card" data-id="1777300651664" style="text-decoration:none;color:inherit">
+          <img src="logo/quick-weather.png" alt="Quick Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Quick Weather</h3>
+          <p class="app-description">Lightning-fast weather app with minimal interface and quick updates.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">fast</span><span class="app-tag">minimal</span><span class="app-tag">updates</span>
+            </div>
+          
+        </a>
+        <a href="weather-widget.html" class="app-card" data-id="1777300651665" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-widget.png" alt="Weather Widget" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Widget</h3>
+          <p class="app-description">Customizable home screen widget for displaying weather information.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">widget</span><span class="app-tag">customizable</span><span class="app-tag">home-screen</span>
+            </div>
+          
+        </a>
+        <a href="weather-timeline-widget.html" class="app-card" data-id="1777300651666" style="text-decoration:none;color:inherit">
+          <img src="logo/timeline-widget.png" alt="Weather Timeline Widget" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Timeline Widget</h3>
+          <p class="app-description">Timeline-style weather widget showing forecasts in a horizontal layout.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">widget</span><span class="app-tag">timeline</span><span class="app-tag">horizontal</span>
+            </div>
+          
+        </a>
+        <a href="weather-live-wallpaper.html" class="app-card" data-id="1777300651667" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-wallpaper.png" alt="Weather Live Wallpaper" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Live Wallpaper</h3>
+          <p class="app-description">Animated weather live wallpaper that reflects current conditions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">wallpaper</span><span class="app-tag">animated</span><span class="app-tag">live</span>
+            </div>
+          
+        </a>
+        <a href="weather-radar-live.html" class="app-card" data-id="1777300651668" style="text-decoration:none;color:inherit">
+          <img src="logo/radar-live.png" alt="Weather Radar Live" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Radar Live</h3>
+          <p class="app-description">Live weather radar with precipitation tracking and storm alerts.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">radar</span><span class="app-tag">live</span><span class="app-tag">precipitation</span>
+            </div>
+          
+        </a>
+        <a href="radar-live.html" class="app-card" data-id="1777300651669" style="text-decoration:none;color:inherit">
+          <img src="logo/radar-live-app.png" alt="Radar Live" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Radar Live</h3>
+          <p class="app-description">Real-time Doppler radar with precipitation intensity and storm tracking.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">doppler</span><span class="app-tag">real-time</span><span class="app-tag">intensity</span>
+            </div>
+          
+        </a>
+        <a href="weather-map-live.html" class="app-card" data-id="1777300651670" style="text-decoration:none;color:inherit">
+          <img src="logo/map-live.png" alt="Weather Map Live" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Map Live</h3>
+          <p class="app-description">Interactive weather maps with live radar, temperature, and wind overlays.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">maps</span><span class="app-tag">interactive</span><span class="app-tag">overlays</span>
+            </div>
+          
+        </a>
+        <a href="weather-maps.html" class="app-card" data-id="1777300651671" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-maps.png" alt="Weather Maps" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Maps</h3>
+          <p class="app-description">Collection of weather maps including radar, satellite, and model data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">maps</span><span class="app-tag">radar</span><span class="app-tag">satellite</span>
+            </div>
+          
+        </a>
+        <a href="satellite-weather.html" class="app-card" data-id="1777300651672" style="text-decoration:none;color:inherit">
+          <img src="logo/satellite.png" alt="Satellite Weather" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Satellite Weather</h3>
+          <p class="app-description">Satellite imagery app for viewing cloud cover and weather systems.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">satellite</span><span class="app-tag">imagery</span><span class="app-tag">clouds</span>
+            </div>
+          
+        </a>
+        <a href="goes-satellite.html" class="app-card" data-id="1777300651673" style="text-decoration:none;color:inherit">
+          <img src="logo/goes.png" alt="GOES Satellite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GOES Satellite</h3>
+          <p class="app-description">Real-time GOES satellite imagery for North American weather monitoring.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">goes</span><span class="app-tag">satellite</span><span class="app-tag">north-america</span>
+            </div>
+          
+        </a>
+        <a href="himawari-satellite.html" class="app-card" data-id="1777300651674" style="text-decoration:none;color:inherit">
+          <img src="logo/himawari.png" alt="Himawari Satellite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Himawari Satellite</h3>
+          <p class="app-description">Japanese Himawari satellite imagery for Asia-Pacific weather monitoring.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">himawari</span><span class="app-tag">satellite</span><span class="app-tag">asia-pacific</span>
+            </div>
+          
+        </a>
+        <a href="meteosat.html" class="app-card" data-id="1777300651675" style="text-decoration:none;color:inherit">
+          <img src="logo/meteosat.png" alt="Meteosat" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Meteosat</h3>
+          <p class="app-description">European Meteosat satellite imagery for European and African weather.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">meteosat</span><span class="app-tag">satellite</span><span class="app-tag">europe</span>
+            </div>
+          
+        </a>
+        <a href="weather-satellite.html" class="app-card" data-id="1777300651676" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-satellite.png" alt="Weather Satellite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Satellite</h3>
+          <p class="app-description">Global satellite weather imagery with multiple satellite sources.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">satellite</span><span class="app-tag">global</span><span class="app-tag">multi-source</span>
+            </div>
+          
+        </a>
+        <a href="weather-api.html" class="app-card" data-id="1777300651677" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-api.png" alt="Weather API" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather API</h3>
+          <p class="app-description">Developer tool for accessing weather data through REST APIs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">api</span><span class="app-tag">developer</span><span class="app-tag">rest</span>
+            </div>
+          
+        </a>
+        <a href="openweathermap.html" class="app-card" data-id="1777300651678" style="text-decoration:none;color:inherit">
+          <img src="logo/openweathermap.png" alt="OpenWeatherMap" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">OpenWeatherMap</h3>
+          <p class="app-description">Free weather API with global coverage and multiple data endpoints.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">api</span><span class="app-tag">free</span><span class="app-tag">global</span>
+            </div>
+          
+        </a>
+        <a href="weatherapi.html" class="app-card" data-id="1777300651679" style="text-decoration:none;color:inherit">
+          <img src="logo/weatherapi.png" alt="WeatherAPI" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WeatherAPI</h3>
+          <p class="app-description">Comprehensive weather API with forecasts, historical data, and astronomy.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">api</span><span class="app-tag">forecasts</span><span class="app-tag">historical</span>
+            </div>
+          
+        </a>
+        <a href="climacell-api.html" class="app-card" data-id="1777300651680" style="text-decoration:none;color:inherit">
+          <img src="logo/climacell.png" alt="Climacell API" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Climacell API</h3>
+          <p class="app-description">Hyperlocal weather API with minute-by-minute precipitation data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">api</span><span class="app-tag">hyperlocal</span><span class="app-tag">precipitation</span>
+            </div>
+          
+        </a>
+        <a href="tomorrow-io.html" class="app-card" data-id="1777300651681" style="text-decoration:none;color:inherit">
+          <img src="logo/tomorrow.png" alt="Tomorrow.io" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Tomorrow.io</h3>
+          <p class="app-description">Weather intelligence platform with APIs for forecasting and risk management.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">api</span><span class="app-tag">intelligence</span><span class="app-tag">forecasting</span>
+            </div>
+          
+        </a>
+        <a href="weatherbit-api.html" class="app-card" data-id="1777300651682" style="text-decoration:none;color:inherit">
+          <img src="logo/weatherbit.png" alt="Weatherbit API" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weatherbit API</h3>
+          <p class="app-description">Weather API with global forecasts, historical data, and agricultural tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">api</span><span class="app-tag">global</span><span class="app-tag">historical</span>
+            </div>
+          
+        </a>
+        <a href="visual-crossing.html" class="app-card" data-id="1777300651683" style="text-decoration:none;color:inherit">
+          <img src="logo/visual-crossing.png" alt="Visual Crossing" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Visual Crossing</h3>
+          <p class="app-description">Weather data API with historical weather and climate analytics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">api</span><span class="app-tag">historical</span><span class="app-tag">climate</span>
+            </div>
+          
+        </a>
+        <a href="weather-data-api.html" class="app-card" data-id="1777300651684" style="text-decoration:none;color:inherit">
+          <img src="logo/weather-data-api.png" alt="Weather Data API" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Weather Data API</h3>
+          <p class="app-description">Developer-focused weather API with multiple data formats and endpoints.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">api</span><span class="app-tag">developer</span><span class="app-tag">formats</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777300651585,"name":"The Weather Channel","slug":"the-weather-channel","version":"11.45.0","description":"Comprehensive weather forecasts, radar maps, and severe weather alerts from the trusted source.","category":"weather","logoUrl":"logo/weather-channel.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Weather Channel1&tracker=1","tags":["forecasts","radar","alerts","trusted"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651586,"name":"AccuWeather","slug":"accuweather","version":"5.28.0","description":"Hyperlocal weather forecasts with MinuteCast precipitation predictions and real-time radar.","category":"weather","logoUrl":"logo/accuweather.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AccuWeather2&tracker=2","tags":["hyperlocal","minutecast","radar","precipitation"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651587,"name":"Weather Underground","slug":"weather-underground","version":"6.12.0","description":"Crowdsourced weather data from personal weather stations with detailed local forecasts.","category":"weather","logoUrl":"logo/wunderground.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Underground3&tracker=3","tags":["crowdsourced","personal-stations","local","detailed"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651588,"name":"Dark Sky (Archived)","slug":"dark-sky","version":"4.5.0","description":"Hyperlocal weather app with minute-by-minute precipitation forecasts (now part of Apple Weather).","category":"weather","logoUrl":"logo/dark-sky.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Dark Sky4&tracker=4","tags":["hyperlocal","precipitation","archived","apple"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651589,"name":"Apple Weather","slug":"apple-weather","version":"17.0","description":"Native weather app for Apple devices with beautiful animations and detailed forecasts.","category":"weather","logoUrl":"logo/apple-weather.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Apple Weather5&tracker=5","tags":["native","apple","animations","forecasts"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651590,"name":"Google Weather","slug":"google-weather","version":"2024.03","description":"Integrated weather service in Google Search and Android with hourly and daily forecasts.","category":"weather","logoUrl":"logo/google-weather.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Google Weather6&tracker=6","tags":["google","android","hourly","integrated"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651591,"name":"WeatherBug","slug":"weatherbug","version":"7.15.0","description":"Real-time weather conditions with live camera feeds and lightning alerts.","category":"weather","logoUrl":"logo/weatherbug.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WeatherBug7&tracker=7","tags":["real-time","cameras","lightning","alerts"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651592,"name":"NOAA Weather Radar","slug":"noaa-weather-radar","version":"2024.03","description":"Official NOAA app with Doppler radar, warnings, and marine forecasts for the US.","category":"weather","logoUrl":"logo/noaa.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NOAA Weather Radar8&tracker=8","tags":["noaa","doppler","marine","official"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651593,"name":"Windy","slug":"windy","version":"42.5.0","description":"Advanced weather visualization with wind, rain, temperature, and wave maps for enthusiasts.","category":"weather","logoUrl":"logo/windy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Windy9&tracker=9","tags":["visualization","wind","maps","advanced"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651594,"name":"Ventusky","slug":"ventusky","version":"39.2.0","description":"Beautiful weather maps with animated wind, precipitation, and temperature visualizations.","category":"weather","logoUrl":"logo/ventusky.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ventusky10&tracker=10","tags":["maps","animated","visualizations","beautiful"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651595,"name":"MyRadar","slug":"myradar","version":"10.5.0","description":"Fast, animated weather radar with hurricane tracking and aviation weather layers.","category":"weather","logoUrl":"logo/myradar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MyRadar11&tracker=11","tags":["radar","animated","hurricane","aviation"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651596,"name":"RadarScope","slug":"radarscope","version":"5.2.0","description":"Professional-grade Doppler radar display for weather enthusiasts and storm chasers.","category":"weather","logoUrl":"logo/radarscope.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=RadarScope12&tracker=12","tags":["doppler","professional","storm-chasing","enthusiasts"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651597,"name":"Storm Radar","slug":"storm-radar","version":"4.8.0","description":"Real-time storm tracking with precipitation forecasts and severe weather alerts.","category":"weather","logoUrl":"logo/storm-radar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Storm Radar13&tracker=13","tags":["storm-tracking","precipitation","alerts","real-time"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651598,"name":"Carrot Weather","slug":"carrot-weather","version":"5.12.0","description":"Weather app with personality, featuring sarcastic forecasts and customizable data sources.","category":"weather","logoUrl":"logo/carrot-weather.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Carrot Weather14&tracker=14","tags":["personality","sarcastic","customizable","fun"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651599,"name":"Weather Live","slug":"weather-live","version":"3.25.0","description":"Beautiful weather app with live backgrounds and detailed hourly forecasts.","category":"weather","logoUrl":"logo/weather-live.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Live15&tracker=15","tags":["live-backgrounds","beautiful","hourly","detailed"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651600,"name":"Weather & Radar","slug":"weather-radar","version":"2024.03","description":"All-in-one weather app with radar, forecasts, and weather news from multiple sources.","category":"weather","logoUrl":"logo/weather-radar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather & Radar16&tracker=16","tags":["all-in-one","radar","news","multi-source"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651601,"name":"1Weather","slug":"1weather","version":"7.8.0","description":"Comprehensive weather app with widgets, alerts, and multiple forecast models.","category":"weather","logoUrl":"logo/1weather.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=1Weather17&tracker=17","tags":["widgets","alerts","models","comprehensive"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651602,"name":"WeatherMate","slug":"weathermate","version":"2.15.0","description":"Simple and elegant weather app with clean design and accurate forecasts.","category":"weather","logoUrl":"logo/weathermate.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WeatherMate18&tracker=18","tags":["simple","elegant","clean","accurate"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651603,"name":"YoWindow Weather","slug":"yowindow-weather","version":"3.5.0","description":"Unique weather app with animated landscape that reflects current conditions.","category":"weather","logoUrl":"logo/yowindow.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=YoWindow Weather19&tracker=19","tags":["animated","landscape","unique","visual"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651604,"name":"WeatherPro","slug":"weatherpro","version":"8.2.0","description":"Professional weather app with detailed forecasts and multiple data sources.","category":"weather","logoUrl":"logo/weatherpro.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WeatherPro20&tracker=20","tags":["professional","detailed","multi-source","forecasts"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651605,"name":"MeteoEarth","slug":"meteoearth","version":"2.8.0","description":"Interactive 3D globe showing weather patterns, wind, and atmospheric conditions.","category":"weather","logoUrl":"logo/meteoearth.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MeteoEarth21&tracker=21","tags":["3d-globe","interactive","patterns","atmospheric"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651606,"name":"Earth","slug":"earth","version":"2024.03","description":"Beautiful global weather visualization with wind, temperature, and ocean currents.","category":"weather","logoUrl":"logo/earth.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Earth22&tracker=22","tags":["global","visualization","ocean","beautiful"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651607,"name":"WetterOnline","slug":"wetteronline","version":"4.12.0","description":"Popular European weather app with detailed forecasts and precipitation radar.","category":"weather","logoUrl":"logo/wetteronline.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WetterOnline23&tracker=23","tags":["european","detailed","precipitation","radar"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651608,"name":"Yr.no","slug":"yr-no","version":"2024.03","description":"Norwegian Meteorological Institute's weather service with accurate forecasts.","category":"weather","logoUrl":"logo/yr.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Yr.no24&tracker=24","tags":["norwegian","meteorological","accurate","official"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651609,"name":"Meteoblue","slug":"meteoblue","version":"5.8.0","description":"Swiss weather service with multi-model forecasts and specialized agriculture tools.","category":"weather","logoUrl":"logo/meteoblue.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Meteoblue25&tracker=25","tags":["swiss","multi-model","agriculture","specialized"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651610,"name":"Foreca","slug":"foreca","version":"2024.03","description":"Finnish weather service with global coverage and detailed local forecasts.","category":"weather","logoUrl":"logo/foreca.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Foreca26&tracker=26","tags":["finnish","global","local","detailed"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651611,"name":"AccuWeather MinuteCast","slug":"accuweather-minutecast","version":"2024.03","description":"Minute-by-minute precipitation forecasts for the next two hours at your location.","category":"weather","logoUrl":"logo/minutecast.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AccuWeather MinuteCast27&tracker=27","tags":["minute-by-minute","precipitation","short-term","location"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651612,"name":"RainViewer","slug":"rainviewer","version":"3.2.0","description":"Real-time rain radar with precipitation forecasts and storm tracking.","category":"weather","logoUrl":"logo/rainviewer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=RainViewer28&tracker=28","tags":["rain","radar","real-time","storm-tracking"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651613,"name":"RainToday","slug":"raintoday","version":"2.5.0","description":"Simple app focused on precipitation forecasts and rain alerts.","category":"weather","logoUrl":"logo/raintoday.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=RainToday29&tracker=29","tags":["precipitation","simple","alerts","focused"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651614,"name":"Precipitation Radar","slug":"precipitation-radar","version":"4.1.0","description":"Dedicated radar app for tracking rain, snow, and other precipitation types.","category":"weather","logoUrl":"logo/precip-radar.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Precipitation Radar30&tracker=30","tags":["radar","rain","snow","dedicated"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651615,"name":"Hurricane Tracker","slug":"hurricane-tracker","version":"6.5.0","description":"Specialized app for tracking tropical storms and hurricanes with cone forecasts.","category":"weather","logoUrl":"logo/hurricane-tracker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hurricane Tracker31&tracker=31","tags":["hurricane","tropical","cone-forecast","tracking"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651616,"name":"Tropical Storm Tracker","slug":"tropical-storm-tracker","version":"2024.03","description":"Real-time tracking of tropical cyclones with official NHC data and maps.","category":"weather","logoUrl":"logo/tropical-tracker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tropical Storm Tracker32&tracker=32","tags":["tropical","cyclones","nhc","official"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651617,"name":"Tornado Alert","slug":"tornado-alert","version":"3.8.0","description":"Severe weather app focused on tornado warnings and storm cell tracking.","category":"weather","logoUrl":"logo/tornado-alert.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tornado Alert33&tracker=33","tags":["tornado","warnings","severe","storm-cells"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651618,"name":"Severe Weather Alert","slug":"severe-weather-alert","version":"5.2.0","description":"Push notifications for severe weather warnings including tornadoes, floods, and storms.","category":"weather","logoUrl":"logo/severe-alert.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Severe Weather Alert34&tracker=34","tags":["alerts","push","warnings","severe"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651619,"name":"Weather Alert Radio","slug":"weather-alert-radio","version":"4.5.0","description":"NOAA Weather Radio streaming with automatic alerts for your location.","category":"weather","logoUrl":"logo/weather-alert-radio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Alert Radio35&tracker=35","tags":["noaa-radio","streaming","automatic","alerts"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651620,"name":"NOAA Weather Radio","slug":"noaa-weather-radio","version":"2024.03","description":"Official NOAA Weather Radio app with live audio and text alerts.","category":"weather","logoUrl":"logo/noaa-radio.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=NOAA Weather Radio36&tracker=36","tags":["noaa","radio","audio","official"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651621,"name":"Weather Station","slug":"weather-station","version":"2024.03","description":"App for connecting to and viewing data from personal weather stations.","category":"weather","logoUrl":"logo/weather-station.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Station37&tracker=37","tags":["personal-station","data","connection","viewing"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651622,"name":"Weather Underground Station","slug":"wunderground-station","version":"2024.03","description":"Manage and view data from your Weather Underground personal weather station.","category":"weather","logoUrl":"logo/wu-station.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Underground Station38&tracker=38","tags":["personal-station","wunderground","management","data"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651623,"name":"Ambient Weather","slug":"ambient-weather","version":"2024.03","description":"App for Ambient Weather personal weather stations with real-time data and alerts.","category":"weather","logoUrl":"logo/ambient.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ambient Weather39&tracker=39","tags":["ambient","personal-station","real-time","alerts"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651624,"name":"Davis Instruments","slug":"davis-instruments","version":"2024.03","description":"App for Davis Vantage weather stations with detailed meteorological data.","category":"weather","logoUrl":"logo/davis.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Davis Instruments40&tracker=40","tags":["davis","vantage","meteorological","professional"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651625,"name":"WeatherFlow","slug":"weatherflow","version":"2024.03","description":"App for WeatherFlow smart weather stations with Tempest sensor integration.","category":"weather","logoUrl":"logo/weatherflow.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WeatherFlow41&tracker=41","tags":["weatherflow","tempest","smart","sensor"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651626,"name":"Netatmo Weather","slug":"netatmo-weather","version":"2024.03","description":"App for Netatmo smart weather stations with indoor and outdoor monitoring.","category":"weather","logoUrl":"logo/netatmo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Netatmo Weather42&tracker=42","tags":["netatmo","smart","indoor","outdoor"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651627,"name":"Ecowitt","slug":"ecowitt","version":"2024.03","description":"App for Ecowitt weather stations with cloud sync and data logging.","category":"weather","logoUrl":"logo/ecowitt.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ecowitt43&tracker=43","tags":["ecowitt","cloud","logging","station"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651628,"name":"WeatherLink","slug":"weatherlink","version":"2024.03","description":"Official app for Davis Instruments weather stations with live data and history.","category":"weather","logoUrl":"logo/weatherlink.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WeatherLink44&tracker=44","tags":["davis","live-data","history","official"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651629,"name":"WeatherCat","slug":"weathercat","version":"3.25","description":"Mac app for collecting and analyzing data from weather stations.","category":"weather","logoUrl":"logo/weathercat.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WeatherCat45&tracker=45","tags":["mac","analysis","data-collection","station"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651630,"name":"Cumulus MX","slug":"cumulus-mx","version":"4.0.0","description":"Open-source weather station software for logging and uploading data.","category":"weather","logoUrl":"logo/cumulus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Cumulus MX46&tracker=46","tags":["open-source","logging","upload","software"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651631,"name":"WeeWX","slug":"weewx","version":"4.10.0","description":"Open-source software for weather stations with web publishing capabilities.","category":"weather","logoUrl":"logo/weewx.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WeeWX47&tracker=47","tags":["open-source","web-publishing","software","station"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651632,"name":"Meteobridge","slug":"meteobridge","version":"2024.03","description":"Hardware and software solution for uploading weather station data to online services.","category":"weather","logoUrl":"logo/meteobridge.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Meteobridge48&tracker=48","tags":["hardware","upload","online-services","bridge"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651633,"name":"Weather Display","slug":"weather-display","version":"10.37S","description":"Comprehensive weather station software with graphing and web publishing.","category":"weather","logoUrl":"logo/weather-display.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Display49&tracker=49","tags":["comprehensive","graphing","web","software"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651634,"name":"Virtual Weather Station","slug":"virtual-weather-station","version":"15.00","description":"Software for collecting and displaying weather data from various station types.","category":"weather","logoUrl":"logo/vws.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Virtual Weather Station50&tracker=50","tags":["collection","display","multi-station","software"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651635,"name":"WeatherSnoop","slug":"weathersnoop","version":"3.5.0","description":"Mac app for monitoring multiple weather stations with customizable displays.","category":"weather","logoUrl":"logo/weathersnoop.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WeatherSnoop51&tracker=51","tags":["mac","multi-station","monitoring","customizable"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651636,"name":"Weather Tracker","slug":"weather-tracker","version":"2024.03","description":"Simple weather tracking app with historical data and trend analysis.","category":"weather","logoUrl":"logo/weather-tracker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Tracker52&tracker=52","tags":["tracking","historical","trends","simple"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651637,"name":"Climate Data Online","slug":"climate-data-online","version":"2024.03","description":"NOAA's portal for accessing historical climate and weather data.","category":"weather","logoUrl":"logo/cdo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Climate Data Online53&tracker=53","tags":["climate","historical","noaa","data"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651638,"name":"Weather Spark","slug":"weather-spark","version":"2024.03","description":"Visual weather reports with graphs and charts for any location worldwide.","category":"weather","logoUrl":"logo/weather-spark.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Spark54&tracker=54","tags":["visual","graphs","charts","global"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651639,"name":"Time and Date Weather","slug":"time-date-weather","version":"2024.03","description":"Weather forecasts integrated with time zone and astronomical data.","category":"weather","logoUrl":"logo/timeanddate.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Time and Date Weather55&tracker=55","tags":["time-zone","astronomical","forecasts","integrated"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651640,"name":"Sunrise Sunset","slug":"sunrise-sunset","version":"2024.03","description":"App for tracking sunrise, sunset, and golden hour times for photography.","category":"weather","logoUrl":"logo/sunrise-sunset.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sunrise Sunset56&tracker=56","tags":["sunrise","sunset","golden-hour","photography"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651641,"name":"PhotoPills","slug":"photopills","version":"2.1.5","description":"Photography planning app with sun/moon positions, weather, and light conditions.","category":"weather","logoUrl":"logo/photopills.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PhotoPills57&tracker=57","tags":["photography","planning","sun-moon","light"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651642,"name":"The Photographer's Ephemeris","slug":"photographers-ephemeris","version":"3.5.0","description":"Planning tool for outdoor photography with sun, moon, and weather data.","category":"weather","logoUrl":"logo/tpe.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=The Photographer's Ephemeris58&tracker=58","tags":["photography","ephemeris","planning","outdoor"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651643,"name":"SkyView","slug":"skyview","version":"4.2.0","description":"Augmented reality app for identifying stars, planets, and satellites with weather overlay.","category":"weather","logoUrl":"logo/skyview.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SkyView59&tracker=59","tags":["ar","astronomy","overlay","identification"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651644,"name":"Star Walk 2","slug":"star-walk-2","version":"2.9.0","description":"Astronomy app with real-time sky maps and weather conditions for stargazing.","category":"weather","logoUrl":"logo/star-walk.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Star Walk 260&tracker=60","tags":["astronomy","sky-map","stargazing","real-time"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651645,"name":"Night Sky","slug":"night-sky","version":"11.5.0","description":"AR astronomy app with celestial object identification and weather integration.","category":"weather","logoUrl":"logo/night-sky.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Night Sky61&tracker=61","tags":["ar","astronomy","celestial","integration"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651646,"name":"Clear Outside","slug":"clear-outside","version":"2024.03","description":"Astronomy-focused weather app with cloud cover and seeing forecasts.","category":"weather","logoUrl":"logo/clear-outside.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Clear Outside62&tracker=62","tags":["astronomy","cloud-cover","seeing","forecast"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651647,"name":"AstroWeather","slug":"astroweather","version":"2024.03","description":"Specialized weather forecasts for astronomers with transparency and seeing data.","category":"weather","logoUrl":"logo/astroweather.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AstroWeather63&tracker=63","tags":["astronomy","transparency","seeing","specialized"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651648,"name":"7Timer!","slug":"7timer","version":"2024.03","description":"Astronomy weather forecasts with model data for stargazing conditions.","category":"weather","logoUrl":"logo/7timer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=7Timer!64&tracker=64","tags":["astronomy","model-data","stargazing","forecast"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651649,"name":"Meteogram","slug":"meteogram","version":"2024.03","description":"Visual weather forecast charts showing temperature, precipitation, and wind trends.","category":"weather","logoUrl":"logo/meteogram.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Meteogram65&tracker=65","tags":["charts","visual","trends","forecast"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651650,"name":"Weather Graph","slug":"weather-graph","version":"3.2.0","description":"Minimalist weather app focused on graphical data representation.","category":"weather","logoUrl":"logo/weather-graph.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Graph66&tracker=66","tags":["minimalist","graphical","data","representation"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651651,"name":"Geometric Weather","slug":"geometric-weather","version":"4.5.0","description":"Material Design weather app with multiple sources and customizable widgets.","category":"weather","logoUrl":"logo/geometric.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Geometric Weather67&tracker=67","tags":["material-design","multi-source","widgets","customizable"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651652,"name":"Breezy Weather","slug":"breezy-weather","version":"4.2.0","description":"Open-source weather app with Material You design and multiple data providers.","category":"weather","logoUrl":"logo/breezy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Breezy Weather68&tracker=68","tags":["open-source","material-you","multi-provider","android"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651653,"name":"Weather XL","slug":"weather-xl","version":"2.8.0","description":"Feature-rich weather app with extensive customization and widget options.","category":"weather","logoUrl":"logo/weather-xl.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather XL69&tracker=69","tags":["feature-rich","customization","widgets","extensive"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651654,"name":"Weather Timeline","slug":"weather-timeline","version":"2.5.0","description":"Timeline-based weather app showing forecasts in a horizontal scroll format.","category":"weather","logoUrl":"logo/weather-timeline.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Timeline70&tracker=70","tags":["timeline","horizontal","scroll","forecast"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651655,"name":"Today Weather","slug":"today-weather","version":"2.12.0","description":"Clean weather app with multiple data sources and beautiful widgets.","category":"weather","logoUrl":"logo/today-weather.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Today Weather71&tracker=71","tags":["clean","multi-source","widgets","beautiful"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651656,"name":"Weather & Clock Widget","slug":"weather-clock-widget","version":"8.5.0","description":"Combined weather and clock widget with multiple styles and customization.","category":"weather","logoUrl":"logo/weather-clock.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather & Clock Widget72&tracker=72","tags":["widget","clock","combined","customization"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651657,"name":"Transparent Clock & Weather","slug":"transparent-clock-weather","version":"5.2.0","description":"Transparent weather and clock widget with extensive customization options.","category":"weather","logoUrl":"logo/transparent-clock.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Transparent Clock & Weather73&tracker=73","tags":["transparent","widget","clock","customization"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651658,"name":"Beautiful Weather","slug":"beautiful-weather","version":"2.8.0","description":"Visually stunning weather app with animations and detailed forecasts.","category":"weather","logoUrl":"logo/beautiful-weather.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Beautiful Weather74&tracker=74","tags":["beautiful","animations","visual","detailed"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651659,"name":"Elegant Weather","slug":"elegant-weather","version":"3.1.0","description":"Minimalist weather app with elegant design and essential forecast information.","category":"weather","logoUrl":"logo/elegant-weather.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Elegant Weather75&tracker=75","tags":["minimalist","elegant","essential","design"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651660,"name":"Simple Weather","slug":"simple-weather","version":"1.5.0","description":"Lightweight weather app with no ads and basic forecast information.","category":"weather","logoUrl":"logo/simple-weather.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Simple Weather76&tracker=76","tags":["simple","lightweight","no-ads","basic"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651661,"name":"Minimalist Weather","slug":"minimalist-weather","version":"2.0.0","description":"Ultra-minimal weather display with only essential information.","category":"weather","logoUrl":"logo/minimalist-weather.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Minimalist Weather77&tracker=77","tags":["ultra-minimal","essential","clean","focused"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651662,"name":"Weather Now","slug":"weather-now","version":"4.2.0","description":"Quick-glance weather app with current conditions and hourly forecasts.","category":"weather","logoUrl":"logo/weather-now.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Now78&tracker=78","tags":["quick","current","hourly","glance"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651663,"name":"Instant Weather","slug":"instant-weather","version":"1.8.0","description":"Fast-loading weather app with instant access to current conditions.","category":"weather","logoUrl":"logo/instant-weather.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Instant Weather79&tracker=79","tags":["fast","instant","current","loading"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651664,"name":"Quick Weather","slug":"quick-weather","version":"3.5.0","description":"Lightning-fast weather app with minimal interface and quick updates.","category":"weather","logoUrl":"logo/quick-weather.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Quick Weather80&tracker=80","tags":["fast","minimal","updates","lightning"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651665,"name":"Weather Widget","slug":"weather-widget","version":"2024.03","description":"Customizable home screen widget for displaying weather information.","category":"weather","logoUrl":"logo/weather-widget.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Widget81&tracker=81","tags":["widget","customizable","home-screen","display"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651666,"name":"Weather Timeline Widget","slug":"weather-timeline-widget","version":"2.1.0","description":"Timeline-style weather widget showing forecasts in a horizontal layout.","category":"weather","logoUrl":"logo/timeline-widget.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Timeline Widget82&tracker=82","tags":["widget","timeline","horizontal","forecast"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651667,"name":"Weather Live Wallpaper","slug":"weather-live-wallpaper","version":"3.8.0","description":"Animated weather live wallpaper that reflects current conditions.","category":"weather","logoUrl":"logo/weather-wallpaper.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Live Wallpaper83&tracker=83","tags":["wallpaper","animated","live","conditions"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651668,"name":"Weather Radar Live","slug":"weather-radar-live","version":"5.5.0","description":"Live weather radar with precipitation tracking and storm alerts.","category":"weather","logoUrl":"logo/radar-live.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Radar Live84&tracker=84","tags":["radar","live","precipitation","alerts"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651669,"name":"Radar Live","slug":"radar-live","version":"4.2.0","description":"Real-time Doppler radar with precipitation intensity and storm tracking.","category":"weather","logoUrl":"logo/radar-live-app.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Radar Live85&tracker=85","tags":["doppler","real-time","intensity","tracking"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651670,"name":"Weather Map Live","slug":"weather-map-live","version":"3.5.0","description":"Interactive weather maps with live radar, temperature, and wind overlays.","category":"weather","logoUrl":"logo/map-live.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Map Live86&tracker=86","tags":["maps","interactive","overlays","live"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651671,"name":"Weather Maps","slug":"weather-maps","version":"2024.03","description":"Collection of weather maps including radar, satellite, and model data.","category":"weather","logoUrl":"logo/weather-maps.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Maps87&tracker=87","tags":["maps","radar","satellite","models"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651672,"name":"Satellite Weather","slug":"satellite-weather","version":"2024.03","description":"Satellite imagery app for viewing cloud cover and weather systems.","category":"weather","logoUrl":"logo/satellite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Satellite Weather88&tracker=88","tags":["satellite","imagery","clouds","systems"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651673,"name":"GOES Satellite","slug":"goes-satellite","version":"2024.03","description":"Real-time GOES satellite imagery for North American weather monitoring.","category":"weather","logoUrl":"logo/goes.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GOES Satellite89&tracker=89","tags":["goes","satellite","north-america","real-time"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651674,"name":"Himawari Satellite","slug":"himawari-satellite","version":"2024.03","description":"Japanese Himawari satellite imagery for Asia-Pacific weather monitoring.","category":"weather","logoUrl":"logo/himawari.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Himawari Satellite90&tracker=90","tags":["himawari","satellite","asia-pacific","imagery"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651675,"name":"Meteosat","slug":"meteosat","version":"2024.03","description":"European Meteosat satellite imagery for European and African weather.","category":"weather","logoUrl":"logo/meteosat.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Meteosat91&tracker=91","tags":["meteosat","satellite","europe","africa"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651676,"name":"Weather Satellite","slug":"weather-satellite","version":"2024.03","description":"Global satellite weather imagery with multiple satellite sources.","category":"weather","logoUrl":"logo/weather-satellite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Satellite92&tracker=92","tags":["satellite","global","multi-source","imagery"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651677,"name":"Weather API","slug":"weather-api","version":"2024.03","description":"Developer tool for accessing weather data through REST APIs.","category":"weather","logoUrl":"logo/weather-api.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather API93&tracker=93","tags":["api","developer","rest","data"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651678,"name":"OpenWeatherMap","slug":"openweathermap","version":"2024.03","description":"Free weather API with global coverage and multiple data endpoints.","category":"weather","logoUrl":"logo/openweathermap.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=OpenWeatherMap94&tracker=94","tags":["api","free","global","endpoints"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651679,"name":"WeatherAPI","slug":"weatherapi","version":"2024.03","description":"Comprehensive weather API with forecasts, historical data, and astronomy.","category":"weather","logoUrl":"logo/weatherapi.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WeatherAPI95&tracker=95","tags":["api","forecasts","historical","astronomy"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651680,"name":"Climacell API","slug":"climacell-api","version":"2024.03","description":"Hyperlocal weather API with minute-by-minute precipitation data.","category":"weather","logoUrl":"logo/climacell.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Climacell API96&tracker=96","tags":["api","hyperlocal","precipitation","minute-by-minute"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651681,"name":"Tomorrow.io","slug":"tomorrow-io","version":"2024.03","description":"Weather intelligence platform with APIs for forecasting and risk management.","category":"weather","logoUrl":"logo/tomorrow.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Tomorrow.io97&tracker=97","tags":["api","intelligence","forecasting","risk"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651682,"name":"Weatherbit API","slug":"weatherbit-api","version":"2024.03","description":"Weather API with global forecasts, historical data, and agricultural tools.","category":"weather","logoUrl":"logo/weatherbit.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weatherbit API98&tracker=98","tags":["api","global","historical","agriculture"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651683,"name":"Visual Crossing","slug":"visual-crossing","version":"2024.03","description":"Weather data API with historical weather and climate analytics.","category":"weather","logoUrl":"logo/visual-crossing.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Visual Crossing99&tracker=99","tags":["api","historical","climate","analytics"],"scrapedAt":"2026-04-27T14:37:31.585Z"},{"id":1777300651684,"name":"Weather Data API","slug":"weather-data-api","version":"2024.03","description":"Developer-focused weather API with multiple data formats and endpoints.","category":"weather","logoUrl":"logo/weather-data-api.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Weather Data API100&tracker=100","tags":["api","developer","formats","endpoints"],"scrapedAt":"2026-04-27T14:37:31.585Z"}];
+    const CURRENT_CATEGORY = 'weather';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>

@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tools & Utilities — MacApps</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <style>
+    :root{--bg-primary:#f5f5f7;--bg-secondary:#fff;--bg-tertiary:#e8e8ed;--text-primary:#1d1d1f;--text-secondary:#86868b;--text-tertiary:#a1a1a6;--accent-blue:#0071e3;--accent-blue-hover:#0077ed;--accent-green:#34c759;--accent-orange:#ff9500;--accent-red:#ff3b30;--border-color:#d2d2d7;--shadow-sm:0 1px 3px rgba(0,0,0,.08);--shadow-md:0 4px 12px rgba(0,0,0,.1);--shadow-lg:0 8px 24px rgba(0,0,0,.12);--glass-bg:rgba(255,255,255,.72);--blur:20px;--radius-sm:8px;--radius-md:12px;--radius-lg:16px;--radius-xl:20px;--transition:all .3s cubic-bezier(.4,0,.2,1)}
+    [data-theme="dark"]{--bg-primary:#1c1c1e;--bg-secondary:#2c2c2e;--bg-tertiary:#3a3a3c;--text-primary:#f5f5f7;--text-secondary:#a1a1a6;--text-tertiary:#6e6e73;--border-color:#48484a;--glass-bg:rgba(44,44,46,.72)}
+    *{margin:0;padding:0;box-sizing:border-box}
+    body{font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;background:var(--bg-primary);color:var(--text-primary);line-height:1.5;-webkit-font-smoothing:antialiased;transition:var(--transition)}
+    .navbar{position:fixed;top:0;left:0;right:0;height:52px;background:var(--glass-bg);backdrop-filter:blur(var(--blur));border-bottom:1px solid var(--border-color);z-index:1000;display:flex;align-items:center}
+    .nav-container{max-width:1400px;margin:0 auto;padding:0 24px;width:100%;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .nav-brand{display:flex;align-items:center;gap:8px;font-size:20px;font-weight:600;text-decoration:none;color:var(--text-primary)}
+    .nav-brand i{font-size:22px}
+    .nav-search{flex:1;max-width:500px;position:relative}
+    .nav-search i{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text-tertiary)}
+    .nav-search input{width:100%;padding:10px 16px 10px 40px;background:var(--bg-tertiary);border:1px solid transparent;border-radius:var(--radius-md);font-size:14px;color:var(--text-primary)}
+    .nav-search input:focus{outline:none;border-color:var(--accent-blue);background:var(--bg-secondary)}
+    .nav-search kbd{position:absolute;right:12px;top:50%;transform:translateY(-50%);padding:4px 8px;background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:6px;font-size:12px;color:var(--text-tertiary)}
+    .theme-toggle{width:40px;height:40px;border-radius:var(--radius-md);border:none;background:transparent;color:var(--text-primary);cursor:pointer}
+    .theme-toggle:hover{background:var(--bg-tertiary)}
+    .hero{padding:120px 24px 60px;text-align:center;background:linear-gradient(180deg,var(--bg-secondary),var(--bg-primary))}
+    .hero h1{font-size:48px;font-weight:700;margin-bottom:16px;background:linear-gradient(135deg,var(--text-primary),var(--accent-blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+    .hero p{font-size:20px;color:var(--text-secondary);margin-bottom:32px}
+    .hero .highlight{color:var(--accent-blue);font-weight:600}
+    .main-content{max-width:1400px;margin:0 auto;padding:40px 24px;display:grid;grid-template-columns:260px 1fr;gap:40px}
+    .sidebar{position:sticky;top:92px;height:fit-content}
+    .sidebar-section{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;margin-bottom:20px;box-shadow:var(--shadow-sm)}
+    .sidebar-section h3{font-size:13px;font-weight:600;text-transform:uppercase;color:var(--text-tertiary);margin-bottom:16px}
+    .category-list{list-style:none}
+    .category-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:var(--radius-md);cursor:pointer;transition:var(--transition)}
+    .category-item:hover{background:var(--bg-tertiary)}
+    .category-item.active{background:var(--accent-blue);color:#fff}
+    .category-item a{display:flex;align-items:center;gap:12px;width:100%;text-decoration:none;color:inherit}
+    .category-item i{width:20px;text-align:center}
+    .category-item .count{margin-left:auto;font-size:13px;opacity:.7}
+    .app-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:24px}
+    .app-card{background:var(--bg-secondary);border-radius:var(--radius-lg);padding:20px;box-shadow:var(--shadow-sm);transition:var(--transition);cursor:pointer}
+    .app-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lg)}
+    .app-icon{width:80px;height:80px;border-radius:var(--radius-lg);margin-bottom:16px;object-fit:cover;background:var(--bg-tertiary)}
+    .app-name{font-size:16px;font-weight:600;margin-bottom:8px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .app-description{font-size:13px;color:var(--text-secondary);margin-bottom:12px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .app-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+    .app-tag{font-size:11px;padding:4px 8px;background:var(--bg-tertiary);border-radius:6px;color:var(--text-secondary)}
+    .modal{position:fixed;inset:0;z-index:2000;display:none;align-items:center;justify-content:center;padding:24px}
+    .modal.active{display:flex}
+    .modal-backdrop{position:absolute;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(8px)}
+    .modal-content{position:relative;background:var(--bg-secondary);border-radius:var(--radius-xl);max-width:600px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalSlideIn .3s ease}
+    @keyframes modalSlideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    .modal-close{position:absolute;top:16px;right:16px;width:36px;height:36px;border:none;background:var(--bg-tertiary);border-radius:50%;cursor:pointer}
+    .modal-content button:hover{background:var(--border-color)}
+    .modal-body{padding:40px}
+    .modal-header{display:flex;align-items:center;gap:20px;margin-bottom:24px}
+    .modal-icon{width:88px;height:88px;border-radius:var(--radius-lg)}
+    .modal-title h2{font-size:24px;font-weight:700;margin-bottom:4px}
+    .modal-version{font-size:13px;color:var(--text-tertiary)}
+    .btn-download{display:block;width:100%;padding:14px;background:var(--accent-blue);color:#fff;text-align:center;text-decoration:none;border-radius:var(--radius-md);font-weight:600;margin-top:24px}
+    .btn-download:hover{background:var(--accent-blue-hover)}
+    .footer{background:var(--bg-secondary);border-top:1px solid var(--border-color);padding:40px 24px;margin-top:80px;text-align:center;color:var(--text-secondary)}
+    .state{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 20px;text-align:center;color:var(--text-secondary);min-height:400px}
+    .state i{font-size:48px;margin-bottom:16px}
+    .state.loading i{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
+    .state.error{color:var(--accent-red)}
+    .state.error i{font-size:64px}
+    .retry-btn{margin-top:20px;padding:10px 24px;background:var(--accent-blue);color:#fff;border:none;border-radius:var(--radius-md);cursor:pointer;font-weight:500}
+    .retry-btn:hover{background:var(--accent-blue-hover)}
+    @media(max-width:1024px){.main-content{grid-template-columns:1fr}.sidebar{position:relative;top:0}}
+    @media(max-width:768px){.nav-search{display:none}.hero h1{font-size:28px}.hero p{font-size:16px}.app-grid{grid-template-columns:repeat(auto-fill,minmax(160px,1fr))}}
+    ::-webkit-scrollbar{width:8px}::-webkit-scrollbar-track{background:var(--bg-primary)}::-webkit-scrollbar-thumb{background:var(--border-color);border-radius:4px}
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="nav-brand"><i class="fab fa-apple"></i><span>MacApps</span></a>
+      <div class="nav-search"><i class="fas fa-search"></i><input type="text" id="searchInput" placeholder="Search apps..."><kbd>⌘K</kbd></div>
+      <button class="theme-toggle" id="themeToggle"><i class="fas fa-moon"></i></button>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <h1>Tools &amp; Utilities</h1>
+    <p><span class="highlight">81</span> applications in this category</p>
+  </section>
+
+  <main class="main-content">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <h3>Categories</h3>
+        <ul class="category-list">
+
+          <li class="category-item" data-category="all"><a href="index.html"><i class="fas fa-th-large"></i><span>All Apps</span><span class="count">2172</span></a></li>
+          <li class="category-item" data-category="apps"><a href="apps.html"><i class="fas fa-layer-group"></i><span>Application</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="utilities-tools"><a href="utilities-tools.html"><i class="fas fa-wrench"></i><span>Tools & Utilities</span><span class="count">81</span></a></li>
+          <li class="category-item" data-category="audio-editors"><a href="audio-editors.html"><i class="fas fa-music"></i><span>Audio & Music</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="graphics-design"><a href="graphics-design.html"><i class="fas fa-pen-nib"></i><span>Graphics & Design</span><span class="count">300</span></a></li>
+          <li class="category-item" data-category="photography"><a href="photography.html"><i class="fas fa-camera"></i><span>Photography</span><span class="count">71</span></a></li>
+          <li class="category-item" data-category="video"><a href="video.html"><i class="fas fa-video"></i><span>Video</span><span class="count">87</span></a></li>
+          <li class="category-item" data-category="productivity"><a href="productivity.html"><i class="fas fa-folder"></i><span>Productivity</span><span class="count">85</span></a></li>
+          <li class="category-item" data-category="developer-tools"><a href="developer-tools.html"><i class="fas fa-wrench"></i><span>Developer Tools</span><span class="count">93</span></a></li>
+          <li class="category-item" data-category="adobe-apps"><a href="adobe-apps.html"><i class="fas fa-adobe"></i><span>Adobe</span><span class="count">82</span></a></li>
+          <li class="category-item" data-category="business"><a href="business.html"><i class="fas fa-briefcase"></i><span>Business</span><span class="count">84</span></a></li>
+          <li class="category-item" data-category="finance"><a href="finance.html"><i class="fas fa-coins"></i><span>Finance</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="entertainment"><a href="entertainment.html"><i class="fas fa-folder"></i><span>Entertainment</span><span class="count">83</span></a></li>
+          <li class="category-item" data-category="design-assets"><a href="design-assets.html"><i class="fas fa-pen-nib"></i><span>Design Assets</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="games"><a href="games.html"><i class="fas fa-gamepad"></i><span>Games</span><span class="count">69</span></a></li>
+          <li class="category-item" data-category="office"><a href="office.html"><i class="fas fa-microsoft"></i><span>Office</span><span class="count">53</span></a></li>
+          <li class="category-item" data-category="apple"><a href="apple.html"><i class="fas fa-apple"></i><span>Apple</span><span class="count">92</span></a></li>
+          <li class="category-item" data-category="editor"><a href="editor.html"><i class="fas fa-folder"></i><span>Editor</span><span class="count">98</span></a></li>
+          <li class="category-item" data-category="education"><a href="education.html"><i class="fas fa-graduation-cap"></i><span>Education</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="social-networking"><a href="social-networking.html"><i class="fas fa-comments"></i><span>Social Networking</span><span class="count">99</span></a></li>
+          <li class="category-item" data-category="weather"><a href="weather.html"><i class="fas fa-folder"></i><span>Weather</span><span class="count">100</span></a></li>
+          <li class="category-item" data-category="news"><a href="news.html"><i class="fas fa-folder"></i><span>News</span><span class="count">94</span></a></li>
+          <li class="category-item" data-category="os"><a href="os.html"><i class="fas fa-folder"></i><span>OS</span><span class="count">25</span></a></li>
+          <li class="category-item" data-category="plugins"><a href="plugins.html"><i class="fas fa-plug"></i><span>Plugins</span><span class="count">44</span></a></li>
+          <li class="category-item" data-category="font"><a href="font.html"><i class="fas fa-font"></i><span>Font</span><span class="count">42</span></a></li>
+        </ul>
+      </div>
+    </aside>
+    <section>
+      <div class="app-grid">
+
+        <a href="rufus.html" class="app-card" data-id="1777288016820" style="text-decoration:none;color:inherit">
+          <img src="logo/rufus.png" alt="Rufus" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Rufus</h3>
+          <p class="app-description">Create bootable USB drives the easy way with fast formatting support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">bootable</span><span class="app-tag">usb</span><span class="app-tag">iso</span>
+            </div>
+          
+        </a>
+        <a href="balenaetcher.html" class="app-card" data-id="1777288016821" style="text-decoration:none;color:inherit">
+          <img src="logo/balenaetcher.png" alt="BalenaEtcher" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">BalenaEtcher</h3>
+          <p class="app-description">Cross-platform tool to flash OS images to SD cards and USB drives.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">flash</span><span class="app-tag">usb</span><span class="app-tag">os</span>
+            </div>
+          
+        </a>
+        <a href="revo-uninstaller.html" class="app-card" data-id="1777288016824" style="text-decoration:none;color:inherit">
+          <img src="logo/revouninstaller.png" alt="Revo Uninstaller" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Revo Uninstaller</h3>
+          <p class="app-description">Advanced uninstaller that removes leftover files and registry entries.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">uninstaller</span><span class="app-tag">cleaner</span><span class="app-tag">registry</span>
+            </div>
+          
+        </a>
+        <a href="geek-uninstaller.html" class="app-card" data-id="1777288016825" style="text-decoration:none;color:inherit">
+          <img src="logo/geekuninstaller.png" alt="Geek Uninstaller" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Geek Uninstaller</h3>
+          <p class="app-description">Fast, simple, and effective tool to completely remove unwanted programs.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">uninstaller</span><span class="app-tag">portable</span><span class="app-tag">lightweight</span>
+            </div>
+          
+        </a>
+        <a href="autoruns.html" class="app-card" data-id="1777288016826" style="text-decoration:none;color:inherit">
+          <img src="logo/autoruns.png" alt="Autoruns" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Autoruns</h3>
+          <p class="app-description">Sysinternals utility showing all auto-starting programs and registry keys.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">startup</span><span class="app-tag">registry</span><span class="app-tag">sysinternals</span>
+            </div>
+          
+        </a>
+        <a href="process-explorer.html" class="app-card" data-id="1777288016827" style="text-decoration:none;color:inherit">
+          <img src="logo/processexplorer.png" alt="Process Explorer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Process Explorer</h3>
+          <p class="app-description">Advanced task manager replacement showing process trees and handles.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">taskmanager</span><span class="app-tag">process</span><span class="app-tag">monitoring</span>
+            </div>
+          
+        </a>
+        <a href="process-hacker.html" class="app-card" data-id="1777288016828" style="text-decoration:none;color:inherit">
+          <img src="logo/processhacker.png" alt="Process Hacker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Process Hacker</h3>
+          <p class="app-description">Open-source process viewer and system monitoring tool for advanced users.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">process</span><span class="app-tag">monitoring</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="wireshark.html" class="app-card" data-id="1777288016829" style="text-decoration:none;color:inherit">
+          <img src="logo/wireshark.png" alt="Wireshark" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wireshark</h3>
+          <p class="app-description">Industry-standard network protocol analyzer for capturing and inspecting packets.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">network</span><span class="app-tag">packet</span><span class="app-tag">analyzer</span>
+            </div>
+          
+        </a>
+        <a href="nmap.html" class="app-card" data-id="1777288016830" style="text-decoration:none;color:inherit">
+          <img src="logo/nmap.png" alt="Nmap" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Nmap</h3>
+          <p class="app-description">Powerful network scanner for discovering hosts, services, and security auditing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">network</span><span class="app-tag">scanner</span><span class="app-tag">security</span>
+            </div>
+          
+        </a>
+        <a href="angry-ip-scanner.html" class="app-card" data-id="1777288016831" style="text-decoration:none;color:inherit">
+          <img src="logo/angryip.png" alt="Angry IP Scanner" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Angry IP Scanner</h3>
+          <p class="app-description">Cross-platform network scanner for quickly pinging and discovering devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">network</span><span class="app-tag">scanner</span><span class="app-tag">discovery</span>
+            </div>
+          
+        </a>
+        <a href="putty.html" class="app-card" data-id="1777288016832" style="text-decoration:none;color:inherit">
+          <img src="logo/putty.png" alt="PuTTY" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PuTTY</h3>
+          <p class="app-description">Free SSH, Telnet, and serial client for remote server connections.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ssh</span><span class="app-tag">terminal</span><span class="app-tag">remote</span>
+            </div>
+          
+        </a>
+        <a href="winscp.html" class="app-card" data-id="1777288016833" style="text-decoration:none;color:inherit">
+          <img src="logo/winscp.png" alt="WinSCP" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WinSCP</h3>
+          <p class="app-description">Secure file transfer client with SFTP, SCP, and FTP support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sftp</span><span class="app-tag">transfer</span><span class="app-tag">secure</span>
+            </div>
+          
+        </a>
+        <a href="filezilla.html" class="app-card" data-id="1777288016834" style="text-decoration:none;color:inherit">
+          <img src="logo/filezilla.png" alt="FileZilla" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FileZilla</h3>
+          <p class="app-description">Popular open-source FTP, FTPS, and SFTP client for file transfers.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ftp</span><span class="app-tag">transfer</span><span class="app-tag">client</span>
+            </div>
+          
+        </a>
+        <a href="winmerge.html" class="app-card" data-id="1777288016835" style="text-decoration:none;color:inherit">
+          <img src="logo/winmerge.png" alt="WinMerge" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">WinMerge</h3>
+          <p class="app-description">Visual difference and merge tool for files and directories.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diff</span><span class="app-tag">merge</span><span class="app-tag">compare</span>
+            </div>
+          
+        </a>
+        <a href="beyond-compare.html" class="app-card" data-id="1777288016836" style="text-decoration:none;color:inherit">
+          <img src="logo/beyondcompare.png" alt="Beyond Compare" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Beyond Compare</h3>
+          <p class="app-description">Professional file and folder comparison with sync and merge capabilities.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">compare</span><span class="app-tag">sync</span><span class="app-tag">merge</span>
+            </div>
+          
+        </a>
+        <a href="hxd.html" class="app-card" data-id="1777288016837" style="text-decoration:none;color:inherit">
+          <img src="logo/hxd.png" alt="HxD" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HxD</h3>
+          <p class="app-description">Fast hex editor for raw disk editing, process memory, and file analysis.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">hex</span><span class="app-tag">editor</span><span class="app-tag">binary</span>
+            </div>
+          
+        </a>
+        <a href="recuva.html" class="app-card" data-id="1777288016838" style="text-decoration:none;color:inherit">
+          <img src="logo/recuva.png" alt="Recuva" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Recuva</h3>
+          <p class="app-description">File recovery tool that restores accidentally deleted files and folders.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">recovery</span><span class="app-tag">deleted</span><span class="app-tag">restore</span>
+            </div>
+          
+        </a>
+        <a href="testdisk.html" class="app-card" data-id="1777288016839" style="text-decoration:none;color:inherit">
+          <img src="logo/testdisk.png" alt="TestDisk" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TestDisk</h3>
+          <p class="app-description">Powerful data recovery software for recovering lost partitions and boot sectors.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">recovery</span><span class="app-tag">partition</span><span class="app-tag">boot</span>
+            </div>
+          
+        </a>
+        <a href="dban.html" class="app-card" data-id="1777288016840" style="text-decoration:none;color:inherit">
+          <img src="logo/dban.png" alt="DBAN" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DBAN</h3>
+          <p class="app-description">Darik&#039;s Boot and Nuke securely wipes hard drives by overwriting data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">wipe</span><span class="app-tag">secure</span><span class="app-tag">disk</span>
+            </div>
+          
+        </a>
+        <a href="glary-utilities.html" class="app-card" data-id="1777288016841" style="text-decoration:none;color:inherit">
+          <img src="logo/glaryutilities.png" alt="Glary Utilities" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Glary Utilities</h3>
+          <p class="app-description">All-in-one PC optimization suite with registry cleaner, disk cleanup, and startup manager.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">optimizer</span><span class="app-tag">cleaner</span><span class="app-tag">registry</span>
+            </div>
+          
+        </a>
+        <a href="wise-disk-cleaner.html" class="app-card" data-id="1777288016842" style="text-decoration:none;color:inherit">
+          <img src="logo/wisediskcleaner.png" alt="Wise Disk Cleaner" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Wise Disk Cleaner</h3>
+          <p class="app-description">Free disk cleaner that removes junk files, browser cache, and system temp files.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cleaner</span><span class="app-tag">disk</span><span class="app-tag">cache</span>
+            </div>
+          
+        </a>
+        <a href="freefilesync.html" class="app-card" data-id="1777288016844" style="text-decoration:none;color:inherit">
+          <img src="logo/freefilesync.png" alt="FreeFileSync" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FreeFileSync</h3>
+          <p class="app-description">Open-source folder comparison and synchronization utility.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sync</span><span class="app-tag">folder</span><span class="app-tag">backup</span>
+            </div>
+          
+        </a>
+        <a href="goodsync.html" class="app-card" data-id="1777288016845" style="text-decoration:none;color:inherit">
+          <img src="logo/goodsync.png" alt="GoodSync" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GoodSync</h3>
+          <p class="app-description">Automated file sync and backup solution for local and cloud storage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sync</span><span class="app-tag">backup</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="duplicati.html" class="app-card" data-id="1777288016846" style="text-decoration:none;color:inherit">
+          <img src="logo/duplicati.png" alt="Duplicati" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Duplicati</h3>
+          <p class="app-description">Open-source backup tool with encryption, compression, and cloud storage support.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">backup</span><span class="app-tag">encryption</span><span class="app-tag">cloud</span>
+            </div>
+          
+        </a>
+        <a href="restic.html" class="app-card" data-id="1777288016847" style="text-decoration:none;color:inherit">
+          <img src="logo/restic.png" alt="Restic" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Restic</h3>
+          <p class="app-description">Fast, secure, and efficient backup program with deduplication.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">backup</span><span class="app-tag">deduplication</span><span class="app-tag">secure</span>
+            </div>
+          
+        </a>
+        <a href="macrium-reflect.html" class="app-card" data-id="1777288016848" style="text-decoration:none;color:inherit">
+          <img src="logo/macriumreflect.png" alt="Macrium Reflect" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Macrium Reflect</h3>
+          <p class="app-description">Disk imaging and cloning software for reliable backup and recovery.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">imaging</span><span class="app-tag">clone</span><span class="app-tag">backup</span>
+            </div>
+          
+        </a>
+        <a href="clonezilla.html" class="app-card" data-id="1777288016849" style="text-decoration:none;color:inherit">
+          <img src="logo/clonezilla.png" alt="Clonezilla" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Clonezilla</h3>
+          <p class="app-description">Open-source disk cloning and imaging tool for deployment and backup.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">clone</span><span class="app-tag">imaging</span><span class="app-tag">open-source</span>
+            </div>
+          
+        </a>
+        <a href="aomei-backupper.html" class="app-card" data-id="1777288016850" style="text-decoration:none;color:inherit">
+          <img src="logo/aomeibackupper.png" alt="AOMEI Backupper" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AOMEI Backupper</h3>
+          <p class="app-description">User-friendly backup and restore software for system, disk, and files.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">backup</span><span class="app-tag">restore</span><span class="app-tag">system</span>
+            </div>
+          
+        </a>
+        <a href="veeam-agent.html" class="app-card" data-id="1777288016851" style="text-decoration:none;color:inherit">
+          <img src="logo/veeamagent.png" alt="Veeam Agent" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Veeam Agent</h3>
+          <p class="app-description">Free backup solution for physical and cloud workstations.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">backup</span><span class="app-tag">enterprise</span><span class="app-tag">agent</span>
+            </div>
+          
+        </a>
+        <a href="diskgenius.html" class="app-card" data-id="1777288016852" style="text-decoration:none;color:inherit">
+          <img src="logo/diskgenius.png" alt="DiskGenius" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DiskGenius</h3>
+          <p class="app-description">All-in-one disk management, partition recovery, and data repair tool.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">partition</span><span class="app-tag">recovery</span><span class="app-tag">disk</span>
+            </div>
+          
+        </a>
+        <a href="easeus-partition-master.html" class="app-card" data-id="1777288016853" style="text-decoration:none;color:inherit">
+          <img src="logo/easeuspartition.png" alt="EaseUS Partition Master" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">EaseUS Partition Master</h3>
+          <p class="app-description">Intuitive partition manager for resizing, moving, merging, and copying disks.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">partition</span><span class="app-tag">resize</span><span class="app-tag">disk</span>
+            </div>
+          
+        </a>
+        <a href="minitool-partition-wizard.html" class="app-card" data-id="1777288016854" style="text-decoration:none;color:inherit">
+          <img src="logo/minitoolpartition.png" alt="MiniTool Partition Wizard" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MiniTool Partition Wizard</h3>
+          <p class="app-description">Powerful partition management software with disk benchmark and recovery features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">partition</span><span class="app-tag">benchmark</span><span class="app-tag">disk</span>
+            </div>
+          
+        </a>
+        <a href="gparted.html" class="app-card" data-id="1777288016855" style="text-decoration:none;color:inherit">
+          <img src="logo/gparted.png" alt="GParted" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">GParted</h3>
+          <p class="app-description">Open-source partition editor for creating, resizing, and managing file systems.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">partition</span><span class="app-tag">open-source</span><span class="app-tag">linux</span>
+            </div>
+          
+        </a>
+        <a href="hddscan.html" class="app-card" data-id="1777288016856" style="text-decoration:none;color:inherit">
+          <img src="logo/hddscan.png" alt="HDDScan" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">HDDScan</h3>
+          <p class="app-description">Portable diagnostic tool for HDD, SSD, and USB drives with surface testing.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diagnostic</span><span class="app-tag">hdd</span><span class="app-tag">ssd</span>
+            </div>
+          
+        </a>
+        <a href="victoria.html" class="app-card" data-id="1777288016857" style="text-decoration:none;color:inherit">
+          <img src="logo/victoria.png" alt="Victoria" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Victoria</h3>
+          <p class="app-description">Advanced HDD and SSD diagnostic utility for surface scanning and repair.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">diagnostic</span><span class="app-tag">repair</span><span class="app-tag">disk</span>
+            </div>
+          
+        </a>
+        <a href="process-monitor.html" class="app-card" data-id="1777288016858" style="text-decoration:none;color:inherit">
+          <img src="logo/procmon.png" alt="Process Monitor" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Process Monitor</h3>
+          <p class="app-description">Advanced monitoring tool showing real-time file system, registry, and process activity.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">monitoring</span><span class="app-tag">sysinternals</span><span class="app-tag">registry</span>
+            </div>
+          
+        </a>
+        <a href="dependency-walker.html" class="app-card" data-id="1777288016859" style="text-decoration:none;color:inherit">
+          <img src="logo/dependencywalker.png" alt="Dependency Walker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Dependency Walker</h3>
+          <p class="app-description">Utility that scans Windows executables for missing or mismatched dependencies.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">dependencies</span><span class="app-tag">dll</span><span class="app-tag">diagnostic</span>
+            </div>
+          
+        </a>
+        <a href="tcpview.html" class="app-card" data-id="1777288016860" style="text-decoration:none;color:inherit">
+          <img src="logo/tcpview.png" alt="TCPView" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TCPView</h3>
+          <p class="app-description">Program that displays detailed listings of all TCP and UDP endpoints.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">network</span><span class="app-tag">tcp</span><span class="app-tag">udp</span>
+            </div>
+          
+        </a>
+        <a href="sysinternals-suite.html" class="app-card" data-id="1777288016861" style="text-decoration:none;color:inherit">
+          <img src="logo/sysinternals.png" alt="Sysinternals Suite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sysinternals Suite</h3>
+          <p class="app-description">Comprehensive collection of advanced Windows troubleshooting utilities.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">microsoft</span><span class="app-tag">troubleshooting</span><span class="app-tag">utilities</span>
+            </div>
+          
+        </a>
+        <a href="ninite.html" class="app-card" data-id="1777288016862" style="text-decoration:none;color:inherit">
+          <img src="logo/ninite.png" alt="Ninite" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Ninite</h3>
+          <p class="app-description">Automated installer and updater for popular software without bloatware.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">installer</span><span class="app-tag">updater</span><span class="app-tag">automation</span>
+            </div>
+          
+        </a>
+        <a href="patch-my-pc.html" class="app-card" data-id="1777288016863" style="text-decoration:none;color:inherit">
+          <img src="logo/patchmypc.png" alt="Patch My PC" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Patch My PC</h3>
+          <p class="app-description">Third-party application updater for keeping software secure and up-to-date.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">updater</span><span class="app-tag">patch</span><span class="app-tag">security</span>
+            </div>
+          
+        </a>
+        <a href="chocolatey.html" class="app-card" data-id="1777288016864" style="text-decoration:none;color:inherit">
+          <img src="logo/chocolatey.png" alt="Chocolatey" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Chocolatey</h3>
+          <p class="app-description">Package manager for Windows enabling quick software installation via command line.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">package</span><span class="app-tag">manager</span><span class="app-tag">cli</span>
+            </div>
+          
+        </a>
+        <a href="winget.html" class="app-card" data-id="1777288016865" style="text-decoration:none;color:inherit">
+          <img src="logo/winget.png" alt="Winget" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Winget</h3>
+          <p class="app-description">Microsoft&#039;s official command-line package manager for Windows 10/11.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">microsoft</span><span class="app-tag">package</span><span class="app-tag">cli</span>
+            </div>
+          
+        </a>
+        <a href="scoop.html" class="app-card" data-id="1777288016866" style="text-decoration:none;color:inherit">
+          <img src="logo/scoop.png" alt="Scoop" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Scoop</h3>
+          <p class="app-description">Command-line installer for Windows that doesn&#039;t require admin rights.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">installer</span><span class="app-tag">portable</span><span class="app-tag">cli</span>
+            </div>
+          
+        </a>
+        <a href="homebrew.html" class="app-card" data-id="1777288016867" style="text-decoration:none;color:inherit">
+          <img src="logo/homebrew.png" alt="Homebrew" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Homebrew</h3>
+          <p class="app-description">The missing package manager for macOS and Linux systems.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">mac</span><span class="app-tag">linux</span><span class="app-tag">package</span>
+            </div>
+          
+        </a>
+        <a href="advanced-ip-scanner.html" class="app-card" data-id="1777288016868" style="text-decoration:none;color:inherit">
+          <img src="logo/advancedip.png" alt="Advanced IP Scanner" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Advanced IP Scanner</h3>
+          <p class="app-description">Fast, reliable, and easy-to-use network scanner for administrators.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">network</span><span class="app-tag">scanner</span><span class="app-tag">admin</span>
+            </div>
+          
+        </a>
+        <a href="usbdeview.html" class="app-card" data-id="1777288016869" style="text-decoration:none;color:inherit">
+          <img src="logo/usbdeview.png" alt="USBDeview" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">USBDeview</h3>
+          <p class="app-description">Lists all USB devices currently connected and previously connected to your PC.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">usb</span><span class="app-tag">devices</span><span class="app-tag">list</span>
+            </div>
+          
+        </a>
+        <a href="crystaldiskmark.html" class="app-card" data-id="1777288016870" style="text-decoration:none;color:inherit">
+          <img src="logo/crystaldiskmark.png" alt="CrystalDiskMark" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">CrystalDiskMark</h3>
+          <p class="app-description">Disk benchmark software to measure read/write speeds of storage devices.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">benchmark</span><span class="app-tag">disk</span><span class="app-tag">speed</span>
+            </div>
+          
+        </a>
+        <a href="as-ssd-benchmark.html" class="app-card" data-id="1777288016871" style="text-decoration:none;color:inherit">
+          <img src="logo/asssd.png" alt="AS SSD Benchmark" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">AS SSD Benchmark</h3>
+          <p class="app-description">Solid-state drive performance testing tool with sequential and random read/write.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">ssd</span><span class="app-tag">benchmark</span><span class="app-tag">performance</span>
+            </div>
+          
+        </a>
+        <a href="logparser.html" class="app-card" data-id="1777288016876" style="text-decoration:none;color:inherit">
+          <img src="logo/logparser.png" alt="LogParser" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">LogParser</h3>
+          <p class="app-description">Powerful, versatile tool that provides universal query access to text-based data.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">log</span><span class="app-tag">query</span><span class="app-tag">analysis</span>
+            </div>
+          
+        </a>
+        <a href="sumatra-pdf.html" class="app-card" data-id="1777288016877" style="text-decoration:none;color:inherit">
+          <img src="logo/sumatrapdf.png" alt="Sumatra PDF" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Sumatra PDF</h3>
+          <p class="app-description">Lightweight, open-source PDF, eBook, and comic book reader.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pdf</span><span class="app-tag">reader</span><span class="app-tag">lightweight</span>
+            </div>
+          
+        </a>
+        <a href="pdf24-creator.html" class="app-card" data-id="1777288016878" style="text-decoration:none;color:inherit">
+          <img src="logo/pdf24.png" alt="PDF24 Creator" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">PDF24 Creator</h3>
+          <p class="app-description">Free PDF toolkit for merging, splitting, compressing, and converting documents.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">pdf</span><span class="app-tag">tools</span><span class="app-tag">merge</span>
+            </div>
+          
+        </a>
+        <a href="notepad-plus-plus.html" class="app-card" data-id="1777288016879" style="text-decoration:none;color:inherit">
+          <img src="logo/notepadplusplus.png" alt="Notepad++" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Notepad++</h3>
+          <p class="app-description">Free source code editor and Notepad replacement supporting multiple languages.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">editor</span><span class="app-tag">text</span><span class="app-tag">coding</span>
+            </div>
+          
+        </a>
+        <a href="quicktime.html" class="app-card" data-id="1777288016880" style="text-decoration:none;color:inherit">
+          <img src="logo/quicktime.png" alt="QuickTime" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">QuickTime</h3>
+          <p class="app-description">Apple&#039;s multimedia framework for playing, streaming, and recording media.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">media</span><span class="app-tag">player</span><span class="app-tag">apple</span>
+            </div>
+          
+        </a>
+        <a href="k-lite-codec-pack.html" class="app-card" data-id="1777288016881" style="text-decoration:none;color:inherit">
+          <img src="logo/klite.png" alt="K-Lite Codec Pack" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">K-Lite Codec Pack</h3>
+          <p class="app-description">Collection of audio and video codecs and tools for Windows Media Player.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">codec</span><span class="app-tag">media</span><span class="app-tag">player</span>
+            </div>
+          
+        </a>
+        <a href="ffdshow.html" class="app-card" data-id="1777288016882" style="text-decoration:none;color:inherit">
+          <img src="logo/ffdshow.png" alt="ffdshow" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">ffdshow</h3>
+          <p class="app-description">DirectShow filter for encoding and decoding video and audio streams.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">codec</span><span class="app-tag">directshow</span><span class="app-tag">video</span>
+            </div>
+          
+        </a>
+        <a href="ffmpeg.html" class="app-card" data-id="1777288016884" style="text-decoration:none;color:inherit">
+          <img src="logo/ffmpeg.png" alt="FFmpeg" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FFmpeg</h3>
+          <p class="app-description">Complete, cross-platform solution to record, convert, and stream audio/video.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">cli</span><span class="app-tag">converter</span><span class="app-tag">stream</span>
+            </div>
+          
+        </a>
+        <a href="mpc-hc.html" class="app-card" data-id="1777288016886" style="text-decoration:none;color:inherit">
+          <img src="logo/mpchc.png" alt="MPC-HC" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MPC-HC</h3>
+          <p class="app-description">Lightweight, open-source media player for Windows with minimal resource usage.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">player</span><span class="app-tag">lightweight</span><span class="app-tag">windows</span>
+            </div>
+          
+        </a>
+        <a href="mp3tag.html" class="app-card" data-id="1777288016890" style="text-decoration:none;color:inherit">
+          <img src="logo/mp3tag.png" alt="Mp3tag" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Mp3tag</h3>
+          <p class="app-description">Powerful yet easy-to-use audio metadata editor for tagging files.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">tagging</span><span class="app-tag">audio</span><span class="app-tag">metadata</span>
+            </div>
+          
+        </a>
+        <a href="bulk-rename-utility.html" class="app-card" data-id="1777288016891" style="text-decoration:none;color:inherit">
+          <img src="logo/bulkrename.png" alt="Bulk Rename Utility" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Bulk Rename Utility</h3>
+          <p class="app-description">Advanced file and folder renaming tool with powerful pattern matching.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">rename</span><span class="app-tag">batch</span><span class="app-tag">files</span>
+            </div>
+          
+        </a>
+        <a href="advanced-renamer.html" class="app-card" data-id="1777288016892" style="text-decoration:none;color:inherit">
+          <img src="logo/advancedrenamer.png" alt="Advanced Renamer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Advanced Renamer</h3>
+          <p class="app-description">Batch renaming tool with support for metadata, regex, and scripting.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">batch</span><span class="app-tag">rename</span><span class="app-tag">metadata</span>
+            </div>
+          
+        </a>
+        <a href="total-commander.html" class="app-card" data-id="1777288016893" style="text-decoration:none;color:inherit">
+          <img src="logo/totalcommander.png" alt="Total Commander" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Total Commander</h3>
+          <p class="app-description">Classic file manager with dual panels, FTP, and archive handling.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">file</span><span class="app-tag">manager</span><span class="app-tag">dual-panel</span>
+            </div>
+          
+        </a>
+        <a href="directory-opus.html" class="app-card" data-id="1777288016894" style="text-decoration:none;color:inherit">
+          <img src="logo/directoryopus.png" alt="Directory Opus" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Directory Opus</h3>
+          <p class="app-description">Highly customizable file manager with advanced scripting and viewer.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">file</span><span class="app-tag">manager</span><span class="app-tag">customizable</span>
+            </div>
+          
+        </a>
+        <a href="xyplorer.html" class="app-card" data-id="1777288016895" style="text-decoration:none;color:inherit">
+          <img src="logo/xyplorer.png" alt="XYplorer" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+WDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">XYplorer</h3>
+          <p class="app-description">Tabbed file manager with advanced navigation, filtering, and preview features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">file</span><span class="app-tag">manager</span><span class="app-tag">tabbed</span>
+            </div>
+          
+        </a>
+        <a href="double-commander.html" class="app-card" data-id="1777288016896" style="text-decoration:none;color:inherit">
+          <img src="logo/doublecommander.png" alt="Double Commander" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Double Commander</h3>
+          <p class="app-description">Open-source cross-platform file manager with two panels.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">file</span><span class="app-tag">manager</span><span class="app-tag">cross-platform</span>
+            </div>
+          
+        </a>
+        <a href="clover.html" class="app-card" data-id="1777288016897" style="text-decoration:none;color:inherit">
+          <img src="logo/clover.png" alt="Clover" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Clover</h3>
+          <p class="app-description">Adds tabbed browsing to Windows Explorer for better file navigation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">explorer</span><span class="app-tag">tabs</span><span class="app-tag">navigation</span>
+            </div>
+          
+        </a>
+        <a href="files-app.html" class="app-card" data-id="1777288016898" style="text-decoration:none;color:inherit">
+          <img src="logo/filesapp.png" alt="Files App" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Files App</h3>
+          <p class="app-description">Modern, Fluent Design-based file manager for Windows 10/11.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">file</span><span class="app-tag">manager</span><span class="app-tag">modern</span>
+            </div>
+          
+        </a>
+        <a href="teracopy.html" class="app-card" data-id="1777288016899" style="text-decoration:none;color:inherit">
+          <img src="logo/teracopy.png" alt="TeraCopy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+VDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">TeraCopy</h3>
+          <p class="app-description">Fast file copy and move utility with resume, error recovery, and verification.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">copy</span><span class="app-tag">move</span><span class="app-tag">fast</span>
+            </div>
+          
+        </a>
+        <a href="fastcopy.html" class="app-card" data-id="1777288016900" style="text-decoration:none;color:inherit">
+          <img src="logo/fastcopy.png" alt="FastCopy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">FastCopy</h3>
+          <p class="app-description">High-speed file copy and delete software for Windows.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">copy</span><span class="app-tag">delete</span><span class="app-tag">fast</span>
+            </div>
+          
+        </a>
+        <a href="robocopy-gui.html" class="app-card" data-id="1777288016901" style="text-decoration:none;color:inherit">
+          <img src="logo/robocopy.png" alt="Robocopy GUI" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Robocopy GUI</h3>
+          <p class="app-description">Graphical interface for Windows built-in Robust File Copy command.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">copy</span><span class="app-tag">gui</span><span class="app-tag">windows</span>
+            </div>
+          
+        </a>
+        <a href="synctoy.html" class="app-card" data-id="1777288016902" style="text-decoration:none;color:inherit">
+          <img src="logo/synctoy.png" alt="SyncToy" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">SyncToy</h3>
+          <p class="app-description">Microsoft utility for synchronizing folders across local and network drives.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sync</span><span class="app-tag">folders</span><span class="app-tag">microsoft</span>
+            </div>
+          
+        </a>
+        <a href="allway-sync.html" class="app-card" data-id="1777288016903" style="text-decoration:none;color:inherit">
+          <img src="logo/allwaysync.png" alt="Allway Sync" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Allway Sync</h3>
+          <p class="app-description">Flexible file synchronization program for backup and mirroring.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">sync</span><span class="app-tag">backup</span><span class="app-tag">mirror</span>
+            </div>
+          
+        </a>
+        <a href="cobian-backup.html" class="app-card" data-id="1777288016904" style="text-decoration:none;color:inherit">
+          <img src="logo/cobianbackup.png" alt="Cobian Backup" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+QzwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Cobian Backup</h3>
+          <p class="app-description">Multi-tasking backup program with support for FTP, zip, and compression.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">backup</span><span class="app-tag">ftp</span><span class="app-tag">zip</span>
+            </div>
+          
+        </a>
+        <a href="handy-backup.html" class="app-card" data-id="1777288016905" style="text-decoration:none;color:inherit">
+          <img src="logo/handybackup.png" alt="Handy Backup" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Handy Backup</h3>
+          <p class="app-description">Automated backup and disaster recovery solution for home and business.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">backup</span><span class="app-tag">automation</span><span class="app-tag">disaster</span>
+            </div>
+          
+        </a>
+        <a href="paragon-backup.html" class="app-card" data-id="1777288016906" style="text-decoration:none;color:inherit">
+          <img src="logo/paragonbackup.png" alt="Paragon Backup &amp; Recovery" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Paragon Backup &amp; Recovery</h3>
+          <p class="app-description">Comprehensive backup and restore software with bootable media creation.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">backup</span><span class="app-tag">restore</span><span class="app-tag">bootable</span>
+            </div>
+          
+        </a>
+        <a href="easeus-todo-backup.html" class="app-card" data-id="1777288016907" style="text-decoration:none;color:inherit">
+          <img src="logo/easeustodo.png" alt="EaseUS Todo Backup" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">EaseUS Todo Backup</h3>
+          <p class="app-description">One-click backup and restore solution for system, disk, and partitions.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">backup</span><span class="app-tag">one-click</span><span class="app-tag">system</span>
+            </div>
+          
+        </a>
+        <a href="minitool-shadowmaker.html" class="app-card" data-id="1777288016908" style="text-decoration:none;color:inherit">
+          <img src="logo/shadowmaker.png" alt="MiniTool ShadowMaker" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+TTwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">MiniTool ShadowMaker</h3>
+          <p class="app-description">Professional backup software with sync, clone, and disaster recovery features.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">backup</span><span class="app-tag">sync</span><span class="app-tag">clone</span>
+            </div>
+          
+        </a>
+        <a href="driveimage-xml.html" class="app-card" data-id="1777288016909" style="text-decoration:none;color:inherit">
+          <img src="logo/driveimagexml.png" alt="DriveImage XML" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+RDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">DriveImage XML</h3>
+          <p class="app-description">Simple disk imaging and backup tool using XML format for portability.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">imaging</span><span class="app-tag">xml</span><span class="app-tag">portable</span>
+            </div>
+          
+        </a>
+        <a href="redo-backup.html" class="app-card" data-id="1777288016910" style="text-decoration:none;color:inherit">
+          <img src="logo/redobackup.png" alt="Redo Backup" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UjwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Redo Backup</h3>
+          <p class="app-description">Live CD backup and recovery solution for complete system restoration.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">live-cd</span><span class="app-tag">backup</span><span class="app-tag">restore</span>
+            </div>
+          
+        </a>
+        <a href="parted-magic.html" class="app-card" data-id="1777288016911" style="text-decoration:none;color:inherit">
+          <img src="logo/partedmagic.png" alt="Parted Magic" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+UDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Parted Magic</h3>
+          <p class="app-description">Bootable rescue environment with disk partitioning, cloning, and diagnostics.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">bootable</span><span class="app-tag">partition</span><span class="app-tag">rescue</span>
+            </div>
+          
+        </a>
+        <a href="hirens-bootcd.html" class="app-card" data-id="1777288016912" style="text-decoration:none;color:inherit">
+          <img src="logo/hirens.png" alt="Hiren&#039;s BootCD PE" class="app-icon"
+               onerror="this.src='data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCBmaWxsPSIjMDA3MWUzIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgcng9IjIwIi8+PHRleHQgeD0iNTAiIHk9IjU1IiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0MCIgZm9udC1mYW1pbHk9IkludGVyLCBBcmlhbCI+SDwvdGV4dD48L3N2Zz4='">
+          <h3 class="app-name">Hiren&#039;s BootCD PE</h3>
+          <p class="app-description">Windows PE-based recovery toolkit with diagnostics, backup, and antivirus tools.</p>
+          
+            <div class="app-tags">
+              <span class="app-tag">bootable</span><span class="app-tag">recovery</span><span class="app-tag">diagnostic</span>
+            </div>
+          
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <p>© 2024 MacApps Catalog</p>
+  </footer>
+
+  <script>
+    const APPS = [{"id":1777288016820,"name":"Rufus","slug":"rufus","version":"4.4","description":"Create bootable USB drives the easy way with fast formatting support.","category":"utilities-tools","logoUrl":"logo/rufus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Rufus9&tracker=9","tags":["bootable","usb","iso","installer"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016821,"name":"BalenaEtcher","slug":"balenaetcher","version":"1.18.11","description":"Cross-platform tool to flash OS images to SD cards and USB drives.","category":"utilities-tools","logoUrl":"logo/balenaetcher.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=BalenaEtcher10&tracker=10","tags":["flash","usb","os","installer"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016824,"name":"Revo Uninstaller","slug":"revo-uninstaller","version":"4.4.5","description":"Advanced uninstaller that removes leftover files and registry entries.","category":"utilities-tools","logoUrl":"logo/revouninstaller.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Revo Uninstaller13&tracker=13","tags":["uninstaller","cleaner","registry","programs"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016825,"name":"Geek Uninstaller","slug":"geek-uninstaller","version":"1.5.2.162","description":"Fast, simple, and effective tool to completely remove unwanted programs.","category":"utilities-tools","logoUrl":"logo/geekuninstaller.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Geek Uninstaller14&tracker=14","tags":["uninstaller","portable","lightweight","cleaner"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016826,"name":"Autoruns","slug":"autoruns","version":"14.11","description":"Sysinternals utility showing all auto-starting programs and registry keys.","category":"utilities-tools","logoUrl":"logo/autoruns.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Autoruns15&tracker=15","tags":["startup","registry","sysinternals","diagnostic"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016827,"name":"Process Explorer","slug":"process-explorer","version":"17.06","description":"Advanced task manager replacement showing process trees and handles.","category":"utilities-tools","logoUrl":"logo/processexplorer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Process Explorer16&tracker=16","tags":["taskmanager","process","monitoring","sysinternals"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016828,"name":"Process Hacker","slug":"process-hacker","version":"3.0","description":"Open-source process viewer and system monitoring tool for advanced users.","category":"utilities-tools","logoUrl":"logo/processhacker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Process Hacker17&tracker=17","tags":["process","monitoring","open-source","debugging"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016829,"name":"Wireshark","slug":"wireshark","version":"4.2.4","description":"Industry-standard network protocol analyzer for capturing and inspecting packets.","category":"utilities-tools","logoUrl":"logo/wireshark.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wireshark18&tracker=18","tags":["network","packet","analyzer","security"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016830,"name":"Nmap","slug":"nmap","version":"7.94","description":"Powerful network scanner for discovering hosts, services, and security auditing.","category":"utilities-tools","logoUrl":"logo/nmap.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Nmap19&tracker=19","tags":["network","scanner","security","audit"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016831,"name":"Angry IP Scanner","slug":"angry-ip-scanner","version":"3.9.1","description":"Cross-platform network scanner for quickly pinging and discovering devices.","category":"utilities-tools","logoUrl":"logo/angryip.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Angry IP Scanner20&tracker=20","tags":["network","scanner","discovery","ping"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016832,"name":"PuTTY","slug":"putty","version":"0.80","description":"Free SSH, Telnet, and serial client for remote server connections.","category":"utilities-tools","logoUrl":"logo/putty.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PuTTY21&tracker=21","tags":["ssh","terminal","remote","network"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016833,"name":"WinSCP","slug":"winscp","version":"6.1.2","description":"Secure file transfer client with SFTP, SCP, and FTP support.","category":"utilities-tools","logoUrl":"logo/winscp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WinSCP22&tracker=22","tags":["sftp","transfer","secure","files"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016834,"name":"FileZilla","slug":"filezilla","version":"3.66.5","description":"Popular open-source FTP, FTPS, and SFTP client for file transfers.","category":"utilities-tools","logoUrl":"logo/filezilla.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FileZilla23&tracker=23","tags":["ftp","transfer","client","open-source"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016835,"name":"WinMerge","slug":"winmerge","version":"2.16.36","description":"Visual difference and merge tool for files and directories.","category":"utilities-tools","logoUrl":"logo/winmerge.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=WinMerge24&tracker=24","tags":["diff","merge","compare","text"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016836,"name":"Beyond Compare","slug":"beyond-compare","version":"4.4.7","description":"Professional file and folder comparison with sync and merge capabilities.","category":"utilities-tools","logoUrl":"logo/beyondcompare.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Beyond Compare25&tracker=25","tags":["compare","sync","merge","professional"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016837,"name":"HxD","slug":"hxd","version":"2.5.0.0","description":"Fast hex editor for raw disk editing, process memory, and file analysis.","category":"utilities-tools","logoUrl":"logo/hxd.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HxD26&tracker=26","tags":["hex","editor","binary","analysis"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016838,"name":"Recuva","slug":"recuva","version":"1.53.2253","description":"File recovery tool that restores accidentally deleted files and folders.","category":"utilities-tools","logoUrl":"logo/recuva.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Recuva27&tracker=27","tags":["recovery","deleted","restore","files"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016839,"name":"TestDisk","slug":"testdisk","version":"7.1","description":"Powerful data recovery software for recovering lost partitions and boot sectors.","category":"utilities-tools","logoUrl":"logo/testdisk.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TestDisk28&tracker=28","tags":["recovery","partition","boot","disk"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016840,"name":"DBAN","slug":"dban","version":"2.3.0","description":"Darik's Boot and Nuke securely wipes hard drives by overwriting data.","category":"utilities-tools","logoUrl":"logo/dban.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DBAN29&tracker=29","tags":["wipe","secure","disk","erase"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016841,"name":"Glary Utilities","slug":"glary-utilities","version":"5.195.0.200","description":"All-in-one PC optimization suite with registry cleaner, disk cleanup, and startup manager.","category":"utilities-tools","logoUrl":"logo/glaryutilities.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Glary Utilities30&tracker=30","tags":["optimizer","cleaner","registry","maintenance"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016842,"name":"Wise Disk Cleaner","slug":"wise-disk-cleaner","version":"10.9.4","description":"Free disk cleaner that removes junk files, browser cache, and system temp files.","category":"utilities-tools","logoUrl":"logo/wisediskcleaner.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Wise Disk Cleaner31&tracker=31","tags":["cleaner","disk","cache","free"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016844,"name":"FreeFileSync","slug":"freefilesync","version":"13.3","description":"Open-source folder comparison and synchronization utility.","category":"utilities-tools","logoUrl":"logo/freefilesync.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FreeFileSync33&tracker=33","tags":["sync","folder","backup","comparison"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016845,"name":"GoodSync","slug":"goodsync","version":"12.5.4","description":"Automated file sync and backup solution for local and cloud storage.","category":"utilities-tools","logoUrl":"logo/goodsync.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GoodSync34&tracker=34","tags":["sync","backup","cloud","automation"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016846,"name":"Duplicati","slug":"duplicati","version":"2.0.7.1","description":"Open-source backup tool with encryption, compression, and cloud storage support.","category":"utilities-tools","logoUrl":"logo/duplicati.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Duplicati35&tracker=35","tags":["backup","encryption","cloud","open-source"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016847,"name":"Restic","slug":"restic","version":"0.16.4","description":"Fast, secure, and efficient backup program with deduplication.","category":"utilities-tools","logoUrl":"logo/restic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Restic36&tracker=36","tags":["backup","deduplication","secure","cli"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016848,"name":"Macrium Reflect","slug":"macrium-reflect","version":"8.0.7783","description":"Disk imaging and cloning software for reliable backup and recovery.","category":"utilities-tools","logoUrl":"logo/macriumreflect.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Macrium Reflect37&tracker=37","tags":["imaging","clone","backup","recovery"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016849,"name":"Clonezilla","slug":"clonezilla","version":"3.1.3","description":"Open-source disk cloning and imaging tool for deployment and backup.","category":"utilities-tools","logoUrl":"logo/clonezilla.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Clonezilla38&tracker=38","tags":["clone","imaging","open-source","deployment"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016850,"name":"AOMEI Backupper","slug":"aomei-backupper","version":"7.3","description":"User-friendly backup and restore software for system, disk, and files.","category":"utilities-tools","logoUrl":"logo/aomeibackupper.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AOMEI Backupper39&tracker=39","tags":["backup","restore","system","easy"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016851,"name":"Veeam Agent","slug":"veeam-agent","version":"6.1","description":"Free backup solution for physical and cloud workstations.","category":"utilities-tools","logoUrl":"logo/veeamagent.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Veeam Agent40&tracker=40","tags":["backup","enterprise","agent","cloud"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016852,"name":"DiskGenius","slug":"diskgenius","version":"5.5.0.1156","description":"All-in-one disk management, partition recovery, and data repair tool.","category":"utilities-tools","logoUrl":"logo/diskgenius.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DiskGenius41&tracker=41","tags":["partition","recovery","disk","management"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016853,"name":"EaseUS Partition Master","slug":"easeus-partition-master","version":"18.5","description":"Intuitive partition manager for resizing, moving, merging, and copying disks.","category":"utilities-tools","logoUrl":"logo/easeuspartition.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=EaseUS Partition Master42&tracker=42","tags":["partition","resize","disk","manager"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016854,"name":"MiniTool Partition Wizard","slug":"minitool-partition-wizard","version":"13.0","description":"Powerful partition management software with disk benchmark and recovery features.","category":"utilities-tools","logoUrl":"logo/minitoolpartition.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MiniTool Partition Wizard43&tracker=43","tags":["partition","benchmark","disk","management"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016855,"name":"GParted","slug":"gparted","version":"1.6.0","description":"Open-source partition editor for creating, resizing, and managing file systems.","category":"utilities-tools","logoUrl":"logo/gparted.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=GParted44&tracker=44","tags":["partition","open-source","linux","editor"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016856,"name":"HDDScan","slug":"hddscan","version":"4.1","description":"Portable diagnostic tool for HDD, SSD, and USB drives with surface testing.","category":"utilities-tools","logoUrl":"logo/hddscan.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=HDDScan45&tracker=45","tags":["diagnostic","hdd","ssd","testing"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016857,"name":"Victoria","slug":"victoria","version":"5.40","description":"Advanced HDD and SSD diagnostic utility for surface scanning and repair.","category":"utilities-tools","logoUrl":"logo/victoria.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Victoria46&tracker=46","tags":["diagnostic","repair","disk","surface"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016858,"name":"Process Monitor","slug":"process-monitor","version":"4.01","description":"Advanced monitoring tool showing real-time file system, registry, and process activity.","category":"utilities-tools","logoUrl":"logo/procmon.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Process Monitor47&tracker=47","tags":["monitoring","sysinternals","registry","filesystem"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016859,"name":"Dependency Walker","slug":"dependency-walker","version":"2.2","description":"Utility that scans Windows executables for missing or mismatched dependencies.","category":"utilities-tools","logoUrl":"logo/dependencywalker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Dependency Walker48&tracker=48","tags":["dependencies","dll","diagnostic","windows"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016860,"name":"TCPView","slug":"tcpview","version":"4.01","description":"Program that displays detailed listings of all TCP and UDP endpoints.","category":"utilities-tools","logoUrl":"logo/tcpview.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TCPView49&tracker=49","tags":["network","tcp","udp","monitoring"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016861,"name":"Sysinternals Suite","slug":"sysinternals-suite","version":"2024.02","description":"Comprehensive collection of advanced Windows troubleshooting utilities.","category":"utilities-tools","logoUrl":"logo/sysinternals.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sysinternals Suite50&tracker=50","tags":["microsoft","troubleshooting","utilities","advanced"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016862,"name":"Ninite","slug":"ninite","version":"1.1.10","description":"Automated installer and updater for popular software without bloatware.","category":"utilities-tools","logoUrl":"logo/ninite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Ninite51&tracker=51","tags":["installer","updater","automation","software"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016863,"name":"Patch My PC","slug":"patch-my-pc","version":"4.6.0.0","description":"Third-party application updater for keeping software secure and up-to-date.","category":"utilities-tools","logoUrl":"logo/patchmypc.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Patch My PC52&tracker=52","tags":["updater","patch","security","automation"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016864,"name":"Chocolatey","slug":"chocolatey","version":"2.2.2","description":"Package manager for Windows enabling quick software installation via command line.","category":"utilities-tools","logoUrl":"logo/chocolatey.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Chocolatey53&tracker=53","tags":["package","manager","cli","windows"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016865,"name":"Winget","slug":"winget","version":"1.7.10041","description":"Microsoft's official command-line package manager for Windows 10/11.","category":"utilities-tools","logoUrl":"logo/winget.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Winget54&tracker=54","tags":["microsoft","package","cli","installer"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016866,"name":"Scoop","slug":"scoop","version":"0.5.1","description":"Command-line installer for Windows that doesn't require admin rights.","category":"utilities-tools","logoUrl":"logo/scoop.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Scoop55&tracker=55","tags":["installer","portable","cli","windows"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016867,"name":"Homebrew","slug":"homebrew","version":"4.2.13","description":"The missing package manager for macOS and Linux systems.","category":"utilities-tools","logoUrl":"logo/homebrew.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Homebrew56&tracker=56","tags":["mac","linux","package","manager"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016868,"name":"Advanced IP Scanner","slug":"advanced-ip-scanner","version":"2.5.4594","description":"Fast, reliable, and easy-to-use network scanner for administrators.","category":"utilities-tools","logoUrl":"logo/advancedip.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Advanced IP Scanner57&tracker=57","tags":["network","scanner","admin","discovery"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016869,"name":"USBDeview","slug":"usbdeview","version":"3.05","description":"Lists all USB devices currently connected and previously connected to your PC.","category":"utilities-tools","logoUrl":"logo/usbdeview.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=USBDeview58&tracker=58","tags":["usb","devices","list","diagnostic"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016870,"name":"CrystalDiskMark","slug":"crystaldiskmark","version":"8.0.5","description":"Disk benchmark software to measure read/write speeds of storage devices.","category":"utilities-tools","logoUrl":"logo/crystaldiskmark.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=CrystalDiskMark59&tracker=59","tags":["benchmark","disk","speed","ssd"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016871,"name":"AS SSD Benchmark","slug":"as-ssd-benchmark","version":"2.0.7316","description":"Solid-state drive performance testing tool with sequential and random read/write.","category":"utilities-tools","logoUrl":"logo/asssd.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=AS SSD Benchmark60&tracker=60","tags":["ssd","benchmark","performance","testing"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016876,"name":"LogParser","slug":"logparser","version":"2.2","description":"Powerful, versatile tool that provides universal query access to text-based data.","category":"utilities-tools","logoUrl":"logo/logparser.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=LogParser65&tracker=65","tags":["log","query","analysis","text"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016877,"name":"Sumatra PDF","slug":"sumatra-pdf","version":"3.5.2","description":"Lightweight, open-source PDF, eBook, and comic book reader.","category":"utilities-tools","logoUrl":"logo/sumatrapdf.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Sumatra PDF66&tracker=66","tags":["pdf","reader","lightweight","open-source"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016878,"name":"PDF24 Creator","slug":"pdf24-creator","version":"12.4","description":"Free PDF toolkit for merging, splitting, compressing, and converting documents.","category":"utilities-tools","logoUrl":"logo/pdf24.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=PDF24 Creator67&tracker=67","tags":["pdf","tools","merge","free"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016879,"name":"Notepad++","slug":"notepad-plus-plus","version":"8.6.3","description":"Free source code editor and Notepad replacement supporting multiple languages.","category":"utilities-tools","logoUrl":"logo/notepadplusplus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Notepad++68&tracker=68","tags":["editor","text","coding","lightweight"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016880,"name":"QuickTime","slug":"quicktime","version":"7.7.9","description":"Apple's multimedia framework for playing, streaming, and recording media.","category":"utilities-tools","logoUrl":"logo/quicktime.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=QuickTime69&tracker=69","tags":["media","player","apple","framework"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016881,"name":"K-Lite Codec Pack","slug":"k-lite-codec-pack","version":"17.9.0","description":"Collection of audio and video codecs and tools for Windows Media Player.","category":"utilities-tools","logoUrl":"logo/klite.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=K-Lite Codec Pack70&tracker=70","tags":["codec","media","player","video"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016882,"name":"ffdshow","slug":"ffdshow","version":"1.3.4533","description":"DirectShow filter for encoding and decoding video and audio streams.","category":"utilities-tools","logoUrl":"logo/ffdshow.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=ffdshow71&tracker=71","tags":["codec","directshow","video","decoder"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016884,"name":"FFmpeg","slug":"ffmpeg","version":"6.1.1","description":"Complete, cross-platform solution to record, convert, and stream audio/video.","category":"utilities-tools","logoUrl":"logo/ffmpeg.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FFmpeg73&tracker=73","tags":["cli","converter","stream","multimedia"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016886,"name":"MPC-HC","slug":"mpc-hc","version":"1.7.22","description":"Lightweight, open-source media player for Windows with minimal resource usage.","category":"utilities-tools","logoUrl":"logo/mpchc.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MPC-HC75&tracker=75","tags":["player","lightweight","windows","open-source"],"scrapedAt":"2026-04-27T11:06:56.812Z"},{"id":1777288016890,"name":"Mp3tag","slug":"mp3tag","version":"3.23","description":"Powerful yet easy-to-use audio metadata editor for tagging files.","category":"utilities-tools","logoUrl":"logo/mp3tag.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Mp3tag78&tracker=78","tags":["tagging","audio","metadata","editor"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016891,"name":"Bulk Rename Utility","slug":"bulk-rename-utility","version":"3.2.0.0","description":"Advanced file and folder renaming tool with powerful pattern matching.","category":"utilities-tools","logoUrl":"logo/bulkrename.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Bulk Rename Utility79&tracker=79","tags":["rename","batch","files","utility"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016892,"name":"Advanced Renamer","slug":"advanced-renamer","version":"3.87","description":"Batch renaming tool with support for metadata, regex, and scripting.","category":"utilities-tools","logoUrl":"logo/advancedrenamer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Advanced Renamer80&tracker=80","tags":["batch","rename","metadata","scripting"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016893,"name":"Total Commander","slug":"total-commander","version":"11.02","description":"Classic file manager with dual panels, FTP, and archive handling.","category":"utilities-tools","logoUrl":"logo/totalcommander.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Total Commander81&tracker=81","tags":["file","manager","dual-panel","classic"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016894,"name":"Directory Opus","slug":"directory-opus","version":"13.3","description":"Highly customizable file manager with advanced scripting and viewer.","category":"utilities-tools","logoUrl":"logo/directoryopus.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Directory Opus82&tracker=82","tags":["file","manager","customizable","powerful"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016895,"name":"XYplorer","slug":"xyplorer","version":"25.10.0100","description":"Tabbed file manager with advanced navigation, filtering, and preview features.","category":"utilities-tools","logoUrl":"logo/xyplorer.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=XYplorer83&tracker=83","tags":["file","manager","tabbed","navigation"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016896,"name":"Double Commander","slug":"double-commander","version":"1.1.5","description":"Open-source cross-platform file manager with two panels.","category":"utilities-tools","logoUrl":"logo/doublecommander.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Double Commander84&tracker=84","tags":["file","manager","cross-platform","open-source"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016897,"name":"Clover","slug":"clover","version":"3.2","description":"Adds tabbed browsing to Windows Explorer for better file navigation.","category":"utilities-tools","logoUrl":"logo/clover.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Clover85&tracker=85","tags":["explorer","tabs","navigation","ui"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016898,"name":"Files App","slug":"files-app","version":"3.7.12","description":"Modern, Fluent Design-based file manager for Windows 10/11.","category":"utilities-tools","logoUrl":"logo/filesapp.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Files App86&tracker=86","tags":["file","manager","modern","fluent"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016899,"name":"TeraCopy","slug":"teracopy","version":"3.16","description":"Fast file copy and move utility with resume, error recovery, and verification.","category":"utilities-tools","logoUrl":"logo/teracopy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=TeraCopy87&tracker=87","tags":["copy","move","fast","verify"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016900,"name":"FastCopy","slug":"fastcopy","version":"5.2.3","description":"High-speed file copy and delete software for Windows.","category":"utilities-tools","logoUrl":"logo/fastcopy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=FastCopy88&tracker=88","tags":["copy","delete","fast","utility"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016901,"name":"Robocopy GUI","slug":"robocopy-gui","version":"3.0","description":"Graphical interface for Windows built-in Robust File Copy command.","category":"utilities-tools","logoUrl":"logo/robocopy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Robocopy GUI89&tracker=89","tags":["copy","gui","windows","robust"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016902,"name":"SyncToy","slug":"synctoy","version":"2.1","description":"Microsoft utility for synchronizing folders across local and network drives.","category":"utilities-tools","logoUrl":"logo/synctoy.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=SyncToy90&tracker=90","tags":["sync","folders","microsoft","network"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016903,"name":"Allway Sync","slug":"allway-sync","version":"9.0.2","description":"Flexible file synchronization program for backup and mirroring.","category":"utilities-tools","logoUrl":"logo/allwaysync.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Allway Sync91&tracker=91","tags":["sync","backup","mirror","flexible"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016904,"name":"Cobian Backup","slug":"cobian-backup","version":"11.2.0.586","description":"Multi-tasking backup program with support for FTP, zip, and compression.","category":"utilities-tools","logoUrl":"logo/cobianbackup.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Cobian Backup92&tracker=92","tags":["backup","ftp","zip","scheduler"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016905,"name":"Handy Backup","slug":"handy-backup","version":"8.5.6","description":"Automated backup and disaster recovery solution for home and business.","category":"utilities-tools","logoUrl":"logo/handybackup.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Handy Backup93&tracker=93","tags":["backup","automation","disaster","recovery"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016906,"name":"Paragon Backup & Recovery","slug":"paragon-backup","version":"17.20","description":"Comprehensive backup and restore software with bootable media creation.","category":"utilities-tools","logoUrl":"logo/paragonbackup.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Paragon Backup & Recovery94&tracker=94","tags":["backup","restore","bootable","recovery"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016907,"name":"EaseUS Todo Backup","slug":"easeus-todo-backup","version":"22.5","description":"One-click backup and restore solution for system, disk, and partitions.","category":"utilities-tools","logoUrl":"logo/easeustodo.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=EaseUS Todo Backup95&tracker=95","tags":["backup","one-click","system","partition"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016908,"name":"MiniTool ShadowMaker","slug":"minitool-shadowmaker","version":"4.6","description":"Professional backup software with sync, clone, and disaster recovery features.","category":"utilities-tools","logoUrl":"logo/shadowmaker.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=MiniTool ShadowMaker96&tracker=96","tags":["backup","sync","clone","professional"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016909,"name":"DriveImage XML","slug":"driveimage-xml","version":"2.62","description":"Simple disk imaging and backup tool using XML format for portability.","category":"utilities-tools","logoUrl":"logo/driveimagexml.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=DriveImage XML97&tracker=97","tags":["imaging","xml","portable","backup"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016910,"name":"Redo Backup","slug":"redo-backup","version":"1.0.4","description":"Live CD backup and recovery solution for complete system restoration.","category":"utilities-tools","logoUrl":"logo/redobackup.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Redo Backup98&tracker=98","tags":["live-cd","backup","restore","simple"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016911,"name":"Parted Magic","slug":"parted-magic","version":"2024_01_30","description":"Bootable rescue environment with disk partitioning, cloning, and diagnostics.","category":"utilities-tools","logoUrl":"logo/partedmagic.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Parted Magic99&tracker=99","tags":["bootable","partition","rescue","clone"],"scrapedAt":"2026-04-27T11:06:56.813Z"},{"id":1777288016912,"name":"Hiren's BootCD PE","slug":"hirens-bootcd","version":"1.0.2","description":"Windows PE-based recovery toolkit with diagnostics, backup, and antivirus tools.","category":"utilities-tools","logoUrl":"logo/hirens.png","downloadUrl":"https://yuishare.com/x/PEGEB?title=Hiren's BootCD PE100&tracker=100","tags":["bootable","recovery","diagnostic","pe"],"scrapedAt":"2026-04-27T11:06:56.813Z"}];
+    const CURRENT_CATEGORY = 'utilities-tools';
+    
+    function filterApps() {
+      const search = document.getElementById('searchInput').value.toLowerCase().trim();
+      const grid = document.querySelector('.app-grid');
+      
+      if (!search) {
+        grid.innerHTML = APPS.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+        return;
+      }
+      
+      const filtered = APPS.filter(app =>
+        app.name.toLowerCase().includes(search) ||
+        app.description.toLowerCase().includes(search) ||
+        (app.tags || []).some(t => t.toLowerCase().includes(search))
+      );
+      
+      grid.innerHTML = filtered.map(app => `function generateAppCard(app) {
+  const iconFallback = app.name ? app.name.charAt(0).toUpperCase() : 'A';
+  const fallbackUrl = getSvgFallback(iconFallback);
+  `
+        <a href="${app.slug}.html" class="app-card" data-id="${app.id}" style="text-decoration:none;color:inherit">
+          <img src="${app.logoUrl || ''}" alt="${escapeHtml(app.name)}" class="app-icon"
+               onerror="this.src='${fallbackUrl}'">
+          <h3 class="app-name">${escapeHtml(app.name)}</h3>
+          <p class="app-description">${escapeHtml(app.description)}</p>
+          ${app.tags && app.tags.length > 0 ? `
+            <div class="app-tags">
+              ${app.tags.slice(0, 3).map(tag => `<span class="app-tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+          ` : ''}
+        </a>
+}`.call(null, app)).join('');
+    }
+    
+    document.getElementById('searchInput').oninput = () => { setTimeout(filterApps, 200); };
+    document.getElementById('themeToggle').onclick = function() {
+      const cur = document.documentElement.getAttribute('data-theme');
+      const next = cur === 'dark' ? 'light' : 'dark';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+    };
+    
+    const saved = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', saved);
+  </script>
+</body>
+</html>
